@@ -1,0 +1,55 @@
+1.命名方式需要遵守潛規則：
+    a.Class：全字首大寫且相連
+        Person, Employee, CarRentalService
+    b.Variable:首單詞字首小寫，其餘字首大寫且相連
+        firstName, totalAmount, customerID
+    C.Constants:全部大寫且使用下橫線將單詞相連
+        MAX_VALUE, MIN_LENGTH, PI
+    d.Methods:首單詞字首小寫，其餘字首大寫且相連
+        calculateTotal(), getUserInfo(), printDocument()
+    e.Package:全部小寫
+        com.example.app, org.company.project, myapp.utilities
+
+2.VO,DAO...命名方式：
+  範例table名稱：MEMBERS
+    VO = class Members implements Serializable
+        JavaBean類別：實體變數,getter,setter方法,...
+    DAO = interface MembersDAO
+        定義會用到的資料庫方法,不提供方法的具體實現
+    JDBCDAO = class MembersJDBCDAO implements MembersDAO
+        利用某項技術實現DAO定義的方法(JDBC:一般的資料庫連接)
+
+3.VO(JavaBean)的創建規範：
+    依撰寫順序說明(請大家創建時"按造順序"編寫)：
+        1.implements Serializable
+        2.實體變數：
+            基本型別的資料,使用wrapper class
+                BLOB -> Byte[]
+                TINYINT -> Integer
+                ...
+        3.無參數的constructor(請寫出來)
+        4.有參數的constructor(如果有需要的話)
+        5.override toString()
+        6.override equals()
+        7.override hashCode()
+        8.針對每個實體變數提供setter跟getter方法
+        4~8請直接利用IDE生成
+
+4.DAO內的CRUD方法名稱：
+    1.Create(創建)：insert()
+    2.Read(讀取)：
+        a.查詢單筆資料：
+            主鍵查詢：getByPK()
+            其他單一欄位；getBy欄位名稱()
+        b.查詢多筆資料：
+            查詢全部：getAll()
+            其他單一欄位；getAllBy欄位名稱()
+            返回型態；根據需求選擇List<>或是Set<>
+    3.Update(更新)：update()
+    4.Delete(刪除)：delete()
+    5.如果該表格需要實現上述沒提到的方法,請在LINE上面討論一個統一的名稱
+      或由撰寫人決定(還是需要再LINE提出),如果是常用方法請來這個規範表更新,
+      已變他人遵循,如果不常用,請在java檔內備註該方法作用(方法宣告上一行)
+    6.需要請大家撰寫時思考,可能用到的方法,並實現
+
+5.XXXDAO內的實體變數跟方法實現順序請跟DAO相同

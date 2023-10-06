@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class JDBCUtils {
     private static final String driver = "com.mysql.cj.jdbc.Driver";
-    private static final String url = "jdbc:mysql://localhost:3306/bjpowernode?serverTimezone=Asia/Taipei";
+    private static final String url = "jdbc:mysql://localhost:3306/twoclothing?serverTimezone=Asia/Taipei";
     private static final String user = "root";
     private static final String password = "root";
 
