@@ -1,5 +1,7 @@
 package com.twoclothing;
 
 public class Hello {
-//AAAAAA
+	public static void main(String[] args) {
+		System.out.println("Hello");
+	}
 }
