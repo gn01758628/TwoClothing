@@ -18,6 +18,18 @@ public class WithdrawRequest implements Serializable {
     public WithdrawRequest() {
     }
 
+    public WithdrawRequest(Integer wrId, Integer mbrId, Integer amount, String account, LocalDateTime reqDate, Integer reqStatus, Integer empId, LocalDateTime checkDate, String note) {
+        this.wrId = wrId;
+        this.mbrId = mbrId;
+        this.amount = amount;
+        this.account = account;
+        this.reqDate = reqDate;
+        this.reqStatus = reqStatus;
+        this.empId = empId;
+        this.checkDate = checkDate;
+        this.note = note;
+    }
+
     @Override
     public String toString() {
         return "WithdrawRequest{" +

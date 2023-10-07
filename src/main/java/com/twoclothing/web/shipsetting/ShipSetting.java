@@ -13,6 +13,14 @@ public class ShipSetting implements Serializable {
     public ShipSetting() {
     }
 
+    public ShipSetting(Integer shipId, Integer mbrId, String receiveName, String receivePhone, String receiveAddress) {
+        this.shipId = shipId;
+        this.mbrId = mbrId;
+        this.receiveName = receiveName;
+        this.receivePhone = receivePhone;
+        this.receiveAddress = receiveAddress;
+    }
+
     @Override
     public String toString() {
         return "ShipSetting{" +

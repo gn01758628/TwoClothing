@@ -13,6 +13,14 @@ public class CategoryTags implements Serializable {
     public CategoryTags() {
     }
 
+    public CategoryTags(Integer tagId, Integer superTagId, String categoryName, String descriptions, Integer empId) {
+        this.tagId = tagId;
+        this.superTagId = superTagId;
+        this.categoryName = categoryName;
+        this.descriptions = descriptions;
+        this.empId = empId;
+    }
+
     @Override
     public String toString() {
         return "CategoryTags{" +
