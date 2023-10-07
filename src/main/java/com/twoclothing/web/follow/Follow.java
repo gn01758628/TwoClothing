@@ -10,6 +10,11 @@ public class Follow implements Serializable {
     public Follow() {
     }
 
+    public Follow(Integer mbrId, Integer followId) {
+        this.mbrId = mbrId;
+        this.followId = followId;
+    }
+
     @Override
     public String toString() {
         return "Follow{" +

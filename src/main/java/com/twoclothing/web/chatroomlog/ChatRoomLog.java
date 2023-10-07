@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class ChatRoomLog  implements Serializable {
+public class ChatRoomLog implements Serializable {
     private Integer logId;
     private Integer receiveId;
     private Integer sentId;
@@ -13,6 +13,15 @@ public class ChatRoomLog  implements Serializable {
     private LocalDateTime messageTime;
 
     public ChatRoomLog() {
+    }
+
+    public ChatRoomLog(Integer logId, Integer receiveId, Integer sentId, Integer empId, String message, LocalDateTime messageTime) {
+        this.logId = logId;
+        this.receiveId = receiveId;
+        this.sentId = sentId;
+        this.empId = empId;
+        this.message = message;
+        this.messageTime = messageTime;
     }
 
     @Override

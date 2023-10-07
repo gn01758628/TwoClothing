@@ -16,6 +16,16 @@ public class BalanceHistory implements Serializable {
     public BalanceHistory() {
     }
 
+    public BalanceHistory(Integer balanceId, Integer mbrId, Integer orderId, Integer bidOrderId, Integer wrId, LocalDateTime changeDate, Integer changeValue) {
+        this.balanceId = balanceId;
+        this.mbrId = mbrId;
+        this.orderId = orderId;
+        this.bidOrderId = bidOrderId;
+        this.wrId = wrId;
+        this.changeDate = changeDate;
+        this.changeValue = changeValue;
+    }
+
     @Override
     public String toString() {
         return "BalanceHistory{" +

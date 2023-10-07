@@ -14,6 +14,14 @@ public class PointHistory implements Serializable {
     public PointHistory() {
     }
 
+    public PointHistory(Integer pointId, Integer mbrId, Integer orderId, LocalDateTime changeDate, Integer changeValue) {
+        this.pointId = pointId;
+        this.mbrId = mbrId;
+        this.orderId = orderId;
+        this.changeDate = changeDate;
+        this.changeValue = changeValue;
+    }
+
     @Override
     public String toString() {
         return "PointHistory{" +

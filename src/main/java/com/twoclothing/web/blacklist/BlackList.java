@@ -5,16 +5,21 @@ import java.util.Objects;
 
 public class BlackList implements Serializable {
     private Integer mbrId;
-    private Integer BlackId;
+    private Integer blackId;
 
     public BlackList() {
+    }
+
+    public BlackList(Integer mbrId, Integer blackId) {
+        this.mbrId = mbrId;
+        this.blackId = blackId;
     }
 
     @Override
     public String toString() {
         return "BlackList{" +
                 "mbrId=" + mbrId +
-                ", BlackId=" + BlackId +
+                ", BlackId=" + blackId +
                 '}';
     }
 
@@ -23,12 +28,12 @@ public class BlackList implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BlackList blackList = (BlackList) o;
-        return Objects.equals(mbrId, blackList.mbrId) && Objects.equals(BlackId, blackList.BlackId);
+        return Objects.equals(mbrId, blackList.mbrId) && Objects.equals(blackId, blackList.blackId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mbrId, BlackId);
+        return Objects.hash(mbrId, blackId);
     }
 
     public Integer getMbrId() {
@@ -40,10 +45,10 @@ public class BlackList implements Serializable {
     }
 
     public Integer getBlackId() {
-        return BlackId;
+        return blackId;
     }
 
     public void setBlackId(Integer blackId) {
-        BlackId = blackId;
+        this.blackId = blackId;
     }
 }

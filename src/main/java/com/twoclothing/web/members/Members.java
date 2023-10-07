@@ -27,6 +27,26 @@ public class Members implements Serializable {
     public Members() {
     }
 
+    public Members(Integer mbrId, String mbrName, String email, String pswdHash, Integer mbrStatus, byte[] avatar, byte[] shopImg01, byte[] shopImg02, Integer mbrPoint, Integer balance, Integer buyStar, Integer buyRating, Integer sellStar, Integer sellRating, LocalDateTime lastLogin, Integer sellScore, Integer buyScore) {
+        this.mbrId = mbrId;
+        this.mbrName = mbrName;
+        this.email = email;
+        this.pswdHash = pswdHash;
+        this.mbrStatus = mbrStatus;
+        this.avatar = avatar;
+        this.shopImg01 = shopImg01;
+        this.shopImg02 = shopImg02;
+        this.mbrPoint = mbrPoint;
+        this.balance = balance;
+        this.buyStar = buyStar;
+        this.buyRating = buyRating;
+        this.sellStar = sellStar;
+        this.sellRating = sellRating;
+        this.lastLogin = lastLogin;
+        this.sellScore = sellScore;
+        this.buyScore = buyScore;
+    }
+
     @Override
     public String toString() {
         return "Members{" +
