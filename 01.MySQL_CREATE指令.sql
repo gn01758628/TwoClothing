@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS members;
 CREATE TABLE members
 (
     mbrid      INT AUTO_INCREMENT NOT NULL,
-    mname      VARCHAR(20),
+    mbrname      VARCHAR(20),
     email      VARCHAR(64) NOT NULL UNIQUE,
     pswdhash   VARCHAR(60) NOT NULL,
     mbrstatus  TINYINT     NOT NULL DEFAULT 0,
@@ -32,7 +32,7 @@ CREATE TABLE members
 );
 
 -- 表格：會員 插入假資料
-INSERT INTO members (mname, email, pswdhash, mbrstatus, mbrpoint, balance, buystar, buyrating, sellstar, sellrating,
+INSERT INTO members (mbrname, email, pswdhash, mbrstatus, mbrpoint, balance, buystar, buyrating, sellstar, sellrating,
                      lastlogin)
 VALUES ('會員1', 'email1@example.com', 'hash1', 0, 100, 500, 4, 20, 3, 15, '2023-10-04 10:00:00'),
        ('會員2', 'email2@example.com', 'hash2', 1, 200, 1000, 5, 50, 4, 30, '2023-10-03 15:30:00'),
@@ -199,34 +199,32 @@ CREATE TABLE pointhistory
     pointid    INT AUTO_INCREMENT NOT NULL,
     mbrid      INT      NOT NULL,
     orderid    INT,
-    bidorderid INT,
-    chgdate    DATETIME NOT NULL,
-    chgvalue   INT      NOT NULL,
+    changedate    DATETIME NOT NULL,
+    changevalue   INT      NOT NULL,
     PRIMARY KEY (pointid)
 );
 
 -- 表格：會員點數異動紀錄 插入假資料
-INSERT INTO pointhistory (mbrid, orderid, bidorderid, chgdate, chgvalue)
-VALUES (1, 101, NULL, '2023-10-02', 50),
-       (2, NULL, 201, '2023-10-05', -30),
-       (3, 102, NULL, '2023-10-03', 20),
-       (4, 103, NULL, '2023-10-04', 40),
-       (5, NULL, 202, '2023-10-06', -15),
-       (6, 104, NULL, '2023-10-01', 25),
-       (7, NULL, 203, '2023-10-07', -10),
-       (8, 105, NULL, '2023-10-09', 15),
-       (9, 106, NULL, '2023-10-08', 10),
-       (10, NULL, 204, '2023-10-10', -5);
+INSERT INTO pointhistory (mbrid, orderid, changedate, changevalue)
+VALUES (1, 101, '2023-10-02', 50),
+       (2, 201, '2023-10-05', -30),
+       (3, 102, '2023-10-03', 20),
+       (4, 103, '2023-10-04', 40),
+       (5, 202, '2023-10-06', -15),
+       (6, 104, '2023-10-01', 25),
+       (7, 203, '2023-10-07', -10),
+       (8, 105, '2023-10-09', 15),
+       (9, 106, '2023-10-08', 10),
+       (10, 204, '2023-10-10', -5);
 
 -- 表格：會員點數異動紀錄 檢查
--- SELECT * FROM pointhistory;
--- DESCRIBE pointhistory;
+SELECT * FROM pointhistory;
+DESCRIBE pointhistory;
 
 -- 表格：會員點數異動紀錄 添加FK
 -- ALTER TABLE pointhistory
 -- ADD CONSTRAINT fk_mbrid FOREIGN KEY (mbrid) REFERENCES Members(mbrid),
 -- ADD CONSTRAINT fk_orderid FOREIGN KEY (orderid) REFERENCES itemorder(orderid),
--- ADD CONSTRAINT fk_bidorderid FOREIGN KEY (bidorderid) REFERENCES bidorder(bidorderid);
 -- ================================================================================================================================ --
 -- 表格：會員虛擬錢包提款申請 刪除
 DROP TABLE IF EXISTS withdrowrequest;
@@ -279,13 +277,13 @@ CREATE TABLE balancehistory
     orderid    INT,
     bidorderid INT,
     wrid       INT,
-    chgdate    DATETIME NOT NULL,
-    chgvalue   INT      NOT NULL,
+    changedate    DATETIME NOT NULL,
+    changevalue   INT      NOT NULL,
     PRIMARY KEY (balanceid)
 );
 
 -- 表格：會員虛擬錢包異動紀錄 插入假資料
-INSERT INTO balancehistory (mbrid, orderid, bidorderid, wrid, chgdate, chgvalue)
+INSERT INTO balancehistory (mbrid, orderid, bidorderid, wrid, changedate, changevalue)
 VALUES (1, 101, NULL, NULL, '2023-10-01', 50),
        (2, NULL, 201, NULL, '2023-10-02', -30),
        (3, 102, NULL, NULL, '2023-10-03', 20),
@@ -309,21 +307,21 @@ VALUES (1, 101, NULL, NULL, '2023-10-01', 50),
 -- ADD CONSTRAINT fk_wrid FOREIGN KEY (wrid) REFERENCES withdrowrequest(wrid);
 -- ================================================================================================================================ --
 -- 表格：會員物流設定 刪除
-DROP TABLE IF EXISTS ship;
+DROP TABLE IF EXISTS shipsetting;
 
 -- 表格：會員物流設定 創建
-CREATE TABLE ship
+CREATE TABLE shipsetting
 (
     shipid  INT AUTO_INCREMENT NOT NULL,
     mbrid   INT NOT NULL,
-    name    VARCHAR(20),
-    phone   VARCHAR(10),
-    address VARCHAR(100),
+    receivename    VARCHAR(20),
+    receivephone   VARCHAR(10),
+    receiveaddress VARCHAR(100),
     PRIMARY KEY (shipid)
 );
 
 -- 表格：會員物流設定 插入假資料（使用台灣手機號碼格式）
-INSERT INTO ship (mbrid, name, phone, address)
+INSERT INTO shipsetting (mbrid, receivename, receivephone, receiveaddress)
 VALUES (1, '收件人1', '0912345678', '台北市1號'),
        (2, '收件人2', '0923456789', '台北市2號'),
        (3, '收件人3', '0934567890', '台北市3號'),
@@ -337,11 +335,11 @@ VALUES (1, '收件人1', '0912345678', '台北市1號'),
 
 
 -- 表格：會員物流設定 檢查
--- SELECT * FROM ship;
--- DESCRIBE ship;
+SELECT * FROM shipsetting;
+DESCRIBE shipsetting;
 
 -- 表格：會員物流設定 添加FK
--- ALTER TABLE ship
+-- ALTER TABLE shipsetting
 -- ADD CONSTRAINT fk_mbrid FOREIGN KEY (mbrid) REFERENCES Members(mbrid);
 -- ================================================================================================================================ --
 -- 表格：聊天室紀錄 刪除
@@ -354,13 +352,13 @@ CREATE TABLE chatroomlog
     receiveid INT,
     sentid    INT,
     empid     INT,
-    msg       VARCHAR(255) NOT NULL,
-    time      DATETIME     NOT NULL,
+    message   VARCHAR(255) NOT NULL,
+    messagetime      DATETIME     NOT NULL,
     PRIMARY KEY (logid)
 );
 
 -- 表格：聊天室紀錄 插入假資料
-INSERT INTO chatroomlog (receiveid, sentid, empid, msg, time)
+INSERT INTO chatroomlog (receiveid, sentid, empid, message, messagetime)
 VALUES (1, 2, 101, 'Hello!', '2023-10-02 08:00:00'),
        (2, 1, 102, 'Hi there!', '2023-10-02 08:05:00'),
        (3, 4, 103, 'Good morning!', '2023-10-02 08:10:00'),
@@ -690,16 +688,16 @@ CREATE TABLE itemorder
     pointdiscount    INT,
     finalamount      INT      NOT NULL,
     orderstatus      TINYINT  NOT NULL,
-    address          VARCHAR(100),
-    name             VARCHAR(20),
-    phone            VARCHAR(10),
+    receiveaddress          VARCHAR(100),
+    receivename             VARCHAR(20),
+    receivephone            VARCHAR(10),
     remarks          VARCHAR(200),
     PRIMARY KEY (orderid)
 );
 
 -- 表格：一般商品訂單 插入假資料
 INSERT INTO itemorder (buymbrid, sellmbrid, buystar, buyerratingdesc, sellstar, sellerratingdesc, orderdate, paytype,
-                       payinfo, amount, pointdiscount, finalamount, orderstatus, address, name, phone, remarks)
+                       payinfo, amount, pointdiscount, finalamount, orderstatus, receiveaddress, receivename, receivephone, remarks)
 VALUES (1, 2, 4, 'Good seller', 5, 'Excellent buyer', '2023-10-01 09:00:00', 0, 'Credit Card', 150, 0, 150, 3,
         '123 Main St, City', 'John Doe', '1234567890', 'N/A'),
        (2, 3, 5, 'Great transaction', 4, 'Responsive buyer', '2023-09-28 15:30:00', 1, 'Bank Transfer', 200, 0, 200, 3,
@@ -722,8 +720,8 @@ VALUES (1, 2, 4, 'Good seller', 5, 'Excellent buyer', '2023-10-01 09:00:00', 0, 
         '707 Oak St, City', 'Emily White', '2223334444', 'Fragile items');
 
 -- 表格：一般商品訂單 檢查
--- SELECT * FROM itemorder;
--- DESCRIBE itemorder;
+SELECT * FROM itemorder;
+DESCRIBE itemorder;
 
 -- 表格：一般商品訂單 添加FK
 -- ALTER TABLE itemorder
@@ -1120,16 +1118,16 @@ CREATE TABLE bidorder
     payinfo          VARCHAR(50),
     amount           INT      NOT NULL,
     orderstatus      TINYINT  NOT NULL,
-    address          VARCHAR(100),
-    mbrname          VARCHAR(20),
-    phone            VARCHAR(10),
+    receiveaddress          VARCHAR(100),
+    receivename          VARCHAR(20),
+    receivephone            VARCHAR(10),
     remarks          VARCHAR(200),
     PRIMARY KEY (bidorderid)
 );
 
 -- 表格：競標商品訂單 插入假資料
 INSERT INTO bidorder (biditemid, buymbrid, sellmbrid, buystar, buyerratingdesc, sellstar, sellerratingdesc, orderdate,
-                      paytype, payinfo, amount, orderstatus, address, mbrname, phone, remarks)
+                      paytype, payinfo, amount, orderstatus, receiveaddress, receivename, receivephone, remarks)
 VALUES (1, 301, 401, 5, '很好的交易', 4, '快速出貨', '2023-10-01 09:30:00', 0, '信用卡', 1200, 3, '台北市123號',
         '買家1', '0912345678', '特殊需求'),
        (2, 302, 402, 4, '滿意的交易', 5, '準時交貨', '2023-10-02 14:45:00', 1, '轉帳', 1500, 3, '新北市456號', '買家2',
