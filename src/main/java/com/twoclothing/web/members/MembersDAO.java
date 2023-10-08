@@ -4,13 +4,13 @@ import java.util.List;
 
 public interface MembersDAO {
 
-    public void insert(Members members);
+    void insert(Members members);
 
-    public Members getByPrimaryKey(Integer mbrId);
+    Members getByPrimaryKey(Integer mbrId);
 
-    public List<Members> getAll();
+    List<Members> getAll();
 
-    public void update(Integer mbrId);
+    void update(Members members);
 
-    public void delete(Integer mbrId);
+    void delete(Integer mbrId);
 }
