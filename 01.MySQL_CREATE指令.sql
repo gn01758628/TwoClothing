@@ -198,7 +198,7 @@ CREATE TABLE pointhistory
 (
     pointid    INT AUTO_INCREMENT NOT NULL,
     mbrid      INT      NOT NULL,
-    orderid    INT,
+    orderid    INT		NOT NULL,
     changedate    DATETIME NOT NULL,
     changevalue   INT      NOT NULL,
     PRIMARY KEY (pointid)
@@ -218,8 +218,8 @@ VALUES (1, 101, '2023-10-02', 50),
        (10, 204, '2023-10-10', -5);
 
 -- 表格：會員點數異動紀錄 檢查
-SELECT * FROM pointhistory;
-DESCRIBE pointhistory;
+-- SELECT * FROM pointhistory;
+-- DESCRIBE pointhistory;
 
 -- 表格：會員點數異動紀錄 添加FK
 -- ALTER TABLE pointhistory
@@ -335,8 +335,8 @@ VALUES (1, '收件人1', '0912345678', '台北市1號'),
 
 
 -- 表格：會員物流設定 檢查
-SELECT * FROM shipsetting;
-DESCRIBE shipsetting;
+-- SELECT * FROM shipsetting;
+-- DESCRIBE shipsetting;
 
 -- 表格：會員物流設定 添加FK
 -- ALTER TABLE shipsetting
@@ -720,8 +720,8 @@ VALUES (1, 2, 4, 'Good seller', 5, 'Excellent buyer', '2023-10-01 09:00:00', 0, 
         '707 Oak St, City', 'Emily White', '2223334444', 'Fragile items');
 
 -- 表格：一般商品訂單 檢查
-SELECT * FROM itemorder;
-DESCRIBE itemorder;
+-- SELECT * FROM itemorder;
+-- DESCRIBE itemorder;
 
 -- 表格：一般商品訂單 添加FK
 -- ALTER TABLE itemorder
