@@ -506,7 +506,10 @@ CREATE TABLE categorytags
     categoryname VARCHAR(20)  DEFAULT '',
     descriptions VARCHAR(255) DEFAULT '',
     empid        INT NOT NULL,
-    PRIMARY KEY (tagid)
+    PRIMARY KEY (tagid),
+    CONSTRAINT fK_supertag
+    FOREIGN KEY (supertagid)
+    REFERENCES categorytags(tagid)
 );
 
 -- 表格：商品類別標籤 插入假資料
@@ -528,7 +531,6 @@ VALUES (1, NULL, 'Electronics', 'Electronic devices', 1),
 
 -- 表格：商品類別標籤 添加FK
 -- ALTER TABLE categorytags
--- ADD CONSTRAINT fk_categorytags_supertagid FOREIGN KEY (supertagid) REFERENCES categorytags(tagid),
 -- ADD CONSTRAINT fk_categorytags_empid FOREIGN KEY (empid) REFERENCES employee(empid);
 -- ================================================================================================================================ --
 -- 表格：最新消息 刪除
