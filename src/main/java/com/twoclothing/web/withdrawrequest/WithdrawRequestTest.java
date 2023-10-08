@@ -21,6 +21,7 @@ public class WithdrawRequestTest {
         WithdrawRequest w4 = new WithdrawRequest(null, 40, 800, "9876123450", arr[3], 0, null, null, null);
         WithdrawRequest w5 = new WithdrawRequest(null, 20, 600, "5678901234", arr[4], 2, 205, now, "查無此銀行帳戶");
         WithdrawRequest w6 = new WithdrawRequest(1, 60, 7000, "5678901234", arr[5], 2, 208, now, "查無此銀行帳戶");
+        WithdrawRequest w7 = new WithdrawRequest(1, 60, 7000, "5678901234", arr[5], 2, null, null, null);
 
         // WithdrawRequestTest
         WithdrawRequestDAO withdrawRequestDAO = new WithdrawRequestJDBCDAO();
@@ -76,6 +77,7 @@ public class WithdrawRequestTest {
 
         // 修改測試
         withdrawRequestDAO.update(w6);
+        withdrawRequestDAO.update(w7);
 
     }
 }

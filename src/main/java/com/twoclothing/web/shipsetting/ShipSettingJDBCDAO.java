@@ -81,54 +81,12 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
 
     @Override
     public List<ShipSetting> getAll() {
-        List<ShipSetting> list = new ArrayList<>();
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            conn = JDBCUtils.getConnection();
-            ps = conn.prepareStatement(GET_ALL);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                list.add(setShipSetting(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            JDBCUtils.close(conn, ps, rs);
-        }
-
-        if (list.isEmpty()) list.add(null);
-        return list;
+        return getAllBy(GET_ALL);
     }
 
     @Override
     public List<ShipSetting> getAllByMbrId(Integer mbrId) {
-        List<ShipSetting> list = new ArrayList<>();
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            conn = JDBCUtils.getConnection();
-            ps = conn.prepareStatement(GET_ALL_BY_MBRID);
-            ps.setInt(1, mbrId);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                list.add(setShipSetting(rs));
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            JDBCUtils.close(conn, ps, rs);
-        }
-
-        if (list.isEmpty()) list.add(null);
-        return list;
+        return getAllBy(GET_ALL_BY_MBRID,mbrId);
     }
 
     @Override
@@ -201,5 +159,31 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
             e.printStackTrace();
         }
         return shipSetting;
+    }
+
+    private List<ShipSetting> getAllBy(String by, Integer... byid) {
+        if (byid.length > 1) return null;
+        List<ShipSetting> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = JDBCUtils.getConnection();
+            ps = conn.prepareStatement(by);
+            if (byid.length == 1) ps.setInt(1, byid[0]);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(setShipSetting(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtils.close(conn, ps, rs);
+        }
+
+        if (list.isEmpty()) list.add(null);
+        return list;
     }
 }

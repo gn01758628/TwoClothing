@@ -23,25 +23,9 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
             conn = JDBCUtils.getConnection();
             ps = conn.prepareStatement(INSERT);
             ps.setInt(1, balanceHistory.getMbrId());
-
-            if (balanceHistory.getOrderId() == null) {
-                ps.setNull(2, Types.NULL);
-            } else {
-                ps.setInt(2, balanceHistory.getOrderId());
-            }
-
-            if (balanceHistory.getBidOrderId() == null) {
-                ps.setNull(3, Types.NULL);
-            } else {
-                ps.setInt(3, balanceHistory.getBidOrderId());
-            }
-
-            if (balanceHistory.getWrId() == null) {
-                ps.setNull(4, Types.NULL);
-            } else {
-                ps.setInt(4, balanceHistory.getWrId());
-            }
-
+            ps.setObject(2, balanceHistory.getOrderId(), Types.INTEGER);
+            ps.setObject(3, balanceHistory.getBalanceId(), Types.INTEGER);
+            ps.setObject(4, balanceHistory.getWrId(), Types.INTEGER);
             ps.setTimestamp(5, balanceHistory.getChangeDate());
             ps.setInt(6, balanceHistory.getChangeValue());
             count = ps.executeUpdate();
@@ -88,54 +72,12 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
 
     @Override
     public List<BalanceHistory> getAll() {
-        List<BalanceHistory> list = new ArrayList<>();
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            conn = JDBCUtils.getConnection();
-            ps = conn.prepareStatement(GET_ALL);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                list.add(setBalanceHistory(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            JDBCUtils.close(conn, ps, rs);
-        }
-
-        if (list.isEmpty()) list.add(null);
-        return list;
+        return getAllBy(GET_ALL);
     }
 
     @Override
     public List<BalanceHistory> getAllByMbrId(Integer mbrId) {
-        List<BalanceHistory> list = new ArrayList<>();
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            conn = JDBCUtils.getConnection();
-            ps = conn.prepareStatement(GET_ALL_BY_MBRID);
-            ps.setInt(1, mbrId);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                list.add(setBalanceHistory(rs));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            JDBCUtils.close(conn, ps, rs);
-        }
-
-        if (list.isEmpty()) list.add(null);
-        return list;
+        return getAllBy(GET_ALL_BY_MBRID, mbrId);
     }
 
     private BalanceHistory setBalanceHistory(ResultSet rs) {
@@ -145,25 +87,9 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
         try {
             balanceHistory.setBalanceId(rs.getInt("balanceid"));
             balanceHistory.setMbrId(rs.getInt("mbrid"));
-
-            if (rs.getObject("orderid") == null) {
-                balanceHistory.setOrderId(null);
-            } else {
-                balanceHistory.setOrderId(rs.getInt("orderid"));
-            }
-
-            if (rs.getObject("bidorderid") == null) {
-                balanceHistory.setBidOrderId(null);
-            } else {
-                balanceHistory.setBidOrderId(rs.getInt("bidorderid"));
-            }
-
-            if (rs.getObject("wrid") == null) {
-                balanceHistory.setWrId(null);
-            } else {
-                balanceHistory.setWrId(rs.getInt("wrid"));
-            }
-
+            balanceHistory.setOrderId(rs.getObject("orderid", Integer.class));
+            balanceHistory.setBidOrderId(rs.getObject("bidorderid", Integer.class));
+            balanceHistory.setWrId(rs.getObject("wrid", Integer.class));
             balanceHistory.setChangeDate(rs.getTimestamp("changedate"));
             balanceHistory.setChangeValue(rs.getInt("changevalue"));
 
@@ -171,6 +97,32 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
             e.printStackTrace();
         }
         return balanceHistory;
+    }
+
+    private List<BalanceHistory> getAllBy(String by, Integer... byid) {
+        if (byid.length > 1) return null;
+        List<BalanceHistory> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = JDBCUtils.getConnection();
+            ps = conn.prepareStatement(by);
+            if (byid.length == 1) ps.setInt(1, byid[0]);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(setBalanceHistory(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtils.close(conn, ps, rs);
+        }
+
+        if (list.isEmpty()) list.add(null);
+        return list;
     }
 
 }
