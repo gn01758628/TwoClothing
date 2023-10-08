@@ -1,28 +1,28 @@
-package com.twoclothing.web.withdrowrequest;
+package com.twoclothing.web.withdrawrequest;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 public class WithdrawRequest implements Serializable {
     private Integer wrId;
     private Integer mbrId;
     private Integer amount;
-    private String account;
-    private LocalDateTime reqDate;
+    private String mbrAccount;
+    private Timestamp reqDate;
     private Integer reqStatus;
     private Integer empId;
-    private LocalDateTime checkDate;
+    private Timestamp checkDate;
     private String note;
 
     public WithdrawRequest() {
     }
 
-    public WithdrawRequest(Integer wrId, Integer mbrId, Integer amount, String account, LocalDateTime reqDate, Integer reqStatus, Integer empId, LocalDateTime checkDate, String note) {
+    public WithdrawRequest(Integer wrId, Integer mbrId, Integer amount, String mbrAccount, Timestamp reqDate, Integer reqStatus, Integer empId, Timestamp checkDate, String note) {
         this.wrId = wrId;
         this.mbrId = mbrId;
         this.amount = amount;
-        this.account = account;
+        this.mbrAccount = mbrAccount;
         this.reqDate = reqDate;
         this.reqStatus = reqStatus;
         this.empId = empId;
@@ -36,7 +36,7 @@ public class WithdrawRequest implements Serializable {
                 "wrId=" + wrId +
                 ", mbrId=" + mbrId +
                 ", amount=" + amount +
-                ", account='" + account + '\'' +
+                ", mbrAccount='" + mbrAccount + '\'' +
                 ", reqDate=" + reqDate +
                 ", reqStatus=" + reqStatus +
                 ", empId=" + empId +
@@ -50,12 +50,12 @@ public class WithdrawRequest implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WithdrawRequest that = (WithdrawRequest) o;
-        return Objects.equals(wrId, that.wrId) && Objects.equals(mbrId, that.mbrId) && Objects.equals(amount, that.amount) && Objects.equals(account, that.account) && Objects.equals(reqDate, that.reqDate) && Objects.equals(reqStatus, that.reqStatus) && Objects.equals(empId, that.empId) && Objects.equals(checkDate, that.checkDate) && Objects.equals(note, that.note);
+        return Objects.equals(wrId, that.wrId) && Objects.equals(mbrId, that.mbrId) && Objects.equals(amount, that.amount) && Objects.equals(mbrAccount, that.mbrAccount) && Objects.equals(reqDate, that.reqDate) && Objects.equals(reqStatus, that.reqStatus) && Objects.equals(empId, that.empId) && Objects.equals(checkDate, that.checkDate) && Objects.equals(note, that.note);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(wrId, mbrId, amount, account, reqDate, reqStatus, empId, checkDate, note);
+        return Objects.hash(wrId, mbrId, amount, mbrAccount, reqDate, reqStatus, empId, checkDate, note);
     }
 
     public Integer getWrId() {
@@ -82,19 +82,19 @@ public class WithdrawRequest implements Serializable {
         this.amount = amount;
     }
 
-    public String getAccount() {
-        return account;
+    public String getMbrAccount() {
+        return mbrAccount;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setMbrAccount(String mbrAccount) {
+        this.mbrAccount = mbrAccount;
     }
 
-    public LocalDateTime getReqDate() {
+    public Timestamp getReqDate() {
         return reqDate;
     }
 
-    public void setReqDate(LocalDateTime reqDate) {
+    public void setReqDate(Timestamp reqDate) {
         this.reqDate = reqDate;
     }
 
@@ -114,11 +114,11 @@ public class WithdrawRequest implements Serializable {
         this.empId = empId;
     }
 
-    public LocalDateTime getCheckDate() {
+    public Timestamp getCheckDate() {
         return checkDate;
     }
 
-    public void setCheckDate(LocalDateTime checkDate) {
+    public void setCheckDate(Timestamp checkDate) {
         this.checkDate = checkDate;
     }
 

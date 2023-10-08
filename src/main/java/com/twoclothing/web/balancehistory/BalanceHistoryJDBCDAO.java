@@ -8,8 +8,8 @@ import java.util.List;
 
 public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
 
-    public static final String INSERT_PSSTMT = "INSERT INTO balancehistory (mbrid, orderid, bidorderid, wrid, changedate, changevalue) VALUES (?, ?, ?, ?, ?, ?)";
-    public static final String FIND_BY_PK = "SELECT * FROM balancehistory WHERE balanceid = ?";
+    public static final String INSERT = "INSERT INTO balancehistory (mbrid, orderid, bidorderid, wrid, changedate, changevalue) VALUES (?, ?, ?, ?, ?, ?)";
+    public static final String GET_BY_PK = "SELECT * FROM balancehistory WHERE balanceid = ?";
     public static final String GET_ALL = "SELECT * FROM balancehistory ORDER BY balanceid";
     public static final String GET_ALL_BY_MBRID = "SELECT * FROM balancehistory WHERE mbrid = ? ORDER BY changedate";
 
@@ -21,7 +21,7 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
 
         try {
             conn = JDBCUtils.getConnection();
-            ps = conn.prepareStatement(INSERT_PSSTMT);
+            ps = conn.prepareStatement(INSERT);
             ps.setInt(1, balanceHistory.getMbrId());
 
             if (balanceHistory.getOrderId() == null) {
@@ -51,10 +51,10 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
             JDBCUtils.close(conn, ps, null);
         }
         if (count == 1) {
-            // TODO 編寫新增成功的執行代碼
+            // 編寫新增成功的執行代碼
             System.out.println("新增成功");
         } else {
-            // TODO 編寫新增成功的執行代碼
+            // 編寫新增失敗的執行代碼
             System.out.println("新增失敗");
         }
     }
@@ -68,12 +68,15 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
 
         try {
             conn = JDBCUtils.getConnection();
-            ps = conn.prepareStatement(FIND_BY_PK);
+            ps = conn.prepareStatement(GET_BY_PK);
             ps.setInt(1, balanceId);
             rs = ps.executeQuery();
 
-            rs.next();
-            balanceHistory = setBalanceHistory(rs);
+            if (rs.next()) {
+                balanceHistory = setBalanceHistory(rs);
+            } else {
+                return null;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -96,13 +99,15 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                list.add(getByPrimaryKey(rs.getInt("balanceId")));
+                list.add(setBalanceHistory(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             JDBCUtils.close(conn, ps, rs);
         }
+
+        if (list.isEmpty()) list.add(null);
         return list;
     }
 
@@ -120,8 +125,7 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                BalanceHistory balanceHistory = setBalanceHistory(rs);
-                list.add(balanceHistory);
+                list.add(setBalanceHistory(rs));
             }
 
         } catch (SQLException e) {
@@ -130,6 +134,7 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
             JDBCUtils.close(conn, ps, rs);
         }
 
+        if (list.isEmpty()) list.add(null);
         return list;
     }
 

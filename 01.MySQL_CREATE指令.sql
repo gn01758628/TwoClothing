@@ -198,7 +198,7 @@ CREATE TABLE pointhistory
 (
     pointid    INT AUTO_INCREMENT NOT NULL,
     mbrid      INT      NOT NULL,
-    orderid    INT,
+    orderid    INT		NOT NULL,
     changedate    DATETIME NOT NULL,
     changevalue   INT      NOT NULL,
     PRIMARY KEY (pointid)
@@ -218,8 +218,8 @@ VALUES (1, 101, '2023-10-02', 50),
        (10, 204, '2023-10-10', -5);
 
 -- 表格：會員點數異動紀錄 檢查
-SELECT * FROM pointhistory;
-DESCRIBE pointhistory;
+-- SELECT * FROM pointhistory;
+-- DESCRIBE pointhistory;
 
 -- 表格：會員點數異動紀錄 添加FK
 -- ALTER TABLE pointhistory
@@ -227,25 +227,25 @@ DESCRIBE pointhistory;
 -- ADD CONSTRAINT fk_orderid FOREIGN KEY (orderid) REFERENCES itemorder(orderid),
 -- ================================================================================================================================ --
 -- 表格：會員虛擬錢包提款申請 刪除
-DROP TABLE IF EXISTS withdrowrequest;
+DROP TABLE IF EXISTS withdrawrequest;
 
 -- 表格：會員虛擬錢包提款申請 創建
-CREATE TABLE withdrowrequest
+CREATE TABLE withdrawrequest
 (
     wrid      INT AUTO_INCREMENT NOT NULL,
     mbrid     INT         NOT NULL,
     amount    INT         NOT NULL,
-    account   VARCHAR(20) NOT NULL,
+    mbraccount   VARCHAR(20) NOT NULL,
     reqdate   DATETIME    NOT NULL,
     reqstatus TINYINT     NOT NULL,
     empid     INT,
-    checkdate DATETIME DEFAULT NULL,
+    checkdate DATETIME,
     note      VARCHAR(20),
     PRIMARY KEY (wrid)
 );
 
 -- 表格：會員虛擬錢包提款申請 插入假資料
-INSERT INTO withdrowrequest (mbrid, amount, account, reqdate, reqstatus, empid, checkdate, note)
+INSERT INTO withdrawrequest (mbrid, amount, mbraccount, reqdate, reqstatus, empid, checkdate, note)
 VALUES (1, 500, '1234567890', '2023-10-01', 0, NULL, NULL, '申請中'),
        (2, 300, '9876543210', '2023-10-02', 0, NULL, NULL, '申請中'),
        (3, 800, '5678901234', '2023-10-03', 0, NULL, NULL, '申請中'),
@@ -258,11 +258,11 @@ VALUES (1, 500, '1234567890', '2023-10-01', 0, NULL, NULL, '申請中'),
        (10, 250, '9876123450', '2023-10-10', 0, NULL, NULL, '申請中');
 
 -- 表格：會員虛擬錢包提款申請 檢查
--- SELECT * FROM withdrowrequest;
--- DESCRIBE withdrowrequest;
+SELECT * FROM withdrawrequest;
+DESCRIBE withdrawrequest;
 
 -- 表格：會員虛擬錢包提款申請 添加FK
--- ALTER TABLE withdrowrequest
+-- ALTER TABLE withdrawrequest
 -- ADD CONSTRAINT fk_mbrid FOREIGN KEY (mbrid) REFERENCES Members(mbrid),
 -- ADD CONSTRAINT fk_empid FOREIGN KEY (empid) REFERENCES employee(employee);
 -- ================================================================================================================================ --
@@ -304,7 +304,7 @@ VALUES (1, 101, NULL, NULL, '2023-10-01', 50),
 -- ADD CONSTRAINT fk_mbrid FOREIGN KEY (mbrid) REFERENCES Members(mbrid),
 -- ADD CONSTRAINT fk_orderid FOREIGN KEY (orderid) REFERENCES itemorder(orderid),
 -- ADD CONSTRAINT fk_bidorderid FOREIGN KEY (bidorderid) REFERENCES bidorder(bidorderid),
--- ADD CONSTRAINT fk_wrid FOREIGN KEY (wrid) REFERENCES withdrowrequest(wrid);
+-- ADD CONSTRAINT fk_wrid FOREIGN KEY (wrid) REFERENCES withdrawrequest(wrid);
 -- ================================================================================================================================ --
 -- 表格：會員物流設定 刪除
 DROP TABLE IF EXISTS shipsetting;
@@ -335,8 +335,8 @@ VALUES (1, '收件人1', '0912345678', '台北市1號'),
 
 
 -- 表格：會員物流設定 檢查
-SELECT * FROM shipsetting;
-DESCRIBE shipsetting;
+-- SELECT * FROM shipsetting;
+-- DESCRIBE shipsetting;
 
 -- 表格：會員物流設定 添加FK
 -- ALTER TABLE shipsetting
@@ -720,8 +720,8 @@ VALUES (1, 2, 4, 'Good seller', 5, 'Excellent buyer', '2023-10-01 09:00:00', 0, 
         '707 Oak St, City', 'Emily White', '2223334444', 'Fragile items');
 
 -- 表格：一般商品訂單 檢查
-SELECT * FROM itemorder;
-DESCRIBE itemorder;
+-- SELECT * FROM itemorder;
+-- DESCRIBE itemorder;
 
 -- 表格：一般商品訂單 添加FK
 -- ALTER TABLE itemorder
