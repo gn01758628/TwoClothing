@@ -10,7 +10,7 @@ public interface MembersDAO {
 
     public List<Members> getAll();
 
-    public void update(Integer mbrId);
+    public void update(Members members);
 
     public void delete(Integer mbrId);
 }

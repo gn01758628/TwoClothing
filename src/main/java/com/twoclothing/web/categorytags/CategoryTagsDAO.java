@@ -15,5 +15,5 @@ public interface CategoryTagsDAO {
     // 根據主鍵查詢其所有的子標籤
     public List<CategoryTags> getAllSubByPrimaryKey(Integer tagId);
 
-    public void update(Integer tagId);
+    public void update(CategoryTags categoryTags);
 }

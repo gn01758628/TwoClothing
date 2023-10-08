@@ -12,7 +12,7 @@ public interface ShipSettingDAO {
 
     public List<ShipSetting> getAllByMbrId(Integer mbrId);
 
-    public void update(Integer shipId);
+    public void update(ShipSetting shipSetting);
 
     public void delete(Integer shipId);
 

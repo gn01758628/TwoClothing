@@ -12,5 +12,5 @@ public interface WithdrawRequestDAO {
 
     public List<WithdrawRequest> getAllByEmpID(Integer empId);
 
-    public void update(Integer wrId);
+    public void update(WithdrawRequest withdrawRequest);
 }
