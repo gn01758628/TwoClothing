@@ -85,27 +85,7 @@ public class WithdrawRequestJDBCDAO implements WithdrawRequestDAO {
 
     @Override
     public List<WithdrawRequest> getAll() {
-        List<WithdrawRequest> list = new ArrayList<>();
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            conn = JDBCUtils.getConnection();
-            ps = conn.prepareStatement(GET_All);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                list.add(setWithdrawRequest(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            JDBCUtils.close(conn, ps, rs);
-        }
-
-        if (list.isEmpty()) list.add(null);
-        return list;
+        return getAllBy(GET_All);
     }
 
     @Override
@@ -179,7 +159,8 @@ public class WithdrawRequestJDBCDAO implements WithdrawRequestDAO {
         return withdrawRequest;
     }
 
-    private List<WithdrawRequest> getAllBy(String by, Integer byid) {
+    private List<WithdrawRequest> getAllBy(String by, Integer... byid) {
+        if (byid.length > 1) return null;
         List<WithdrawRequest> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ps = null;
@@ -188,7 +169,7 @@ public class WithdrawRequestJDBCDAO implements WithdrawRequestDAO {
         try {
             conn = JDBCUtils.getConnection();
             ps = conn.prepareStatement(by);
-            ps.setInt(1, byid);
+            if (byid.length == 1) ps.setInt(1, byid[0]);
             rs = ps.executeQuery();
 
             while (rs.next()) {
