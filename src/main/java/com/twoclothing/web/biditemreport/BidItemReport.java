@@ -19,6 +19,7 @@ public class BidItemReport implements Serializable {
 	public BidItemReport() {
 		super();
 	}
+	
 
 	public BidItemReport(Integer reportId, Integer bidItemId, Integer mbrId, Integer empId, Timestamp reportDate,
 			String bidDescription, Integer bidStatus, Timestamp auditDate, Integer result, String note) {

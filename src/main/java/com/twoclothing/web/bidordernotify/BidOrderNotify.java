@@ -16,6 +16,7 @@ public class BidOrderNotify implements Serializable{
 	public BidOrderNotify() {
 		super();
 	}
+	
 
 	public BidOrderNotify(Integer notifyId, Integer mbrId, Integer bidOrderId, Timestamp notifyDate, String title,
 			String content) {

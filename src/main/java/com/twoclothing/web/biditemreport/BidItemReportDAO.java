@@ -14,6 +14,7 @@ public interface BidItemReportDAO {
     public List<BidItemReport> getAll();
     
     public List<BidItemReport> getAllByMbrId(Integer mbrId);
+    public List<BidItemReport> getAllByEmpId(Integer empId);
     
     public List<BidItemReport> getAllByBidItemId(Integer bidItemId);
     
@@ -21,5 +22,5 @@ public interface BidItemReportDAO {
     
     
     
-
+ 
 }

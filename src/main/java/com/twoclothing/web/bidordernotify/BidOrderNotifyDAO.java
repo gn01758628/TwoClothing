@@ -15,5 +15,6 @@ public interface BidOrderNotifyDAO {
 	public List<BidOrderNotify> getAllByBidOrderId(Integer bidOrderId);
 
 	public void update(BidOrderNotify bidOrderNotify);
+	
 
 }

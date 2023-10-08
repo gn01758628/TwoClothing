@@ -22,6 +22,7 @@ public class BidOrder implements Serializable {
 	private String receiveMbrName;
 	private String receivePhone;
 	private String remarks;
+	
 
 	public BidOrder() {
 

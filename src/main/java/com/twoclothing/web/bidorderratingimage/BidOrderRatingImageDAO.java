@@ -12,5 +12,6 @@ public interface BidOrderRatingImageDAO {
 	public List<BidOrderRatingImage> getAll();
 
 	public void update(BidOrderRatingImage bidOrderRatingImage);
+	
 
 }

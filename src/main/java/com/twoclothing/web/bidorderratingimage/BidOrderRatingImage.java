@@ -12,6 +12,7 @@ public class BidOrderRatingImage implements Serializable{
 	public BidOrderRatingImage() {
 		super();
 	}
+	
 
 	public BidOrderRatingImage(Integer imageId, Integer bidOrderId, byte[] image) {
 		super();

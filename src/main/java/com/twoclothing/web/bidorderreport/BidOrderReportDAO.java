@@ -12,7 +12,10 @@ public interface BidOrderReportDAO {
 	
 	public List<BidOrderReport> getAllByBidOrderId(Integer bidOrderId);
 	
+	public List<BidOrderReport> getAllByEmpId(Integer empId);
+	
 	public void update(BidOrderReport bidOrderReport);
 	
 	public void delete(Integer reportId);
+	
 }

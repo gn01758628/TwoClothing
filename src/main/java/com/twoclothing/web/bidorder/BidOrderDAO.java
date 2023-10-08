@@ -17,6 +17,7 @@ public interface BidOrderDAO {
 	public List<BidOrder> getAllBySellMemberId(Integer sellMbrId);
 
 	public void update(BidOrder bidorder);
+	
 
 	
 
