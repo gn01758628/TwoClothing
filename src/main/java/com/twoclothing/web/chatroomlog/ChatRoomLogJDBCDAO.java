@@ -29,25 +29,9 @@ public class ChatRoomLogJDBCDAO implements ChatRoomLogDAO {
         try {
             conn = JDBCUtils.getConnection();
             ps = conn.prepareStatement(INSERT);
-
-            if (chatRoomLog.getReceiveId() == null) {
-                ps.setNull(1, Types.NULL);
-            } else {
-                ps.setInt(1, chatRoomLog.getReceiveId());
-            }
-
-            if (chatRoomLog.getSentId() == null) {
-                ps.setNull(2, Types.NULL);
-            } else {
-                ps.setInt(2, chatRoomLog.getSentId());
-            }
-
-            if (chatRoomLog.getEmpId() == null) {
-                ps.setNull(3, Types.NULL);
-            } else {
-                ps.setInt(3, chatRoomLog.getEmpId());
-            }
-
+            ps.setObject(1, chatRoomLog.getReceiveId(), Types.INTEGER);
+            ps.setObject(2, chatRoomLog.getSentId(), Types.INTEGER);
+            ps.setObject(3, chatRoomLog.getEmpId(), Types.INTEGER);
             ps.setString(4, chatRoomLog.getMessage());
             ps.setTimestamp(5, chatRoomLog.getMessageTime());
             count = ps.executeUpdate();
@@ -204,35 +188,17 @@ public class ChatRoomLogJDBCDAO implements ChatRoomLogDAO {
     }
 
 
-
     private ChatRoomLog setChatRoomLog(ResultSet rs) {
 
         ChatRoomLog chatRoomLog = new ChatRoomLog();
 
         try {
             chatRoomLog.setLogId(rs.getInt("logid"));
-
-            if (rs.getObject("receiveid") == null) {
-                chatRoomLog.setReceiveId(null);
-            } else {
-                chatRoomLog.setReceiveId(rs.getInt("receiveid"));
-            }
-
-            if (rs.getObject("sentid") == null) {
-                chatRoomLog.setSentId(null);
-            } else {
-                chatRoomLog.setSentId(rs.getInt("sentid"));
-            }
-
-            if (rs.getObject("empid") == null) {
-                chatRoomLog.setEmpId(null);
-            } else {
-                chatRoomLog.setEmpId(rs.getInt("empid"));
-            }
-
+            chatRoomLog.setReceiveId(rs.getObject("receiveid", Integer.class));
+            chatRoomLog.setSentId(rs.getObject("sentid", Integer.class));
+            chatRoomLog.setEmpId(rs.getObject("empid", Integer.class));
             chatRoomLog.setMessage(rs.getString("message"));
             chatRoomLog.setMessageTime(rs.getTimestamp("messagetime"));
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -36,25 +36,9 @@ public class WithdrawRequestJDBCDAO implements WithdrawRequestDAO {
             ps.setString(3, withdrawRequest.getMbrAccount());
             ps.setTimestamp(4, withdrawRequest.getReqDate());
             ps.setInt(5, withdrawRequest.getReqStatus());
-
-            if (withdrawRequest.getEmpId() == null) {
-                ps.setNull(6, Types.NULL);
-            } else {
-                ps.setInt(6, withdrawRequest.getEmpId());
-            }
-
-            if (withdrawRequest.getCheckDate() == null) {
-                ps.setNull(7, Types.NULL);
-            } else {
-                ps.setTimestamp(7, withdrawRequest.getCheckDate());
-            }
-
-            if (withdrawRequest.getNote() == null) {
-                ps.setNull(8, Types.NULL);
-            } else {
-                ps.setString(8, withdrawRequest.getNote());
-            }
-
+            ps.setObject(6, withdrawRequest.getEmpId(), Types.INTEGER);
+            ps.setObject(7, withdrawRequest.getCheckDate(), Types.TIMESTAMP);
+            ps.setObject(8, withdrawRequest.getNote(), Types.VARCHAR);
             count = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -148,15 +132,15 @@ public class WithdrawRequestJDBCDAO implements WithdrawRequestDAO {
         try {
             conn = JDBCUtils.getConnection();
             ps = conn.prepareStatement(UPDATE);
-            ps.setInt(1,withdrawRequest.getMbrId());
-            ps.setInt(2,withdrawRequest.getAmount());
-            ps.setString(3,withdrawRequest.getMbrAccount());
-            ps.setTimestamp(4,withdrawRequest.getReqDate());
-            ps.setInt(5,withdrawRequest.getReqStatus());
-            ps.setInt(6,withdrawRequest.getEmpId());
-            ps.setTimestamp(7,withdrawRequest.getCheckDate());
-            ps.setString(8,withdrawRequest.getNote());
-            ps.setInt(9,withdrawRequest.getWrId());
+            ps.setInt(1, withdrawRequest.getMbrId());
+            ps.setInt(2, withdrawRequest.getAmount());
+            ps.setString(3, withdrawRequest.getMbrAccount());
+            ps.setTimestamp(4, withdrawRequest.getReqDate());
+            ps.setInt(5, withdrawRequest.getReqStatus());
+            ps.setObject(6, withdrawRequest.getEmpId(), Types.INTEGER);
+            ps.setObject(7, withdrawRequest.getCheckDate(), Types.TIMESTAMP);
+            ps.setObject(8, withdrawRequest.getNote(), Types.VARCHAR);
+            ps.setInt(9, withdrawRequest.getWrId());
 
             count = ps.executeUpdate();
         } catch (SQLException e) {
@@ -186,25 +170,9 @@ public class WithdrawRequestJDBCDAO implements WithdrawRequestDAO {
             withdrawRequest.setMbrAccount(rs.getString("mbraccount"));
             withdrawRequest.setReqDate(rs.getTimestamp("reqdate"));
             withdrawRequest.setReqStatus(rs.getInt("reqstatus"));
-
-            if (rs.getObject("empid") == null) {
-                withdrawRequest.setEmpId(null);
-            } else {
-                withdrawRequest.setEmpId(rs.getInt("empid"));
-            }
-
-            if (rs.getObject("checkdate") == null) {
-                withdrawRequest.setCheckDate(null);
-            } else {
-                withdrawRequest.setCheckDate(rs.getTimestamp("checkdate"));
-            }
-
-            if (rs.getObject("note") == null) {
-                withdrawRequest.setNote(null);
-            } else {
-                withdrawRequest.setNote(rs.getString("note"));
-            }
-
+            withdrawRequest.setEmpId(rs.getObject("empid", Integer.class));
+            withdrawRequest.setCheckDate(rs.getObject("checkdate", Timestamp.class));
+            withdrawRequest.setNote(rs.getObject("note", String.class));
         } catch (SQLException e) {
             e.printStackTrace();
         }

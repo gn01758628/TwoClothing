@@ -23,25 +23,9 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
             conn = JDBCUtils.getConnection();
             ps = conn.prepareStatement(INSERT);
             ps.setInt(1, balanceHistory.getMbrId());
-
-            if (balanceHistory.getOrderId() == null) {
-                ps.setNull(2, Types.NULL);
-            } else {
-                ps.setInt(2, balanceHistory.getOrderId());
-            }
-
-            if (balanceHistory.getBidOrderId() == null) {
-                ps.setNull(3, Types.NULL);
-            } else {
-                ps.setInt(3, balanceHistory.getBidOrderId());
-            }
-
-            if (balanceHistory.getWrId() == null) {
-                ps.setNull(4, Types.NULL);
-            } else {
-                ps.setInt(4, balanceHistory.getWrId());
-            }
-
+            ps.setObject(2, balanceHistory.getOrderId(), Types.INTEGER);
+            ps.setObject(3, balanceHistory.getBalanceId(), Types.INTEGER);
+            ps.setObject(4, balanceHistory.getWrId(), Types.INTEGER);
             ps.setTimestamp(5, balanceHistory.getChangeDate());
             ps.setInt(6, balanceHistory.getChangeValue());
             count = ps.executeUpdate();
@@ -145,25 +129,9 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
         try {
             balanceHistory.setBalanceId(rs.getInt("balanceid"));
             balanceHistory.setMbrId(rs.getInt("mbrid"));
-
-            if (rs.getObject("orderid") == null) {
-                balanceHistory.setOrderId(null);
-            } else {
-                balanceHistory.setOrderId(rs.getInt("orderid"));
-            }
-
-            if (rs.getObject("bidorderid") == null) {
-                balanceHistory.setBidOrderId(null);
-            } else {
-                balanceHistory.setBidOrderId(rs.getInt("bidorderid"));
-            }
-
-            if (rs.getObject("wrid") == null) {
-                balanceHistory.setWrId(null);
-            } else {
-                balanceHistory.setWrId(rs.getInt("wrid"));
-            }
-
+            balanceHistory.setOrderId(rs.getObject("orderid", Integer.class));
+            balanceHistory.setBidOrderId(rs.getObject("bidorderid", Integer.class));
+            balanceHistory.setWrId(rs.getObject("wrid", Integer.class));
             balanceHistory.setChangeDate(rs.getTimestamp("changedate"));
             balanceHistory.setChangeValue(rs.getInt("changevalue"));
 
