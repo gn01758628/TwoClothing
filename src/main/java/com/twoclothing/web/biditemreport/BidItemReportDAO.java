@@ -2,25 +2,21 @@ package com.twoclothing.web.biditemreport;
 
 import java.util.List;
 
-import com.twoclothing.web.bidorder.BidOrder;
-
 
 public interface BidItemReportDAO {
 	
-	public void insert(BidItemReport bidItemReport);
+	void insert(BidItemReport bidItemReport);
 	
-    public BidItemReport getByPrimaryKey(Integer reportId);
+    BidItemReport getByPrimaryKey(Integer reportId);
     
-    public List<BidItemReport> getAll();
+    List<BidItemReport> getAll();
     
-    public List<BidItemReport> getAllByMbrId(Integer mbrId);
-    public List<BidItemReport> getAllByEmpId(Integer empId);
+    List<BidItemReport> getAllByMbrId(Integer mbrId);
+
+    List<BidItemReport> getAllByEmpId(Integer empId);
     
-    public List<BidItemReport> getAllByBidItemId(Integer bidItemId);
+    List<BidItemReport> getAllByBidItemId(Integer bidItemId);
     
     void update(BidItemReport bidItemReport);
-    
-    
-    
- 
+
 }
