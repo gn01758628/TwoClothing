@@ -12,7 +12,7 @@ import java.util.List;
 public class PointHistoryJDBCDAO implements PointHistoryDAO {
 
     public static final String INSERT = "INSERT INTO pointhistory (mbrid, orderid, changedate, changevalue) VALUES (?, ?, ?, ?)";
-    public static final String FIND_BY_PK = "SELECT * FROM pointhistory WHERE pointid = ?";
+    public static final String GET_BY_PK = "SELECT * FROM pointhistory WHERE pointid = ?";
     public static final String GET_ALL = "SELECT * FROM pointhistory ORDER BY pointid";
     public static final String GET_ALL_BY_MBRID = "SELECT * FROM pointhistory WHERE mbrid = ? ORDER BY changedate";
 
@@ -54,7 +54,7 @@ public class PointHistoryJDBCDAO implements PointHistoryDAO {
 
         try {
             conn = JDBCUtils.getConnection();
-            ps = conn.prepareStatement(FIND_BY_PK);
+            ps = conn.prepareStatement(GET_BY_PK);
             ps.setInt(1, pointId);
             rs = ps.executeQuery();
 
@@ -86,7 +86,7 @@ public class PointHistoryJDBCDAO implements PointHistoryDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                list.add(getByPrimaryKey(rs.getInt("pointid")));
+                list.add(setPointHistory(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -112,8 +112,7 @@ public class PointHistoryJDBCDAO implements PointHistoryDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                PointHistory pointHistory = setPointHistory(rs);
-                list.add(pointHistory);
+                list.add(setPointHistory(rs));
             }
 
         } catch (SQLException e) {

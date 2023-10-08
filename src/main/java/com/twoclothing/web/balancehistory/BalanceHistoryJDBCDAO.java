@@ -9,7 +9,7 @@ import java.util.List;
 public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
 
     public static final String INSERT = "INSERT INTO balancehistory (mbrid, orderid, bidorderid, wrid, changedate, changevalue) VALUES (?, ?, ?, ?, ?, ?)";
-    public static final String FIND_BY_PK = "SELECT * FROM balancehistory WHERE balanceid = ?";
+    public static final String GET_BY_PK = "SELECT * FROM balancehistory WHERE balanceid = ?";
     public static final String GET_ALL = "SELECT * FROM balancehistory ORDER BY balanceid";
     public static final String GET_ALL_BY_MBRID = "SELECT * FROM balancehistory WHERE mbrid = ? ORDER BY changedate";
 
@@ -68,7 +68,7 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
 
         try {
             conn = JDBCUtils.getConnection();
-            ps = conn.prepareStatement(FIND_BY_PK);
+            ps = conn.prepareStatement(GET_BY_PK);
             ps.setInt(1, balanceId);
             rs = ps.executeQuery();
 
@@ -99,7 +99,7 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                list.add(getByPrimaryKey(rs.getInt("balanceid")));
+                list.add(setBalanceHistory(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -125,8 +125,7 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                BalanceHistory balanceHistory = setBalanceHistory(rs);
-                list.add(balanceHistory);
+                list.add(setBalanceHistory(rs));
             }
 
         } catch (SQLException e) {

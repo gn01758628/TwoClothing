@@ -13,7 +13,7 @@ public class FollowJDBCDAO implements FollowDAO {
 
     private static final String INSERT = "INSERT INTO follow (mbrid, followid) VALUES (?,?)";
 
-    private static final String FIND_BY_CPK = "SELECT * FROM follow WHERE mbrid = ? AND followid = ?";
+    private static final String GET_BY_CPK = "SELECT * FROM follow WHERE mbrid = ? AND followid = ?";
 
     private static final String GET_ALL = "SELECT * FROM follow";
 
@@ -59,7 +59,7 @@ public class FollowJDBCDAO implements FollowDAO {
 
         try {
             conn = JDBCUtils.getConnection();
-            ps = conn.prepareStatement(FIND_BY_CPK);
+            ps = conn.prepareStatement(GET_BY_CPK);
             ps.setInt(1, mbrId);
             ps.setInt(2, followId);
             rs = ps.executeQuery();
@@ -90,8 +90,7 @@ public class FollowJDBCDAO implements FollowDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                Follow follow = getByCompositeKey(rs.getInt("mbrid"), rs.getInt("followid"));
-                list.add(follow);
+                list.add(setFollow(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();

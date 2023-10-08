@@ -12,7 +12,7 @@ import java.util.List;
 public class BlackListJDBCDAO implements BlackListDAO {
     private static final String INSERT = "INSERT INTO blacklist (mbrid, blackid) VALUES (?,?)";
 
-    private static final String FIND_BY_CPK = "SELECT * FROM blacklist WHERE mbrid = ? AND blackid = ?";
+    private static final String GET_BY_CPK = "SELECT * FROM blacklist WHERE mbrid = ? AND blackid = ?";
 
     private static final String GET_ALL = "SELECT * FROM blacklist";
 
@@ -58,7 +58,7 @@ public class BlackListJDBCDAO implements BlackListDAO {
 
         try {
             conn = JDBCUtils.getConnection();
-            ps = conn.prepareStatement(FIND_BY_CPK);
+            ps = conn.prepareStatement(GET_BY_CPK);
             ps.setInt(1, mbrId);
             ps.setInt(2, blackId);
             rs = ps.executeQuery();
@@ -89,8 +89,7 @@ public class BlackListJDBCDAO implements BlackListDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                BlackList blackList = getByCompositeKey(rs.getInt("mbrid"), rs.getInt("blackid"));
-                list.add(blackList);
+                list.add(setBlacklist(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();

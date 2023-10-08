@@ -4,11 +4,11 @@ import java.util.List;
 
 public interface PointHistoryDAO {
 
-    public void insert(PointHistory pointHistory);
+    void insert(PointHistory pointHistory);
 
-    public PointHistory getByPrimaryKey(Integer pointId);
+    PointHistory getByPrimaryKey(Integer pointId);
 
-    public List<PointHistory> getAll();
+    List<PointHistory> getAll();
 
-    public List<PointHistory> getAllByMbrId(Integer mbrId);
+    List<PointHistory> getAllByMbrId(Integer mbrId);
 }

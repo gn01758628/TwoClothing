@@ -9,11 +9,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class ShipSettingJDBCDAO implements ShipSettingDAO {
 
     private static final String INSERT = "INSERT INTO shipsetting (mbrid, receivename, receivephone, receiveaddress) VALUES (?,?,?,?)";
 
-    private static final String FIND_BY_PK = "SELECT * FROM shipsetting WHERE shipid = ?";
+    private static final String GET_BY_PK = "SELECT * FROM shipsetting WHERE shipid = ?";
 
     private static final String GET_ALL = "SELECT * FROM shipsetting";
 
@@ -61,7 +62,7 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
 
         try {
             conn = JDBCUtils.getConnection();
-            ps = conn.prepareStatement(FIND_BY_PK);
+            ps = conn.prepareStatement(GET_BY_PK);
             ps.setInt(1, shipId);
             rs = ps.executeQuery();
 
@@ -91,8 +92,7 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                ShipSetting shipSetting = getByPrimaryKey(rs.getInt("shipid"));
-                list.add(shipSetting);
+                list.add(setShipSetting(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -118,8 +118,7 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                ShipSetting shipSetting = setShipSetting(rs);
-                list.add(shipSetting);
+                list.add(setShipSetting(rs));
             }
 
         } catch (SQLException e) {
@@ -136,7 +135,7 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
     public void update(ShipSetting shipSetting) {
         Connection conn = null;
         PreparedStatement ps = null;
-        int count;
+        int count = 0;
 
         try {
             conn = JDBCUtils.getConnection();
@@ -148,7 +147,7 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
             ps.setInt(5, shipSetting.getShipId());
             count = ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         } finally {
             JDBCUtils.close(conn, ps, null);
         }
