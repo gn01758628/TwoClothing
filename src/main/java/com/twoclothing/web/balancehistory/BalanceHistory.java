@@ -1,7 +1,7 @@
 package com.twoclothing.web.balancehistory;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 public class BalanceHistory implements Serializable {
@@ -10,13 +10,13 @@ public class BalanceHistory implements Serializable {
     private Integer orderId;
     private Integer bidOrderId;
     private Integer wrId;
-    private LocalDateTime changeDate;
+    private Timestamp changeDate;
     private Integer changeValue;
 
     public BalanceHistory() {
     }
 
-    public BalanceHistory(Integer balanceId, Integer mbrId, Integer orderId, Integer bidOrderId, Integer wrId, LocalDateTime changeDate, Integer changeValue) {
+    public BalanceHistory(Integer balanceId, Integer mbrId, Integer orderId, Integer bidOrderId, Integer wrId, Timestamp changeDate, Integer changeValue) {
         this.balanceId = balanceId;
         this.mbrId = mbrId;
         this.orderId = orderId;
@@ -92,11 +92,11 @@ public class BalanceHistory implements Serializable {
         this.wrId = wrId;
     }
 
-    public LocalDateTime getChangeDate() {
+    public Timestamp getChangeDate() {
         return changeDate;
     }
 
-    public void setChangeDate(LocalDateTime changeDate) {
+    public void setChangeDate(Timestamp changeDate) {
         this.changeDate = changeDate;
     }
 
