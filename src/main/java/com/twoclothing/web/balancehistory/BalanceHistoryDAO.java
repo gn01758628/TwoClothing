@@ -4,12 +4,12 @@ import java.util.List;
 
 public interface BalanceHistoryDAO {
 
-    public void insert(BalanceHistory balanceHistory);
+    void insert(BalanceHistory balanceHistory);
 
-    public BalanceHistory getByPrimaryKey(Integer balanceId);
+    BalanceHistory getByPrimaryKey(Integer balanceId);
 
-    public List<BalanceHistory> getAll();
+    List<BalanceHistory> getAll();
 
-    public List<BalanceHistory> getAllByMbrId(Integer mbrId);
+    List<BalanceHistory> getAllByMbrId(Integer mbrId);
 
 }

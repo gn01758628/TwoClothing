@@ -1,20 +1,20 @@
 package com.twoclothing.web.pointhistory;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 public class PointHistory implements Serializable {
     private Integer pointId;
     private Integer mbrId;
     private Integer orderId;
-    private LocalDateTime changeDate;
+    private Timestamp changeDate;
     private Integer changeValue;
 
     public PointHistory() {
     }
 
-    public PointHistory(Integer pointId, Integer mbrId, Integer orderId, LocalDateTime changeDate, Integer changeValue) {
+    public PointHistory(Integer pointId, Integer mbrId, Integer orderId, Timestamp changeDate, Integer changeValue) {
         this.pointId = pointId;
         this.mbrId = mbrId;
         this.orderId = orderId;
@@ -70,11 +70,11 @@ public class PointHistory implements Serializable {
         this.orderId = orderId;
     }
 
-    public LocalDateTime getChangeDate() {
+    public Timestamp getChangeDate() {
         return changeDate;
     }
 
-    public void setChangeDate(LocalDateTime changeDate) {
+    public void setChangeDate(Timestamp changeDate) {
         this.changeDate = changeDate;
     }
 
