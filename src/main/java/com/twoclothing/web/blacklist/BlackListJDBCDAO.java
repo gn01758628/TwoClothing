@@ -164,8 +164,7 @@ public class BlackListJDBCDAO implements BlackListDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                BlackList blackList = getByCompositeKey(rs.getInt("mbrid"), rs.getInt("blackid"));
-                list.add(blackList);
+                list.add(setBlacklist(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();

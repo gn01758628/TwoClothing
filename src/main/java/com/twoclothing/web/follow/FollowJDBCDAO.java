@@ -165,8 +165,7 @@ public class FollowJDBCDAO implements FollowDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                Follow follow = getByCompositeKey(rs.getInt("mbrid"), rs.getInt("followid"));
-                list.add(follow);
+                list.add(setFollow(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
