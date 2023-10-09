@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ItemReportDAO {
 	
-	 public void insert(ItemReport itemBrowsing);
+	 public void insert(ItemReport itemReport);
 
 	    public ItemReport getByPrimaryKey(Integer reportId);
 
