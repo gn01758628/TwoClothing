@@ -11,12 +11,12 @@ public interface ChatRoomLogDAO {
     List<ChatRoomLog> getAll();
 
     // 取得會員間的對話紀錄
-    List<ChatRoomLog> getLogFromMembers(Integer receiveId, Integer sentID);
+    List<ChatRoomLog> getLogFromMembers(Integer memberAId, Integer memberBId);
 
-    // 取得客服對話紀錄(會員接收)
-    List<ChatRoomLog> getLogFromEmployeeRe(Integer empID, Integer receiveID);
+    // 取得客服對話紀錄(memberID = receiveid or sentid)
+    List<ChatRoomLog> getLogFromService(Integer memberID);
 
-    // 取得客服對話紀錄(會員發送)
-    List<ChatRoomLog> getLogFromEmployeeSe(Integer empID, Integer sentID);
+    // 取得某個員工的回覆紀錄
+    List<ChatRoomLog> getLogByEmpId(Integer empId);
 
 }

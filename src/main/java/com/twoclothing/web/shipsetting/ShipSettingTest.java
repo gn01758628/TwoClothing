@@ -39,6 +39,8 @@ public class ShipSettingTest {
             System.out.println(s);
         }
 
+        System.out.println("=====================================================================================================================================");
+
         // 查詢某個會員的物流設定
         List<ShipSetting> list2 = shipSettingDAO.getAllByMbrId(10);
         for (ShipSetting s : list2) {

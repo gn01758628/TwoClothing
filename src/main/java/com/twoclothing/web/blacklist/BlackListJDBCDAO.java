@@ -78,27 +78,7 @@ public class BlackListJDBCDAO implements BlackListDAO {
 
     @Override
     public List<BlackList> getAll() {
-        List<BlackList> list = new ArrayList<>();
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            conn = JDBCUtils.getConnection();
-            ps = conn.prepareStatement(GET_ALL);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                list.add(setBlacklist(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            JDBCUtils.close(conn, ps, rs);
-        }
-
-        if (list.isEmpty()) list.add(null);
-        return list;
+        return getAllBy(GET_ALL);
     }
 
     @Override
@@ -151,7 +131,8 @@ public class BlackListJDBCDAO implements BlackListDAO {
         return blackList;
     }
 
-    private List<BlackList> getAllBy(String by, Integer byid) {
+    private List<BlackList> getAllBy(String by, Integer... byid) {
+        if (byid.length > 1) return null;
         List<BlackList> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ps = null;
@@ -160,7 +141,7 @@ public class BlackListJDBCDAO implements BlackListDAO {
         try {
             conn = JDBCUtils.getConnection();
             ps = conn.prepareStatement(by);
-            ps.setInt(1, byid);
+            if (byid.length == 1) ps.setInt(1, byid[0]);
             rs = ps.executeQuery();
 
             while (rs.next()) {

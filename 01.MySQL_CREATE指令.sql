@@ -503,24 +503,26 @@ CREATE TABLE categorytags
 (
     tagid        INT AUTO_INCREMENT NOT NULL,
     supertagid   INT,
-    categoryname VARCHAR(20)  DEFAULT '',
-    descriptions VARCHAR(255) DEFAULT '',
+    categoryname VARCHAR(20)  NOT NULL,
     empid        INT NOT NULL,
-    PRIMARY KEY (tagid)
+    PRIMARY KEY (tagid),
+    CONSTRAINT fK_supertag
+    FOREIGN KEY (supertagid)
+    REFERENCES categorytags(tagid)
 );
 
 -- 表格：商品類別標籤 插入假資料
-INSERT INTO categorytags (tagid, supertagid, categoryname, descriptions, empid)
-VALUES (1, NULL, 'Electronics', 'Electronic devices', 1),
-       (2, NULL, 'Clothing', 'Apparel and clothing', 2),
-       (3, 1, 'Smartphones', 'Smartphones and accessories', 3),
-       (4, 1, 'Laptops', 'Laptops and notebooks', 1),
-       (5, 2, 'Shirts', 'Men and women shirts', 2),
-       (6, 2, 'Pants', 'Men and women pants', 3),
-       (7, 1, 'Tablets', 'Tablets and accessories', 1),
-       (8, 3, 'Dresses', 'Women dresses', 2),
-       (9, 3, 'Suits', 'Men suits', 3),
-       (10, 2, 'Shoes', 'Men and women shoes', 1);
+INSERT INTO categorytags (supertagid, categoryname, empid)
+VALUES (NULL, '所有種類', 1),
+       (1, '上衣', 1),
+       (1, '褲子', 1),
+       (1, '飾品', 1),
+       (2, '短袖', 1),
+       (2, '長袖', 1),
+       (3, '短褲',1),
+       (3, '長褲', 1),
+       (5, '男短袖', 1),
+       (5, '女短袖', 1);
 
 -- 表格：商品類別標籤 檢查
 -- SELECT * FROM categorytags;
@@ -528,7 +530,6 @@ VALUES (1, NULL, 'Electronics', 'Electronic devices', 1),
 
 -- 表格：商品類別標籤 添加FK
 -- ALTER TABLE categorytags
--- ADD CONSTRAINT fk_categorytags_supertagid FOREIGN KEY (supertagid) REFERENCES categorytags(tagid),
 -- ADD CONSTRAINT fk_categorytags_empid FOREIGN KEY (empid) REFERENCES employee(empid);
 -- ================================================================================================================================ --
 -- 表格：最新消息 刪除
