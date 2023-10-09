@@ -10,8 +10,6 @@ public interface BidRecordDAO {
 
 	List<BidRecord> getAll();
 
-	List<BidRecord> getAllByRecordId(Integer recordId);
-	
 	List<BidRecord> getAllByBidItemId(Integer bidItemId);
 	
 	List<BidRecord> getAllByMbrId(Integer mbrId);
