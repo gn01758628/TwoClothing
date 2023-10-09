@@ -1,7 +1,5 @@
 package com.twoclothing.web.pointhistory;
 
-import com.twoclothing.web.balancehistory.BalanceHistory;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -56,9 +54,5 @@ public class PointHistoryTest {
             System.out.println(p);
         }
 
-        List<PointHistory> list3 = pointHistoryDAO.getAllByMbrId(30);
-        for (PointHistory p : list3) {
-            System.out.println(p);
-        }
     }
 }
