@@ -10,8 +10,6 @@ public interface ItemImageDAO {
 
 	 public List<ItemImage> getAll();
 
-	 public List<ItemImage> getAllByImgId(Integer imgId);
-
 	 public List<ItemImage> getAllByItemId(Integer itemId);
 
 	 public void update(Integer imgId);
