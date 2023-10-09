@@ -198,7 +198,7 @@ CREATE TABLE pointhistory
 (
     pointid    INT AUTO_INCREMENT NOT NULL,
     mbrid      INT      NOT NULL,
-    orderid    INT,
+    orderid    INT		NOT NULL,
     changedate    DATETIME NOT NULL,
     changevalue   INT      NOT NULL,
     PRIMARY KEY (pointid)
@@ -218,8 +218,8 @@ VALUES (1, 101, '2023-10-02', 50),
        (10, 204, '2023-10-10', -5);
 
 -- 表格：會員點數異動紀錄 檢查
-SELECT * FROM pointhistory;
-DESCRIBE pointhistory;
+-- SELECT * FROM pointhistory;
+-- DESCRIBE pointhistory;
 
 -- 表格：會員點數異動紀錄 添加FK
 -- ALTER TABLE pointhistory
@@ -227,25 +227,25 @@ DESCRIBE pointhistory;
 -- ADD CONSTRAINT fk_orderid FOREIGN KEY (orderid) REFERENCES itemorder(orderid),
 -- ================================================================================================================================ --
 -- 表格：會員虛擬錢包提款申請 刪除
-DROP TABLE IF EXISTS withdrowrequest;
+DROP TABLE IF EXISTS withdrawrequest;
 
 -- 表格：會員虛擬錢包提款申請 創建
-CREATE TABLE withdrowrequest
+CREATE TABLE withdrawrequest
 (
     wrid      INT AUTO_INCREMENT NOT NULL,
     mbrid     INT         NOT NULL,
     amount    INT         NOT NULL,
-    account   VARCHAR(20) NOT NULL,
+    mbraccount   VARCHAR(20) NOT NULL,
     reqdate   DATETIME    NOT NULL,
     reqstatus TINYINT     NOT NULL,
     empid     INT,
-    checkdate DATETIME DEFAULT NULL,
+    checkdate DATETIME,
     note      VARCHAR(20),
     PRIMARY KEY (wrid)
 );
 
 -- 表格：會員虛擬錢包提款申請 插入假資料
-INSERT INTO withdrowrequest (mbrid, amount, account, reqdate, reqstatus, empid, checkdate, note)
+INSERT INTO withdrawrequest (mbrid, amount, mbraccount, reqdate, reqstatus, empid, checkdate, note)
 VALUES (1, 500, '1234567890', '2023-10-01', 0, NULL, NULL, '申請中'),
        (2, 300, '9876543210', '2023-10-02', 0, NULL, NULL, '申請中'),
        (3, 800, '5678901234', '2023-10-03', 0, NULL, NULL, '申請中'),
@@ -258,11 +258,11 @@ VALUES (1, 500, '1234567890', '2023-10-01', 0, NULL, NULL, '申請中'),
        (10, 250, '9876123450', '2023-10-10', 0, NULL, NULL, '申請中');
 
 -- 表格：會員虛擬錢包提款申請 檢查
--- SELECT * FROM withdrowrequest;
--- DESCRIBE withdrowrequest;
+SELECT * FROM withdrawrequest;
+DESCRIBE withdrawrequest;
 
 -- 表格：會員虛擬錢包提款申請 添加FK
--- ALTER TABLE withdrowrequest
+-- ALTER TABLE withdrawrequest
 -- ADD CONSTRAINT fk_mbrid FOREIGN KEY (mbrid) REFERENCES Members(mbrid),
 -- ADD CONSTRAINT fk_empid FOREIGN KEY (empid) REFERENCES employee(employee);
 -- ================================================================================================================================ --
@@ -304,7 +304,7 @@ VALUES (1, 101, NULL, NULL, '2023-10-01', 50),
 -- ADD CONSTRAINT fk_mbrid FOREIGN KEY (mbrid) REFERENCES Members(mbrid),
 -- ADD CONSTRAINT fk_orderid FOREIGN KEY (orderid) REFERENCES itemorder(orderid),
 -- ADD CONSTRAINT fk_bidorderid FOREIGN KEY (bidorderid) REFERENCES bidorder(bidorderid),
--- ADD CONSTRAINT fk_wrid FOREIGN KEY (wrid) REFERENCES withdrowrequest(wrid);
+-- ADD CONSTRAINT fk_wrid FOREIGN KEY (wrid) REFERENCES withdrawrequest(wrid);
 -- ================================================================================================================================ --
 -- 表格：會員物流設定 刪除
 DROP TABLE IF EXISTS shipsetting;
@@ -335,8 +335,8 @@ VALUES (1, '收件人1', '0912345678', '台北市1號'),
 
 
 -- 表格：會員物流設定 檢查
-SELECT * FROM shipsetting;
-DESCRIBE shipsetting;
+-- SELECT * FROM shipsetting;
+-- DESCRIBE shipsetting;
 
 -- 表格：會員物流設定 添加FK
 -- ALTER TABLE shipsetting
@@ -503,24 +503,26 @@ CREATE TABLE categorytags
 (
     tagid        INT AUTO_INCREMENT NOT NULL,
     supertagid   INT,
-    categoryname VARCHAR(20)  DEFAULT '',
-    descriptions VARCHAR(255) DEFAULT '',
+    categoryname VARCHAR(20)  NOT NULL,
     empid        INT NOT NULL,
-    PRIMARY KEY (tagid)
+    PRIMARY KEY (tagid),
+    CONSTRAINT fK_supertag
+    FOREIGN KEY (supertagid)
+    REFERENCES categorytags(tagid)
 );
 
 -- 表格：商品類別標籤 插入假資料
-INSERT INTO categorytags (tagid, supertagid, categoryname, descriptions, empid)
-VALUES (1, NULL, 'Electronics', 'Electronic devices', 1),
-       (2, NULL, 'Clothing', 'Apparel and clothing', 2),
-       (3, 1, 'Smartphones', 'Smartphones and accessories', 3),
-       (4, 1, 'Laptops', 'Laptops and notebooks', 1),
-       (5, 2, 'Shirts', 'Men and women shirts', 2),
-       (6, 2, 'Pants', 'Men and women pants', 3),
-       (7, 1, 'Tablets', 'Tablets and accessories', 1),
-       (8, 3, 'Dresses', 'Women dresses', 2),
-       (9, 3, 'Suits', 'Men suits', 3),
-       (10, 2, 'Shoes', 'Men and women shoes', 1);
+INSERT INTO categorytags (supertagid, categoryname, empid)
+VALUES (NULL, '所有種類', 1),
+       (1, '上衣', 1),
+       (1, '褲子', 1),
+       (1, '飾品', 1),
+       (2, '短袖', 1),
+       (2, '長袖', 1),
+       (3, '短褲',1),
+       (3, '長褲', 1),
+       (5, '男短袖', 1),
+       (5, '女短袖', 1);
 
 -- 表格：商品類別標籤 檢查
 -- SELECT * FROM categorytags;
@@ -528,7 +530,6 @@ VALUES (1, NULL, 'Electronics', 'Electronic devices', 1),
 
 -- 表格：商品類別標籤 添加FK
 -- ALTER TABLE categorytags
--- ADD CONSTRAINT fk_categorytags_supertagid FOREIGN KEY (supertagid) REFERENCES categorytags(tagid),
 -- ADD CONSTRAINT fk_categorytags_empid FOREIGN KEY (empid) REFERENCES employee(empid);
 -- ================================================================================================================================ --
 -- 表格：最新消息 刪除
@@ -720,8 +721,8 @@ VALUES (1, 2, 4, 'Good seller', 5, 'Excellent buyer', '2023-10-01 09:00:00', 0, 
         '707 Oak St, City', 'Emily White', '2223334444', 'Fragile items');
 
 -- 表格：一般商品訂單 檢查
-SELECT * FROM itemorder;
-DESCRIBE itemorder;
+-- SELECT * FROM itemorder;
+-- DESCRIBE itemorder;
 
 -- 表格：一般商品訂單 添加FK
 -- ALTER TABLE itemorder

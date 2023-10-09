@@ -4,15 +4,15 @@ import java.util.List;
 
 public interface FollowDAO {
 
-    public void insert(Follow follow);
+    void insert(Follow follow);
 
-    public Follow getByCompositeKey(Integer mbrId, Integer followId);
+    Follow getByCompositeKey(Integer mbrId, Integer followId);
 
-    public List<Follow> getAll();
+    List<Follow> getAll();
 
-    public List<Follow> getAllByMbrId(Integer mbrId);
+    List<Follow> getAllByMbrId(Integer mbrId);
 
-    public List<Follow> getAllByFollowId(Integer FollowId);
+    List<Follow> getAllByFollowId(Integer FollowId);
 
-    public void delete(Integer mbrId, Integer followId);
+    void delete(Integer mbrId, Integer followId);
 }

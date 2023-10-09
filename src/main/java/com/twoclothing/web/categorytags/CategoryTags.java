@@ -7,17 +7,15 @@ public class CategoryTags implements Serializable {
     private Integer tagId;
     private Integer superTagId;
     private String categoryName;
-    private String descriptions;
     private Integer empId;
 
     public CategoryTags() {
     }
 
-    public CategoryTags(Integer tagId, Integer superTagId, String categoryName, String descriptions, Integer empId) {
+    public CategoryTags(Integer tagId, Integer superTagId, String categoryName, Integer empId) {
         this.tagId = tagId;
         this.superTagId = superTagId;
         this.categoryName = categoryName;
-        this.descriptions = descriptions;
         this.empId = empId;
     }
 
@@ -27,7 +25,6 @@ public class CategoryTags implements Serializable {
                 "tagId=" + tagId +
                 ", superTagId=" + superTagId +
                 ", categoryName='" + categoryName + '\'' +
-                ", descriptions='" + descriptions + '\'' +
                 ", empId=" + empId +
                 '}';
     }
@@ -37,12 +34,12 @@ public class CategoryTags implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CategoryTags that = (CategoryTags) o;
-        return Objects.equals(tagId, that.tagId) && Objects.equals(superTagId, that.superTagId) && Objects.equals(categoryName, that.categoryName) && Objects.equals(descriptions, that.descriptions) && Objects.equals(empId, that.empId);
+        return Objects.equals(tagId, that.tagId) && Objects.equals(superTagId, that.superTagId) && Objects.equals(categoryName, that.categoryName) && Objects.equals(empId, that.empId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tagId, superTagId, categoryName, descriptions, empId);
+        return Objects.hash(tagId, superTagId, categoryName, empId);
     }
 
     public Integer getTagId() {
@@ -67,14 +64,6 @@ public class CategoryTags implements Serializable {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-    }
-
-    public String getDescriptions() {
-        return descriptions;
-    }
-
-    public void setDescriptions(String descriptions) {
-        this.descriptions = descriptions;
     }
 
     public Integer getEmpId() {

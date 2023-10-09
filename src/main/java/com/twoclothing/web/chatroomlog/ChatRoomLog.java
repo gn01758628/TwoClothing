@@ -1,7 +1,7 @@
 package com.twoclothing.web.chatroomlog;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 public class ChatRoomLog implements Serializable {
@@ -10,12 +10,12 @@ public class ChatRoomLog implements Serializable {
     private Integer sentId;
     private Integer empId;
     private String message;
-    private LocalDateTime messageTime;
+    private Timestamp messageTime;
 
     public ChatRoomLog() {
     }
 
-    public ChatRoomLog(Integer logId, Integer receiveId, Integer sentId, Integer empId, String message, LocalDateTime messageTime) {
+    public ChatRoomLog(Integer logId, Integer receiveId, Integer sentId, Integer empId, String message, Timestamp messageTime) {
         this.logId = logId;
         this.receiveId = receiveId;
         this.sentId = sentId;
@@ -89,11 +89,11 @@ public class ChatRoomLog implements Serializable {
         this.message = message;
     }
 
-    public LocalDateTime getMessageTime() {
+    public Timestamp getMessageTime() {
         return messageTime;
     }
 
-    public void setMessageTime(LocalDateTime messageTime) {
+    public void setMessageTime(Timestamp messageTime) {
         this.messageTime = messageTime;
     }
 }
