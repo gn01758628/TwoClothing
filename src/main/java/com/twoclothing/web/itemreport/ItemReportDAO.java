@@ -10,9 +10,13 @@ public interface ItemReportDAO {
 
 	    public List<ItemReport> getAll();
 
-	    public List<ItemReport> getAllByMbrId(Integer mbrId);
+	    public List<ItemReport> getAllByItemId(Integer itemId);
 
 	    public List<ItemReport> getAllByEmpId(Integer empId);
+	    
+	    public List<ItemReport> getAllByRStatus(Integer rStatus);
+
+	    public List<ItemReport> getAllByResult(Integer result);
 
 	    public void update(Integer reportId);
 }
