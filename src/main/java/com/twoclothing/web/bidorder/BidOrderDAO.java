@@ -15,6 +15,8 @@ public interface BidOrderDAO {
 
 	// 賣家
 	List<BidOrder> getAllBySellMemberId(Integer sellMbrId);
+	
+	List<BidOrder> getAllByOrderStatus(Integer orderStatus);
 
 	void update(BidOrder bidorder);
 
