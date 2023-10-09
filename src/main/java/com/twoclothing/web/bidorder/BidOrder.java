@@ -15,7 +15,7 @@ public class BidOrder implements Serializable {
 	private String sellerRatingDesc;
 	private Timestamp orderDate;
 	private Integer payType;
-	private String paytInfo;
+	private String payInfo;
 	private Integer amount;
 	private Integer orderStatus;
 	private String receiveAddress;
@@ -30,7 +30,7 @@ public class BidOrder implements Serializable {
 
 	public BidOrder(Integer bidOrderId, Integer bidItemId, Integer buyMbrId, Integer sellMbrId, Integer buyStar,
 			String buyerRatingDesc, Integer sellStar, String sellerRatingDesc, Timestamp orderDate, Integer payType,
-			String paytInfo, Integer amount, Integer orderStatus, String receiveAddress, String receiveMbrName,
+			String payInfo, Integer amount, Integer orderStatus, String receiveAddress, String receiveMbrName,
 			String receivePhone, String remarks) {
 		super();
 		this.bidOrderId = bidOrderId;
@@ -43,7 +43,7 @@ public class BidOrder implements Serializable {
 		this.sellerRatingDesc = sellerRatingDesc;
 		this.orderDate = orderDate;
 		this.payType = payType;
-		this.paytInfo = paytInfo;
+		this.payInfo = payInfo;
 		this.amount = amount;
 		this.orderStatus = orderStatus;
 		this.receiveAddress = receiveAddress;
@@ -57,7 +57,7 @@ public class BidOrder implements Serializable {
 		return "BidOrder [bidOrderId=" + bidOrderId + ", bidItemId=" + bidItemId + ", buyMbrId=" + buyMbrId
 				+ ", sellMbrId=" + sellMbrId + ", buyStar=" + buyStar + ", buyerRatingDesc=" + buyerRatingDesc
 				+ ", sellStar=" + sellStar + ", sellerRatingDesc=" + sellerRatingDesc + ", orderDate=" + orderDate
-				+ ", payType=" + payType + ", paytInfo=" + paytInfo + ", amount=" + amount + ", orderStatus="
+				+ ", payType=" + payType + ", payInfo=" + payInfo + ", amount=" + amount + ", orderStatus="
 				+ orderStatus + ", receiveAddress=" + receiveAddress + ", receiveMbrName=" + receiveMbrName
 				+ ", receivePhone=" + receivePhone + ", remarks=" + remarks + "]";
 	}
@@ -65,7 +65,7 @@ public class BidOrder implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(amount, bidItemId, bidOrderId, buyMbrId, buyStar, buyerRatingDesc, orderDate, orderStatus,
-				payType, paytInfo, receiveAddress, receiveMbrName, receivePhone, remarks, sellMbrId, sellStar,
+				payType, payInfo, receiveAddress, receiveMbrName, receivePhone, remarks, sellMbrId, sellStar,
 				sellerRatingDesc);
 	}
 
@@ -80,7 +80,7 @@ public class BidOrder implements Serializable {
 				&& Objects.equals(bidOrderId, other.bidOrderId) && Objects.equals(buyMbrId, other.buyMbrId)
 				&& Objects.equals(buyStar, other.buyStar) && Objects.equals(buyerRatingDesc, other.buyerRatingDesc)
 				&& Objects.equals(orderDate, other.orderDate) && Objects.equals(orderStatus, other.orderStatus)
-				&& Objects.equals(payType, other.payType) && Objects.equals(paytInfo, other.paytInfo)
+				&& Objects.equals(payType, other.payType) && Objects.equals(payInfo, other.payInfo)
 				&& Objects.equals(receiveAddress, other.receiveAddress)
 				&& Objects.equals(receiveMbrName, other.receiveMbrName)
 				&& Objects.equals(receivePhone, other.receivePhone) && Objects.equals(remarks, other.remarks)
@@ -168,12 +168,12 @@ public class BidOrder implements Serializable {
 		this.payType = payType;
 	}
 
-	public String getPaytInfo() {
-		return paytInfo;
+	public String getPayInfo() {
+		return payInfo;
 	}
 
-	public void setPaytInfo(String paytInfo) {
-		this.paytInfo = paytInfo;
+	public void setPayInfo(String payInfo) {
+		this.payInfo = payInfo;
 	}
 
 	public Integer getAmount() {
