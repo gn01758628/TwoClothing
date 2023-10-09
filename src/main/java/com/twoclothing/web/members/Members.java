@@ -11,40 +11,26 @@ public class Members implements Serializable {
     private String email;
     private String pswdHash;
     private Integer mbrStatus;
-    private byte[] avatar;
-    private byte[] shopImg01;
-    private byte[] shopImg02;
-    private Integer mbrPoint;
-    private Integer balance;
-    private Integer buyStar;
-    private Integer buyRating;
-    private Integer sellStar;
-    private Integer sellRating;
-    private LocalDateTime lastLogin;
-    private Integer sellScore;
-    private Integer buyScore;
+    private byte[] avatar = null;
+    private byte[] shopImg01 = null;
+    private byte[] shopImg02 = null;
+    private Integer mbrPoint = 0;
+    private Integer balance = 0;
+    private Integer buyStar = 0;
+    private Integer buyRating = 0;
+    private Integer sellStar = 0;
+    private Integer sellRating = 0;
+    private LocalDateTime lastLogin = null;
+    private Integer sellScore = 10;
+    private Integer buyScore = 10;
 
     public Members() {
     }
 
-    public Members(Integer mbrId, String mbrName, String email, String pswdHash, Integer mbrStatus, byte[] avatar, byte[] shopImg01, byte[] shopImg02, Integer mbrPoint, Integer balance, Integer buyStar, Integer buyRating, Integer sellStar, Integer sellRating, LocalDateTime lastLogin, Integer sellScore, Integer buyScore) {
-        this.mbrId = mbrId;
-        this.mbrName = mbrName;
+    public Members(String email, String pswdHash, Integer mbrStatus) {
         this.email = email;
         this.pswdHash = pswdHash;
         this.mbrStatus = mbrStatus;
-        this.avatar = avatar;
-        this.shopImg01 = shopImg01;
-        this.shopImg02 = shopImg02;
-        this.mbrPoint = mbrPoint;
-        this.balance = balance;
-        this.buyStar = buyStar;
-        this.buyRating = buyRating;
-        this.sellStar = sellStar;
-        this.sellRating = sellRating;
-        this.lastLogin = lastLogin;
-        this.sellScore = sellScore;
-        this.buyScore = buyScore;
     }
 
     @Override
