@@ -6,13 +6,13 @@ public interface BidItemBrowsingDAO {
 	
 	void insert(BidItemBrowsing bidItemBrowsing);
 	
-	BidItemBrowsing getByPrimaryKey(Integer mbrId);
+	BidItemBrowsing getByCompositeKey(Integer mbrId,Integer bidItemId);
 
 	List<BidItemBrowsing> getAll();
 
-	List<BidItemBrowsing> getAllByBrowsingTime(Integer browsingTime);
-	
 	List<BidItemBrowsing> getAllByBidItemId(Integer bidItemId);
+	
+	List<BidItemBrowsing> getAllByMbrId(Integer mbrId);
 	
 	
 	
