@@ -23,7 +23,7 @@ public interface MembersDAO {
 
     void updateMbrName(Members members);
 
-    void updateMbrPSWDHASH(Members members);
+    void updatePSWDHash(Members members);
 
     void updateMbrStatus(Members members);
 

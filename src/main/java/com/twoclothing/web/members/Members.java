@@ -1,7 +1,7 @@
 package com.twoclothing.web.members;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -20,7 +20,7 @@ public class Members implements Serializable {
     private Integer buyRating = 0;
     private Integer sellStar = 0;
     private Integer sellRating = 0;
-    private LocalDateTime lastLogin = null;
+    private Timestamp lastLogin = null;
     private Integer sellScore = 10;
     private Integer buyScore = 10;
 
@@ -185,11 +185,11 @@ public class Members implements Serializable {
         this.sellRating = sellRating;
     }
 
-    public LocalDateTime getLastLogin() {
+    public Timestamp getLastLogin() {
         return lastLogin;
     }
 
-    public void setLastLogin(LocalDateTime lastLogin) {
+    public void setLastLogin(Timestamp lastLogin) {
         this.lastLogin = lastLogin;
     }
 
