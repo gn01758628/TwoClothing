@@ -32,18 +32,18 @@ CREATE TABLE members
 );
 
 -- 表格：會員 插入假資料
-INSERT INTO members (mbrname, email, pswdhash, mbrstatus, mbrpoint, balance, buystar, buyrating, sellstar, sellrating,
-                     lastlogin)
-VALUES ('會員1', 'email1@example.com', 'hash1', 0, 100, 500, 4, 20, 3, 15, '2023-10-04 10:00:00'),
-       ('會員2', 'email2@example.com', 'hash2', 1, 200, 1000, 5, 50, 4, 30, '2023-10-03 15:30:00'),
-       ('會員3', 'email3@example.com', 'hash3', 2, 50, 200, 3, 10, 2, 8, '2023-10-02 08:45:00'),
-       ('會員4', 'email4@example.com', 'hash4', 0, 150, 800, 4, 35, 3, 20, '2023-10-01 17:20:00'),
-       ('會員5', 'email5@example.com', 'hash5', 1, 300, 1500, 5, 70, 4, 40, '2023-09-30 12:15:00'),
-       ('會員6', 'email6@example.com', 'hash6', 0, 75, 400, 4, 15, 3, 10, '2023-09-29 09:30:00'),
-       ('會員7', 'email7@example.com', 'hash7', 1, 250, 1200, 5, 60, 4, 35, '2023-09-28 14:10:00'),
-       ('會員8', 'email8@example.com', 'hash8', 0, 120, 600, 4, 25, 3, 18, '2023-09-27 11:45:00'),
-       ('會員9', 'email9@example.com', 'hash9', 0, 90, 450, 4, 19, 3, 12, '2023-09-26 20:05:00'),
-       ('會員10', 'email10@example.com', 'hash10', 1, 180, 900, 5, 45, 4, 25, '2023-09-25 16:40:00');
+INSERT INTO members (mbrname, email, pswdhash, mbrstatus, sellscore, buyscore)
+VALUES
+('Michael', 'email1@example.com', 'hash1', 0, 10, 4),
+('Mike', 'email2@example.com', 'hash2', 1, 4, 10),
+('Devil', 'email4@example.com', 'hash3', 1, 10, 4),
+('Angel', 'email5@example.com', 'hash4', 0, 10, 10),
+('Water', 'email6@example.com', 'hash5', 0, 3, 10),
+('Fire', 'email7@example.com', 'hash6', 1, 10, 2),
+('Sky', 'email8@example.com', 'hash7', 0, 1, 10),
+('Apple', 'email9@example.com', 'hash8', 0, 10, 3),
+('Banana', 'email10@example.com', 'hash9', 1, 2, 10),
+('John', 'email11@example.com', 'hash10', 0, 1, 7);
 
 -- 表格：會員 檢查
 -- SELECT * FROM Members;
