@@ -1,5 +1,7 @@
 package com.twoclothing.utils;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -37,9 +39,18 @@ public class GenericTest {
 //			String address = "Address " + (i + 1);
 //			String email = "employee" + (i + 1) + "@example.com";
 //			String pswdHash = "passwordHash" + (i + 1);
-//			Integer empStatus = i % 2; // 交替设置0和1的雇员状态
-//			byte[] avatar = new byte[10]; // 示例字节数组，长度为10
+//			Integer empStatus = i % 2; 
+//			String path = "images/"+(i+1)+".jpg";
+//			System.out.println(path);
+//			byte[] avatar = null;
+//			try {
+//				avatar = getPictureByteArray(path);
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 //
+//			
 //			Employee employee = new Employee(deptId, empName, phone, address, email, pswdHash, empStatus, avatar);
 //			employees.add(employee);
 //		}
@@ -97,11 +108,13 @@ public class GenericTest {
 //        }
 		
 //		========================= update =========================
-		
+//		Map<String, Object> map2 = new LinkedHashMap<>();
+//		map2.put("empId", 13);
+//		List<Employee> list = employeeDAO.getBy(map2);
 //		Employee emp = new Employee();
 //		Map<String, Object> map1 = new LinkedHashMap<>();
 //		map1.put("address", "台北市大安區456號");
-//		emp.setDeptId(999);
+//		emp.setAvatar(list.get(0).getAvatar());
 //		employeeDAO.update(emp, map1);
 		
 		
@@ -113,11 +126,11 @@ public class GenericTest {
 //		employeeDAO.delete(map1);
 		
 //		========================= getAll =========================
-//		List<Employee> list = employeeDAO.getAll();
-//		for (Employee x : list) {
-//			System.out.println(x);
-//		}
-//		System.out.println("=============================");
+		List<Employee> list = employeeDAO.getAll();
+		for (Employee x : list) {
+			System.out.println(x);
+		}
+		System.out.println("=============================");
 //
 //		List<BalanceHistory> list1 = balanceHistoryDAO.getAll();
 //		for (BalanceHistory x : list1) {
@@ -132,7 +145,7 @@ public class GenericTest {
 
 //		========================= getBy 使用時需傳入 存放 ("變數名稱",搜尋數值) 的Map =========================
 //		Map<String, Object> map1 = new LinkedHashMap<>();
-//		map1.put("address", "台北市大安區456號");
+//		map1.put("address", "%1%");
 //		map1.put("phone", "0923456789");
 //		map1.put("deptId", 2);
 //		for (Employee x : employeeDAO.getBy(map1)) {
@@ -152,7 +165,14 @@ public class GenericTest {
 //		for (CategoryTags x : categorytagsDAO.getBy(map3)) {
 //			System.out.println(x);
 //		}
-
+//
 	}
-
+//	
+//	public static byte[] getPictureByteArray(String path) throws IOException {
+//        FileInputStream fis = new FileInputStream(path);
+//        byte[] pictureArr = fis.readAllBytes();
+//        fis.close();
+//        return pictureArr;
+//    }
+	
 }

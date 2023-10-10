@@ -123,9 +123,16 @@ public class Employee implements Serializable {
 
 	@Override
 	public String toString() {
+		String avatarStr ;
+		if( avatar == null ) {
+			avatarStr="null";
+		}else {
+			avatarStr = String.valueOf(avatar.length);
+		}
+		
 		return "Employee [empId=" + empId + ", deptId=" + deptId + ", empName=" + empName + ", phone=" + phone
 				+ ", address=" + address + ", email=" + email + ", pswdHash=" + pswdHash + ", empStatus=" + empStatus
-				+ ", avatar=" + Arrays.toString(avatar) + "]";
+				+ ", avatar=" + avatarStr + "]";
 	}
 
 }

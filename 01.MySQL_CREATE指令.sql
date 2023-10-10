@@ -394,7 +394,7 @@ CREATE TABLE employee
     email     VARCHAR(64)          DEFAULT '',
     pswdhash  VARCHAR(60) NOT NULL DEFAULT '',
     empstatus TINYINT              DEFAULT 0,
-    avatar    BLOB,
+    avatar    MEDIUMBLOB,
     PRIMARY KEY (empid)
 );
 

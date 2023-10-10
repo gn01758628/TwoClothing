@@ -18,26 +18,29 @@ public class GenericDAO<T> {
 	private final Map<String, Class<?>> fieldMap = new HashMap<>();
 
 	private static final String INSERT_TEMPLATE = "INSERT INTO %s (%s) VALUES (%s)";
-	private static final String UPDATE_TEMPLATE = "UPDATE %s SET %s WHERE %s";
-	private static final String DELETE_TEMPLATE = "DELETE FROM %s WHERE %s";
+	private static final String UPDATE_TEMPLATE = "UPDATE %s SET %s  %s";
+	private static final String DELETE_TEMPLATE = "DELETE FROM %s  %s";
 	private static final String GET_ALL_TEMPLATE = "SELECT * FROM %s";
-	private static final String GET_BY_TEMPLATE = "SELECT * FROM %s WHERE %s";
+	private static final String GET_BY_TEMPLATE = "SELECT * FROM %s %s";
 
 	public GenericDAO(Class<T> type) {
 		this.type = type;
 		fields = type.getDeclaredFields();
 		initializeFieldMap();
 	}
-	
+
 	private void initializeFieldMap() {
 		for (Field field : fields) {
 			field.setAccessible(true);
 			fieldMap.put(field.getName(), field.getType());
 		}
-    }
-	
+	}
 
 	public void insert(T entity) throws SQLException {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		
 		String tableName = type.getSimpleName().toLowerCase(); // 前提!!! 表格名稱要跟傳進來的類別名稱同名
 
@@ -46,9 +49,6 @@ public class GenericDAO<T> {
 		buildInsertQuery(columns, values, entity); // 取得傳進來的物件 若欄位值為null 不添加該欄位資料
 
 		String sql = String.format(INSERT_TEMPLATE, tableName, columns, values);
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 
 		try {
 			con = JDBCUtils.getConnection();
@@ -71,7 +71,7 @@ public class GenericDAO<T> {
 			int status = pstmt.executeUpdate();
 			if (status == 1) {
 				// 編寫新增成功的執行代碼
-				System.out.println("新增成功");
+				System.out.println("成功新增" + status + "筆資料");
 			} else {
 				// 編寫新增失敗的執行代碼
 				System.out.println("新增失敗");
@@ -84,18 +84,19 @@ public class GenericDAO<T> {
 	}
 
 	public void update(T entity, Map<String, Object> map) {
-		
-		String tableName = type.getSimpleName();
 
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String tableName = type.getSimpleName().toLowerCase();
 		StringBuilder pairs = new StringBuilder();
 		buildUpdateQuery(pairs, entity);
 		StringBuilder condition = new StringBuilder();
 		buildCondition(condition, map);
 
 		String sql = String.format(UPDATE_TEMPLATE, tableName, pairs, condition);
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+
 		try {
 			con = JDBCUtils.getConnection();
 			pstmt = con.prepareStatement(sql);
@@ -126,10 +127,11 @@ public class GenericDAO<T> {
 				} else {
 				}
 			}
+			System.out.println(sql);
 			int status = pstmt.executeUpdate();
-			if (status == 1) {
+			if (status >= 0) {
 				// 編寫新增成功的執行代碼
-				System.out.println("修改成功");
+				System.out.println("成功修改" + status + "筆資料");
 			} else {
 				// 編寫新增失敗的執行代碼
 				System.out.println("修改失敗");
@@ -143,59 +145,59 @@ public class GenericDAO<T> {
 	}
 
 	public void delete(Map<String, Object> map) {
-		String tableName = type.getSimpleName();
-		StringBuilder condition = new StringBuilder();
-		buildCondition(condition,map);
-		
-		String sql = String.format(DELETE_TEMPLATE, tableName,condition);
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int paraneterIndex = 1;
-		
+
+		String tableName = type.getSimpleName().toLowerCase();
+		StringBuilder condition = new StringBuilder();
+		buildCondition(condition, map);
+
+		String sql = String.format(DELETE_TEMPLATE, tableName, condition);
+
 		try {
 			con = JDBCUtils.getConnection();
 			pstmt = con.prepareStatement(sql);
-			
-			for(Map.Entry<String, Object> entry : map.entrySet()) {
+
+			for (Map.Entry<String, Object> entry : map.entrySet()) {
 				Object value = entry.getValue();
-				if( value != null ) {
+				if (value != null) {
 					Class<?> fieldType = fieldMap.get(entry.getKey());
-					Object convertedValue = convertToFieldType(value,fieldType);
+					Object convertedValue = convertToFieldType(value, fieldType);
 					pstmt.setObject(paraneterIndex, convertedValue);
 					paraneterIndex++;
-				}else {
-					
+				} else {
+
 				}
 			}
 			int status = pstmt.executeUpdate();
-			if (status == 1) {
+			if (status >= 0) {
 				// 編寫新增成功的執行代碼
-				System.out.println("刪除成功");
+				System.out.println("成功刪除" + status + "筆資料");
 			} else {
 				// 編寫新增失敗的執行代碼
 				System.out.println("刪除失敗");
 			}
-			
-			
-		}catch(Exception e) {
-			
-		}finally {
+
+		} catch (Exception e) {
+
+		} finally {
 			JDBCUtils.close(con, pstmt, rs);
 		}
-		
-		
+
 	}
 
 	public List<T> getAll() {
 
-		String tableName = type.getSimpleName().toLowerCase(); // 前提!!! 表格名稱要跟傳進來的類別名稱同名
-		String sql = String.format(GET_ALL_TEMPLATE, tableName); // 表格名填入SQL語句
 		List<T> list = new ArrayList<>();
-
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+
+		String tableName = type.getSimpleName().toLowerCase(); // 前提!!! 表格名稱要跟傳進來的類別名稱同名
+		String sql = String.format(GET_ALL_TEMPLATE, tableName); // 表格名填入SQL語句
 
 		try {
 			con = JDBCUtils.getConnection();
@@ -227,32 +229,28 @@ public class GenericDAO<T> {
 
 	public List<T> getBy(Map<String, Object> map) {
 
+		List<T> list = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int parameterIndex = 1;
+
 		// 以下針對SQL語句做補完
 		String tableName = type.getSimpleName().toLowerCase(); // 取得類別名
 		StringBuilder condition = new StringBuilder();
 		buildCondition(condition, map); // 補全condition對應問號
 		String sql = String.format(GET_BY_TEMPLATE, tableName, condition); // 補完SQL預設語句
 
-//		List attr = setAttr(type, map);//初版 根據鍵值對 填入欄位名稱 及對應資料 填入資料時同時做轉型確保跟物件變數類型一致
-
-		List<T> list = new ArrayList<>();
-
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		int parameterIndex = 1;
-
 		try {
 			con = JDBCUtils.getConnection();
 			pstmt = con.prepareStatement(sql);
-			
+
 			for (Map.Entry<String, Object> entry : map.entrySet()) {
 				String fieldName = entry.getKey();
 				Object value = entry.getValue();
 				Class<?> fieldType = fieldMap.get(fieldName);
 
 				if (value != null) {
-					// 將資料轉成對應變數名稱的類型
 					Object convertedValue = convertToFieldType(value, fieldType);
 					pstmt.setObject(parameterIndex, convertedValue);
 					parameterIndex++;
@@ -260,10 +258,6 @@ public class GenericDAO<T> {
 				}
 			}
 
-			// ============================= 初版
-//			for (int i = 0; i < attr.size(); i++) {
-//				pstmt.setObject(i + 1, attr.get(i));
-//			}
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -273,7 +267,7 @@ public class GenericDAO<T> {
 					String fieldName = field.getName(); // 獲取屬性名稱
 					Class<?> fieldType = fieldMap.get(fieldName); // 取得fieldMap中 對應的類型
 					Object value = rs.getObject(fieldName, fieldType);// 針對特定資料作類別處理
-//					Object value = getAttr(rs.getObject(fieldName));// 針對特定資料作類別處理
+
 					// 使用FieldUtils的writeField方法將資料設置到物件的屬性中
 					FieldUtils.writeField(field, entity, value);
 				}
@@ -289,17 +283,6 @@ public class GenericDAO<T> {
 		return list;
 
 	}
-
-//	public static Object getAttr(Object rs) {
-//		Object value = null;
-//		if (rs == null) {
-//		} else if (rs instanceof java.time.LocalDateTime) {// java.time.LocalDateTime 轉為 java.sql.Timestamp
-//			value = Timestamp.valueOf((java.time.LocalDateTime) rs);
-//		} else {
-//			value = rs;
-//		}
-//		return value;
-//	}
 
 	private Object convertToFieldType(Object value, Class<?> fieldType) {
 		if (fieldType.equals(Integer.class)) {
@@ -317,44 +300,10 @@ public class GenericDAO<T> {
 		return value;
 	}
 
-//	public static List setAttr(Class<?> type, Map<String, Object> map) { 初版
-//		List list = new ArrayList();
-//		for (Map.Entry<String, Object> entry : map.entrySet()) {
-//			try {
-//				String key = entry.getKey();
-//				Object value = entry.getValue();
-//				Field field = type.getDeclaredField(key);
-//				Class<?> fieldType = field.getType();
-//
-//				// 判斷值是否為 null
-//				if (value != null) {
-//
-//					// 進行類型判斷和轉型
-//					if (fieldType.equals(Integer.class)) {
-//						value = (Integer) value;
-//					} else if (fieldType.equals(String.class)) {
-//						value = (String) value;
-//					}
-//				else {
-//						// 處理其他數據類型
-//					}
-//					list.add(value);
-//				} else {
-//					// 值為null
-//				}
-//			} catch (NoSuchFieldException e) {
-//				// 處理異常
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		return list;
-//	}
-
-	public static <T> void buildInsertQuery(StringBuilder columns, StringBuilder values, T entity) {
-		Field[] fields = entity.getClass().getDeclaredFields();
+	private void buildInsertQuery(StringBuilder columns, StringBuilder values, T entity) {
+//		Field[] fields = entity.getClass().getDeclaredFields();
 		for (Field field : fields) {
-			field.setAccessible(true); // 將屬性設置為可訪問,即使是私有屬性也可以訪問
+//			field.setAccessible(true); // 將屬性設置為可訪問,即使是私有屬性也可以訪問
 
 			String fieldName = field.getName();
 			Object value = null;
@@ -376,7 +325,7 @@ public class GenericDAO<T> {
 
 	}
 
-	public static <T> void buildUpdateQuery(StringBuilder pairs, T entity) {
+	private void buildUpdateQuery(StringBuilder pairs, T entity) {
 		Field[] fields = entity.getClass().getDeclaredFields();
 		for (Field field : fields) {
 			field.setAccessible(true); // 將屬性設置為可訪問,即使是私有屬性也可以訪問
@@ -404,19 +353,26 @@ public class GenericDAO<T> {
 
 	}
 
-	public static void buildCondition(StringBuilder condition, Map<String, Object> map) {
+	private void buildCondition(StringBuilder condition, Map<String, Object> map) {
 		for (Map.Entry<String, Object> entry : map.entrySet()) {
 			// 判斷值是否為 null
+			String operater;
+			Class<?> fieldType = fieldMap.get(entry.getKey());
+			if (fieldType.equals(String.class)) {
+				operater = " LIKE ";
+			} else {
+				operater = " = ";
+			}
 			if (entry.getValue() != null) {
 				if (condition.length() > 0) {
 					condition.append(" AND ");
 					condition.append(entry.getKey());
-					condition.append(" = ");
+					condition.append(operater);
 					condition.append(" ? ");
 				} else {
-//					condition.append(" WHERE ");
+					condition.append(" WHERE ");
 					condition.append(entry.getKey());
-					condition.append(" = ");
+					condition.append(operater);
 					condition.append(" ? ");
 				}
 
