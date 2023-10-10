@@ -43,7 +43,11 @@ public class BidOrder implements Serializable {
 		this.sellerRatingDesc = sellerRatingDesc;
 		this.orderDate = orderDate;
 		this.payType = payType;
+<<<<<<< HEAD
 		this.payInfo = payInfo;
+=======
+		this.payInfo = paytInfo;
+>>>>>>> refs/heads/master
 		this.amount = amount;
 		this.orderStatus = orderStatus;
 		this.receiveAddress = receiveAddress;
@@ -57,7 +61,11 @@ public class BidOrder implements Serializable {
 		return "BidOrder [bidOrderId=" + bidOrderId + ", bidItemId=" + bidItemId + ", buyMbrId=" + buyMbrId
 				+ ", sellMbrId=" + sellMbrId + ", buyStar=" + buyStar + ", buyerRatingDesc=" + buyerRatingDesc
 				+ ", sellStar=" + sellStar + ", sellerRatingDesc=" + sellerRatingDesc + ", orderDate=" + orderDate
+<<<<<<< HEAD
 				+ ", payType=" + payType + ", payInfo=" + payInfo + ", amount=" + amount + ", orderStatus="
+=======
+				+ ", payType=" + payType + ", paytInfo=" + payInfo + ", amount=" + amount + ", orderStatus="
+>>>>>>> refs/heads/master
 				+ orderStatus + ", receiveAddress=" + receiveAddress + ", receiveMbrName=" + receiveMbrName
 				+ ", receivePhone=" + receivePhone + ", remarks=" + remarks + "]";
 	}
@@ -168,12 +176,21 @@ public class BidOrder implements Serializable {
 		this.payType = payType;
 	}
 
+<<<<<<< HEAD
 	public String getPayInfo() {
+=======
+	public String getPaytInfo() {
+>>>>>>> refs/heads/master
 		return payInfo;
 	}
 
+<<<<<<< HEAD
 	public void setPayInfo(String payInfo) {
 		this.payInfo = payInfo;
+=======
+	public void setPaytInfo(String paytInfo) {
+		this.payInfo = paytInfo;
+>>>>>>> refs/heads/master
 	}
 
 	public Integer getAmount() {
