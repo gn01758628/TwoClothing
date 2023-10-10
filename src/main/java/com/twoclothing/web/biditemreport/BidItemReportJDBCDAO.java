@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
-
+import java.sql.Types;
 
 import com.twoclothing.utils.JDBCUtils;
 
@@ -34,13 +34,13 @@ public class BidItemReportJDBCDAO implements BidItemReportDAO {
 			ps = conn.prepareStatement(INSERT);
 			ps.setInt(1, bidItemReport.getBidItemId());
 			ps.setInt(2, bidItemReport.getMbrId());
-			ps.setInt(3, bidItemReport.getEmpId());
+			ps.setObject(3, bidItemReport.getEmpId(), Types.INTEGER);
 			ps.setTimestamp(4, bidItemReport.getReportDate());
 			ps.setString(5, bidItemReport.getBidDescription());
 			ps.setInt(6, bidItemReport.getBidStatus());
-			ps.setTimestamp(7, bidItemReport.getAuditDate());
-			ps.setInt(8, bidItemReport.getResult());
-			ps.setString(9, bidItemReport.getNote());
+			ps.setObject(7, bidItemReport.getAuditDate(), Types.TIMESTAMP);
+			ps.setObject(8, bidItemReport.getResult(), Types.INTEGER);
+			ps.setObject(9, bidItemReport.getNote(), Types.VARCHAR);
 			count = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -80,7 +80,7 @@ public class BidItemReportJDBCDAO implements BidItemReportDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			JDBCUtils.close(conn, ps, null);
+			JDBCUtils.close(conn, ps, rs);
 		}
 
 		return bidItemReport;
@@ -118,14 +118,14 @@ public class BidItemReportJDBCDAO implements BidItemReportDAO {
 		PreparedStatement ps = null;
 		int count = 0 ;
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-
+        //修改的這裡應該是不會有NULL 但我還是一起改了
 		try {
 			conn = JDBCUtils.getConnection();
 			ps = conn.prepareStatement(UPDATE);
-			ps.setInt(1, bidItemReport.getEmpId());
+			ps.setObject(1, bidItemReport.getEmpId(), Types.INTEGER);
 			ps.setInt(2, bidItemReport.getBidStatus());
-			ps.setInt(3, bidItemReport.getResult());
-			ps.setString(4, bidItemReport.getNote());
+			ps.setObject(3, bidItemReport.getResult(), Types.INTEGER);
+			ps.setObject(4, bidItemReport.getNote(), Types.VARCHAR);
 			ps.setTimestamp(5, currentTimestamp);
 			ps.setInt(6, bidItemReport.getReportId());
 			count = ps.executeUpdate();
@@ -153,13 +153,13 @@ public class BidItemReportJDBCDAO implements BidItemReportDAO {
 			bidItemReport.setReportId(rs.getInt("reportId"));
 			bidItemReport.setBidItemId(rs.getInt("bidItemId"));
 			bidItemReport.setMbrId(rs.getInt("mbrId"));
-			bidItemReport.setEmpId(rs.getInt("empId"));
+			bidItemReport.setEmpId(rs.getObject("empId", Integer.class));
 			bidItemReport.setReportDate(rs.getTimestamp("reportDate"));
 			bidItemReport.setBidDescription(rs.getString("bidDescription"));
 			bidItemReport.setBidStatus(rs.getInt("bidStatus"));
-			bidItemReport.setAuditDate(rs.getTimestamp("auditDate"));
-			bidItemReport.setResult(rs.getInt("result"));
-			bidItemReport.setNote(rs.getString("note"));
+			bidItemReport.setAuditDate(rs.getObject("auditDate", Timestamp.class));
+			bidItemReport.setResult(rs.getObject("result", Integer.class));
+			bidItemReport.setNote(rs.getObject("note", String.class));
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

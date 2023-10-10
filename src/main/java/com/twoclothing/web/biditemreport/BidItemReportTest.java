@@ -6,8 +6,8 @@ import java.util.List;
 public class BidItemReportTest {
 	public static void main(String[] args) {		
 				
-		BidItemReport b1 = new BidItemReport(null, 1, 1001, 101, Timestamp.valueOf("2023-09-15 12:00:00"), "這個商品有問題", 0,
-				Timestamp.valueOf("2023-09-30 14:45:00"), 0, "無");
+		BidItemReport b1 = new BidItemReport(null, 1, 1001, null, Timestamp.valueOf("2023-09-15 12:00:00"), "這個商品有問題", 0,
+				null, 0, null);
 		BidItemReport b2 = new BidItemReport(null, 2, 1002, 102, Timestamp.valueOf("2023-09-28 09:45:00"), "賣家行為不當", 0,
 				Timestamp.valueOf("2023-09-28 10:00:00"), 1, "無");
 		BidItemReport b3 = new BidItemReport(null, 3, 1003, 103, Timestamp.valueOf("2023-09-25 16:20:00"), "商品描述不正確", 0,
@@ -34,7 +34,7 @@ public class BidItemReportTest {
 		// 查詢測試
         // 單筆查詢
 		BidItemReport byPrimaryKey = bidItemReportDAO.getByPrimaryKey(1);
-		BidItemReport byPrimaryKey5 = bidItemReportDAO.getByPrimaryKey(100);
+		BidItemReport byPrimaryKey5 = bidItemReportDAO.getByPrimaryKey(2);
 		System.out.println(byPrimaryKey);
 		System.out.println(byPrimaryKey5);
 		System.out.println("全部查詢=========================================================================================");
