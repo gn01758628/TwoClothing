@@ -9,6 +9,7 @@ import com.twoclothing.utils.JDBCUtils;
 public class BidOrderJDBCDAO implements BidOrderDAO {
 	public static final String INSERT = "INSERT INTO bidOrder(bidItemId, buyMbrId, sellMbrId, buyStar, buyerRatingDesc, sellStar, sellerRatingDesc, orderDate, payType, payInfo, amount, orderStatus, receiveAddress, receiveName, receivePhone, remarks) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	public static final String GET_BY_PK = "SELECT * FROM bidOrder WHERE bidOrderId = ? ";
+
 	public static final String GET_ALL = "SELECT * FROM bidOrder ORDER BY bidOrderId";
 	public static final String GET_ALL_BUYMBRID = "SELECT * FROM bidOrder WHERE buyMbrId = ? ORDER BY orderDate";
 	public static final String GET_ALL_SELLMBRID = "SELECT * FROM bidOrder WHERE sellMbrId = ? ORDER BY orderDate";
