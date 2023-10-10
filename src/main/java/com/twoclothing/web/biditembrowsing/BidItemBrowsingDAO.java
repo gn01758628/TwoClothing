@@ -1,5 +1,6 @@
 package com.twoclothing.web.biditembrowsing;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface BidItemBrowsingDAO {
@@ -13,6 +14,9 @@ public interface BidItemBrowsingDAO {
 	List<BidItemBrowsing> getAllByBidItemId(Integer bidItemId);
 	
 	List<BidItemBrowsing> getAllByMbrId(Integer mbrId);
+	
+	void update(Timestamp browsingTime,Integer mbrId,Integer bidItemId);
+	
 	
 	
 	

@@ -11,10 +11,10 @@ public interface BidOrderDAO {
 	List<BidOrder> getAll();
 
 	// 買家
-	List<BidOrder> getAllByBuyMemberId(Integer buyMbrId);
+	List<BidOrder> getAllByBuyMbrId(Integer buyMbrId);
 
 	// 賣家
-	List<BidOrder> getAllBySellMemberId(Integer sellMbrId);
+	List<BidOrder> getAllBySellMbrId(Integer sellMbrId);
 	
 	List<BidOrder> getAllByOrderStatus(Integer orderStatus);
 

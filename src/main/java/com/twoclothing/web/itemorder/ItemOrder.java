@@ -1,12 +1,11 @@
-package com.twoclothing.web.bidorder;
+package com.twoclothing.web.itemorder;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class BidOrder implements Serializable {
-	private Integer bidOrderId;
-	private Integer bidItemId;
+public class ItemOrder implements Serializable {
+	private Integer itemOrderId;
 	private Integer buyMbrId;
 	private Integer sellMbrId;
 	private Integer buyStar;
@@ -17,19 +16,22 @@ public class BidOrder implements Serializable {
 	private Integer payType;
 	private String payInfo;
 	private Integer amount;
+	private Integer pointDiscount;
+	private Integer finalAmount;
 	private Integer orderStatus;
 	private String receiveAddress;
 	private String receiveName;
 	private String receivePhone;
 	private String remarks;
 
-	public BidOrder() {
-
+	public ItemOrder() {
 	}
 
-	public BidOrder(Integer bidOrderId, Integer bidItemId, Integer buyMbrId, Integer sellMbrId, Integer buyStar, String buyerRatingDesc, Integer sellStar, String sellerRatingDesc, Timestamp orderDate, Integer payType, String payInfo, Integer amount, Integer orderStatus, String receiveAddress, String receiveName, String receivePhone, String remarks) {
-		this.bidOrderId = bidOrderId;
-		this.bidItemId = bidItemId;
+	public ItemOrder(Integer itemOrderId, Integer buyMbrId, Integer sellMbrId, Integer buyStar, String buyerRatingDesc,
+			Integer sellStar, String sellerRatingDesc, Timestamp orderDate, Integer payType, String payInfo,
+			Integer amount, Integer pointDiscount, Integer finalAmount, Integer orderStatus, String receiveAddress,
+			String receiveName, String receivePhone, String remarks) {
+		this.itemOrderId = itemOrderId;
 		this.buyMbrId = buyMbrId;
 		this.sellMbrId = sellMbrId;
 		this.buyStar = buyStar;
@@ -40,6 +42,8 @@ public class BidOrder implements Serializable {
 		this.payType = payType;
 		this.payInfo = payInfo;
 		this.amount = amount;
+		this.pointDiscount = pointDiscount;
+		this.finalAmount = finalAmount;
 		this.orderStatus = orderStatus;
 		this.receiveAddress = receiveAddress;
 		this.receiveName = receiveName;
@@ -49,54 +53,48 @@ public class BidOrder implements Serializable {
 
 	@Override
 	public String toString() {
-		return "BidOrder{" +
-				"bidOrderId=" + bidOrderId +
-				", bidItemId=" + bidItemId +
-				", buyMbrId=" + buyMbrId +
-				", sellMbrId=" + sellMbrId +
-				", buyStar=" + buyStar +
-				", buyerRatingDesc='" + buyerRatingDesc + '\'' +
-				", sellStar=" + sellStar +
-				", sellerRatingDesc='" + sellerRatingDesc + '\'' +
-				", orderDate=" + orderDate +
-				", payType=" + payType +
-				", payInfo='" + payInfo + '\'' +
-				", amount=" + amount +
-				", orderStatus=" + orderStatus +
-				", receiveAddress='" + receiveAddress + '\'' +
-				", receiveName='" + receiveName + '\'' +
-				", receivePhone='" + receivePhone + '\'' +
-				", remarks='" + remarks + '\'' +
-				'}';
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		BidOrder bidOrder = (BidOrder) o;
-		return Objects.equals(bidOrderId, bidOrder.bidOrderId) && Objects.equals(bidItemId, bidOrder.bidItemId) && Objects.equals(buyMbrId, bidOrder.buyMbrId) && Objects.equals(sellMbrId, bidOrder.sellMbrId) && Objects.equals(buyStar, bidOrder.buyStar) && Objects.equals(buyerRatingDesc, bidOrder.buyerRatingDesc) && Objects.equals(sellStar, bidOrder.sellStar) && Objects.equals(sellerRatingDesc, bidOrder.sellerRatingDesc) && Objects.equals(orderDate, bidOrder.orderDate) && Objects.equals(payType, bidOrder.payType) && Objects.equals(payInfo, bidOrder.payInfo) && Objects.equals(amount, bidOrder.amount) && Objects.equals(orderStatus, bidOrder.orderStatus) && Objects.equals(receiveAddress, bidOrder.receiveAddress) && Objects.equals(receiveName, bidOrder.receiveName) && Objects.equals(receivePhone, bidOrder.receivePhone) && Objects.equals(remarks, bidOrder.remarks);
+		return "ItemOrder [itemOrderId=" + itemOrderId + ", buyMbrId=" + buyMbrId + ", sellMbrId=" + sellMbrId
+				+ ", buyStar=" + buyStar + ", buyerRatingDesc=" + buyerRatingDesc + ", sellStar=" + sellStar
+				+ ", sellerRatingDesc=" + sellerRatingDesc + ", orderDate=" + orderDate + ", payType=" + payType
+				+ ", payInfo=" + payInfo + ", amount=" + amount + ", pointDiscount=" + pointDiscount + ", finalAmount="
+				+ finalAmount + ", orderStatus=" + orderStatus + ", receiveAddress=" + receiveAddress + ", receiveName="
+				+ receiveName + ", receivePhone=" + receivePhone + ", remarks=" + remarks + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(bidOrderId, bidItemId, buyMbrId, sellMbrId, buyStar, buyerRatingDesc, sellStar, sellerRatingDesc, orderDate, payType, payInfo, amount, orderStatus, receiveAddress, receiveName, receivePhone, remarks);
+		return Objects.hash(amount, buyMbrId, buyStar, buyerRatingDesc, finalAmount, itemOrderId, orderDate,
+				orderStatus, payInfo, payType, pointDiscount, receiveAddress, receiveName, receivePhone, remarks,
+				sellMbrId, sellStar, sellerRatingDesc);
 	}
 
-	public Integer getBidOrderId() {
-		return bidOrderId;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ItemOrder other = (ItemOrder) obj;
+		return Objects.equals(amount, other.amount) && Objects.equals(buyMbrId, other.buyMbrId)
+				&& Objects.equals(buyStar, other.buyStar) && Objects.equals(buyerRatingDesc, other.buyerRatingDesc)
+				&& Objects.equals(finalAmount, other.finalAmount) && Objects.equals(itemOrderId, other.itemOrderId)
+				&& Objects.equals(orderDate, other.orderDate) && Objects.equals(orderStatus, other.orderStatus)
+				&& Objects.equals(payInfo, other.payInfo) && Objects.equals(payType, other.payType)
+				&& Objects.equals(pointDiscount, other.pointDiscount)
+				&& Objects.equals(receiveAddress, other.receiveAddress)
+				&& Objects.equals(receiveName, other.receiveName) && Objects.equals(receivePhone, other.receivePhone)
+				&& Objects.equals(remarks, other.remarks) && Objects.equals(sellMbrId, other.sellMbrId)
+				&& Objects.equals(sellStar, other.sellStar) && Objects.equals(sellerRatingDesc, other.sellerRatingDesc);
 	}
 
-	public void setBidOrderId(Integer bidOrderId) {
-		this.bidOrderId = bidOrderId;
+	public Integer getItemOrderId() {
+		return itemOrderId;
 	}
 
-	public Integer getBidItemId() {
-		return bidItemId;
-	}
-
-	public void setBidItemId(Integer bidItemId) {
-		this.bidItemId = bidItemId;
+	public void setItemOrderId(Integer itemOrderId) {
+		this.itemOrderId = itemOrderId;
 	}
 
 	public Integer getBuyMbrId() {
@@ -177,6 +175,22 @@ public class BidOrder implements Serializable {
 
 	public void setAmount(Integer amount) {
 		this.amount = amount;
+	}
+
+	public Integer getPointDiscount() {
+		return pointDiscount;
+	}
+
+	public void setPointDiscount(Integer pointDiscount) {
+		this.pointDiscount = pointDiscount;
+	}
+
+	public Integer getFinalAmount() {
+		return finalAmount;
+	}
+
+	public void setFinalAmount(Integer finalAmount) {
+		this.finalAmount = finalAmount;
 	}
 
 	public Integer getOrderStatus() {
