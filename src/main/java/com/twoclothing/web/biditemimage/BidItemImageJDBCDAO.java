@@ -67,7 +67,7 @@ public class BidItemImageJDBCDAO implements BidItemImageDAO{
             if (rs.next()) {
             	bidItemImage = setBidItemImage(rs);
              } else {
-                System.out.println("未找到資料");
+                return null;
                 }
         	} catch (SQLException e) {
             e.printStackTrace();
