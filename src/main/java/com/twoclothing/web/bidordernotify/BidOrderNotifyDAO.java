@@ -10,11 +10,11 @@ public interface BidOrderNotifyDAO {
 
 	List<BidOrderNotify> getAll();
 
-	List<BidOrderNotify> getAllByMemberId(Integer mbrId);
+	List<BidOrderNotify> getAllByMbrId(Integer mbrId);
 
 	List<BidOrderNotify> getAllByBidOrderId(Integer bidOrderId);
 
-	void update(BidOrderNotify bidOrderNotify);
+	//void update(BidOrderNotify bidOrderNotify);
 	
 
 }
