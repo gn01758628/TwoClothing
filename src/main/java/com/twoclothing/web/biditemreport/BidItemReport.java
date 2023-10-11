@@ -4,16 +4,46 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class BidItemReport implements Serializable {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "bidorderreport")
+public class BidItemReport  {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "reportid", updatable = false)
 	private Integer reportId;
+	
+	@Column(name = "biditemid", updatable = false)
 	private Integer bidItemId;
+	
+	@Column(name = "mbrid", updatable = false)
 	private Integer mbrId;
+	
+	@Column(name = "empid")
 	private Integer empId;
+	
+	@Column(name = "reportdate", updatable = false)
 	private Timestamp reportDate;
+	
+	@Column(name = "biddescription", updatable = false)
 	private String bidDescription;
+	
+	@Column(name = "bidstatus")
 	private Integer bidStatus;
+	
+	@Column(name = "auditdate")
 	private Timestamp auditDate;
+	
+	@Column(name = "result")
 	private Integer result;
+	
+	@Column(name = "note")
 	private String note;
 
 	public BidItemReport() {

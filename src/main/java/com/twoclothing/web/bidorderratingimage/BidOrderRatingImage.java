@@ -4,9 +4,24 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class BidOrderRatingImage implements Serializable{
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+@Entity
+@Table(name = "bidorderratingimage")
+public class BidOrderRatingImage {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "imageid", updatable = false)
 	private Integer imageId;
+	
+	@Column(name = "bidorderid", updatable = false)
 	private Integer bidOrderId;
+	
+	@Column(name = "image")
 	private byte[] image;
 
 	public BidOrderRatingImage() {

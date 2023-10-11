@@ -4,23 +4,67 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class BidOrder implements Serializable {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "bidorder")
+public class BidOrder  {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "bidorderid", updatable = false)
 	private Integer bidOrderId;
+	
+	@Column(name = "bidItemId", updatable = false)
 	private Integer bidItemId;
+	
+	@Column(name = "buymbrid", updatable = false)
 	private Integer buyMbrId;
+	
+	@Column(name = "biditemid", updatable = false)
 	private Integer sellMbrId;
+	
+	@Column(name = "buystar")
 	private Integer buyStar;
+	
+	@Column(name = "buyerratingdesc")
 	private String buyerRatingDesc;
+	
+	@Column(name = "sellstar")
 	private Integer sellStar;
+	
+	@Column(name = "sellerratingdesc")
 	private String sellerRatingDesc;
+	
+	@Column(name = "orderdate", updatable = false)
 	private Timestamp orderDate;
+	
+	@Column(name = "paytype")
 	private Integer payType;
+	
+	@Column(name = "payinfo")
 	private String payInfo;
+	
+	@Column(name = "amount", updatable = false)
 	private Integer amount;
+	
+	@Column(name = "orderstatus")
 	private Integer orderStatus;
+	
+	@Column(name = "receiveaddress")
 	private String receiveAddress;
+	
+	@Column(name = "receivename")
 	private String receiveName;
+	
+	@Column(name = "receivephone")
 	private String receivePhone;
+	
+	@Column(name = "remarks")
 	private String remarks;
 
 	public BidOrder() {
