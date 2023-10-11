@@ -1,27 +1,69 @@
 package com.twoclothing.web.members;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Objects;
 
+@Entity
+@Table(name = "members")
 public class Members implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "mbrid", insertable = false)
     private Integer mbrId;
+
+    @Column(name = "mbrname", insertable = false)
     private String mbrName;
+
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
+
+    @Column(name = "pswdhash", nullable = false)
     private String pswdHash;
+
+    @Column(name = "mbrstatus", nullable = false)
     private Integer mbrStatus;
-    private byte[] avatar = null;
-    private byte[] shopImg01 = null;
-    private byte[] shopImg02 = null;
+
+    @Lob
+    @Column(name = "avatar", insertable = false)
+    private byte[] avatar;
+
+    @Lob
+    @Column(name = "shopimg01", insertable = false)
+    private byte[] shopImg01;
+
+    @Lob
+    @Column(name = "shopimg02", insertable = false)
+    private byte[] shopImg02;
+
+    @Column(name = "mbrpoint", insertable = false)
     private Integer mbrPoint = 0;
+
+    @Column(name = "balance", insertable = false)
     private Integer balance = 0;
+
+    @Column(name = "buystar", insertable = false)
     private Integer buyStar = 0;
+
+    @Column(name = "buyrating", insertable = false)
     private Integer buyRating = 0;
+
+    @Column(name = "sellstar", insertable = false)
     private Integer sellStar = 0;
+
+    @Column(name = "sellrating", insertable = false)
     private Integer sellRating = 0;
-    private Timestamp lastLogin = null;
+
+    @Column(name = "lastlogin", insertable = false)
+    private Timestamp lastLogin;
+
+    @Column(name = "sellscore", insertable = false)
     private Integer sellScore = 10;
+
+    @Column(name = "buyscore", insertable = false)
     private Integer buyScore = 10;
 
     public Members() {
