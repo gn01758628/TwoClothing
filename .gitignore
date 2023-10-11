@@ -8,4 +8,3 @@ bin/
 *.iws
 *.iml
 *.ipr
-src/main/resource/hibernate.cfg.xml
