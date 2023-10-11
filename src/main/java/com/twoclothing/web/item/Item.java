@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Item implements Serializable{
 	private Integer itemId;
-	private String name;
+	private String itemName;
 	private String detail;
 	private Integer tadId;
 	private Integer mbrId;
@@ -15,11 +15,10 @@ public class Item implements Serializable{
 	
 	public Item() {
 	}
-	
-	public Item(Integer itemId, String name, String detail, Integer tadId, Integer mbrId, Integer price,
-			Integer itemStatus, Integer quantity) {
+
+	public Item(Integer itemId, String itemName, String detail, Integer tadId, Integer mbrId, Integer price, Integer itemStatus, Integer quantity) {
 		this.itemId = itemId;
-		this.name = name;
+		this.itemName = itemName;
 		this.detail = detail;
 		this.tadId = tadId;
 		this.mbrId = mbrId;
@@ -27,31 +26,32 @@ public class Item implements Serializable{
 		this.itemStatus = itemStatus;
 		this.quantity = quantity;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Item [itemId=" + itemId + ", name=" + name + ", detail=" + detail + ", tadId=" + tadId + ", mbrId="
-				+ mbrId + ", price=" + price + ", itemStatus=" + itemStatus + ", quantity=" + quantity + "]";
+		return "Item{" +
+				"itemId=" + itemId +
+				", itemName='" + itemName + '\'' +
+				", detail='" + detail + '\'' +
+				", tadId=" + tadId +
+				", mbrId=" + mbrId +
+				", price=" + price +
+				", itemStatus=" + itemStatus +
+				", quantity=" + quantity +
+				'}';
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Item item = (Item) o;
+		return Objects.equals(itemId, item.itemId) && Objects.equals(itemName, item.itemName) && Objects.equals(detail, item.detail) && Objects.equals(tadId, item.tadId) && Objects.equals(mbrId, item.mbrId) && Objects.equals(price, item.price) && Objects.equals(itemStatus, item.itemStatus) && Objects.equals(quantity, item.quantity);
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(detail, itemId, itemStatus, mbrId, name, price, quantity, tadId);
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Item other = (Item) obj;
-		return Objects.equals(detail, other.detail) && Objects.equals(itemId, other.itemId)
-				&& Objects.equals(itemStatus, other.itemStatus) && Objects.equals(mbrId, other.mbrId)
-				&& Objects.equals(name, other.name) && Objects.equals(price, other.price)
-				&& Objects.equals(quantity, other.quantity) && Objects.equals(tadId, other.tadId);
+		return Objects.hash(itemId, itemName, detail, tadId, mbrId, price, itemStatus, quantity);
 	}
 
 	public Integer getItemId() {
@@ -62,12 +62,12 @@ public class Item implements Serializable{
 		this.itemId = itemId;
 	}
 
-	public String getName() {
-		return name;
+	public String getItemName() {
+		return itemName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
 	}
 
 	public String getDetail() {
