@@ -60,7 +60,7 @@
 		<mapping class="com.twoclothing.web.ordernotify.OrderNotify"/>
 		<mapping class="com.twoclothing.web.orderratingimage.OrderRatingImage"/>
 		<mapping class="com.twoclothing.web.orderreport.OrderReport"/>
-		<mapping class="com.twoclothing.web.Permission.Permission"/>
+		<mapping class="com.twoclothing.web.permission.Permission"/>
 		<mapping class="com.twoclothing.web.pointhistory.PointHistory"/>
 		<mapping class="com.twoclothing.web.shipsetting.ShipSetting"/>
 		<mapping class="com.twoclothing.web.withdrawrequest.WithdrawRequest"/>
