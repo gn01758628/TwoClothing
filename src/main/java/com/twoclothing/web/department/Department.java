@@ -3,18 +3,27 @@ package com.twoclothing.web.department;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Department implements Serializable {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+
+
+@Entity
+@Table(name = "department")
+public class Department implements Serializable {
+	@Id
+	@Column(name = "deptid")
 	public Integer deptId; // 部門編號
+	@Column(name = "deptname")
 	public String deptName; // 部門名稱
 
 	public Department() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Department(String deptName) {
-		super();
 		this.deptName = deptName;
 	}
 
