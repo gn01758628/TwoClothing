@@ -258,8 +258,8 @@ VALUES (1, 500, '1234567890', '2023-10-01', 0, NULL, NULL, '申請中'),
        (10, 250, '9876123450', '2023-10-10', 0, NULL, NULL, '申請中');
 
 -- 表格：會員虛擬錢包提款申請 檢查
-SELECT * FROM withdrawrequest;
-DESCRIBE withdrawrequest;
+-- SELECT * FROM withdrawrequest;
+-- DESCRIBE withdrawrequest;
 
 -- 表格：會員虛擬錢包提款申請 添加FK
 -- ALTER TABLE withdrawrequest
@@ -631,8 +631,8 @@ INSERT INTO item (itemname, detail, tagid, mbrid, price, itemstatus, quantity) V
 ('Product 10', 'Description for Product 10', 3, 10, 160, 0, 7);
 
 -- 表格：一般商品 檢查
-SELECT * FROM item;
-DESCRIBE item;
+-- SELECT * FROM item;
+-- DESCRIBE item;
 
 -- 表格：一般商品 添加FK
 -- ALTER TABLE item
