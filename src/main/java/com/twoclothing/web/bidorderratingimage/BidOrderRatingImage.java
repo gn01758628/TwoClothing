@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
 @Table(name = "bidorderratingimage")
-public class BidOrderRatingImage {
+public class BidOrderRatingImage implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "imageid", updatable = false)

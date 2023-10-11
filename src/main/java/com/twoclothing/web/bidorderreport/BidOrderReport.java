@@ -1,5 +1,6 @@
 package com.twoclothing.web.bidorderreport;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "bidorderreport")
-public class BidOrderReport  {
+public class BidOrderReport  implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "reportid", updatable = false)

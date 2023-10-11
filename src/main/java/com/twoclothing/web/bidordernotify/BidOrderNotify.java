@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "bidordernotify")
-public class BidOrderNotify {
+public class BidOrderNotify implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "notifyid", updatable = false)
