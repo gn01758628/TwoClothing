@@ -1,6 +1,6 @@
 package com.twoclothing.web.categorytags;
 
-import com.twoclothing.utils.JDBCUtils;
+import com.twoclothing.utils.JDBCUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class CategoryTagsJDBCDAO implements CategoryTagsDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(INSERT);
             ps.setObject(1, categoryTags.getSuperTagId(), Types.INTEGER);
             ps.setString(2, categoryTags.getCategoryName());
@@ -46,7 +46,7 @@ public class CategoryTagsJDBCDAO implements CategoryTagsDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -66,7 +66,7 @@ public class CategoryTagsJDBCDAO implements CategoryTagsDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_BY_PK);
             ps.setInt(1, tagId);
             rs = ps.executeQuery();
@@ -80,7 +80,7 @@ public class CategoryTagsJDBCDAO implements CategoryTagsDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
         return categoryTags;
     }
@@ -107,7 +107,7 @@ public class CategoryTagsJDBCDAO implements CategoryTagsDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE);
             ps.setObject(1, categoryTags.getSuperTagId(), Types.INTEGER);
             ps.setString(2, categoryTags.getCategoryName());
@@ -117,7 +117,7 @@ public class CategoryTagsJDBCDAO implements CategoryTagsDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -153,7 +153,7 @@ public class CategoryTagsJDBCDAO implements CategoryTagsDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(by);
             if (byid.length == 1) ps.setInt(1, byid[0]);
             rs = ps.executeQuery();
@@ -164,7 +164,7 @@ public class CategoryTagsJDBCDAO implements CategoryTagsDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
 
         if (list.isEmpty()) list.add(null);

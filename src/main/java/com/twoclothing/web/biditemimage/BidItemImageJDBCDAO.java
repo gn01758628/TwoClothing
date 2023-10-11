@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.twoclothing.utils.JDBCUtils;
+import com.twoclothing.utils.JDBCUtil;
 
 
 public class BidItemImageJDBCDAO implements BidItemImageDAO{
@@ -29,7 +29,7 @@ public class BidItemImageJDBCDAO implements BidItemImageDAO{
 		int count = 0;
 		
 		try {
-			conn=JDBCUtils.getConnection();
+			conn= JDBCUtil.getConnection();
 			ps = conn.prepareStatement(INSERT);
             ps.setInt(1, bidItemImage.getImageId());
             ps.setInt(2, bidItemImage.getBidItemId());
@@ -45,7 +45,7 @@ public class BidItemImageJDBCDAO implements BidItemImageDAO{
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
           }
         }
     
@@ -60,7 +60,7 @@ public class BidItemImageJDBCDAO implements BidItemImageDAO{
         ResultSet rs = null;
 		
 		try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_BY_PK);
             ps.setInt(1, imageId);
             rs = ps.executeQuery();
@@ -72,7 +72,7 @@ public class BidItemImageJDBCDAO implements BidItemImageDAO{
         	} catch (SQLException e) {
             e.printStackTrace();
         	} finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         	}
         	return bidItemImage;
 		}
@@ -117,7 +117,7 @@ public class BidItemImageJDBCDAO implements BidItemImageDAO{
 	        ResultSet rs = null;
 
 	        try {
-	            conn = JDBCUtils.getConnection();
+	            conn = JDBCUtil.getConnection();
 	            ps = conn.prepareStatement(by);
 	            if (byid.length == 1) ps.setObject(1, byid[0]);
 	            rs = ps.executeQuery();
@@ -128,7 +128,7 @@ public class BidItemImageJDBCDAO implements BidItemImageDAO{
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        } finally {
-	            JDBCUtils.close(conn, ps, rs);
+	            JDBCUtil.close(conn, ps, rs);
 	        }
 
 	        if (list.isEmpty()) list.add(null);

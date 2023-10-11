@@ -1,6 +1,6 @@
 package com.twoclothing.web.employee;
 
-import com.twoclothing.utils.JDBCUtils;
+import com.twoclothing.utils.JDBCUtil;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
@@ -39,7 +39,7 @@ public class EmployeeJDBCDAO implements EmployeeDAO {
 		ResultSet rs = null;
 
 		try {
-			con = JDBCUtils.getConnection();
+			con = JDBCUtil.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_STMT);
 			rs = pstmt.executeQuery();
 
@@ -63,7 +63,7 @@ public class EmployeeJDBCDAO implements EmployeeDAO {
 		} catch (SQLException se) {
 			throw new RuntimeException("資料庫操作失敗 " + se.getMessage());
 		} finally {
-			JDBCUtils.close(con, pstmt, rs);
+			JDBCUtil.close(con, pstmt, rs);
 		}
 		return list;
 

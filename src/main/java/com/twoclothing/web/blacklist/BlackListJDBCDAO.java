@@ -1,6 +1,6 @@
 package com.twoclothing.web.blacklist;
 
-import com.twoclothing.utils.JDBCUtils;
+import com.twoclothing.utils.JDBCUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,7 +29,7 @@ public class BlackListJDBCDAO implements BlackListDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(INSERT);
             ps.setInt(1, blackList.getMbrId());
             ps.setInt(2, blackList.getBlackId());
@@ -38,7 +38,7 @@ public class BlackListJDBCDAO implements BlackListDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
         if (count == 1) {
             // 編寫新增成功的執行代碼
@@ -57,7 +57,7 @@ public class BlackListJDBCDAO implements BlackListDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_BY_CPK);
             ps.setInt(1, mbrId);
             ps.setInt(2, blackId);
@@ -71,7 +71,7 @@ public class BlackListJDBCDAO implements BlackListDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
         return blackList;
     }
@@ -98,7 +98,7 @@ public class BlackListJDBCDAO implements BlackListDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(DELETE);
             ps.setInt(1, mbrId);
             ps.setInt(2, blackId);
@@ -106,7 +106,7 @@ public class BlackListJDBCDAO implements BlackListDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -139,7 +139,7 @@ public class BlackListJDBCDAO implements BlackListDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(by);
             if (byid.length == 1) ps.setInt(1, byid[0]);
             rs = ps.executeQuery();
@@ -150,7 +150,7 @@ public class BlackListJDBCDAO implements BlackListDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
 
         if (list.isEmpty()) list.add(null);

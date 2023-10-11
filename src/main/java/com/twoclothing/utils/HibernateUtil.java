@@ -6,36 +6,35 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 public class HibernateUtil {
-	private static StandardServiceRegistry registry;
-	private static final SessionFactory sessionFactory = createSessionFactory();
-	
-	public static SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
+    private static StandardServiceRegistry registry;
+    private static final SessionFactory sessionFactory = createSessionFactory();
 
-	private static SessionFactory createSessionFactory() {
-		try {
+    public static SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
 
-			registry = new StandardServiceRegistryBuilder()
-					.configure()
-					.build();
+    private static SessionFactory createSessionFactory() {
+        try {
 
-			SessionFactory sessionFactory = new MetadataSources(registry)
-					.buildMetadata()
-					.buildSessionFactory();
+            registry = new StandardServiceRegistryBuilder()
+                    .configure()
+                    .build();
 
-			return sessionFactory;
+            SessionFactory sessionFactory = new MetadataSources(registry)
+                    .buildMetadata()
+                    .buildSessionFactory();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new ExceptionInInitializerError(e);
-		}
+            return sessionFactory;
 
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ExceptionInInitializerError(e);
+        }
 
-	public static void shutdown() {
-		if (registry != null)
-			StandardServiceRegistryBuilder.destroy(registry);
-	}
-	
+    }
+
+    public static void shutdown() {
+        if (registry != null)
+            StandardServiceRegistryBuilder.destroy(registry);
+    }
 }

@@ -1,12 +1,10 @@
-package com.twoclothing.utils;
+package com.twoclothing.utils.test;
 
-import com.twoclothing.utils.JDBCUtils;
+import com.twoclothing.utils.JDBCUtil;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -51,7 +49,7 @@ public class GenericDAO<T> {
 		String sql = String.format(INSERT_TEMPLATE, tableName, columns, values);
 
 		try {
-			con = JDBCUtils.getConnection();
+			con = JDBCUtil.getConnection();
 			pstmt = con.prepareStatement(sql);
 			int parameterIndex = 1;
 
@@ -79,7 +77,7 @@ public class GenericDAO<T> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtils.close(con, pstmt, rs);
+			JDBCUtil.close(con, pstmt, rs);
 		}
 	}
 
@@ -98,7 +96,7 @@ public class GenericDAO<T> {
 		String sql = String.format(UPDATE_TEMPLATE, tableName, pairs, condition);
 
 		try {
-			con = JDBCUtils.getConnection();
+			con = JDBCUtil.getConnection();
 			pstmt = con.prepareStatement(sql);
 			int parameterIndex = 1;
 
@@ -139,7 +137,7 @@ public class GenericDAO<T> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtils.close(con, pstmt, rs);
+			JDBCUtil.close(con, pstmt, rs);
 		}
 
 	}
@@ -158,7 +156,7 @@ public class GenericDAO<T> {
 		String sql = String.format(DELETE_TEMPLATE, tableName, condition);
 
 		try {
-			con = JDBCUtils.getConnection();
+			con = JDBCUtil.getConnection();
 			pstmt = con.prepareStatement(sql);
 
 			for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -184,7 +182,7 @@ public class GenericDAO<T> {
 		} catch (Exception e) {
 
 		} finally {
-			JDBCUtils.close(con, pstmt, rs);
+			JDBCUtil.close(con, pstmt, rs);
 		}
 
 	}
@@ -200,7 +198,7 @@ public class GenericDAO<T> {
 		String sql = String.format(GET_ALL_TEMPLATE, tableName); // 表格名填入SQL語句
 
 		try {
-			con = JDBCUtils.getConnection();
+			con = JDBCUtil.getConnection();
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
@@ -221,7 +219,7 @@ public class GenericDAO<T> {
 		} catch (Exception e) {
 			e.printStackTrace(); // 異常處理
 		} finally {
-			JDBCUtils.close(con, pstmt, rs);
+			JDBCUtil.close(con, pstmt, rs);
 		}
 
 		return list;
@@ -242,7 +240,7 @@ public class GenericDAO<T> {
 		String sql = String.format(GET_BY_TEMPLATE, tableName, condition); // 補完SQL預設語句
 
 		try {
-			con = JDBCUtils.getConnection();
+			con = JDBCUtil.getConnection();
 			pstmt = con.prepareStatement(sql);
 
 			for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -277,7 +275,7 @@ public class GenericDAO<T> {
 		} catch (Exception e) {
 			e.printStackTrace(); // 處理異常
 		} finally {
-			JDBCUtils.close(con, pstmt, rs);
+			JDBCUtil.close(con, pstmt, rs);
 		}
 
 		return list;

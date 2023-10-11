@@ -1,6 +1,6 @@
 package com.twoclothing.web.chatroomlog;
 
-import com.twoclothing.utils.JDBCUtils;
+import com.twoclothing.utils.JDBCUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class ChatRoomLogJDBCDAO implements ChatRoomLogDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(INSERT);
             ps.setObject(1, chatRoomLog.getReceiveId(), Types.INTEGER);
             ps.setObject(2, chatRoomLog.getSentId(), Types.INTEGER);
@@ -39,7 +39,7 @@ public class ChatRoomLogJDBCDAO implements ChatRoomLogDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
         if (count == 1) {
             // 編寫新增成功的執行代碼
@@ -58,7 +58,7 @@ public class ChatRoomLogJDBCDAO implements ChatRoomLogDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_BY_PK);
             ps.setInt(1, logId);
             rs = ps.executeQuery();
@@ -72,7 +72,7 @@ public class ChatRoomLogJDBCDAO implements ChatRoomLogDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
         return chatRoomLog;
     }
@@ -85,7 +85,7 @@ public class ChatRoomLogJDBCDAO implements ChatRoomLogDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_ALL);
             rs = ps.executeQuery();
 
@@ -95,7 +95,7 @@ public class ChatRoomLogJDBCDAO implements ChatRoomLogDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
 
         if (list.isEmpty()) list.add(null);
@@ -111,7 +111,7 @@ public class ChatRoomLogJDBCDAO implements ChatRoomLogDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_MEMBER_LOG);
             ps.setInt(1, memberAId);
             ps.setInt(2, memberBId);
@@ -125,7 +125,7 @@ public class ChatRoomLogJDBCDAO implements ChatRoomLogDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
 
         if (list.isEmpty()) list.add(null);
@@ -141,7 +141,7 @@ public class ChatRoomLogJDBCDAO implements ChatRoomLogDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_SERVICE_LOG);
             ps.setInt(1, memberId);
             ps.setInt(2, memberId);
@@ -153,7 +153,7 @@ public class ChatRoomLogJDBCDAO implements ChatRoomLogDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
 
         if (list.isEmpty()) list.add(null);
@@ -169,7 +169,7 @@ public class ChatRoomLogJDBCDAO implements ChatRoomLogDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_LOG_BY_EMPID);
             ps.setInt(1, empId);
             rs = ps.executeQuery();
@@ -180,7 +180,7 @@ public class ChatRoomLogJDBCDAO implements ChatRoomLogDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
 
         if (list.isEmpty()) list.add(null);

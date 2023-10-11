@@ -1,6 +1,6 @@
 package com.twoclothing.web.members;
 
-import com.twoclothing.utils.JDBCUtils;
+import com.twoclothing.utils.JDBCUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class MembersJDBCDAO implements MembersDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(INSERT);
             ps.setString(1, members.getEmail());
             ps.setString(2, members.getPswdHash());
@@ -67,7 +67,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -88,7 +88,7 @@ public class MembersJDBCDAO implements MembersDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_BY_PK);
             ps.setInt(1, mbrId);
             rs = ps.executeQuery();
@@ -101,7 +101,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
         return members;
     }
@@ -138,7 +138,7 @@ public class MembersJDBCDAO implements MembersDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE_NAME);
             ps.setObject(1, members.getMbrName(), Types.VARCHAR);
             ps.setInt(2, members.getMbrId());
@@ -146,7 +146,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -165,7 +165,7 @@ public class MembersJDBCDAO implements MembersDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE_PSWD_HASH);
             ps.setString(1, members.getPswdHash());
             ps.setInt(2, members.getMbrId());
@@ -173,7 +173,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -192,7 +192,7 @@ public class MembersJDBCDAO implements MembersDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE_MBR_STATUS);
             ps.setInt(1, members.getMbrStatus());
             ps.setInt(2, members.getMbrId());
@@ -200,7 +200,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -219,7 +219,7 @@ public class MembersJDBCDAO implements MembersDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE_AVATAR);
             ps.setBytes(1, members.getAvatar());
             ps.setInt(2, members.getMbrId());
@@ -227,7 +227,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -246,7 +246,7 @@ public class MembersJDBCDAO implements MembersDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE_SHOP_IMG01);
             ps.setBytes(1, members.getShopImg01());
             ps.setInt(2, members.getMbrId());
@@ -254,7 +254,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -273,7 +273,7 @@ public class MembersJDBCDAO implements MembersDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE_SHOP_IMG02);
             ps.setBytes(1, members.getShopImg02());
             ps.setInt(2, members.getMbrId());
@@ -281,7 +281,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -300,7 +300,7 @@ public class MembersJDBCDAO implements MembersDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE_MBR_POINT);
             ps.setInt(1, members.getMbrPoint());
             ps.setInt(2, members.getMbrId());
@@ -308,7 +308,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -327,7 +327,7 @@ public class MembersJDBCDAO implements MembersDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE_BALANCE);
             ps.setInt(1, members.getBalance());
             ps.setInt(2, members.getMbrId());
@@ -335,7 +335,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -354,7 +354,7 @@ public class MembersJDBCDAO implements MembersDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE_BUY_STAR_RATING);
             ps.setInt(1, members.getBuyStar());
             ps.setInt(2, members.getBuyRating());
@@ -363,7 +363,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -382,7 +382,7 @@ public class MembersJDBCDAO implements MembersDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE_SELL_STAR_RATING);
             ps.setInt(1, members.getSellStar());
             ps.setInt(2, members.getSellRating());
@@ -391,7 +391,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -410,7 +410,7 @@ public class MembersJDBCDAO implements MembersDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE_LAST_LOGIN);
             ps.setObject(1, members.getLastLogin(), Types.TIMESTAMP);
             ps.setInt(2, members.getMbrId());
@@ -418,7 +418,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -437,7 +437,7 @@ public class MembersJDBCDAO implements MembersDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE_SELL_SCORE);
             ps.setInt(1, members.getSellScore());
             ps.setInt(2, members.getMbrId());
@@ -445,7 +445,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -464,7 +464,7 @@ public class MembersJDBCDAO implements MembersDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE_BUY_SCORE);
             ps.setInt(1, members.getBuyScore());
             ps.setInt(2, members.getMbrId());
@@ -472,7 +472,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -491,14 +491,14 @@ public class MembersJDBCDAO implements MembersDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(DELETE);
             ps.setInt(1, mbrId);
             count = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -548,7 +548,7 @@ public class MembersJDBCDAO implements MembersDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(by);
             if (byid.length == 1) ps.setObject(1, byid[0]);
             rs = ps.executeQuery();
@@ -559,7 +559,7 @@ public class MembersJDBCDAO implements MembersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
 
         if (list.isEmpty()) list.add(null);

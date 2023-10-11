@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.twoclothing.utils.JDBCUtils;
+import com.twoclothing.utils.JDBCUtil;
 
 public class BidOrderNotifyJDBCDAO implements BidOrderNotifyDAO{
 	
@@ -27,7 +27,7 @@ public class BidOrderNotifyJDBCDAO implements BidOrderNotifyDAO{
 		int count = 0;
 		
 		try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtil.getConnection();
 			ps = conn.prepareStatement(INSERT);
 			ps.setInt(1, bidOrderNotif.getMbrId());
 			ps.setInt(2, bidOrderNotif.getBidOrderId());
@@ -40,7 +40,7 @@ public class BidOrderNotifyJDBCDAO implements BidOrderNotifyDAO{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-			JDBCUtils.close(conn, ps, null);
+			JDBCUtil.close(conn, ps, null);
 		}
 
 		if (count == 1) {
@@ -62,7 +62,7 @@ public class BidOrderNotifyJDBCDAO implements BidOrderNotifyDAO{
 		ResultSet rs = null;
 
 		try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtil.getConnection();
 			ps = conn.prepareStatement(GET_BY_PK);
 			ps.setInt(1, notifyId);
 			rs = ps.executeQuery();
@@ -76,7 +76,7 @@ public class BidOrderNotifyJDBCDAO implements BidOrderNotifyDAO{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-			JDBCUtils.close(conn, ps, rs);
+			JDBCUtil.close(conn, ps, rs);
 		}
 
 		return bidOrderNotify;
@@ -133,7 +133,7 @@ public class BidOrderNotifyJDBCDAO implements BidOrderNotifyDAO{
         ResultSet rs = null;
         
 		try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtil.getConnection();
 			ps = conn.prepareStatement(by);
 			if (byid.length ==1) ps.setInt(1, byid[0]);
 			rs = ps.executeQuery();
@@ -146,7 +146,7 @@ public class BidOrderNotifyJDBCDAO implements BidOrderNotifyDAO{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
         
         if(list.isEmpty()) list.add(null);
