@@ -1,6 +1,6 @@
 package com.twoclothing.web.balancehistory;
 
-import com.twoclothing.utils.JDBCUtils;
+import com.twoclothing.utils.JDBCUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(INSERT);
             ps.setInt(1, balanceHistory.getMbrId());
             ps.setObject(2, balanceHistory.getOrderId(), Types.INTEGER);
@@ -32,7 +32,7 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
         if (count == 1) {
             // 編寫新增成功的執行代碼
@@ -51,7 +51,7 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_BY_PK);
             ps.setInt(1, balanceId);
             rs = ps.executeQuery();
@@ -65,7 +65,7 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
         return balanceHistory;
     }
@@ -107,7 +107,7 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(by);
             if (byid.length == 1) ps.setInt(1, byid[0]);
             rs = ps.executeQuery();
@@ -118,7 +118,7 @@ public class BalanceHistoryJDBCDAO implements BalanceHistoryDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
 
         if (list.isEmpty()) list.add(null);

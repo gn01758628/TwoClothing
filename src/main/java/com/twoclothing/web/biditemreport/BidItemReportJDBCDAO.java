@@ -9,7 +9,7 @@ import java.util.List;
 import java.sql.Timestamp;
 import java.sql.Types;
 
-import com.twoclothing.utils.JDBCUtils;
+import com.twoclothing.utils.JDBCUtil;
 
 public class BidItemReportJDBCDAO implements BidItemReportDAO {
 
@@ -30,7 +30,7 @@ public class BidItemReportJDBCDAO implements BidItemReportDAO {
 		int count = 0;
 
 		try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtil.getConnection();
 			ps = conn.prepareStatement(INSERT);
 			ps.setInt(1, bidItemReport.getBidItemId());
 			ps.setInt(2, bidItemReport.getMbrId());
@@ -45,7 +45,7 @@ public class BidItemReportJDBCDAO implements BidItemReportDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtils.close(conn, ps, null);
+			JDBCUtil.close(conn, ps, null);
 		}
 
 		if (count == 1) {
@@ -66,7 +66,7 @@ public class BidItemReportJDBCDAO implements BidItemReportDAO {
 		ResultSet rs = null;
 
 		try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtil.getConnection();
 			ps = conn.prepareStatement(GET_BY_PK);
 			ps.setInt(1, reportId);
 			rs = ps.executeQuery();
@@ -80,7 +80,7 @@ public class BidItemReportJDBCDAO implements BidItemReportDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			JDBCUtils.close(conn, ps, rs);
+			JDBCUtil.close(conn, ps, rs);
 		}
 
 		return bidItemReport;
@@ -120,7 +120,7 @@ public class BidItemReportJDBCDAO implements BidItemReportDAO {
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
         //修改的這裡應該是不會有NULL 但我還是一起改了
 		try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtil.getConnection();
 			ps = conn.prepareStatement(UPDATE);
 			ps.setObject(1, bidItemReport.getEmpId(), Types.INTEGER);
 			ps.setInt(2, bidItemReport.getBidStatus());
@@ -133,7 +133,7 @@ public class BidItemReportJDBCDAO implements BidItemReportDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -175,7 +175,7 @@ public class BidItemReportJDBCDAO implements BidItemReportDAO {
         ResultSet rs = null;
         
         try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtil.getConnection();
 			ps = conn.prepareStatement(by);
 			if (byid.length ==1) ps.setInt(1, byid[0]);
 			rs = ps.executeQuery();
@@ -187,7 +187,7 @@ public class BidItemReportJDBCDAO implements BidItemReportDAO {
         } catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
         
         if(list.isEmpty()) list.add(null);

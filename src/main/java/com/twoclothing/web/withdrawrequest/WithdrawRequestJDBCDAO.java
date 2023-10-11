@@ -1,6 +1,6 @@
 package com.twoclothing.web.withdrawrequest;
 
-import com.twoclothing.utils.JDBCUtils;
+import com.twoclothing.utils.JDBCUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class WithdrawRequestJDBCDAO implements WithdrawRequestDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(INSERT);
             ps.setInt(1, withdrawRequest.getMbrId());
             ps.setInt(2, withdrawRequest.getAmount());
@@ -43,7 +43,7 @@ public class WithdrawRequestJDBCDAO implements WithdrawRequestDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -64,7 +64,7 @@ public class WithdrawRequestJDBCDAO implements WithdrawRequestDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_BY_PK);
             ps.setInt(1, wrId);
             rs = ps.executeQuery();
@@ -78,7 +78,7 @@ public class WithdrawRequestJDBCDAO implements WithdrawRequestDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
         return withdrawRequest;
     }
@@ -110,7 +110,7 @@ public class WithdrawRequestJDBCDAO implements WithdrawRequestDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE);
             ps.setInt(1, withdrawRequest.getMbrId());
             ps.setInt(2, withdrawRequest.getAmount());
@@ -126,7 +126,7 @@ public class WithdrawRequestJDBCDAO implements WithdrawRequestDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -167,7 +167,7 @@ public class WithdrawRequestJDBCDAO implements WithdrawRequestDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(by);
             if (byid.length == 1) ps.setInt(1, byid[0]);
             rs = ps.executeQuery();
@@ -178,7 +178,7 @@ public class WithdrawRequestJDBCDAO implements WithdrawRequestDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
 
         if (list.isEmpty()) list.add(null);

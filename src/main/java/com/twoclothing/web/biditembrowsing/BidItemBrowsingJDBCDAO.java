@@ -5,12 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.twoclothing.utils.JDBCUtils;
-import com.twoclothing.web.biditemreport.BidItemReport;
+import com.twoclothing.utils.JDBCUtil;
 
 
 public class BidItemBrowsingJDBCDAO implements BidItemBrowsingDAO{
@@ -34,7 +32,7 @@ public class BidItemBrowsingJDBCDAO implements BidItemBrowsingDAO{
 		int count = 0;
 		
 		try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtil.getConnection();
 			ps =conn.prepareStatement(INSERT);
 			ps.setInt(1,bidItemBrowsing.getMbrId());
 			ps.setInt(2,bidItemBrowsing.getBidItemId());
@@ -44,7 +42,7 @@ public class BidItemBrowsingJDBCDAO implements BidItemBrowsingDAO{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-			JDBCUtils.close(conn, ps, null);
+			JDBCUtil.close(conn, ps, null);
 		}
 		   if (count == 1) {
 	            // 編寫新增成功的執行代碼
@@ -67,7 +65,7 @@ public class BidItemBrowsingJDBCDAO implements BidItemBrowsingDAO{
         ResultSet rs = null;
 		
 		try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_BY_CPK);
             ps.setInt(1,mbrId);
             ps.setInt(2,bidItemId);
@@ -80,7 +78,7 @@ public class BidItemBrowsingJDBCDAO implements BidItemBrowsingDAO{
         	} catch (SQLException e) {
             e.printStackTrace();
         	} finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         	}
         	return bidItemBrowsing;
 		}
@@ -97,7 +95,7 @@ public class BidItemBrowsingJDBCDAO implements BidItemBrowsingDAO{
 		int count = 0 ;
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
         try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtil.getConnection();
 			ps = conn.prepareStatement(UPDATE);
 			ps.setTimestamp(1, currentTimestamp);
 			ps.setInt(2, mbrId);
@@ -107,7 +105,7 @@ public class BidItemBrowsingJDBCDAO implements BidItemBrowsingDAO{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -162,7 +160,7 @@ public class BidItemBrowsingJDBCDAO implements BidItemBrowsingDAO{
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(by);
             if (byid.length == 1) ps.setInt(1, byid[0]);
             rs = ps.executeQuery();
@@ -173,7 +171,7 @@ public class BidItemBrowsingJDBCDAO implements BidItemBrowsingDAO{
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
 
         if (list.isEmpty()) list.add(null);

@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.twoclothing.utils.JDBCUtils;
+import com.twoclothing.utils.JDBCUtil;
 
 public class BidOrderJDBCDAO implements BidOrderDAO {
 	public static final String INSERT = "INSERT INTO bidOrder(bidItemId, buyMbrId, sellMbrId, buyStar, buyerRatingDesc, sellStar, sellerRatingDesc, orderDate, payType, payInfo, amount, orderStatus, receiveAddress, receiveName, receivePhone, remarks) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -22,7 +22,7 @@ public class BidOrderJDBCDAO implements BidOrderDAO {
 		int count = 0;
 
 		try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtil.getConnection();
 			ps = conn.prepareStatement(INSERT);
 			ps.setInt(1, bidorder.getBidItemId());
 			ps.setInt(2, bidorder.getBuyMbrId());
@@ -45,7 +45,7 @@ public class BidOrderJDBCDAO implements BidOrderDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			JDBCUtils.close(conn, ps, null);
+			JDBCUtil.close(conn, ps, null);
 		}
 
 		if (count == 1) {
@@ -66,7 +66,7 @@ public class BidOrderJDBCDAO implements BidOrderDAO {
 		ResultSet rs = null;
 		
 		try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtil.getConnection();
 			ps = conn.prepareStatement(GET_BY_PK);
 			ps.setInt(1, bidOrderId);
 			rs = ps.executeQuery();
@@ -81,7 +81,7 @@ public class BidOrderJDBCDAO implements BidOrderDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-			JDBCUtils.close(conn, ps, rs);
+			JDBCUtil.close(conn, ps, rs);
 		}
 
 		return bidOrder;
@@ -114,7 +114,7 @@ public class BidOrderJDBCDAO implements BidOrderDAO {
 		int count = 0 ;
 		
 		try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtil.getConnection();
 			ps = conn.prepareStatement(UPDATE);
 			ps.setObject(1, bidorder.getBuyStar(), Types.INTEGER);
 			ps.setObject(2, bidorder.getBuyerRatingDesc(), Types.VARCHAR);
@@ -131,7 +131,7 @@ public class BidOrderJDBCDAO implements BidOrderDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -183,7 +183,7 @@ public class BidOrderJDBCDAO implements BidOrderDAO {
         ResultSet rs = null;
         
 		try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtil.getConnection();
 			ps = conn.prepareStatement(by);
 			if(byid.length == 1) ps.setInt(1, byid[0]);
 			rs = ps.executeQuery();
@@ -196,7 +196,7 @@ public class BidOrderJDBCDAO implements BidOrderDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
         
         if(list.isEmpty()) list.add(null);

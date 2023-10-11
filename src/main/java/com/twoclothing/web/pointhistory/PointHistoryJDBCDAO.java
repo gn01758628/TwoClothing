@@ -1,6 +1,6 @@
 package com.twoclothing.web.pointhistory;
 
-import com.twoclothing.utils.JDBCUtils;
+import com.twoclothing.utils.JDBCUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +23,7 @@ public class PointHistoryJDBCDAO implements PointHistoryDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(INSERT);
             ps.setInt(1, pointHistory.getMbrId());
             ps.setInt(2, pointHistory.getOrderId());
@@ -33,7 +33,7 @@ public class PointHistoryJDBCDAO implements PointHistoryDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
         if (count == 1) {
             // 編寫新增成功的執行代碼
@@ -53,7 +53,7 @@ public class PointHistoryJDBCDAO implements PointHistoryDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_BY_PK);
             ps.setInt(1, pointId);
             rs = ps.executeQuery();
@@ -67,7 +67,7 @@ public class PointHistoryJDBCDAO implements PointHistoryDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
         return pointHistory;
     }
@@ -107,7 +107,7 @@ public class PointHistoryJDBCDAO implements PointHistoryDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(by);
             if (byid.length == 1) ps.setInt(1, byid[0]);
             rs = ps.executeQuery();
@@ -118,7 +118,7 @@ public class PointHistoryJDBCDAO implements PointHistoryDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
 
         if (list.isEmpty()) list.add(null);

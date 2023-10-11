@@ -1,6 +1,6 @@
 package com.twoclothing.web.shipsetting;
 
-import com.twoclothing.utils.JDBCUtils;
+import com.twoclothing.utils.JDBCUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,7 +31,7 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(INSERT);
             ps.setInt(1, shipSetting.getMbrId());
             ps.setString(2, shipSetting.getReceiveName());
@@ -41,7 +41,7 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -61,7 +61,7 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_BY_PK);
             ps.setInt(1, shipId);
             rs = ps.executeQuery();
@@ -74,7 +74,7 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
         return shipSetting;
     }
@@ -96,7 +96,7 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE);
             ps.setInt(1, shipSetting.getMbrId());
             ps.setString(2, shipSetting.getReceiveName());
@@ -107,7 +107,7 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -126,14 +126,14 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(DELETE);
             ps.setInt(1, shipId);
             count = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -169,7 +169,7 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
         ResultSet rs = null;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(by);
             if (byid.length == 1) ps.setInt(1, byid[0]);
             rs = ps.executeQuery();
@@ -180,7 +180,7 @@ public class ShipSettingJDBCDAO implements ShipSettingDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
 
         if (list.isEmpty()) list.add(null);

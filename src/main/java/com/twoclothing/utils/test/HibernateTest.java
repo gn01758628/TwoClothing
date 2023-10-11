@@ -1,4 +1,4 @@
-package com.twoclothing.utils;
+package com.twoclothing.utils.test;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

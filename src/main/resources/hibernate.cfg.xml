@@ -27,7 +27,43 @@
 		
 		
 		<!-- 類別映射 -->
+		<mapping class="com.twoclothing.web.balancehistory.BalanceHistory"/>
+		<mapping class="com.twoclothing.web.biditem.BidItem"/>
+		<mapping class="com.twoclothing.web.biditembrowsing.BidItemBrowsing"/>
+		<mapping class="com.twoclothing.web.biditemimage.BidItemImage"/>
+		<mapping class="com.twoclothing.web.biditemreport.BidItemReport"/>
+		<mapping class="com.twoclothing.web.bidorder.BidOrder"/>
+		<mapping class="com.twoclothing.web.bidordernotify.BidOrderNotify"/>
+		<mapping class="com.twoclothing.web.bidorderratingimage.BidOrderRatingImage"/>
+		<mapping class="com.twoclothing.web.bidorderreport.BidOrderReport"/>
+		<mapping class="com.twoclothing.web.bidrecord.BidRecord"/>
+		<mapping class="com.twoclothing.web.blacklist.BlackList"/>
+		<mapping class="com.twoclothing.web.cartdetail.CartDetail"/>
+		<mapping class="com.twoclothing.web.categorytags.CategoryTags"/>
+		<mapping class="com.twoclothing.web.chatroomlog.ChatRoomLog"/>
+		<mapping class="com.twoclothing.web.coupon.Coupon"/>
 		<mapping class="com.twoclothing.web.department.Department"/>
+		<mapping class="com.twoclothing.web.employee.Employee"/>
+		<mapping class="com.twoclothing.web.employeemission.EmployeeMission"/>
+		<mapping class="com.twoclothing.web.follow.Follow"/>
+		<mapping class="com.twoclothing.web.item.Item"/>
+		<mapping class="com.twoclothing.web.itembrowsing.ItemBrowsing"/>
+		<mapping class="com.twoclothing.web.itemimage.ItemImage"/>
+		<mapping class="com.twoclothing.web.itemorder.ItemOrder"/>
+		<mapping class="com.twoclothing.web.itemreport.ItemReport"/>
+		<mapping class="com.twoclothing.web.itemtracking.ItemTracking"/>
+		<mapping class="com.twoclothing.web.latestnews.LatestNews"/>
+		<mapping class="com.twoclothing.web.members.Members"/>
+		<mapping class="com.twoclothing.web.memberscoupon.MembersCoupon"/>
+		<mapping class="com.twoclothing.web.newsimage.NewsImage"/>
+		<mapping class="com.twoclothing.web.orderdetails.OrderDetails"/>
+		<mapping class="com.twoclothing.web.ordernotify.OrderNotify"/>
+		<mapping class="com.twoclothing.web.orderratingimage.OrderRatingImage"/>
+		<mapping class="com.twoclothing.web.orderreport.OrderReport"/>
+		<mapping class="com.twoclothing.web.Permission.Permission"/>
+		<mapping class="com.twoclothing.web.pointhistory.PointHistory"/>
+		<mapping class="com.twoclothing.web.shipsetting.ShipSetting"/>
+		<mapping class="com.twoclothing.web.withdrawrequest.WithdrawRequest"/>
 		
 	</session-factory>
 </hibernate-configuration>

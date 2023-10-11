@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import com.twoclothing.utils.JDBCUtils;
+import com.twoclothing.utils.JDBCUtil;
 
 
 public class CartDetailJDBCDAO implements CartDetailDAO {
@@ -30,7 +30,7 @@ public class CartDetailJDBCDAO implements CartDetailDAO {
 	    int count = 0;
 		
 	    try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtil.getConnection();
 			ps = conn.prepareStatement(INSERT);
 			ps.setInt(1, cartdetail.getCartId());
 	        ps.setInt(2, cartdetail.getMbrId());
@@ -40,7 +40,7 @@ public class CartDetailJDBCDAO implements CartDetailDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 	    
 	    if (count == 1) {
@@ -61,7 +61,7 @@ public class CartDetailJDBCDAO implements CartDetailDAO {
 	    ResultSet rs = null;
 	    
 	    try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_BY_PK);
             ps.setInt(1, cartId);
             rs = ps.executeQuery();
@@ -74,7 +74,7 @@ public class CartDetailJDBCDAO implements CartDetailDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
         return cartDetail;
 	}
@@ -100,7 +100,7 @@ public class CartDetailJDBCDAO implements CartDetailDAO {
 	    ResultSet rs = null;
 	    
 	    try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_ALL);
             rs = ps.executeQuery();
 
@@ -110,7 +110,7 @@ public class CartDetailJDBCDAO implements CartDetailDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
 
         if (list.isEmpty()) list.add(null);
@@ -125,7 +125,7 @@ public class CartDetailJDBCDAO implements CartDetailDAO {
 	    ResultSet rs = null;
 	    
 	    try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(GET_ALL_BY_MBRID);
             ps.setInt(1, mbrId);
             rs = ps.executeQuery();
@@ -137,7 +137,7 @@ public class CartDetailJDBCDAO implements CartDetailDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            JDBCUtils.close(conn, ps, rs);
+            JDBCUtil.close(conn, ps, rs);
         }
 
         if (list.isEmpty()) list.add(null);
@@ -151,7 +151,7 @@ public class CartDetailJDBCDAO implements CartDetailDAO {
         int count = 0;
         
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(UPDATE);
             ps.setInt(1, cartDetail.getCartId());
             ps.setInt(2, cartDetail.getMbrId());
@@ -161,7 +161,7 @@ public class CartDetailJDBCDAO implements CartDetailDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {
@@ -180,14 +180,14 @@ public class CartDetailJDBCDAO implements CartDetailDAO {
         int count = 0;
 
         try {
-            conn = JDBCUtils.getConnection();
+            conn = JDBCUtil.getConnection();
             ps = conn.prepareStatement(DELETE);
             ps.setInt(1, cartId);
             count = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.close(conn, ps, null);
+            JDBCUtil.close(conn, ps, null);
         }
 
         if (count == 1) {

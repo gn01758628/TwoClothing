@@ -1,24 +1,12 @@
-package com.twoclothing.utils;
+package com.twoclothing.utils.test;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 //引用的JavaAPI
-import java.util.ArrayList;
 import java.util.List;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Random;
 
 //測試用的各類別VO
-import com.twoclothing.utils.GenericDAO;
-import com.twoclothing.web.balancehistory.BalanceHistory;
+		import com.twoclothing.web.balancehistory.BalanceHistory;
 import com.twoclothing.web.categorytags.CategoryTags;
-import com.twoclothing.web.categorytags.CategoryTagsDAO;
-import com.twoclothing.web.categorytags.CategoryTagsJDBCDAO;
-import com.twoclothing.web.employee.Employee;
+		import com.twoclothing.web.employee.Employee;
 
 public class GenericTest {
 
