@@ -1030,7 +1030,7 @@ DROP TABLE IF EXISTS biditem;
 -- 表格：競標商品 創建
 CREATE TABLE biditem
 (
-    biditemid    INT         NOT NULL,
+    biditemid    INT AUTO_INCREMENT NOT NULL,
     bidname      VARCHAR(20) NOT NULL,
     detail       VARCHAR(200),
     tagid        INT         NOT NULL,

@@ -4,18 +4,52 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name= "biditem")
 public class BidItem implements Serializable{
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "biditemid", updatable = false)
 	private Integer bidItemId;
+	
+	@Column(name = "bidname")
 	private String bidName;
+	
+	@Column(name = "detail")
 	private String detail;
+	
+	@Column(name = "tagid")
 	private Integer tagId;
+	
+	@Column(name = "mbrid")
 	private Integer mbrId;
+	
+	@Column(name = "starprice")
 	private Integer starPrice;
+	
+	@Column(name = "reserveprice")
 	private Integer reservePrice;
+	
+	@Column(name = "directprice")
 	private Integer directPrice;
+	
+	@Column(name = "bidstatus")
 	private Integer bidStatus;
+	
+	@Column(name = "starttime")
 	private Timestamp startTime;
+	
+	@Column(name = "endtime")
 	private Timestamp endTime;
+	
+	@Column(name = "empid")
 	private Integer empId;
 	
 	public BidItem() {
