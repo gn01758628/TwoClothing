@@ -1,4 +1,4 @@
-package com.twoclothing.web.orderreport;
+package com.twoclothing.web.aproduct.orderreport;
 
 import java.sql.Timestamp;
 import java.util.List;

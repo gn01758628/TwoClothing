@@ -7,7 +7,7 @@ import java.util.Objects;
 public class ItemReport implements Serializable {
 	private Integer reportId;
 	private Integer itemId;
-	private Integer mbrID;
+	private Integer mbrId;
 	private Integer empId;
 	private Timestamp reportDate;
 	private String description;
@@ -19,11 +19,11 @@ public class ItemReport implements Serializable {
 	public ItemReport() {
 	}
 	
-	public ItemReport(Integer reportId, Integer itemId, Integer mbrID, Integer empId, Timestamp reportDate,
+	public ItemReport(Integer reportId, Integer itemId, Integer mbrId, Integer empId, Timestamp reportDate,
 			String description, Integer rStatus, Timestamp auditDate, Integer result, String note) {
 		this.reportId = reportId;
 		this.itemId = itemId;
-		this.mbrID = mbrID;
+		this.mbrId = mbrId;
 		this.empId = empId;
 		this.reportDate = reportDate;
 		this.description = description;
@@ -35,14 +35,14 @@ public class ItemReport implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "ItemReport [reportId=" + reportId + ", itemId=" + itemId + ", mbrID=" + mbrID + ", empId=" + empId
+		return "ItemReport [reportId=" + reportId + ", itemId=" + itemId + ", mbrID=" + mbrId + ", empId=" + empId
 				+ ", reportDate=" + reportDate + ", description=" + description + ", rStatus=" + rStatus
 				+ ", auditDate=" + auditDate + ", result=" + result + ", note=" + note + "]";
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(auditDate, description, empId, itemId, mbrID, note, rStatus, reportDate, reportId, result);
+		return Objects.hash(auditDate, description, empId, itemId, mbrId, note, rStatus, reportDate, reportId, result);
 	}
 	
 	@Override
@@ -56,7 +56,7 @@ public class ItemReport implements Serializable {
 		ItemReport other = (ItemReport) obj;
 		return Objects.equals(auditDate, other.auditDate) && Objects.equals(description, other.description)
 				&& Objects.equals(empId, other.empId) && Objects.equals(itemId, other.itemId)
-				&& Objects.equals(mbrID, other.mbrID) && Objects.equals(note, other.note)
+				&& Objects.equals(mbrId, other.mbrId) && Objects.equals(note, other.note)
 				&& Objects.equals(rStatus, other.rStatus) && Objects.equals(reportDate, other.reportDate)
 				&& Objects.equals(reportId, other.reportId) && Objects.equals(result, other.result);
 	}
@@ -77,12 +77,12 @@ public class ItemReport implements Serializable {
 		this.itemId = itemId;
 	}
 	
-	public Integer getMbrID() {
-		return mbrID;
+	public Integer getMbrId() {
+		return mbrId;
 	}
 	
-	public void setMbrID(Integer mbrID) {
-		this.mbrID = mbrID;
+	public void setMbrId(Integer mbrId) {
+		this.mbrId = mbrId;
 	}
 	
 	public Integer getEmpId() {
@@ -109,11 +109,11 @@ public class ItemReport implements Serializable {
 		this.description = description;
 	}
 	
-	public Integer getrStatus() {
+	public Integer getRStatus() {
 		return rStatus;
 	}
 	
-	public void setrStatus(Integer rStatus) {
+	public void setRStatus(Integer rStatus) {
 		this.rStatus = rStatus;
 	}
 	
