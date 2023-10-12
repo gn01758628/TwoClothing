@@ -993,16 +993,16 @@ DROP TABLE IF EXISTS biditem;
 CREATE TABLE biditem
 (
     biditemid    INT AUTO_INCREMENT NOT NULL,
-    bidname      VARCHAR(20) NOT NULL,
-    detail       VARCHAR(200),
-    tagid        INT         NOT NULL,
-    mbrid        INT         NOT NULL,
-    startprice   INT         NOT NULL,
-    reserveprice INT         NOT NULL,
-    directprice  INT         NOT NULL,
-    bidstatus    TINYINT     NOT NULL,
-    starttime    DATETIME    NOT NULL,
-    endtime      DATETIME    NOT NULL,
+    bidname      VARCHAR(20)  NOT NULL,
+    detail       VARCHAR(200) NOT NULL,
+    tagid        INT          NOT NULL,
+    mbrid        INT          NOT NULL,
+    startprice   INT          NOT NULL,
+    reserveprice INT          NOT NULL,
+    directprice  INT          NOT NULL,
+    bidstatus    TINYINT      NOT NULL,
+    starttime    DATETIME     NOT NULL,
+    endtime      DATETIME     NOT NULL,
     empid        INT,
     PRIMARY KEY (biditemid)
 );
@@ -1039,7 +1039,7 @@ CREATE TABLE biditemimage
 (
     imageid   INT NOT NULL AUTO_INCREMENT,
     biditemid INT NOT NULL,
-    image     MEDIUMBLOB,
+    image     MEDIUMBLOB NOT NULL,
     PRIMARY KEY (imageid)
 );
 
