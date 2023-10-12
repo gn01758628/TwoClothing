@@ -237,7 +237,7 @@ CREATE TABLE withdrawrequest
     amount    INT         NOT NULL,
     mbraccount   VARCHAR(20) NOT NULL,
     reqdate   DATETIME    NOT NULL,
-    reqstatus TINYINT     NOT NULL,
+    reqstatus TINYINT     NOT NULL DEFAULT 0 ,
     empid     INT,
     checkdate DATETIME,
     note      VARCHAR(20),
@@ -314,9 +314,9 @@ CREATE TABLE shipsetting
 (
     shipid  INT AUTO_INCREMENT NOT NULL,
     mbrid   INT NOT NULL,
-    receivename    VARCHAR(20),
-    receivephone   VARCHAR(10),
-    receiveaddress VARCHAR(100),
+    receivename    VARCHAR(20) NOT NULL,
+    receivephone   VARCHAR(10) NOT NULL,
+    receiveaddress VARCHAR(100) NOT NULL,
     PRIMARY KEY (shipid)
 );
 

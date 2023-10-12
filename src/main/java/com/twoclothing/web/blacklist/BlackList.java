@@ -1,9 +1,6 @@
 package com.twoclothing.web.blacklist;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,86 +8,47 @@ import java.util.Objects;
 @Table(name = "blacklist")
 public class BlackList implements Serializable {
 
-    @Id
-    @Column(name = "mbrid")
-    private Integer mbrId;
-
-    @Id
-    @Column(name = "blackid")
-    private Integer blackId;
-
-    CompositeDetail getCompositeKey() {
-        return new CompositeDetail(mbrId, blackId);
-    }
-
-    void setCompositeKey(CompositeDetail key) {
-        this.mbrId = key.getMbrId();
-        this.blackId = key.getBlackId();
-    }
+    @EmbeddedId
+    private CompositeDetail compositeKey;
 
     public BlackList() {
     }
 
-    public BlackList(Integer mbrId, Integer blackId) {
-        this.mbrId = mbrId;
-        this.blackId = blackId;
+    public BlackList(CompositeDetail compositeKey) {
+        this.compositeKey = compositeKey;
     }
 
     @Override
     public String toString() {
         return "BlackList{" +
-                "mbrId=" + mbrId +
-                ", BlackId=" + blackId +
+                "compositeKey=" + compositeKey +
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BlackList blackList = (BlackList) o;
-        return Objects.equals(mbrId, blackList.mbrId) && Objects.equals(blackId, blackList.blackId);
+    public CompositeDetail getCompositeKey() {
+        return compositeKey;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(mbrId, blackId);
+    public void setCompositeKey(CompositeDetail compositeKey) {
+        this.compositeKey = compositeKey;
     }
 
-    public Integer getMbrId() {
-        return mbrId;
-    }
+    @Embeddable
+    public static class CompositeDetail implements Serializable {
+        private static final long serialVersionUID = 1L;
 
-    public void setMbrId(Integer mbrId) {
-        this.mbrId = mbrId;
-    }
+        @Column(name = "mbrid")
+        private Integer mbrid;
 
-    public Integer getBlackId() {
-        return blackId;
-    }
-
-    public void setBlackId(Integer blackId) {
-        this.blackId = blackId;
-    }
-
-    static class CompositeDetail implements Serializable {
-        private Integer mbrId;
-        private Integer blackId;
+        @Column(name = "blackid")
+        private Integer blackid;
 
         public CompositeDetail() {
         }
 
-        public CompositeDetail(Integer mbrId, Integer blackId) {
-            this.mbrId = mbrId;
-            this.blackId = blackId;
-        }
-
-        @Override
-        public String toString() {
-            return "CompositeDetail{" +
-                    "mbrId=" + mbrId +
-                    ", blackId=" + blackId +
-                    '}';
+        public CompositeDetail(Integer mbrid, Integer blackid) {
+            this.mbrid = mbrid;
+            this.blackid = blackid;
         }
 
         @Override
@@ -98,28 +56,29 @@ public class BlackList implements Serializable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             CompositeDetail that = (CompositeDetail) o;
-            return Objects.equals(mbrId, that.mbrId) && Objects.equals(blackId, that.blackId);
+            return Objects.equals(mbrid, that.mbrid) && Objects.equals(blackid, that.blackid);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(mbrId, blackId);
+            return Objects.hash(mbrid, blackid);
         }
 
-        public Integer getMbrId() {
-            return mbrId;
+        public Integer getMbrid() {
+            return mbrid;
         }
 
-        public void setMbrId(Integer mbrId) {
-            this.mbrId = mbrId;
+        public void setMbrid(Integer mbrid) {
+            this.mbrid = mbrid;
         }
 
-        public Integer getBlackId() {
-            return blackId;
+        public Integer getBlackid() {
+            return blackid;
         }
 
-        public void setBlackId(Integer blackId) {
-            this.blackId = blackId;
+        public void setBlackid(Integer blackid) {
+            this.blackid = blackid;
         }
     }
 }
+

@@ -1,18 +1,41 @@
 package com.twoclothing.web.withdrawrequest;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+@Entity
+@Table(name = "withdrawrequest")
 public class WithdrawRequest implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "wrid", insertable = false, updatable = false)
     private Integer wrId;
+
+    @Column(name = "mbrid", updatable = false, nullable = false)
     private Integer mbrId;
+
+    @Column(name = "amount", updatable = false, nullable = false)
     private Integer amount;
+
+    @Column(name = "mbraccount", updatable = false, nullable = false)
     private String mbrAccount;
+
+    @Column(name = "reqdate", updatable = false, nullable = false)
     private Timestamp reqDate;
+
+    @Column(name = "reqstatus", insertable = false, nullable = false)
     private Integer reqStatus;
+
+    @Column(name = "empid", insertable = false)
     private Integer empId;
+
+    @Column(name = "checkdate", insertable = false)
     private Timestamp checkDate;
+
+    @Column(name = "note", insertable = false)
     private String note;
 
     public WithdrawRequest() {

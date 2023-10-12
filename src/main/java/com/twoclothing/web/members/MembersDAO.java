@@ -5,7 +5,7 @@ import java.util.List;
 public interface MembersDAO {
 
     /**
-     * 新增時只新增(email,pswdhash,mbrstatus)
+     * 新增時只新增(email,pswdhash)
      */
     void insert(Members members);
 

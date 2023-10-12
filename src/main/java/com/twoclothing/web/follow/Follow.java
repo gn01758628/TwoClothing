@@ -1,9 +1,6 @@
 package com.twoclothing.web.follow;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,88 +8,46 @@ import java.util.Objects;
 @Table(name = "follow")
 public class Follow implements Serializable {
 
-    @Id
-    @Column(name = "mbrid")
-    private Integer mbrId;
-
-    @Id
-    @Column(name = "followid")
-    private Integer followId;
-
-    CompositeDetail getCompositeKey() {
-        return new CompositeDetail(mbrId, followId);
-    }
-
-    void setCompositeKey(CompositeDetail key) {
-        this.mbrId = key.getMbrId();
-        this.followId = key.getFollowId();
-    }
+    @EmbeddedId
+    private CompositeDetail compositeKey;
 
     public Follow() {
     }
 
-    public Follow(Integer mbrId, Integer followId) {
-        this.mbrId = mbrId;
-        this.followId = followId;
+    public Follow(CompositeDetail compositeKey) {
+        this.compositeKey = compositeKey;
     }
 
     @Override
     public String toString() {
         return "Follow{" +
-                "mbrId=" + mbrId +
-                ", followId=" + followId +
+                "compositeKey=" + compositeKey +
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Follow follow = (Follow) o;
-        return Objects.equals(mbrId, follow.mbrId) && Objects.equals(followId, follow.followId);
+    public CompositeDetail getCompositeKey() {
+        return compositeKey;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(mbrId, followId);
+    public void setCompositeKey(CompositeDetail compositeKey) {
+        this.compositeKey = compositeKey;
     }
 
-    public Integer getMbrId() {
-        return mbrId;
-    }
+    @Embeddable
+    public static class CompositeDetail implements Serializable {
 
-    public void setMbrId(Integer mbrId) {
-        this.mbrId = mbrId;
-    }
-
-    public Integer getFollowId() {
-        return followId;
-    }
-
-    public void setFollowId(Integer followId) {
-        this.followId = followId;
-    }
-
-
-    static class CompositeDetail implements Serializable {
-        private static final long serialVersionUID = 1L;
+        @Column(name = "mbrid")
         private Integer mbrId;
-        private Integer followId;
+
+        @Column(name = "followid")
+        private Integer followid;
 
         public CompositeDetail() {
         }
 
-        public CompositeDetail(Integer mbrId, Integer followId) {
+        public CompositeDetail(Integer mbrId, Integer followid) {
             this.mbrId = mbrId;
-            this.followId = followId;
-        }
-
-        @Override
-        public String toString() {
-            return "CompositeDetail{" +
-                    "mbrId=" + mbrId +
-                    ", followId=" + followId +
-                    '}';
+            this.followid = followid;
         }
 
         @Override
@@ -100,12 +55,12 @@ public class Follow implements Serializable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             CompositeDetail that = (CompositeDetail) o;
-            return Objects.equals(mbrId, that.mbrId) && Objects.equals(followId, that.followId);
+            return Objects.equals(mbrId, that.mbrId) && Objects.equals(followid, that.followid);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(mbrId, followId);
+            return Objects.hash(mbrId, followid);
         }
 
         public Integer getMbrId() {
@@ -116,12 +71,12 @@ public class Follow implements Serializable {
             this.mbrId = mbrId;
         }
 
-        public Integer getFollowId() {
-            return followId;
+        public Integer getFollowid() {
+            return followid;
         }
 
-        public void setFollowId(Integer followId) {
-            this.followId = followId;
+        public void setFollowid(Integer followid) {
+            this.followid = followid;
         }
     }
 }

@@ -12,19 +12,19 @@ public class Members implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mbrid", insertable = false)
+    @Column(name = "mbrid", insertable = false, updatable = false)
     private Integer mbrId;
 
     @Column(name = "mbrname", insertable = false)
     private String mbrName;
 
-    @Column(name = "email", unique = true, nullable = false)
+    @Column(name = "email", updatable = false, nullable = false, unique = true)
     private String email;
 
     @Column(name = "pswdhash", nullable = false)
     private String pswdHash;
 
-    @Column(name = "mbrstatus", nullable = false)
+    @Column(name = "mbrstatus", insertable = false, nullable = false)
     private Integer mbrStatus;
 
     @Lob
@@ -40,22 +40,22 @@ public class Members implements Serializable {
     private byte[] shopImg02;
 
     @Column(name = "mbrpoint", insertable = false)
-    private Integer mbrPoint = 0;
+    private Integer mbrPoint;
 
     @Column(name = "balance", insertable = false)
-    private Integer balance = 0;
+    private Integer balance;
 
     @Column(name = "buystar", insertable = false)
-    private Integer buyStar = 0;
+    private Integer buyStar;
 
     @Column(name = "buyrating", insertable = false)
-    private Integer buyRating = 0;
+    private Integer buyRating;
 
     @Column(name = "sellstar", insertable = false)
-    private Integer sellStar = 0;
+    private Integer sellStar;
 
     @Column(name = "sellrating", insertable = false)
-    private Integer sellRating = 0;
+    private Integer sellRating;
 
     @Column(name = "lastlogin", insertable = false)
     private Timestamp lastLogin;
@@ -69,10 +69,9 @@ public class Members implements Serializable {
     public Members() {
     }
 
-    public Members(String email, String pswdHash, Integer mbrStatus) {
+    public Members(String email, String pswdHash) {
         this.email = email;
         this.pswdHash = pswdHash;
-        this.mbrStatus = mbrStatus;
     }
 
     @Override

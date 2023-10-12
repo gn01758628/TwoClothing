@@ -1,12 +1,25 @@
 package com.twoclothing.web.categorytags;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
+@Table(name = "categorytags")
 public class CategoryTags implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "tagid", insertable = false, updatable = false)
     private Integer tagId;
+
+    @Column(name = "supertagid")
     private Integer superTagId;
+
+    @Column(name = "categoryname", nullable = false)
     private String categoryName;
+
+    @Column(name = "empid", nullable = false)
     private Integer empId;
 
     public CategoryTags() {

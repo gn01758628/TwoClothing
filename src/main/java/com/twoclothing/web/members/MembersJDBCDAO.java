@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MembersJDBCDAO implements MembersDAO {
 
-    private static final String INSERT = "INSERT INTO members (email, pswdhash, mbrstatus) VALUES (?, ?, ?)";
+    private static final String INSERT = "INSERT INTO members (email, pswdhash) VALUES (?, ?)";
 
     private static final String GET_BY_PK = "SELECT * FROM members WHERE mbrid = ?";
 
@@ -62,7 +62,6 @@ public class MembersJDBCDAO implements MembersDAO {
             ps = conn.prepareStatement(INSERT);
             ps.setString(1, members.getEmail());
             ps.setString(2, members.getPswdHash());
-            ps.setInt(3, members.getMbrStatus());
             count = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
