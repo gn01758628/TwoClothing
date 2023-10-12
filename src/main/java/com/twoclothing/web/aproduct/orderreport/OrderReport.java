@@ -1,4 +1,4 @@
-package com.twoclothing.web.orderreport;
+package com.twoclothing.web.aproduct.orderreport;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

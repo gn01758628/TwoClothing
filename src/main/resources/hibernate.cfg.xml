@@ -59,7 +59,7 @@
 		<mapping class="com.twoclothing.web.aproduct.orderdetails.OrderDetails"/>
 		<mapping class="com.twoclothing.web.aproduct.ordernotify.OrderNotify"/>
 		<mapping class="com.twoclothing.web.aproduct.orderratingimage.OrderRatingImage"/>
-		<mapping class="com.twoclothing.web.orderreport.OrderReport"/>
+		<mapping class="com.twoclothing.web.aproduct.orderreport.OrderReport"/>
 		<mapping class="com.twoclothing.web.permission.Permission"/>
 		<mapping class="com.twoclothing.web.pointhistory.PointHistory"/>
 		<mapping class="com.twoclothing.web.shipsetting.ShipSetting"/>
