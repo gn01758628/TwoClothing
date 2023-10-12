@@ -28,15 +28,15 @@ public class Members implements Serializable {
     private Integer mbrStatus;
 
     @Lob
-    @Column(name = "avatar", insertable = false)
+    @Column(name = "avatar", insertable = false, columnDefinition = "mediumblob")
     private byte[] avatar;
 
     @Lob
-    @Column(name = "shopimg01", insertable = false)
+    @Column(name = "shopimg01", insertable = false, columnDefinition = "mediumblob")
     private byte[] shopImg01;
 
     @Lob
-    @Column(name = "shopimg02", insertable = false)
+    @Column(name = "shopimg02", insertable = false, columnDefinition = "mediumblob")
     private byte[] shopImg02;
 
     @Column(name = "mbrpoint", insertable = false)
