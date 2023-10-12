@@ -4,13 +4,34 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class BidOrderNotify implements Serializable{
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "bidordernotify")
+public class BidOrderNotify implements Serializable{
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "notifyid", updatable = false)
 	private Integer notifyId;
+	
+	@Column(name = "mbrid", updatable = false)
 	private Integer mbrId;
+	
+	@Column(name = "bidorderid", updatable = false)
 	private Integer bidOrderId;
+	
+	@Column(name = "notifydate", updatable = false)
 	private Timestamp notifyDate;
+	
+	@Column(name = "title", updatable = false)
 	private String title;
+	
+	@Column(name = "content", updatable = false)
 	private String content;
 
 	public BidOrderNotify() {

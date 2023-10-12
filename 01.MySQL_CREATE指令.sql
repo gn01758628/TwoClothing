@@ -258,8 +258,8 @@ VALUES (1, 500, '1234567890', '2023-10-01', 0, NULL, NULL, '申請中'),
        (10, 250, '9876123450', '2023-10-10', 0, NULL, NULL, '申請中');
 
 -- 表格：會員虛擬錢包提款申請 檢查
--- SELECT * FROM withdrawrequest;
--- DESCRIBE withdrawrequest;
+SELECT * FROM withdrawrequest;
+DESCRIBE withdrawrequest;
 
 -- 表格：會員虛擬錢包提款申請 添加FK
 -- ALTER TABLE withdrawrequest
@@ -600,44 +600,6 @@ VALUES (1, 'image_data_1', 'Image for News 1'),
 -- 表格：最新消息圖片 添加FK
 -- ALTER TABLE newsimages
 -- ADD CONSTRAINT fk_newsimages_newsid FOREIGN KEY (newsid) REFERENCES latestnews(newsid);
--- ================================================================================================================================ --
--- 表格：一般商品 刪除
-DROP TABLE IF EXISTS item;
-
--- 表格：一般商品 創建
-CREATE TABLE item (
-    itemid INT AUTO_INCREMENT NOT NULL,
-    itemname VARCHAR(20) NOT NULL,
-    detail VARCHAR(200),
-    tagid INT NOT NULL,
-    mbrid INT NOT NULL,
-    price INT NOT NULL,
-    itemstatus TINYINT NOT NULL,
-    quantity INT NOT NULL,
-    PRIMARY KEY (itemid)
-);
-
--- 表格：一般商品 插入假資料
-INSERT INTO item (itemname, detail, tagid, mbrid, price, itemstatus, quantity) VALUES
-('Product 1', 'Description for Product 1', 1, 1, 100, 0, 10),
-('Product 2', 'Description for Product 2', 2, 2, 150, 0, 15),
-('Product 3', 'Description for Product 3', 1, 3, 75, 0, 20),
-('Product 4', 'Description for Product 4', 3, 4, 120, 0, 12),
-('Product 5', 'Description for Product 5', 2, 5, 90, 0, 8),
-('Product 6', 'Description for Product 6', 3, 6, 200, 0, 5),
-('Product 7', 'Description for Product 7', 1, 7, 80, 0, 18),
-('Product 8', 'Description for Product 8', 2, 8, 130, 0, 14),
-('Product 9', 'Description for Product 9', 1, 9, 110, 0, 11),
-('Product 10', 'Description for Product 10', 3, 10, 160, 0, 7);
-
--- 表格：一般商品 檢查
--- SELECT * FROM item;
--- DESCRIBE item;
-
--- 表格：一般商品 添加FK
--- ALTER TABLE item
--- ADD CONSTRAINT fk_item_tagid FOREIGN KEY (tagid) REFERENCES categorytags(tagid),
--- ADD CONSTRAINT fk_item_mbrid FOREIGN KEY (mbrid) REFERENCES members(mbrid);
 -- ================================================================================================================================ --
 -- 表格：一般商品圖片 刪除
 DROP TABLE IF EXISTS itemimage;

@@ -1,15 +1,21 @@
 package com.twoclothing.web.blacklist;
 
+<<<<<<< HEAD
+=======
 import javax.persistence.*;
+>>>>>>> refs/heads/master
 import java.io.Serializable;
 import java.util.Objects;
 
-@Entity
-@Table(name = "blacklist")
 public class BlackList implements Serializable {
+<<<<<<< HEAD
+    private Integer mbrId;
+    private Integer blackId;
+=======
 
     @EmbeddedId
     private CompositeDetail compositeKey;
+>>>>>>> refs/heads/master
 
     public BlackList() {
     }
@@ -40,6 +46,14 @@ public class BlackList implements Serializable {
         @Column(name = "mbrid")
         private Integer mbrid;
 
+<<<<<<< HEAD
+    public Integer getBlackId() {
+        return blackId;
+    }
+
+    public void setBlackId(Integer blackId) {
+        this.blackId = blackId;
+=======
         @Column(name = "blackid")
         private Integer blackid;
 
@@ -79,6 +93,7 @@ public class BlackList implements Serializable {
         public void setBlackid(Integer blackid) {
             this.blackid = blackid;
         }
+>>>>>>> refs/heads/master
     }
 }
 
