@@ -24,8 +24,8 @@ public class Item implements Serializable{
 	@Column(name = "detail")
 	private String detail;
 	
-	@Column(name = "tadid")
-	private Integer tadId;
+	@Column(name = "tagid")
+	private Integer tagId;
 	
 	@Column(name = "mbrid")
 	private Integer mbrId;
@@ -42,12 +42,12 @@ public class Item implements Serializable{
 	public Item() {
 	}
 	
-	public Item(Integer itemId, String name, String detail, Integer tadId, Integer mbrId, Integer price,
+	public Item(Integer itemId, String name, String detail, Integer tagId, Integer mbrId, Integer price,
 			Integer itemStatus, Integer quantity) {
 		this.itemId = itemId;
 		this.name = name;
 		this.detail = detail;
-		this.tadId = tadId;
+		this.tagId = tagId;
 		this.mbrId = mbrId;
 		this.price = price;
 		this.itemStatus = itemStatus;
@@ -56,13 +56,13 @@ public class Item implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "Item [itemId=" + itemId + ", name=" + name + ", detail=" + detail + ", tadId=" + tadId + ", mbrId="
+		return "Item [itemId=" + itemId + ", name=" + name + ", detail=" + detail + ", tagId=" + tagId + ", mbrId="
 				+ mbrId + ", price=" + price + ", itemStatus=" + itemStatus + ", quantity=" + quantity + "]";
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(detail, itemId, itemStatus, mbrId, name, price, quantity, tadId);
+		return Objects.hash(detail, itemId, itemStatus, mbrId, name, price, quantity, tagId);
 	}
 	
 	@Override
@@ -77,7 +77,7 @@ public class Item implements Serializable{
 		return Objects.equals(detail, other.detail) && Objects.equals(itemId, other.itemId)
 				&& Objects.equals(itemStatus, other.itemStatus) && Objects.equals(mbrId, other.mbrId)
 				&& Objects.equals(name, other.name) && Objects.equals(price, other.price)
-				&& Objects.equals(quantity, other.quantity) && Objects.equals(tadId, other.tadId);
+				&& Objects.equals(quantity, other.quantity) && Objects.equals(tagId, other.tagId);
 	}
 
 	public Integer getItemId() {
@@ -104,12 +104,12 @@ public class Item implements Serializable{
 		this.detail = detail;
 	}
 
-	public Integer getTadId() {
-		return tadId;
+	public Integer getTagId() {
+		return tagId;
 	}
 
-	public void setTadId(Integer tadId) {
-		this.tadId = tadId;
+	public void setTagId(Integer tagId) {
+		this.tagId = tagId;
 	}
 
 	public Integer getMbrId() {
