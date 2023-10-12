@@ -4,9 +4,22 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name="biditemimage")
 public class BidItemImage implements Serializable{
-		private Integer imageId;
-		private Integer bidItemId;
+	
+	@Id
+	@Column(name ="imageid")
+	private Integer imageId;
+	
+	@Column(name ="biditemid")
+	private Integer bidItemId;
 		private byte[] image;
 		
 		public BidItemImage() {

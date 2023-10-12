@@ -1,54 +1,84 @@
 package com.twoclothing.web.blacklist;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
+@Table(name = "blacklist")
 public class BlackList implements Serializable {
-    private Integer mbrId;
-    private Integer blackId;
+
+    @EmbeddedId
+    private CompositeDetail compositeKey;
 
     public BlackList() {
     }
 
-    public BlackList(Integer mbrId, Integer blackId) {
-        this.mbrId = mbrId;
-        this.blackId = blackId;
+    public BlackList(CompositeDetail compositeKey) {
+        this.compositeKey = compositeKey;
     }
 
     @Override
     public String toString() {
         return "BlackList{" +
-                "mbrId=" + mbrId +
-                ", BlackId=" + blackId +
+                "compositeKey=" + compositeKey +
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BlackList blackList = (BlackList) o;
-        return Objects.equals(mbrId, blackList.mbrId) && Objects.equals(blackId, blackList.blackId);
+    public CompositeDetail getCompositeKey() {
+        return compositeKey;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(mbrId, blackId);
+    public void setCompositeKey(CompositeDetail compositeKey) {
+        this.compositeKey = compositeKey;
     }
 
-    public Integer getMbrId() {
-        return mbrId;
-    }
+    @Embeddable
+    public static class CompositeDetail implements Serializable {
+        private static final long serialVersionUID = 1L;
 
-    public void setMbrId(Integer mbrId) {
-        this.mbrId = mbrId;
-    }
+        @Column(name = "mbrid")
+        private Integer mbrid;
 
-    public Integer getBlackId() {
-        return blackId;
-    }
+        @Column(name = "blackid")
+        private Integer blackid;
 
-    public void setBlackId(Integer blackId) {
-        this.blackId = blackId;
+        public CompositeDetail() {
+        }
+
+        public CompositeDetail(Integer mbrid, Integer blackid) {
+            this.mbrid = mbrid;
+            this.blackid = blackid;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CompositeDetail that = (CompositeDetail) o;
+            return Objects.equals(mbrid, that.mbrid) && Objects.equals(blackid, that.blackid);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(mbrid, blackid);
+        }
+
+        public Integer getMbrid() {
+            return mbrid;
+        }
+
+        public void setMbrid(Integer mbrid) {
+            this.mbrid = mbrid;
+        }
+
+        public Integer getBlackid() {
+            return blackid;
+        }
+
+        public void setBlackid(Integer blackid) {
+            this.blackid = blackid;
+        }
     }
 }
+

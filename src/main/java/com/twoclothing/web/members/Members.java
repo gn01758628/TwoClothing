@@ -1,36 +1,77 @@
 package com.twoclothing.web.members;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Objects;
 
+@Entity
+@Table(name = "members")
 public class Members implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "mbrid", insertable = false, updatable = false)
     private Integer mbrId;
+
+    @Column(name = "mbrname", insertable = false)
     private String mbrName;
+
+    @Column(name = "email", updatable = false, nullable = false, unique = true)
     private String email;
+
+    @Column(name = "pswdhash", nullable = false)
     private String pswdHash;
+
+    @Column(name = "mbrstatus", insertable = false, nullable = false)
     private Integer mbrStatus;
-    private byte[] avatar = null;
-    private byte[] shopImg01 = null;
-    private byte[] shopImg02 = null;
-    private Integer mbrPoint = 0;
-    private Integer balance = 0;
-    private Integer buyStar = 0;
-    private Integer buyRating = 0;
-    private Integer sellStar = 0;
-    private Integer sellRating = 0;
-    private Timestamp lastLogin = null;
+
+    @Lob
+    @Column(name = "avatar", insertable = false, columnDefinition = "mediumblob")
+    private byte[] avatar;
+
+    @Lob
+    @Column(name = "shopimg01", insertable = false, columnDefinition = "mediumblob")
+    private byte[] shopImg01;
+
+    @Lob
+    @Column(name = "shopimg02", insertable = false, columnDefinition = "mediumblob")
+    private byte[] shopImg02;
+
+    @Column(name = "mbrpoint", insertable = false)
+    private Integer mbrPoint;
+
+    @Column(name = "balance", insertable = false)
+    private Integer balance;
+
+    @Column(name = "buystar", insertable = false)
+    private Integer buyStar;
+
+    @Column(name = "buyrating", insertable = false)
+    private Integer buyRating;
+
+    @Column(name = "sellstar", insertable = false)
+    private Integer sellStar;
+
+    @Column(name = "sellrating", insertable = false)
+    private Integer sellRating;
+
+    @Column(name = "lastlogin", insertable = false)
+    private Timestamp lastLogin;
+
+    @Column(name = "sellscore", insertable = false)
     private Integer sellScore = 10;
+
+    @Column(name = "buyscore", insertable = false)
     private Integer buyScore = 10;
 
     public Members() {
     }
 
-    public Members(String email, String pswdHash, Integer mbrStatus) {
+    public Members(String email, String pswdHash) {
         this.email = email;
         this.pswdHash = pswdHash;
-        this.mbrStatus = mbrStatus;
     }
 
     @Override
