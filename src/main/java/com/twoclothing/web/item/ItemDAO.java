@@ -11,7 +11,7 @@ public interface ItemDAO {
 
 	 public List<Item> getAll();
 
-	 public List<Item> getAllByTadId(Integer tadId);
+	 public List<Item> getAllByTadId(Integer tagId);
 
 	 public List<Item> getAllByMbrId(Integer mbrId);
 	 

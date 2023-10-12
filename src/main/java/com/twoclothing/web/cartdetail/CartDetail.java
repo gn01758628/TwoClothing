@@ -1,13 +1,31 @@
 package com.twoclothing.web.cartdetail;
 
 import java.io.Serializable;
+
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="cartdetail")
 public class CartDetail implements Serializable {
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="cartid")
 	private Integer cartId;
+	
+	@Column(name="mbrid")
 	private Integer mbrId;
+	
+	@Column(name="itemid")
 	private Integer itemId;
+	
+	@Column(name="quantity")
 	private Integer quantity;
 	
 	public CartDetail() {

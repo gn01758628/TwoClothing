@@ -3,25 +3,51 @@ package com.twoclothing.web.item;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="item")
 public class Item implements Serializable{
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="itemid")
 	private Integer itemId;
-	private String name;
+	
+	@Column(name="itemname")
+	private String itemName;
+	
+	@Column(name="detail")
 	private String detail;
-	private Integer tadId;
+	
+	@Column(name="tagid")
+	private Integer tagId;
+	
+	@Column(name="mbrid")
 	private Integer mbrId;
+	
+	@Column(name="price")
 	private Integer price;
+	
+	@Column(name="itemstatus")
 	private Integer itemStatus;
+	
+	@Column(name="quantity")
 	private Integer quantity;
 	
 	public Item() {
 	}
 	
-	public Item(Integer itemId, String name, String detail, Integer tadId, Integer mbrId, Integer price,
+	public Item(Integer itemId, String itemName, String detail, Integer tagId, Integer mbrId, Integer price,
 			Integer itemStatus, Integer quantity) {
 		this.itemId = itemId;
-		this.name = name;
+		this.itemName = itemName;
 		this.detail = detail;
-		this.tadId = tadId;
+		this.tagId = tagId;
 		this.mbrId = mbrId;
 		this.price = price;
 		this.itemStatus = itemStatus;
@@ -30,13 +56,13 @@ public class Item implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "Item [itemId=" + itemId + ", name=" + name + ", detail=" + detail + ", tadId=" + tadId + ", mbrId="
+		return "Item [itemId=" + itemId + ", itemName=" + itemName + ", detail=" + detail + ", tadId=" + tagId + ", mbrId="
 				+ mbrId + ", price=" + price + ", itemStatus=" + itemStatus + ", quantity=" + quantity + "]";
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(detail, itemId, itemStatus, mbrId, name, price, quantity, tadId);
+		return Objects.hash(detail, itemId, itemStatus, mbrId, itemName, price, quantity, tagId);
 	}
 	
 	@Override
@@ -50,8 +76,8 @@ public class Item implements Serializable{
 		Item other = (Item) obj;
 		return Objects.equals(detail, other.detail) && Objects.equals(itemId, other.itemId)
 				&& Objects.equals(itemStatus, other.itemStatus) && Objects.equals(mbrId, other.mbrId)
-				&& Objects.equals(name, other.name) && Objects.equals(price, other.price)
-				&& Objects.equals(quantity, other.quantity) && Objects.equals(tadId, other.tadId);
+				&& Objects.equals(itemName, other.itemName) && Objects.equals(price, other.price)
+				&& Objects.equals(quantity, other.quantity) && Objects.equals(tagId, other.tagId);
 	}
 
 	public Integer getItemId() {
@@ -62,12 +88,12 @@ public class Item implements Serializable{
 		this.itemId = itemId;
 	}
 
-	public String getName() {
-		return name;
+	public String getItemName() {
+		return itemName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
 	}
 
 	public String getDetail() {
@@ -78,12 +104,12 @@ public class Item implements Serializable{
 		this.detail = detail;
 	}
 
-	public Integer getTadId() {
-		return tadId;
+	public Integer getTagId() {
+		return tagId;
 	}
 
-	public void setTadId(Integer tadId) {
-		this.tadId = tadId;
+	public void setTadId(Integer tagId) {
+		this.tagId = tagId;
 	}
 
 	public Integer getMbrId() {
