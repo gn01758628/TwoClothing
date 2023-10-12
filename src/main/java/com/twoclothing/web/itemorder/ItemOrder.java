@@ -4,24 +4,70 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="itemorder")
 public class ItemOrder implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="itemorderid", updatable = false)
 	private Integer itemOrderId;
+	
+	@Column(name="buymbrid")
 	private Integer buyMbrId;
+	
+	@Column(name="sellmbrid")
 	private Integer sellMbrId;
+	
+	@Column(name="buystar")
 	private Integer buyStar;
+	
+	@Column(name="buyerratingdesc")
 	private String buyerRatingDesc;
+	
+	@Column(name="sellstar")
 	private Integer sellStar;
+	
+	@Column(name="sellerratingdesc")
 	private String sellerRatingDesc;
+	
+	@Column(name="orderdate")
 	private Timestamp orderDate;
+	
+	@Column(name="paytype")
 	private Integer payType;
+	
+	@Column(name="payinfo")
 	private String payInfo;
+	
+	@Column(name="amount")
 	private Integer amount;
+	
+	@Column(name="pointdiscount")
 	private Integer pointDiscount;
+	
+	@Column(name="finalamount")
 	private Integer finalAmount;
+	
+	@Column(name="orderstatus")
 	private Integer orderStatus;
+	
+	@Column(name="receiveaddress")
 	private String receiveAddress;
+	
+	@Column(name="receivename")
 	private String receiveName;
+	
+	@Column(name="receivephone")
 	private String receivePhone;
+	
+	@Column(name="remarks")
 	private String remarks;
 
 	public ItemOrder() {
