@@ -3,14 +3,40 @@ package com.twoclothing.web.aproduct.item;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "item")
 public class Item implements Serializable{
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "itemid", updatable = false)
 	private Integer itemId;
+	
+	@Column(name = "name")
 	private String name;
+	
+	@Column(name = "detail")
 	private String detail;
+	
+	@Column(name = "tadid")
 	private Integer tadId;
+	
+	@Column(name = "mbrid")
 	private Integer mbrId;
+	
+	@Column(name = "price")
 	private Integer price;
+	
+	@Column(name = "itemstatus")
 	private Integer itemStatus;
+	
+	@Column(name = "quantity")
 	private Integer quantity;
 	
 	public Item() {
