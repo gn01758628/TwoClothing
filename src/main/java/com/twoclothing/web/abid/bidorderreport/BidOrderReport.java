@@ -31,13 +31,13 @@ public class BidOrderReport  implements Serializable{
 	@Column(name = "biddescription", updatable = false)
 	private String bidDescription;
 	
-	@Column(name = "bidstatus")
+	@Column(name = "bidstatus", columnDefinition = "TINYINT")
 	private Integer bidStatus;
 	
 	@Column(name = "auditdate")
 	private Timestamp auditDate;
 	
-	@Column(name = "result")
+	@Column(name = "result", columnDefinition = "TINYINT")
 	private Integer result;
 	
 	@Column(name = "note")

@@ -19,7 +19,7 @@ public interface BiditemDAO {
 	    
 	    List<BidItem> getAllByEmpId(Integer empId);
 	    
-	    List<BidItem> getAllByTagId(Integer tagId);
+	    List<BidItem> getAllByTagId(Integer[] tagId);
 	
 	    void delete(Integer bidItemId);
 	

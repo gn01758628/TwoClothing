@@ -26,7 +26,7 @@ public class WithdrawRequest implements Serializable {
     @Column(name = "reqdate", updatable = false, nullable = false)
     private Timestamp reqDate;
 
-    @Column(name = "reqstatus", insertable = false, nullable = false)
+    @Column(name = "reqstatus", insertable = false, nullable = false, columnDefinition = "TINYINT")
     private Integer reqStatus;
 
     @Column(name = "empid", insertable = false)

@@ -22,7 +22,7 @@ public class ItemImage implements Serializable {
 	@Column(name = "itemid")
 	private Integer itemId;
 	
-	@Column(name = "image")
+	@Column(name = "image", columnDefinition = "mediumblob")
 	private Byte[] image;
 	
 	

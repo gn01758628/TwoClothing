@@ -34,7 +34,7 @@ public class BidItem implements Serializable {
     @Column(name = "directprice", nullable = false)
     private Integer directPrice;
 
-    @Column(name = "bidstatus", insertable = false, nullable = false)
+    @Column(name = "bidstatus", insertable = false, nullable = false, columnDefinition = "TINYINT")
     private Integer bidStatus = 0;
 
     @Column(name = "starttime", nullable = false)

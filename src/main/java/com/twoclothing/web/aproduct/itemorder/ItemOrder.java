@@ -16,8 +16,8 @@ import javax.persistence.Table;
 public class ItemOrder implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="itemorderid", updatable = false)
-	private Integer itemOrderId;
+	@Column(name="orderid", updatable = false)
+	private Integer orderId;
 	
 	@Column(name="buymbrid")
 	private Integer buyMbrId;
@@ -40,7 +40,7 @@ public class ItemOrder implements Serializable {
 	@Column(name="orderdate")
 	private Timestamp orderDate;
 	
-	@Column(name="paytype")
+	@Column(name="paytype", columnDefinition = "TINYINT")
 	private Integer payType;
 	
 	@Column(name="payinfo")
@@ -55,7 +55,7 @@ public class ItemOrder implements Serializable {
 	@Column(name="finalamount")
 	private Integer finalAmount;
 	
-	@Column(name="orderstatus")
+	@Column(name="orderstatus", columnDefinition = "TINYINT")
 	private Integer orderStatus;
 	
 	@Column(name="receiveaddress")
@@ -73,11 +73,8 @@ public class ItemOrder implements Serializable {
 	public ItemOrder() {
 	}
 
-	public ItemOrder(Integer itemOrderId, Integer buyMbrId, Integer sellMbrId, Integer buyStar, String buyerRatingDesc,
-			Integer sellStar, String sellerRatingDesc, Timestamp orderDate, Integer payType, String payInfo,
-			Integer amount, Integer pointDiscount, Integer finalAmount, Integer orderStatus, String receiveAddress,
-			String receiveName, String receivePhone, String remarks) {
-		this.itemOrderId = itemOrderId;
+	public ItemOrder(Integer orderId, Integer buyMbrId, Integer sellMbrId, Integer buyStar, String buyerRatingDesc, Integer sellStar, String sellerRatingDesc, Timestamp orderDate, Integer payType, String payInfo, Integer amount, Integer pointDiscount, Integer finalAmount, Integer orderStatus, String receiveAddress, String receiveName, String receivePhone, String remarks) {
+		this.orderId = orderId;
 		this.buyMbrId = buyMbrId;
 		this.sellMbrId = sellMbrId;
 		this.buyStar = buyStar;
@@ -98,49 +95,24 @@ public class ItemOrder implements Serializable {
 	}
 
 	@Override
-	public String toString() {
-		return "ItemOrder [itemOrderId=" + itemOrderId + ", buyMbrId=" + buyMbrId + ", sellMbrId=" + sellMbrId
-				+ ", buyStar=" + buyStar + ", buyerRatingDesc=" + buyerRatingDesc + ", sellStar=" + sellStar
-				+ ", sellerRatingDesc=" + sellerRatingDesc + ", orderDate=" + orderDate + ", payType=" + payType
-				+ ", payInfo=" + payInfo + ", amount=" + amount + ", pointDiscount=" + pointDiscount + ", finalAmount="
-				+ finalAmount + ", orderStatus=" + orderStatus + ", receiveAddress=" + receiveAddress + ", receiveName="
-				+ receiveName + ", receivePhone=" + receivePhone + ", remarks=" + remarks + "]";
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ItemOrder itemOrder = (ItemOrder) o;
+		return Objects.equals(orderId, itemOrder.orderId);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(amount, buyMbrId, buyStar, buyerRatingDesc, finalAmount, itemOrderId, orderDate,
-				orderStatus, payInfo, payType, pointDiscount, receiveAddress, receiveName, receivePhone, remarks,
-				sellMbrId, sellStar, sellerRatingDesc);
+		return Objects.hash(orderId);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ItemOrder other = (ItemOrder) obj;
-		return Objects.equals(amount, other.amount) && Objects.equals(buyMbrId, other.buyMbrId)
-				&& Objects.equals(buyStar, other.buyStar) && Objects.equals(buyerRatingDesc, other.buyerRatingDesc)
-				&& Objects.equals(finalAmount, other.finalAmount) && Objects.equals(itemOrderId, other.itemOrderId)
-				&& Objects.equals(orderDate, other.orderDate) && Objects.equals(orderStatus, other.orderStatus)
-				&& Objects.equals(payInfo, other.payInfo) && Objects.equals(payType, other.payType)
-				&& Objects.equals(pointDiscount, other.pointDiscount)
-				&& Objects.equals(receiveAddress, other.receiveAddress)
-				&& Objects.equals(receiveName, other.receiveName) && Objects.equals(receivePhone, other.receivePhone)
-				&& Objects.equals(remarks, other.remarks) && Objects.equals(sellMbrId, other.sellMbrId)
-				&& Objects.equals(sellStar, other.sellStar) && Objects.equals(sellerRatingDesc, other.sellerRatingDesc);
+	public Integer getOrderId() {
+		return orderId;
 	}
 
-	public Integer getItemOrderId() {
-		return itemOrderId;
-	}
-
-	public void setItemOrderId(Integer itemOrderId) {
-		this.itemOrderId = itemOrderId;
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
 	}
 
 	public Integer getBuyMbrId() {

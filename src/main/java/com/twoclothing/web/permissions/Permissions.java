@@ -1,4 +1,4 @@
-package com.twoclothing.web.permission;
+package com.twoclothing.web.permissions;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -12,8 +12,8 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "permission")
-public class Permission implements Serializable {
+@Table(name = "permissions")
+public class Permissions implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,13 +26,13 @@ public class Permission implements Serializable {
 	@Column(name = "descriptions")
 	private String descriptions;
 
-	public Permission() {
+	public Permissions() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	// 帶參數建構子
-	public Permission(Integer permissionId, String permissionName, String descriptions) {
+	public Permissions(Integer permissionId, String permissionName, String descriptions) {
 		this.permissionId = permissionId;
 		this.permissionName = permissionName;
 		this.descriptions = descriptions;
@@ -77,13 +77,13 @@ public class Permission implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Permission other = (Permission) obj;
+		Permissions other = (Permissions) obj;
 		return Objects.equals(permissionId, other.permissionId) && Objects.equals(permissionName, other.permissionName);
 	}
 
 	@Override
 	public String toString() {
-		return "Permission [permissionId=" + permissionId + ", permissionName=" + permissionName + ", descriptions="
+		return "Permissions [permissionId=" + permissionId + ", permissionName=" + permissionName + ", descriptions="
 				+ descriptions + "]";
 	}
 }
