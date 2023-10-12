@@ -21,7 +21,7 @@ public class BidOrderRatingImage implements Serializable{
 	@Column(name = "bidorderid", updatable = false)
 	private Integer bidOrderId;
 	
-	@Column(name = "image")
+	@Column(name = "image", updatable = false, columnDefinition = "mediumblob")
 	private byte[] image;
 
 	public BidOrderRatingImage() {

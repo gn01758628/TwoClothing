@@ -10,7 +10,7 @@ public class ShipSetting implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "shipid", insertable = false, updatable = false)
+    @Column(name = "shipid", updatable = false)
     private Integer shipId;
 
     @Column(name = "mbrid", updatable = false, nullable = false)

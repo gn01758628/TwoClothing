@@ -22,22 +22,22 @@ public class BidOrder  implements Serializable{
 	@Column(name = "biditemid", updatable = false)
 	private Integer bidItemId;
 	
-	@Column(name = "buymbrid", updatable = false)
+	@Column(name = "buymbrid" , updatable = false)
 	private Integer buyMbrId;
 	
 	@Column(name = "biditemid", updatable = false)
 	private Integer sellMbrId;
 	
-	@Column(name = "buystar")
+	@Column(name = "buystar", insertable = false)
 	private Integer buyStar;
 	
-	@Column(name = "buyerratingdesc")
+	@Column(name = "buyerratingdesc", insertable = false)
 	private String buyerRatingDesc;
 	
-	@Column(name = "sellstar")
+	@Column(name = "sellstar", insertable = false)
 	private Integer sellStar;
 	
-	@Column(name = "sellerratingdesc")
+	@Column(name = "sellerratingdesc", insertable = false)
 	private String sellerRatingDesc;
 	
 	@Column(name = "orderdate", updatable = false)
@@ -53,7 +53,7 @@ public class BidOrder  implements Serializable{
 	private Integer amount;
 	
 	@Column(name = "orderstatus")
-	private Integer orderStatus;
+	private Integer orderStatus = 0;
 	
 	@Column(name = "receiveaddress")
 	private String receiveAddress;

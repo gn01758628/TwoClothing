@@ -12,7 +12,7 @@ public class Members implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mbrid", insertable = false, updatable = false)
+    @Column(name = "mbrid", updatable = false)
     private Integer mbrId;
 
     @Column(name = "mbrname", insertable = false)
@@ -25,7 +25,7 @@ public class Members implements Serializable {
     private String pswdHash;
 
     @Column(name = "mbrstatus", insertable = false, nullable = false)
-    private Integer mbrStatus;
+    private Integer mbrStatus = 0;
 
     @Lob
     @Column(name = "avatar", insertable = false, columnDefinition = "mediumblob")
