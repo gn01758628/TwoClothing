@@ -19,7 +19,7 @@ public class BidOrder  implements Serializable{
 	@Column(name = "bidorderid", updatable = false)
 	private Integer bidOrderId;
 	
-	@Column(name = "bidItemId", updatable = false)
+	@Column(name = "biditemid", updatable = false)
 	private Integer bidItemId;
 	
 	@Column(name = "buymbrid", updatable = false)
