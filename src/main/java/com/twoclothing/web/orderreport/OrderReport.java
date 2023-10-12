@@ -99,11 +99,11 @@ public class OrderReport implements Serializable {
 		this.description = description;
 	}
 
-	public Integer getrStatus() {
+	public Integer getRStatus() {
 		return rStatus;
 	}
 
-	public void setrStatus(Integer rStatus) {
+	public void setRStatus(Integer rStatus) {
 		this.rStatus = rStatus;
 	}
 
