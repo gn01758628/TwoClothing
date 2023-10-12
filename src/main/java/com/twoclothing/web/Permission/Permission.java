@@ -1,4 +1,4 @@
-package com.twoclothing.web.permission;
+package com.twoclothing.web.Permission;
 
 import java.io.Serializable;
 import java.util.Objects;
