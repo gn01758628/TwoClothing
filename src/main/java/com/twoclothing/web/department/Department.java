@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name = "department")
 public class Department implements Serializable {
 	@Id
-	@Column(name = "deptid")
+	@Column(name = "deptid", updatable = false)
 	public Integer deptId; // 部門編號
 	@Column(name = "deptname")
 	public String deptName; // 部門名稱

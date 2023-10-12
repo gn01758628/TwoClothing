@@ -47,7 +47,8 @@ public class BlackList implements Serializable {
         }
 
         public CompositeDetail(Integer mbrid, Integer blackid) {
-            this.mbrid = mbrid;
+        	super();
+        	this.mbrid = mbrid;
             this.blackid = blackid;
         }
 
