@@ -1,15 +1,32 @@
 package com.twoclothing.web.chatroomlog;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+@Entity
+@Table(name = "chatroomlog")
 public class ChatRoomLog implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "logid", insertable = false, updatable = false)
     private Integer logId;
+
+    @Column(name = "receiveid", updatable = false)
     private Integer receiveId;
+
+    @Column(name = "sentid", updatable = false)
     private Integer sentId;
+
+    @Column(name = "empid", updatable = false)
     private Integer empId;
+
+    @Column(name = "message", updatable = false, nullable = false)
     private String message;
+
+    @Column(name = "messagetime", updatable = false, nullable = false)
     private Timestamp messageTime;
 
     public ChatRoomLog() {

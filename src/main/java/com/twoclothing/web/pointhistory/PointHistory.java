@@ -1,14 +1,28 @@
 package com.twoclothing.web.pointhistory;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
-
+@Entity
+@Table(name = "pointhistory")
 public class PointHistory implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pointid", insertable = false, updatable = false)
     private Integer pointId;
+
+    @Column(name = "mbrid", updatable = false, nullable = false)
     private Integer mbrId;
+
+    @Column(name = "orderid", updatable = false, nullable = false)
     private Integer orderId;
+
+    @Column(name = "changeDate", updatable = false, nullable = false)
     private Timestamp changeDate;
+
+    @Column(name = "changeValue", updatable = false, nullable = false)
     private Integer changeValue;
 
     public PointHistory() {

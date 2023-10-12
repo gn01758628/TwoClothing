@@ -9,6 +9,10 @@ public interface OrderReportDAO {
 	
 	List<OrderReport> getAll();
 	
+	List<OrderReport> getAllByOrderId(Integer orderId);
+	
+	List<OrderReport> getAllByEmpId(Integer empId);
+	
 	List<OrderReport> getAllByRStatus(Integer rStatus);
 	
 	List<OrderReport> getAllByResult(Integer result);

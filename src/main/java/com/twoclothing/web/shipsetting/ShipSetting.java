@@ -1,13 +1,28 @@
 package com.twoclothing.web.shipsetting;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
+@Table(name = "shipsetting")
 public class ShipSetting implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "shipid", insertable = false, updatable = false)
     private Integer shipId;
+
+    @Column(name = "mbrid", updatable = false, nullable = false)
     private Integer mbrId;
+
+    @Column(name = "receivename", nullable = false)
     private String receiveName;
+
+    @Column(name = "receivephone", nullable = false)
     private String receivePhone;
+
+    @Column(name = "receiveaddress", nullable = false)
     private String receiveAddress;
 
     public ShipSetting() {

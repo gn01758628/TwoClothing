@@ -1,16 +1,35 @@
 package com.twoclothing.web.balancehistory;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+@Entity
+@Table(name = "balancehistory")
 public class BalanceHistory implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "balanceid", insertable = false, updatable = false)
     private Integer balanceId;
+
+    @Column(name = "mbrid", updatable = false, nullable = false)
     private Integer mbrId;
+
+    @Column(name = "orderid", updatable = false)
     private Integer orderId;
+
+    @Column(name = "bidorderid", updatable = false)
     private Integer bidOrderId;
+
+    @Column(name = "wrid", updatable = false)
     private Integer wrId;
+
+    @Column(name = "changedate", updatable = false, nullable = false)
     private Timestamp changeDate;
+
+    @Column(name = "changeValue", updatable = false, nullable = false)
     private Integer changeValue;
 
     public BalanceHistory() {
