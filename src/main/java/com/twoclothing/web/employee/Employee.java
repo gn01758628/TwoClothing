@@ -4,15 +4,45 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name= "employee")
 public class Employee implements Serializable {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "empid", updatable = false)
 	private Integer empId;
+	
+	@Column(name = "deptid")
 	private Integer deptId;
+	
+	@Column(name = "empname")
 	private String empName;
+		
+	@Column(name = "phone")
 	private String phone;
+	
+	@Column(name = "address")
 	private String address;
+	
+	@Column(name = "email")
 	private String email;
+		
+	@Column(name = "pswdhash")
 	private String pswdHash;
+	
+	@Column(name = "empstatus")
 	private Integer empStatus;
+	
+	@Column(name = "avatar", columnDefinition = "longblob")	
 	private byte[] avatar;
 
 	public Employee() {
