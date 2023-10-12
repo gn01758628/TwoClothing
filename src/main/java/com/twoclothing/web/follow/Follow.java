@@ -1,21 +1,15 @@
 package com.twoclothing.web.follow;
 
-<<<<<<< HEAD
-=======
 import javax.persistence.*;
->>>>>>> refs/heads/master
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
+@Table(name = "follow")
 public class Follow implements Serializable {
-<<<<<<< HEAD
-    private Integer mbrId;
-    private Integer followId;
-=======
 
     @EmbeddedId
     private CompositeDetail compositeKey;
->>>>>>> refs/heads/master
 
     public Follow() {
     }
@@ -42,18 +36,6 @@ public class Follow implements Serializable {
     @Embeddable
     public static class CompositeDetail implements Serializable {
 
-<<<<<<< HEAD
-    public void setMbrId(Integer mbrId) {
-        this.mbrId = mbrId;
-    }
-
-    public Integer getFollowId() {
-        return followId;
-    }
-
-    public void setFollowId(Integer followId) {
-        this.followId = followId;
-=======
         @Column(name = "mbrid")
         private Integer mbrId;
 
@@ -96,6 +78,5 @@ public class Follow implements Serializable {
         public void setFollowid(Integer followid) {
             this.followid = followid;
         }
->>>>>>> refs/heads/master
     }
 }

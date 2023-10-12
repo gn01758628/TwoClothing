@@ -1,45 +1,31 @@
 package com.twoclothing.web.members;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Objects;
 
+@Entity
+@Table(name = "members")
 public class Members implements Serializable {
-<<<<<<< HEAD
-=======
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mbrid", insertable = false, updatable = false)
->>>>>>> refs/heads/master
     private Integer mbrId;
+
+    @Column(name = "mbrname", insertable = false)
     private String mbrName;
-<<<<<<< HEAD
-=======
 
     @Column(name = "email", updatable = false, nullable = false, unique = true)
->>>>>>> refs/heads/master
     private String email;
+
+    @Column(name = "pswdhash", nullable = false)
     private String pswdHash;
-<<<<<<< HEAD
-=======
 
     @Column(name = "mbrstatus", insertable = false, nullable = false)
->>>>>>> refs/heads/master
     private Integer mbrStatus;
-<<<<<<< HEAD
-    private byte[] avatar = null;
-    private byte[] shopImg01 = null;
-    private byte[] shopImg02 = null;
-    private Integer mbrPoint = 0;
-    private Integer balance = 0;
-    private Integer buyStar = 0;
-    private Integer buyRating = 0;
-    private Integer sellStar = 0;
-    private Integer sellRating = 0;
-    private Timestamp lastLogin = null;
-=======
 
     @Lob
     @Column(name = "avatar", insertable = false, columnDefinition = "mediumblob")
@@ -75,8 +61,9 @@ public class Members implements Serializable {
     private Timestamp lastLogin;
 
     @Column(name = "sellscore", insertable = false)
->>>>>>> refs/heads/master
     private Integer sellScore = 10;
+
+    @Column(name = "buyscore", insertable = false)
     private Integer buyScore = 10;
 
     public Members() {
