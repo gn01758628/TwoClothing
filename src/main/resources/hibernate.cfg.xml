@@ -44,7 +44,7 @@
 		<mapping class="com.twoclothing.web.coupon.Coupon"/>
 		<mapping class="com.twoclothing.web.department.Department"/>
 		<mapping class="com.twoclothing.web.employee.Employee"/>
-		<mapping class="com.twoclothing.web.employeemission.EmployeeMission"/>
+		<mapping class="com.twoclothing.web.empmissions.EmpMissions"/>
 		<mapping class="com.twoclothing.web.follow.Follow"/>
 		<mapping class="com.twoclothing.web.aproduct.item.Item"/>
 		<mapping class="com.twoclothing.web.aproduct.itembrowsing.ItemBrowsing"/>
@@ -60,7 +60,7 @@
 		<mapping class="com.twoclothing.web.aproduct.ordernotify.OrderNotify"/>
 		<mapping class="com.twoclothing.web.aproduct.orderratingimage.OrderRatingImage"/>
 		<mapping class="com.twoclothing.web.aproduct.orderreport.OrderReport"/>
-		<mapping class="com.twoclothing.web.permission.Permission"/>
+		<mapping class="com.twoclothing.web.permissions.Permissions"/>
 		<mapping class="com.twoclothing.web.pointhistory.PointHistory"/>
 		<mapping class="com.twoclothing.web.shipsetting.ShipSetting"/>
 		<mapping class="com.twoclothing.web.withdrawrequest.WithdrawRequest"/>

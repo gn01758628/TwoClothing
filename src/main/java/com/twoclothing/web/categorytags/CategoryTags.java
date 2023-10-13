@@ -10,7 +10,7 @@ public class CategoryTags implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "tagid", insertable = false, updatable = false)
+    @Column(name = "tagid",updatable = false)
     private Integer tagId;
 
     @Column(name = "supertagid")
@@ -47,12 +47,12 @@ public class CategoryTags implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CategoryTags that = (CategoryTags) o;
-        return Objects.equals(tagId, that.tagId) && Objects.equals(superTagId, that.superTagId) && Objects.equals(categoryName, that.categoryName) && Objects.equals(empId, that.empId);
+        return Objects.equals(tagId, that.tagId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tagId, superTagId, categoryName, empId);
+        return Objects.hash(tagId);
     }
 
     public Integer getTagId() {

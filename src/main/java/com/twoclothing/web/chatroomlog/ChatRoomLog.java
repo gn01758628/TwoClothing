@@ -11,7 +11,7 @@ public class ChatRoomLog implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "logid", insertable = false, updatable = false)
+    @Column(name = "logid", updatable = false)
     private Integer logId;
 
     @Column(name = "receiveid", updatable = false)
@@ -58,12 +58,12 @@ public class ChatRoomLog implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChatRoomLog that = (ChatRoomLog) o;
-        return Objects.equals(logId, that.logId) && Objects.equals(receiveId, that.receiveId) && Objects.equals(sentId, that.sentId) && Objects.equals(empId, that.empId) && Objects.equals(message, that.message) && Objects.equals(messageTime, that.messageTime);
+        return Objects.equals(logId, that.logId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(logId, receiveId, sentId, empId, message, messageTime);
+        return Objects.hash(logId);
     }
 
     public Integer getLogId() {
