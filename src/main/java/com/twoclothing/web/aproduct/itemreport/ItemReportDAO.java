@@ -3,20 +3,19 @@ package com.twoclothing.web.aproduct.itemreport;
 import java.util.List;
 
 public interface ItemReportDAO {
-	
-	 public void insert(ItemReport itemReport);
+	void insert(ItemReport itemReport);
 
-	    public ItemReport getByPrimaryKey(Integer reportId);
+	ItemReport getByPrimaryKey(Integer reportId);
 
-	    public List<ItemReport> getAll();
+	List<ItemReport> getAll();
 
-	    public List<ItemReport> getAllByItemId(Integer itemId);
+	List<ItemReport> getAllByItemId(Integer itemId);
 
-	    public List<ItemReport> getAllByEmpId(Integer empId);
-	    
-	    public List<ItemReport> getAllByRStatus(Integer rStatus);
+	List<ItemReport> getAllByEmpId(Integer empId);
 
-	    public List<ItemReport> getAllByResult(Integer result);
+	List<ItemReport> getAllByRStatus(Integer rStatus);
 
-	    public void update(Integer reportId);
+	List<ItemReport> getAllByResult(Integer result);
+
+	void update(ItemReport itemReport);
 }

@@ -4,15 +4,43 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "orderreport")
 public class OrderReport implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "reportid", updatable = false)
 	private Integer reportId;
+
+	@Column(name = "orderid", updatable = false)
 	private Integer orderId;
+
+	@Column(name = "empid")
 	private Integer empId;
+
+	@Column(name = "reportdate", updatable = false)
 	private Timestamp reportDate;
+
+	@Column(name = "description", updatable = false)
 	private String description;
+
+	@Column(name = "rstatus", columnDefinition = "TINYINT")
 	private Integer rStatus;
+
+	@Column(name = "auditdate")
 	private Timestamp auditDate;
+
+	@Column(name = "result", columnDefinition = "TINYINT")
 	private Integer result;
+
+	@Column(name = "note")
 	private String note;
 
 	public OrderReport() {
