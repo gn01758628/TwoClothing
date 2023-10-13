@@ -846,7 +846,7 @@ CREATE TABLE ordernotify
     notifyid  INT AUTO_INCREMENT NOT NULL,
     mbrid     INT          NOT NULL,
     orderid   INT          NOT NULL,
-    orderdate DATETIME     NOT NULL,
+    orderdate DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     title     VARCHAR(20)  NOT NULL,
     content   VARCHAR(200) NOT NULL,
     PRIMARY KEY (notifyid)

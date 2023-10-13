@@ -19,10 +19,10 @@ public class ItemOrder implements Serializable {
 	@Column(name="orderid", updatable = false)
 	private Integer orderId;
 	
-	@Column(name="buymbrid")
+	@Column(name="buymbrid",updatable = false)
 	private Integer buyMbrId;
 	
-	@Column(name="sellmbrid")
+	@Column(name="sellmbrid",updatable = false)
 	private Integer sellMbrId;
 	
 	@Column(name="buystar")
