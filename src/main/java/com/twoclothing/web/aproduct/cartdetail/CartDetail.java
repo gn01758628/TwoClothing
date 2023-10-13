@@ -15,16 +15,16 @@ import javax.persistence.Table;
 public class CartDetail implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "cartid")
+	@Column(name = "cartid", insertable = false, updatable = false)
 	private Integer cartId;
 	
-	@Column(name = "mbrid")
+	@Column(name = "mbrid", nullable = false)
 	private Integer mbrId;
 	
-	@Column(name = "itemid")
+	@Column(name = "itemid", nullable = false)
 	private Integer itemId;
 	
-	@Column(name = "quantity")
+	@Column(name = "quantity", nullable = false)
 	private Integer quantity;
 	
 	public CartDetail() {

@@ -16,10 +16,10 @@ import javax.persistence.Table;
 public class ItemImage implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "imgid", updatable = false)
+	@Column(name = "imgid", insertable = false , updatable = false)
 	private Integer imgId;
 	
-	@Column(name = "itemid")
+	@Column(name = "itemid", nullable = false)
 	private Integer itemId;
 	
 	@Column(name = "image", columnDefinition = "mediumblob")
