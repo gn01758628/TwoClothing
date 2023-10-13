@@ -1,207 +1,193 @@
 package com.twoclothing.web.abid.biditem;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 @Entity
-@Table(name= "biditem")
-public class BidItem implements Serializable{
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "biditemid", updatable = false)
-	private Integer bidItemId;
-	
-	@Column(name = "bidname")
-	private String bidName;
-	
-	@Column(name = "detail")
-	private String detail;
-	
-	@Column(name = "tagid")
-	private Integer tagId;
-	
-	@Column(name = "mbrid")
-	private Integer mbrId;
-	
-	@Column(name = "starprice")
-	private Integer starPrice;
-	
-	@Column(name = "reserveprice")
-	private Integer reservePrice;
-	
-	@Column(name = "directprice")
-	private Integer directPrice;
-	
-	@Column(name = "bidstatus")
-	private Integer bidStatus;
-	
-	@Column(name = "starttime")
-	private Timestamp startTime;
-	
-	@Column(name = "endtime")
-	private Timestamp endTime;
-	
-	@Column(name = "empid")
-	private Integer empId;
-	
-	public BidItem() {
-		
-	}
-	
-	public BidItem(Integer bidItemId, String bidName, String detail, Integer tagId, Integer mbrId, Integer starPrice,
-			Integer reservePrice, Integer directPrice, Integer bidStatus, Timestamp startTime, Timestamp endTime,
-			Integer empId) {
-		super();
-		this.bidItemId = bidItemId;
-		this.bidName = bidName;
-		this.detail = detail;
-		this.tagId = tagId;
-		this.mbrId = mbrId;
-		this.starPrice = starPrice;
-		this.reservePrice = reservePrice;
-		this.directPrice = directPrice;
-		this.bidStatus = bidStatus;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.empId = empId;
-	}
+@Table(name = "biditem")
+public class BidItem implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "biditemid", updatable = false)
+    private Integer bidItemId;
 
+    @Column(name = "bidname", nullable = false)
+    private String bidName;
 
+    @Column(name = "detail", nullable = false)
+    private String detail;
 
-	@Override
-	public String toString() {
-		return "BidItem [bidItemId=" + bidItemId + ", bidName=" + bidName + ", detail=" + detail + ", tagId=" + tagId
-				+ ", mbrId=" + mbrId + ", starPrice=" + starPrice + ", reservePrice=" + reservePrice + ", directPrice="
-				+ directPrice + ", bidStatus=" + bidStatus + ", startTime=" + startTime + ", endTime=" + endTime
-				+ ", empId=" + empId + "]";
-	}
+    @Column(name = "tagid", nullable = false)
+    private Integer tagId;
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(bidItemId, bidName, bidStatus, detail, directPrice, empId, endTime, mbrId, reservePrice,
-				starPrice, startTime, tagId);
-	}
+    @Column(name = "mbrid", updatable = false, nullable = false)
+    private Integer mbrId;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		BidItem other = (BidItem) obj;
-		return Objects.equals(bidItemId, other.bidItemId) && Objects.equals(bidName, other.bidName)
-				&& Objects.equals(bidStatus, other.bidStatus) && Objects.equals(detail, other.detail)
-				&& Objects.equals(directPrice, other.directPrice) && Objects.equals(empId, other.empId)
-				&& Objects.equals(endTime, other.endTime) && Objects.equals(mbrId, other.mbrId)
-				&& Objects.equals(reservePrice, other.reservePrice) && Objects.equals(starPrice, other.starPrice)
-				&& Objects.equals(startTime, other.startTime) && Objects.equals(tagId, other.tagId);
-	}
+    @Column(name = "startprice", nullable = false)
+    private Integer startPrice;
 
-	public Integer getBidItemId() {
-		return bidItemId;
-	}
+    @Column(name = "reserveprice", nullable = false)
+    private Integer reservePrice;
 
-	public void setBidItemId(Integer bidItemId) {
-		this.bidItemId = bidItemId;
-	}
+    @Column(name = "directprice", nullable = false)
+    private Integer directPrice;
 
-	public String getBidName() {
-		return bidName;
-	}
+    @Column(name = "bidstatus", insertable = false, nullable = false, columnDefinition = "TINYINT")
+    private Integer bidStatus = 0;
 
-	public void setBidName(String bidName) {
-		this.bidName = bidName;
-	}
+    @Column(name = "starttime", nullable = false)
+    private Timestamp startTime;
 
-	public String getDetail() {
-		return detail;
-	}
+    @Column(name = "endtime", nullable = false)
+    private Timestamp endTime;
 
-	public void setDetail(String detail) {
-		this.detail = detail;
-	}
+    @Column(name = "empid", insertable = false)
+    private Integer empId;
 
-	public Integer getTagId() {
-		return tagId;
-	}
+    public BidItem() {
+    }
 
-	public void setTagId(Integer tagId) {
-		this.tagId = tagId;
-	}
+    public BidItem(Integer bidItemId, String bidName, String detail, Integer tagId, Integer mbrId, Integer startPrice, Integer reservePrice, Integer directPrice, Integer bidStatus, Timestamp startTime, Timestamp endTime, Integer empId) {
+        this.bidItemId = bidItemId;
+        this.bidName = bidName;
+        this.detail = detail;
+        this.tagId = tagId;
+        this.mbrId = mbrId;
+        this.startPrice = startPrice;
+        this.reservePrice = reservePrice;
+        this.directPrice = directPrice;
+        this.bidStatus = bidStatus;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.empId = empId;
+    }
 
-	public Integer getMbrId() {
-		return mbrId;
-	}
+    @Override
+    public String toString() {
+        return "BidItem{" +
+                "bidItemId=" + bidItemId +
+                ", bidName='" + bidName + '\'' +
+                ", detail='" + detail + '\'' +
+                ", tagId=" + tagId +
+                ", mbrId=" + mbrId +
+                ", startPrice=" + startPrice +
+                ", reservePrice=" + reservePrice +
+                ", directPrice=" + directPrice +
+                ", bidStatus=" + bidStatus +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", empId=" + empId +
+                '}';
+    }
 
-	public void setMbrId(Integer mbrId) {
-		this.mbrId = mbrId;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BidItem bidItem = (BidItem) o;
+        return Objects.equals(bidItemId, bidItem.bidItemId);
+    }
 
-	public Integer getStarPrice() {
-		return starPrice;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(bidItemId);
+    }
 
-	public void setStarPrice(Integer starPrice) {
-		this.starPrice = starPrice;
-	}
+    public Integer getBidItemId() {
+        return bidItemId;
+    }
 
-	public Integer getReservePrice() {
-		return reservePrice;
-	}
+    public void setBidItemId(Integer bidItemId) {
+        this.bidItemId = bidItemId;
+    }
 
-	public void setReservePrice(Integer reservePrice) {
-		this.reservePrice = reservePrice;
-	}
+    public String getBidName() {
+        return bidName;
+    }
 
-	public Integer getDirectPrice() {
-		return directPrice;
-	}
+    public void setBidName(String bidName) {
+        this.bidName = bidName;
+    }
 
-	public void setDirectPrice(Integer directPrice) {
-		this.directPrice = directPrice;
-	}
+    public String getDetail() {
+        return detail;
+    }
 
-	public Integer getBidStatus() {
-		return bidStatus;
-	}
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
 
-	public void setBidStatus(Integer bidStatus) {
-		this.bidStatus = bidStatus;
-	}
+    public Integer getTagId() {
+        return tagId;
+    }
 
-	public Timestamp getStartTime() {
-		return startTime;
-	}
+    public void setTagId(Integer tagId) {
+        this.tagId = tagId;
+    }
 
-	public void setStartTime(Timestamp startTime) {
-		this.startTime = startTime;
-	}
+    public Integer getMbrId() {
+        return mbrId;
+    }
 
-	public Timestamp getEndTime() {
-		return endTime;
-	}
+    public void setMbrId(Integer mbrId) {
+        this.mbrId = mbrId;
+    }
 
-	public void setEndTime(Timestamp endTime) {
-		this.endTime = endTime;
-	}
+    public Integer getStartPrice() {
+        return startPrice;
+    }
 
-	public Integer getEmpId() {
-		return empId;
-	}
+    public void setStartPrice(Integer startPrice) {
+        this.startPrice = startPrice;
+    }
 
-	public void setEmpId(Integer empId) {
-		this.empId = empId;
-	}
-	
-	
+    public Integer getReservePrice() {
+        return reservePrice;
+    }
+
+    public void setReservePrice(Integer reservePrice) {
+        this.reservePrice = reservePrice;
+    }
+
+    public Integer getDirectPrice() {
+        return directPrice;
+    }
+
+    public void setDirectPrice(Integer directPrice) {
+        this.directPrice = directPrice;
+    }
+
+    public Integer getBidStatus() {
+        return bidStatus;
+    }
+
+    public void setBidStatus(Integer bidStatus) {
+        this.bidStatus = bidStatus;
+    }
+
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
+
+    public Integer getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(Integer empId) {
+        this.empId = empId;
+    }
 }

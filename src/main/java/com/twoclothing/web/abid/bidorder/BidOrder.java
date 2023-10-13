@@ -25,7 +25,7 @@ public class BidOrder  implements Serializable{
 	@Column(name = "buymbrid" , updatable = false)
 	private Integer buyMbrId;
 	
-	@Column(name = "biditemid", updatable = false)
+	@Column(name = "sellmbrid", updatable = false)
 	private Integer sellMbrId;
 	
 	@Column(name = "buystar", insertable = false)
@@ -34,7 +34,7 @@ public class BidOrder  implements Serializable{
 	@Column(name = "buyerratingdesc", insertable = false)
 	private String buyerRatingDesc;
 	
-	@Column(name = "sellstar", insertable = false)
+	@Column(name = "sellstar")
 	private Integer sellStar;
 	
 	@Column(name = "sellerratingdesc", insertable = false)
@@ -43,7 +43,7 @@ public class BidOrder  implements Serializable{
 	@Column(name = "orderdate", updatable = false)
 	private Timestamp orderDate;
 	
-	@Column(name = "paytype")
+	@Column(name = "paytype", columnDefinition = "TINYINT")
 	private Integer payType;
 	
 	@Column(name = "payinfo")
@@ -52,8 +52,8 @@ public class BidOrder  implements Serializable{
 	@Column(name = "amount", updatable = false)
 	private Integer amount;
 	
-	@Column(name = "orderstatus")
-	private Integer orderStatus = 0;
+	@Column(name = "orderstatus", columnDefinition = "TINYINT")
+	private Integer orderStatus;
 	
 	@Column(name = "receiveaddress")
 	private String receiveAddress;

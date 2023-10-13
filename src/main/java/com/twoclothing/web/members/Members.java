@@ -24,8 +24,11 @@ public class Members implements Serializable {
     @Column(name = "pswdhash", nullable = false)
     private String pswdHash;
 
-    @Column(name = "mbrstatus", insertable = false, nullable = false)
+    @Column(name = "mbrstatus", insertable = false, nullable = false, columnDefinition = "TINYINT")
     private Integer mbrStatus = 0;
+
+
+
 
     @Lob
     @Column(name = "avatar", insertable = false, columnDefinition = "mediumblob")

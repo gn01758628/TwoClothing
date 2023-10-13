@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "bidorderreport")
+@Table(name = "biditemreport")
 public class BidItemReport  implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,13 +34,13 @@ public class BidItemReport  implements Serializable{
 	@Column(name = "biddescription", updatable = false)
 	private String bidDescription;
 	
-	@Column(name = "bidstatus")
+	@Column(name = "bidstatus", columnDefinition = "TINYINT")
 	private Integer bidStatus;
 	
 	@Column(name = "auditdate")
 	private Timestamp auditDate;
 	
-	@Column(name = "result")
+	@Column(name = "result", columnDefinition = "TINYINT")
 	private Integer result;
 	
 	@Column(name = "note")

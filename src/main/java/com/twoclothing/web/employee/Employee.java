@@ -1,18 +1,41 @@
 package com.twoclothing.web.employee;
 
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Objects;
 
+
+@Entity
+@Table(name= "employee")
 public class Employee implements Serializable {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "empid", updatable = false)
 	private Integer empId;
+	
+	@Column(name = "deptid")
 	private Integer deptId;
+	
+	@Column(name = "empname")
 	private String empName;
+		
+	@Column(name = "phone")
 	private String phone;
+	
+	@Column(name = "address")
 	private String address;
+	
+	@Column(name = "email")
 	private String email;
+		
+	@Column(name = "pswdhash")
 	private String pswdHash;
+	
+	@Column(name = "empstatus", columnDefinition = "TINYINT")
 	private Integer empStatus;
+	
+	@Column(name = "avatar", columnDefinition = "MEDIUMBLOB")
 	private byte[] avatar;
 
 	public Employee() {

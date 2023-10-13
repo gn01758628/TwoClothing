@@ -1,26 +1,27 @@
-package com.twoclothing.web.blacklist;
+package com.twoclothing.web.empmissions;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "blacklist")
-public class BlackList implements Serializable {
+@Table(name = "empmissions")
+public class EmpMissions implements Serializable {
 
     @EmbeddedId
     private CompositeDetail compositeKey;
 
-    public BlackList() {
+    public EmpMissions() {
     }
 
-    public BlackList(CompositeDetail compositeKey) {
+    public EmpMissions(CompositeDetail compositeKey) {
         this.compositeKey = compositeKey;
     }
 
     @Override
     public String toString() {
-        return "BlackList{" +
+        return "EmpMissions{" +
                 "compositeKey=" + compositeKey +
                 '}';
     }
@@ -37,19 +38,18 @@ public class BlackList implements Serializable {
     public static class CompositeDetail implements Serializable {
         private static final long serialVersionUID = 1L;
 
-        @Column(name = "mbrid")
-        private Integer mbrid;
+        @Column(name = "empid")
+        private Integer empId;
 
-        @Column(name = "blackid")
-        private Integer blackid;
+        @Column(name = "permissionid")
+        private Integer permissionId;
 
         public CompositeDetail() {
         }
 
-        public CompositeDetail(Integer mbrid, Integer blackid) {
-        	super();
-        	this.mbrid = mbrid;
-            this.blackid = blackid;
+        public CompositeDetail(Integer empId, Integer permissionId) {
+            this.empId = empId;
+            this.permissionId = permissionId;
         }
 
         @Override
@@ -57,29 +57,28 @@ public class BlackList implements Serializable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             CompositeDetail that = (CompositeDetail) o;
-            return Objects.equals(mbrid, that.mbrid) && Objects.equals(blackid, that.blackid);
+            return Objects.equals(empId, that.empId) && Objects.equals(permissionId, that.permissionId);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(mbrid, blackid);
+            return Objects.hash(empId, permissionId);
         }
 
-        public Integer getMbrid() {
-            return mbrid;
+        public Integer getEmpId() {
+            return empId;
         }
 
-        public void setMbrid(Integer mbrid) {
-            this.mbrid = mbrid;
+        public void setEmpId(Integer empId) {
+            this.empId = empId;
         }
 
-        public Integer getBlackid() {
-            return blackid;
+        public Integer getPermissionId() {
+            return permissionId;
         }
 
-        public void setBlackid(Integer blackid) {
-            this.blackid = blackid;
+        public void setPermissionId(Integer permissionId) {
+            this.permissionId = permissionId;
         }
     }
 }
-
