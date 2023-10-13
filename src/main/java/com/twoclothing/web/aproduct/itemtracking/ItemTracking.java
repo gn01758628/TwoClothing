@@ -1,60 +1,43 @@
 package com.twoclothing.web.aproduct.itemtracking;
 
 import java.io.Serializable;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "itemtracking")
 public class ItemTracking implements Serializable {
-	private Integer itemId;
-	private Integer mbrId;
+	@EmbeddedId
+	private CompositeDetail compositeKey;
+
+	@Column(name = "trackingtime", nullable = false)
 	private Timestamp trackingTime;
-	
+
 	public ItemTracking() {
 	}
 
-	public ItemTracking(Integer itemId, Integer mbrId, Timestamp trackingTime) {
-		this.itemId = itemId;
-		this.mbrId = mbrId;
+	public ItemTracking(CompositeDetail compositeKey, Timestamp trackingTime) {
+		this.compositeKey = compositeKey;
 		this.trackingTime = trackingTime;
 	}
 
 	@Override
 	public String toString() {
-		return "ItemTracking [itemId=" + itemId + ", mbrId=" + mbrId + ", trackingTime=" + trackingTime + "]";
+		return "ItemTracking [compositeKey=" + compositeKey + ", trackingTime=" + trackingTime + "]";
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(itemId, mbrId, trackingTime);
+	public CompositeDetail getCompositeKey() {
+		return compositeKey;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ItemTracking other = (ItemTracking) obj;
-		return Objects.equals(itemId, other.itemId) && Objects.equals(mbrId, other.mbrId)
-				&& Objects.equals(trackingTime, other.trackingTime);
-	}
-
-	public Integer getItemId() {
-		return itemId;
-	}
-
-	public void setItemId(Integer itemId) {
-		this.itemId = itemId;
-	}
-
-	public Integer getMbrId() {
-		return mbrId;
-	}
-
-	public void setMbrId(Integer mbrId) {
-		this.mbrId = mbrId;
+	public void setCompositeKey(CompositeDetail compositeKey) {
+		this.compositeKey = compositeKey;
 	}
 
 	public Timestamp getTrackingTime() {
@@ -63,5 +46,57 @@ public class ItemTracking implements Serializable {
 
 	public void setTrackingTime(Timestamp trackingTime) {
 		this.trackingTime = trackingTime;
+	}
+
+	@Embeddable
+	static class CompositeDetail implements Serializable {
+		private static final long serialVersionUID = 1L;
+
+		@Column(name = "itemid")
+		private Integer itemId;
+
+		@Column(name = "mbrid")
+		private Integer mbrId;
+
+		public CompositeDetail() {
+		}
+
+		public CompositeDetail(Integer itemId, Integer mbrId) {
+			this.itemId = itemId;
+			this.mbrId = mbrId;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(itemId, mbrId);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			CompositeDetail other = (CompositeDetail) obj;
+			return Objects.equals(itemId, other.itemId) && Objects.equals(mbrId, other.mbrId);
+		}
+
+		public Integer getItemId() {
+			return itemId;
+		}
+
+		public void setItemId(Integer itemId) {
+			this.itemId = itemId;
+		}
+
+		public Integer getMbrId() {
+			return mbrId;
+		}
+
+		public void setMbrId(Integer mbrId) {
+			this.mbrId = mbrId;
+		}
 	}
 }
