@@ -3,7 +3,6 @@ package com.twoclothing.web.blacklist;
 import java.util.List;
 
 public interface BlackListDAO {
-
     void insert(BlackList blackList);
 
     BlackList getByCompositeKey(Integer mbrId, Integer blackId);

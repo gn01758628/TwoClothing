@@ -7,79 +7,76 @@ import java.util.Objects;
 @Entity
 @Table(name = "blacklist")
 public class BlackList implements Serializable {
+	@EmbeddedId
+	private CompositeDetail compositeKey;
 
-    @EmbeddedId
-    private CompositeDetail compositeKey;
+	public BlackList() {
+	}
 
-    public BlackList() {
-    }
+	public BlackList(CompositeDetail compositeKey) {
+		this.compositeKey = compositeKey;
+	}
 
-    public BlackList(CompositeDetail compositeKey) {
-        this.compositeKey = compositeKey;
-    }
+	@Override
+	public String toString() {
+		return "BlackList{" + "compositeKey=" + compositeKey + '}';
+	}
 
-    @Override
-    public String toString() {
-        return "BlackList{" +
-                "compositeKey=" + compositeKey +
-                '}';
-    }
+	public CompositeDetail getCompositeKey() {
+		return compositeKey;
+	}
 
-    public CompositeDetail getCompositeKey() {
-        return compositeKey;
-    }
+	public void setCompositeKey(CompositeDetail compositeKey) {
+		this.compositeKey = compositeKey;
+	}
 
-    public void setCompositeKey(CompositeDetail compositeKey) {
-        this.compositeKey = compositeKey;
-    }
+	@Embeddable
+	public static class CompositeDetail implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+		@Column(name = "mbrid")
+		private Integer mbrId;
 
-    @Embeddable
-    public static class CompositeDetail implements Serializable {
-        private static final long serialVersionUID = 1L;
+		@Column(name = "blackid")
+		private Integer blackId;
 
-        @Column(name = "mbrid")
-        private Integer mbrid;
+		public CompositeDetail() {
+		}
 
-        @Column(name = "blackid")
-        private Integer blackid;
+		public CompositeDetail(Integer mbrId, Integer blackId) {
+			this.mbrId = mbrId;
+			this.blackId = blackId;
+		}
 
-        public CompositeDetail() {
-        }
+		@Override
+		public boolean equals(Object o) {
+			if (this == o)
+				return true;
+			if (o == null || getClass() != o.getClass())
+				return false;
+			CompositeDetail that = (CompositeDetail) o;
+			return Objects.equals(mbrId, that.mbrId) && Objects.equals(blackId, that.blackId);
+		}
 
-        public CompositeDetail(Integer mbrid, Integer blackid) {
-        	super();
-        	this.mbrid = mbrid;
-            this.blackid = blackid;
-        }
+		@Override
+		public int hashCode() {
+			return Objects.hash(mbrId, blackId);
+		}
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            CompositeDetail that = (CompositeDetail) o;
-            return Objects.equals(mbrid, that.mbrid) && Objects.equals(blackid, that.blackid);
-        }
+		public Integer getMbrId() {
+			return mbrId;
+		}
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(mbrid, blackid);
-        }
+		public void setMbrId(Integer mbrId) {
+			this.mbrId = mbrId;
+		}
 
-        public Integer getMbrid() {
-            return mbrid;
-        }
+		public Integer getBlackId() {
+			return blackId;
+		}
 
-        public void setMbrid(Integer mbrid) {
-            this.mbrid = mbrid;
-        }
-
-        public Integer getBlackid() {
-            return blackid;
-        }
-
-        public void setBlackid(Integer blackid) {
-            this.blackid = blackid;
-        }
-    }
+		public void setBlackId(Integer blackId) {
+			this.blackId = blackId;
+		}
+	}
 }
-

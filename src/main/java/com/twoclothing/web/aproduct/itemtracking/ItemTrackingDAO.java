@@ -3,14 +3,15 @@ package com.twoclothing.web.aproduct.itemtracking;
 import java.util.List;
 
 public interface ItemTrackingDAO {
-	
-	public void insert(ItemTracking itemTracking);
+	void insert(ItemTracking itemTracking);
 
-    public ItemTracking getByCompositeKey(Integer itemId, Integer mbrId);
+    ItemTracking getByCompositeKey(Integer itemId, Integer mbrId);
 
-    public List<ItemTracking> getAll();
+    List<ItemTracking> getAll();
+    
+    List<ItemTracking> getAllByItemId(Integer itemId);
 
-    public List<ItemTracking> getAllByMbrId(Integer mbrId);
+    List<ItemTracking> getAllByMbrId(Integer mbrId);
 
-    public List<ItemTracking> getAllByItemId(Integer itemId);
+    void delete(Integer itemId, Integer mbrId);
 }
