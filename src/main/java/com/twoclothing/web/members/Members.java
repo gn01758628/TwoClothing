@@ -27,9 +27,6 @@ public class Members implements Serializable {
     @Column(name = "mbrstatus", insertable = false, nullable = false, columnDefinition = "TINYINT")
     private Integer mbrStatus = 0;
 
-
-
-
     @Lob
     @Column(name = "avatar", insertable = false, columnDefinition = "mediumblob")
     private byte[] avatar;

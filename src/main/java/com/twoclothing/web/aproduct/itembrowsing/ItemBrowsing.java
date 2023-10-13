@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
@@ -17,8 +16,7 @@ public class ItemBrowsing implements Serializable {
 	@EmbeddedId
 	private CompositeDetail compositeKey;
 
-	@Id
-	@Column(name = "browsingtime")
+	@Column(name = "browsingtime", nullable = false)
 	private Timestamp browsingTime;
 
 	public ItemBrowsing() {
@@ -42,8 +40,18 @@ public class ItemBrowsing implements Serializable {
 		this.compositeKey = compositeKey;
 	}
 
+	public Timestamp getBrowsingTime() {
+		return browsingTime;
+	}
+
+	public void setBrowsingTime(Timestamp browsingTime) {
+		this.browsingTime = browsingTime;
+	}
+
 	@Embeddable
 	static class CompositeDetail implements Serializable {
+		private static final long serialVersionUID = 1L;
+
 		@Column(name = "itemid")
 		private Integer itemId;
 
@@ -90,13 +98,5 @@ public class ItemBrowsing implements Serializable {
 		public void setMbrId(Integer mbrId) {
 			this.mbrId = mbrId;
 		}
-	}
-
-	public Timestamp getBrowsingTime() {
-		return browsingTime;
-	}
-
-	public void setBrowsingTime(Timestamp browsingTime) {
-		this.browsingTime = browsingTime;
 	}
 }
