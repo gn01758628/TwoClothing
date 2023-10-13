@@ -3,14 +3,15 @@ package com.twoclothing.web.aproduct.itembrowsing;
 import java.util.List;
 
 public interface ItemBrowsingDAO {
+    void insert(ItemBrowsing itemBrowsing);
 
-    public void insert(ItemBrowsing itemBrowsing);
+    ItemBrowsing getByCompositeKey(Integer itemId, Integer mbrId);
 
-    public ItemBrowsing getByCompositeKey(Integer itemId, Integer mbrId);
+    List<ItemBrowsing> getAll();
 
-    public List<ItemBrowsing> getAll();
+    List<ItemBrowsing> getAllByMbrId(Integer mbrId);
 
-    public List<ItemBrowsing> getAllByMbrId(Integer mbrId);
-
-    public List<ItemBrowsing> getAllByItemId(Integer itemId);
+    List<ItemBrowsing> getAllByItemId(Integer itemId);
+    
+    void update(ItemBrowsing itemBrowsing);
 }
