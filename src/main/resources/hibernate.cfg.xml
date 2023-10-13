@@ -16,7 +16,7 @@
        <property name="hibernate.connection.password">root</property>
 
         <!-- 改用JNDI設定連線池 -->
-        <property name="connection.datasource">java:comp/env/jdbc/TestDB</property>
+<!--         <property name="connection.datasource">java:comp/env/jdbc/TestDB</property> -->
 
         <!-- 使用MySQL的方言 -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -59,7 +59,7 @@
         <mapping class="com.twoclothing.web.latestnews.LatestNews"/>
         <mapping class="com.twoclothing.web.members.Members"/>
         <mapping class="com.twoclothing.web.memberscoupon.MembersCoupon"/>
-        <mapping class="com.twoclothing.web.newsimage.NewsImage"/>
+        <mapping class="com.twoclothing.web.newsimages.NewsImages"/>
         <mapping class="com.twoclothing.web.aproduct.orderdetails.OrderDetails"/>
         <mapping class="com.twoclothing.web.aproduct.ordernotify.OrderNotify"/>
         <mapping class="com.twoclothing.web.aproduct.orderratingimage.OrderRatingImage"/>

@@ -29,7 +29,7 @@ public class Coupon implements Serializable {
 	@Column(name = "expiredate")
 	private Timestamp expireDate;
 	
-	@Column(name = "distype")
+	@Column(name = "distype" , columnDefinition = "TINYINT")
 	private int disType;
 	
 	@Column(name = "disvalue")

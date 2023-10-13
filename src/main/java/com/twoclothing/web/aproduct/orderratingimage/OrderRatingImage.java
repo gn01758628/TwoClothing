@@ -10,14 +10,14 @@ import javax.persistence.*;
 @Table(name = "orderratingimage")
 public class OrderRatingImage implements Serializable {
 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "imageid", updatable = false)
 	private Integer imageId;
 	@Column(name = "orderid", updatable = false)
 	private Integer orderId;
 
-	@Column(name = "imageid", columnDefinition = "MEDIUMBLOB")
+	@Column(name = "image", columnDefinition = "MEDIUMBLOB")
 	private Byte[] image;
 
 	public OrderRatingImage() {
