@@ -4,63 +4,98 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "itembrowsing")
 public class ItemBrowsing implements Serializable {
-	private Integer itemId;
-	private Integer mbrId;
+	@EmbeddedId
+	private CompositeDetail compositeKey;
+
+	@Id
+	@Column(name = "browsingtime")
 	private Timestamp browsingTime;
-	
+
 	public ItemBrowsing() {
 	}
-	
-	public ItemBrowsing(Integer itemId, Integer mbrId, Timestamp browsingTime) {
-		this.itemId = itemId;
-		this.mbrId = mbrId;
+
+	public ItemBrowsing(CompositeDetail compositeKey, Timestamp browsingTime) {
+		this.compositeKey = compositeKey;
 		this.browsingTime = browsingTime;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "ItemBrowsing [itemId=" + itemId + ", mbrId=" + mbrId + ", browsingTime=" + browsingTime + "]";
+		return "ItemBrowsing [compositeKey=" + compositeKey + ", browsingTime=" + browsingTime + "]";
 	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(browsingTime, itemId, mbrId);
+
+	public CompositeDetail getCompositeKey() {
+		return compositeKey;
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ItemBrowsing other = (ItemBrowsing) obj;
-		return Objects.equals(browsingTime, other.browsingTime) && Objects.equals(itemId, other.itemId)
-				&& Objects.equals(mbrId, other.mbrId);
+
+	public void setCompositeKey(CompositeDetail compositeKey) {
+		this.compositeKey = compositeKey;
 	}
-	
-	public Integer getItemId() {
-		return itemId;
+
+	@Embeddable
+	static class CompositeDetail implements Serializable {
+		@Column(name = "itemid")
+		private Integer itemId;
+
+		@Column(name = "mbrid")
+		private Integer mbrId;
+
+		public CompositeDetail() {
+		}
+
+		public CompositeDetail(Integer itemId, Integer mbrId) {
+			this.itemId = itemId;
+			this.mbrId = mbrId;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(itemId, mbrId);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			CompositeDetail other = (CompositeDetail) obj;
+			return Objects.equals(itemId, other.itemId) && Objects.equals(mbrId, other.mbrId);
+		}
+
+		public Integer getItemId() {
+			return itemId;
+		}
+
+		public void setItemId(Integer itemId) {
+			this.itemId = itemId;
+		}
+
+		public Integer getMbrId() {
+			return mbrId;
+		}
+
+		public void setMbrId(Integer mbrId) {
+			this.mbrId = mbrId;
+		}
 	}
-	
-	public void setItemId(Integer itemId) {
-		this.itemId = itemId;
-	}
-	
-	public Integer getMbrId() {
-		return mbrId;
-	}
-	
-	public void setMbrId(Integer mbrId) {
-		this.mbrId = mbrId;
-	}
-	
+
 	public Timestamp getBrowsingTime() {
 		return browsingTime;
 	}
-	
+
 	public void setBrowsingTime(Timestamp browsingTime) {
 		this.browsingTime = browsingTime;
 	}
