@@ -7,7 +7,7 @@ public interface MembersDAO {
     /**
      * 新增時只新增(email,pswdhash)
      */
-    void insert(Members members);
+	int insert(Members members);
 
     Members getByPrimaryKey(Integer mbrId);
 
@@ -21,31 +21,31 @@ public interface MembersDAO {
 
     List<Members> getAllByBuyScore(Integer buyScore);
 
-    void updateMbrName(Members members);
+    int updateMbrName(Members members);
 
-    void updatePSWDHash(Members members);
+    int updatePSWDHash(Members members);
 
-    void updateMbrStatus(Members members);
+    int updateMbrStatus(Members members);
 
-    void updateAvatar(Members members);
+    int updateAvatar(Members members);
 
-    void updateShopImg01(Members members);
+    int updateShopImg01(Members members);
 
-    void updateShopImg02(Members members);
+    int updateShopImg02(Members members);
 
-    void updateMbrPoint(Members members);
+    int updateMbrPoint(Members members);
 
-    void updateBalance(Members members);
+    int updateBalance(Members members);
 
-    void updateBuyStarRating(Members members);
+    int updateBuyStarRating(Members members);
 
-    void updateSellStarRating(Members members);
+    int updateSellStarRating(Members members);
 
-    void updateLastLogin(Members members);
+    int updateLastLogin(Members members);
 
-    void updateSellScore(Members members);
+    int updateSellScore(Members members);
 
-    void updateBuyScore(Members members);
+    int updateBuyScore(Members members);
 
-    void delete(Integer mbrId);
+    int delete(Integer mbrId);
 }
