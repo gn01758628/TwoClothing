@@ -7,7 +7,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "follow")
 public class Follow implements Serializable {
-
     @EmbeddedId
     private CompositeDetail compositeKey;
 
@@ -35,19 +34,20 @@ public class Follow implements Serializable {
 
     @Embeddable
     public static class CompositeDetail implements Serializable {
+		private static final long serialVersionUID = 1L;
 
-        @Column(name = "mbrid")
+		@Column(name = "mbrid")
         private Integer mbrId;
 
         @Column(name = "followid")
-        private Integer followid;
+        private Integer followId;
 
         public CompositeDetail() {
         }
 
-        public CompositeDetail(Integer mbrId, Integer followid) {
+        public CompositeDetail(Integer mbrId, Integer followId) {
             this.mbrId = mbrId;
-            this.followid = followid;
+            this.followId = followId;
         }
 
         @Override
@@ -55,12 +55,12 @@ public class Follow implements Serializable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             CompositeDetail that = (CompositeDetail) o;
-            return Objects.equals(mbrId, that.mbrId) && Objects.equals(followid, that.followid);
+            return Objects.equals(mbrId, that.mbrId) && Objects.equals(followId, that.followId);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(mbrId, followid);
+            return Objects.hash(mbrId, followId);
         }
 
         public Integer getMbrId() {
@@ -71,12 +71,12 @@ public class Follow implements Serializable {
             this.mbrId = mbrId;
         }
 
-        public Integer getFollowid() {
-            return followid;
+        public Integer getFollowId() {
+            return followId;
         }
 
-        public void setFollowid(Integer followid) {
-            this.followid = followid;
+        public void setFollowid(Integer followId) {
+            this.followId = followId;
         }
     }
 }

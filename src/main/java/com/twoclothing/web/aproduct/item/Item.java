@@ -15,39 +15,39 @@ import javax.persistence.Table;
 public class Item implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "itemid", updatable = false)
+	@Column(name = "itemid", insertable = false , updatable = false)
 	private Integer itemId;
 	
-	@Column(name = "itemname")
+	@Column(name = "itemname" , nullable = false)
 	private String itemName;
 	
 	@Column(name = "detail")
 	private String detail;
 	
-	@Column(name = "tagid")
+	@Column(name = "tagid" , nullable = false)
 	private Integer tagId;
 	
-	@Column(name = "mbrid")
+	@Column(name = "mbrid" , nullable = false)
 	private Integer mbrId;
 	
-	@Column(name = "price")
+	@Column(name = "price" , nullable = false)
 	private Integer price;
 	
-	@Column(name = "itemstatus", columnDefinition = "TINYINT")
+	@Column(name = "itemstatus", columnDefinition = "TINYINT", nullable = false)
 	private Integer itemStatus;
 	
-	@Column(name = "quantity")
+	@Column(name = "quantity", nullable = false)
 	private Integer quantity;
 	
 	public Item() {
 	}
 	
-	public Item(Integer itemId, String name, String detail, Integer tadId, Integer mbrId, Integer price,
+	public Item(Integer itemId, String itemName, String detail, Integer tagId, Integer mbrId, Integer price,
 			Integer itemStatus, Integer quantity) {
 		this.itemId = itemId;
-		this.itemName = name;
+		this.itemName = itemName;
 		this.detail = detail;
-		this.tagId = tadId;
+		this.tagId = tagId;
 		this.mbrId = mbrId;
 		this.price = price;
 		this.itemStatus = itemStatus;
@@ -56,7 +56,7 @@ public class Item implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "Item [itemId=" + itemId + ", name=" + itemName + ", detail=" + detail + ", tadId=" + tagId + ", mbrId="
+		return "Item [itemId=" + itemId + ", itenName=" + itemName + ", detail=" + detail + ", tagId=" + tagId + ", mbrId="
 				+ mbrId + ", price=" + price + ", itemStatus=" + itemStatus + ", quantity=" + quantity + "]";
 	}
 	
@@ -88,11 +88,11 @@ public class Item implements Serializable{
 		this.itemId = itemId;
 	}
 
-	public String getName() {
+	public String getItemName() {
 		return itemName;
 	}
 
-	public void setName(String name) {
+	public void setItemName(String name) {
 		this.itemName = name;
 	}
 
@@ -104,12 +104,12 @@ public class Item implements Serializable{
 		this.detail = detail;
 	}
 
-	public Integer getTadId() {
+	public Integer getTagId() {
 		return tagId;
 	}
 
-	public void setTadId(Integer tadId) {
-		this.tagId = tadId;
+	public void setTagId(Integer tagId) {
+		this.tagId = tagId;
 	}
 
 	public Integer getMbrId() {
