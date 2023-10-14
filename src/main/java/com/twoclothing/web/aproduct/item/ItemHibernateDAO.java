@@ -45,7 +45,7 @@ public class ItemHibernateDAO implements ItemDAO {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			List<Item> list = session.createQuery("from item", Item.class).list();
+			List<Item> list = session.createQuery("from Item", Item.class).list();
 			session.getTransaction().commit();
 			return list;
 		} catch (Exception e) {
@@ -59,8 +59,8 @@ public class ItemHibernateDAO implements ItemDAO {
 	public List<Item> getAllByTagId(Integer tagId) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
-			session.beginTransaction();
-			List<Item> list = session.createQuery("from item order by tagId", Item.class).list();
+			session.beginTransaction();//???????????????
+			List<Item> list = session.createQuery("from Item where tagId = 1", Item.class).list();
 			session.getTransaction().commit();
 			return list;
 		} catch (Exception e) {
@@ -83,8 +83,18 @@ public class ItemHibernateDAO implements ItemDAO {
 	}
 
 	@Override
-	public void update(Integer itemId) {
-		// TODO Auto-generated method stub
+	public int update(Item item) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			session.update(item);
+			session.getTransaction().commit();
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		return -1;
 		
 	}
 	

@@ -17,6 +17,6 @@ public interface ItemDAO {
 	 
 	 public List<Item> getAllByItemStatus(Integer itemStatus);
 
-	 public void update(Integer itemId);
+	 public int update(Item item);
 
 }
