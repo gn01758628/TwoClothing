@@ -853,7 +853,7 @@ CREATE TABLE ordernotify
 );
 
 -- 表格：一般訂單通知 插入假資料
-INSERT INTO ordernotify (mbrid, orderid, orderdate, title, content)
+INSERT INTO ordernotify (mbrid, orderid, notifydate, title, content)
 VALUES (1, 1, '2023-10-01 09:00:00', '訂單更新', '您的訂單已更新。'),
        (2, 2, '2023-09-28 15:30:00', '訂單狀態', '您的訂單狀態已變更。'),
        (3, 3, '2023-09-25 14:00:00', '新訂單', '您有一個新的訂單。'),
