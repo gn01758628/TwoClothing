@@ -19,7 +19,7 @@ public class OrderNotify implements Serializable {
 	private Integer mbrId;
 	@Column(name = "orderid", updatable = false)
 	private Integer orderId;
-	@Column(name = "orderdate", updatable = false)
+	@Column(name = "notifydate", updatable = false)
 	private Timestamp notifyDate;
 	@Column(name = "title")
 	private String title;
