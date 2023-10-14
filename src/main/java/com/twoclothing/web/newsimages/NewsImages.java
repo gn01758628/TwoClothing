@@ -1,22 +1,31 @@
-package com.twoclothing.web.newsimage;
+package com.twoclothing.web.newsimages;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class NewsImage implements Serializable {
+import javax.persistence.*;
 
+@Entity
+@Table(name = "newsimages")
+public class NewsImages implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "imageid", updatable = false)
 	private Integer imageId;
+	@Column(name = "newsid", updatable = false)
 	private Integer newsId;
+	@Column(name = "image", columnDefinition = "MEDIUMBLOB")
 	private byte[] image;
+	@Column(name = "descriptions")
 	private String descriptions;
 
-	public NewsImage() {
+	public NewsImages() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public NewsImage(Integer newsId, byte[] image, String descriptions) {
+	public NewsImages(Integer newsId, byte[] image, String descriptions) {
 		super();
 		this.newsId = newsId;
 		this.image = image;
@@ -68,7 +77,7 @@ public class NewsImage implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		NewsImage other = (NewsImage) obj;
+		NewsImages other = (NewsImages) obj;
 		return Objects.equals(imageId, other.imageId) && Objects.equals(newsId, other.newsId);
 	}
 

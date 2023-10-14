@@ -19,22 +19,22 @@ public class ItemReport implements Serializable {
 	@Column(name = "reportid", updatable = false)
 	private Integer reportId;
 
-	@Column(name = "itemid", updatable = false)
+	@Column(name = "itemid", updatable = false, nullable = false)
 	private Integer itemId;
 
-	@Column(name = "mbrid", updatable = false)
+	@Column(name = "mbrid", updatable = false, nullable = false)
 	private Integer mbrId;
 
 	@Column(name = "empid")
 	private Integer empId;
 
-	@Column(name = "reportdate", updatable = false)
+	@Column(name = "reportdate", updatable = false, nullable = false)
 	private Timestamp reportDate;
 
-	@Column(name = "description", updatable = false)
+	@Column(name = "description", updatable = false, nullable = false)
 	private String description;
 
-	@Column(name = "rstatus", columnDefinition = "TINYINT")
+	@Column(name = "rstatus", columnDefinition = "TINYINT", nullable = false)
 	private Integer rStatus;
 
 	@Column(name = "auditdate")

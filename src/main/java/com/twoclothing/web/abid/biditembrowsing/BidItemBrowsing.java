@@ -13,8 +13,8 @@ public class BidItemBrowsing implements Serializable {
     @EmbeddedId
     private CompositeDrtail compositeKey;
 
-	@Column(name = "browsingtime", updatable = false, nullable = false)
-	private  Timestamp browsingTime;
+    @Column(name = "browsingtime", nullable = false)
+    private Timestamp browsingTime;
 
     public BidItemBrowsing() {
     }
@@ -49,7 +49,7 @@ public class BidItemBrowsing implements Serializable {
     }
 
     @Embeddable
-	public static class CompositeDrtail implements Serializable {
+    public static class CompositeDrtail implements Serializable {
 
         private static final long serialVersionUID = 1L;
 
