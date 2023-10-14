@@ -49,8 +49,7 @@ public class BidItem implements Serializable {
     public BidItem() {
     }
 
-    public BidItem(Integer bidItemId, String bidName, String detail, Integer tagId, Integer mbrId, Integer startPrice, Integer reservePrice, Integer directPrice, Integer bidStatus, Timestamp startTime, Timestamp endTime, Integer empId) {
-        this.bidItemId = bidItemId;
+    public BidItem(String bidName, String detail, Integer tagId, Integer mbrId, Integer startPrice, Integer reservePrice, Integer directPrice, Timestamp startTime, Timestamp endTime, Integer empId) {
         this.bidName = bidName;
         this.detail = detail;
         this.tagId = tagId;
@@ -58,7 +57,6 @@ public class BidItem implements Serializable {
         this.startPrice = startPrice;
         this.reservePrice = reservePrice;
         this.directPrice = directPrice;
-        this.bidStatus = bidStatus;
         this.startTime = startTime;
         this.endTime = endTime;
         this.empId = empId;
