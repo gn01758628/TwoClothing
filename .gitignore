@@ -9,3 +9,4 @@ bin/
 *.iml
 *.ipr
 src/main/resources/hibernate.cfg.xml
+out/

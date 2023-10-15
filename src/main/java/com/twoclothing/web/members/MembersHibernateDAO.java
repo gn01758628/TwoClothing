@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 
 import com.twoclothing.utils.HibernateUtil;
 
@@ -19,6 +20,11 @@ public class MembersHibernateDAO implements MembersDAO{
 		Integer id = (Integer) session.save(members);
 		session.getTransaction().commit();
 		return id;
+		}catch (ConstraintViolationException e) {
+		    // 处理电子邮件重复数据的异常
+		    e.printStackTrace();
+		    session.getTransaction().rollback();
+		    return -1;
 		}catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
@@ -62,8 +68,8 @@ public class MembersHibernateDAO implements MembersDAO{
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			  List<Members> list = session.createQuery("from Members where mbrName like :mbrName", Members.class)
-			            .setParameter("mbrName", "%" + mbrName + "%")
+			  List<Members> list = session.createQuery("from Members where mbrname like :mbrname", Members.class)
+			            .setParameter("mbrname", "%" + mbrName + "%")
 			            .list();
 //			List<Members> list = session.createQuery("from mbrName", Members.class).list();
 			session.getTransaction().commit();
@@ -77,105 +83,67 @@ public class MembersHibernateDAO implements MembersDAO{
 
 	@Override
 	public List<Members> getAllByMbrStatus(Integer mbrStatus) {
-		// TODO Auto-generated method stub
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			List<Members> list = session.createQuery("from Members where mbrstatus = :mbrstatus", Members.class)
+			 .setParameter("mbrstatus", mbrStatus).list();
+			session.getTransaction().commit();
+			return list;
+		}catch (Exception e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		}
 		return null;
 	}
 
 	@Override
 	public List<Members> getAllBySellScore(Integer sellScore) {
-		// TODO Auto-generated method stub
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			List<Members> list = session.createQuery("from Members where sellscore = :sellscore", Members.class)
+			 .setParameter("sellscore", sellScore).list();
+			session.getTransaction().commit();
+			return list;
+		}catch (Exception e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		}
 		return null;
 	}
 
 	@Override
 	public List<Members> getAllByBuyScore(Integer buyScore) {
-		// TODO Auto-generated method stub
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			List<Members> list = session.createQuery("from Members where buyscore = :buyscore", Members.class)
+			 .setParameter("buyscore", buyScore).list();
+			session.getTransaction().commit();
+			return list;
+		}catch (Exception e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		}
 		return null;
 	}
 
 	@Override
-	public int updateMbrName(Members members) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int update(Members members) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+		session.beginTransaction();
+		session.update(members);
+		session.getTransaction().commit();
+		return 1;
+	} catch (Exception e) {
+		e.printStackTrace();
+		session.getTransaction().rollback();
 	}
+	return -1;
+}
 
-	@Override
-	public int updatePSWDHash(Members members) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateMbrStatus(Members members) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateAvatar(Members members) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateShopImg01(Members members) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateShopImg02(Members members) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateMbrPoint(Members members) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateBalance(Members members) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateBuyStarRating(Members members) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateSellStarRating(Members members) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateLastLogin(Members members) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateSellScore(Members members) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateBuyScore(Members members) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int delete(Integer mbrId) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+	
 	
 }

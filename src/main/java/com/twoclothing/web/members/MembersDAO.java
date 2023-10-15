@@ -21,31 +21,8 @@ public interface MembersDAO {
 
     List<Members> getAllByBuyScore(Integer buyScore);
 
-    int updateMbrName(Members members);
-
-    int updatePSWDHash(Members members);
-
-    int updateMbrStatus(Members members);
-
-    int updateAvatar(Members members);
-
-    int updateShopImg01(Members members);
-
-    int updateShopImg02(Members members);
-
-    int updateMbrPoint(Members members);
-
-    int updateBalance(Members members);
-
-    int updateBuyStarRating(Members members);
-
-    int updateSellStarRating(Members members);
-
-    int updateLastLogin(Members members);
-
-    int updateSellScore(Members members);
-
-    int updateBuyScore(Members members);
-
-    int delete(Integer mbrId);
+    int update(Members members);
+    
+    
+   
 }
