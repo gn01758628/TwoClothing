@@ -6,7 +6,7 @@ public class ItemHibernateTest {
 	
 	public static void main(String[] args) throws Exception{
 		
-		ItemDAO dao = new ItemHibernateDAO();
+//		ItemDAO dao = new ItemHibernateDAO();
 		//新增
 		Item item1 = new Item();
 //		item1.setItemName("Product11");
@@ -36,15 +36,15 @@ public class ItemHibernateTest {
 		
 		
 		//更新
-		Item item2 = new Item();
-		item2.setItemName("Product11");
-		item2.setDetail("this is 11");
-		item2.setTagId(1);
-		item2.setMbrId(11);
-		item2.setPrice(100);
-		item2.setItemStatus(0);
-		item2.setQuantity(1);
-		dao.update(item2);
+//		Item item2 = new Item();
+//		item2.setItemName("Product11");
+//		item2.setDetail("this is 11");
+//		item2.setTagId(1);
+//		item2.setMbrId(11);
+//		item2.setPrice(100);
+//		item2.setItemStatus(0);
+//		item2.setQuantity(1);
+//		dao.update(item2);
 		
 	}
 }
