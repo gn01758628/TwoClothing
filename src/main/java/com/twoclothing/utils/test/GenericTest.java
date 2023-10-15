@@ -4,9 +4,9 @@ package com.twoclothing.utils.test;
 import java.util.List;
 
 //測試用的各類別VO
-		import com.twoclothing.web.balancehistory.BalanceHistory;
-import com.twoclothing.web.categorytags.CategoryTags;
-		import com.twoclothing.web.employee.Employee;
+		import com.twoclothing.model.balancehistory.BalanceHistory;
+import com.twoclothing.model.categorytags.CategoryTags;
+		import com.twoclothing.model.employee.Employee;
 
 public class GenericTest {
 

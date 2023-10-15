@@ -1,9 +1,9 @@
 package com.twoclothing.utils.test;
 
 import com.twoclothing.utils.HibernateUtil;
-import com.twoclothing.web.abid.biditem.BidItem;
-import com.twoclothing.web.abid.biditem.BidItemHibernateDAO;
-import com.twoclothing.web.abid.biditem.BiditemDAO;
+import com.twoclothing.model.abid.biditem.BidItem;
+import com.twoclothing.model.abid.biditem.BidItemHibernateDAO;
+import com.twoclothing.model.abid.biditem.BiditemDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
