@@ -24,6 +24,7 @@ import java.util.Enumeration;
 //  maxRequestSize = 單個請求全部檔案的加總限制
 //  單位是bytes( 1024bytes = 1KB )
 //  超過maxFileSize或maxRequestSize都會拋出IegalStateException
+
 @WebServlet("/servlet/front/biditem/*")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class BidItemFrontServlet extends HttpServlet {
