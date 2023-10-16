@@ -16,6 +16,12 @@ public class BidItem implements Serializable {
     @Column(name = "bidname", nullable = false)
     private String bidName;
 
+    @Column(name = "grade", nullable = false, columnDefinition = "TINYINT")
+    private String grade;
+
+    @Column(name = "size", columnDefinition = "TINYINT")
+    private String size;
+
     @Column(name = "detail", nullable = false)
     private String detail;
 
@@ -49,14 +55,17 @@ public class BidItem implements Serializable {
     public BidItem() {
     }
 
-    public BidItem(String bidName, String detail, Integer tagId, Integer mbrId, Integer startPrice, Integer reservePrice, Integer directPrice, Timestamp startTime, Timestamp endTime, Integer empId) {
+    public BidItem(Integer bidItemId, String bidName, String grade, String size, String detail, Integer tagId, Integer mbrId, Integer startPrice, Integer reservePrice, Integer directPrice, Integer bidStatus, Timestamp startTime, Timestamp endTime, Integer empId) {
         this.bidName = bidName;
+        this.grade = grade;
+        this.size = size;
         this.detail = detail;
         this.tagId = tagId;
         this.mbrId = mbrId;
         this.startPrice = startPrice;
         this.reservePrice = reservePrice;
         this.directPrice = directPrice;
+        this.bidStatus = bidStatus;
         this.startTime = startTime;
         this.endTime = endTime;
         this.empId = empId;
@@ -67,6 +76,8 @@ public class BidItem implements Serializable {
         return "BidItem{" +
                 "bidItemId=" + bidItemId +
                 ", bidName='" + bidName + '\'' +
+                ", grade='" + grade + '\'' +
+                ", size='" + size + '\'' +
                 ", detail='" + detail + '\'' +
                 ", tagId=" + tagId +
                 ", mbrId=" + mbrId +
@@ -107,6 +118,22 @@ public class BidItem implements Serializable {
 
     public void setBidName(String bidName) {
         this.bidName = bidName;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 
     public String getDetail() {
