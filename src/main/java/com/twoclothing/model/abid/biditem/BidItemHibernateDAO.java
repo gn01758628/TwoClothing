@@ -5,7 +5,7 @@ import org.hibernate.SessionFactory;
 
 import java.util.List;
 
-public class BidItemHibernateDAO implements BiditemDAO {
+public class BidItemHibernateDAO implements BidItemDAO {
 
     // SessionFactory為執行序安全,宣告為實體變數共用
     private final SessionFactory factory;

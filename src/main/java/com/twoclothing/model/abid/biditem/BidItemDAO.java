@@ -2,7 +2,7 @@ package com.twoclothing.model.abid.biditem;
 
 import java.util.List;
 
-public interface BiditemDAO {
+public interface BidItemDAO {
 
     /**
      * @return PrimaryKey

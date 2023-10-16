@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-hant">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>新增競標商品</title>
+    <link rel="stylesheet" href="/TwoClothing/css/bootstrap5/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="row justify-content-center my-5">
+        <div class="col-8">
+            <form action="/TwoClothing/servlet/front/biditem" method="post" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label for="bidname" class="form-label">商品標題</label>
+                    <input type="text" class="form-control" id="bidname" aria-describedby="bidnameHelp"
+                           name="bidname" required>
+                    <div id="bidnameHelp" class="form-text">精心挑選標題，提升您的商品曝光率</div>
+                </div>
+                <div class="mb-3">
+                    <label for="grade" class="form-label">商品新舊程度</label>
+                    <select class="form-select" id="grade" aria-describedby="gradeHelp" name="grade" required>
+                        <option value="" selected>請選擇商品新舊程度</option>
+                        <option value="0">全新(沒使用過且包裝未拆,吊牌未剪)</option>
+                        <option value="1">9成5新(沒有使用痕跡,但包裝已拆,吊牌已剪)</option>
+                        <option value="2">9成新(有使用痕跡,但沒有瑕疵)</option>
+                        <option value="3">8成新(有使用痕跡,少量瑕疵)</option>
+                        <option value="4">5成新(有使用痕跡,明顯瑕疵)</option>
+                        <option value="5">破損商品(需要修補)</option>
+                    </select>
+                    <div id="gradeHelp" class="form-text">請依選項說明選擇商品新舊成度,</div>
+                </div>
+                <div class="mb-3">
+                    <label for="size" class="form-label">商品尺寸</label>
+                    <select class="form-select" id="size" name="size">
+                        <option value="9" selected>如果您的商品不是以下列選項來描述尺寸,請跳過此選擇</option>
+                        <option value="0">XS(含)以下</option>
+                        <option value="1">S</option>
+                        <option value="2">M</option>
+                        <option value="3">L</option>
+                        <option value="4">XL</option>
+                        <option value="5">2XL</option>
+                        <option value="6">3XL</option>
+                        <option value="7">4XL(含)以上</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="sizeDetail" class="form-label">商品尺寸詳述</label>
+                    <input type="text" class="form-control" id="sizeDetail" aria-describedby="sizeDetailHelp"
+                           name="detail" required maxlength="100">
+                    <div id="bsizeDetailHelp" class="form-text">清楚的描述商品尺寸，協助買家做出選擇</div>
+                </div>
+                <div class="mb-3">
+                    <label for="itemDetail" class="form-label">商品簡述</label>
+                    <input type="text" class="form-control" id="itemDetail" aria-describedby="itemDetailHelp"
+                           name="detail" maxlength="100">
+                    <div id="itemDetailHelp" class="form-text">簡短敘述您的商品，協助買家做出選</div>
+                </div>
+                <div class="mb-3">
+                    <label for="image01" class="form-label">上傳你的商品圖片</label>
+                    <input class="form-control" type="file" id="image01" name="image01" accept="image/jpeg, image/png">
+                </div>
+                <div class="mb-3">
+                    <label for="image02" class="form-label">上傳你的商品圖片</label>
+                    <input class="form-control" type="file" id="image02" name="image02" accept="image/jpeg, image/png">
+                </div>
+
+
+                <button type="submit" class="btn btn-primary">確定新增</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="/TwoClothing/js/bootstrap5/popper.min.js"></script>
+<script src="/TwoClothing/js/bootstrap5/bootstrap.min.js"></script>
+
+</body>
+
+</html>
