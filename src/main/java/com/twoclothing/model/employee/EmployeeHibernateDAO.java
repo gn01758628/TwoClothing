@@ -3,60 +3,67 @@ package com.twoclothing.model.employee;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import com.twoclothing.utils.HibernateUtil;
 
 public class EmployeeHibernateDAO implements EmployeeDAO{
 
+	private SessionFactory factory;
+
+	public EmployeeHibernateDAO(SessionFactory factory) {
+		this.factory = factory;
+	}
+	private Session getSession() {
+		return factory.getCurrentSession();
+	}
+	
 	@Override
 	public Employee getEmployeeById(Integer empId) {
 		// TODO Auto-generated method stub
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			Employee emp = session.get(Employee.class, empId);
-			session.getTransaction().commit();
-			return emp;
-		}catch (Exception e) {
-			e.printStackTrace();
-			session.getTransaction().rollback();
+		return getSession().get(Employee.class, empId);
 		}
-		return null;
-		
-	}
 
 	@Override
 	public List<Employee> getAllEmployees() {
 		// TODO Auto-generated method stub
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		return getSession().createQuery("from Employee", Employee.class).list();
+			}
+	@Override
+	public int addEmployee(Employee employee) {
+		// TODO Auto-generated method stub
+		// 回傳給 service 剛新增成功的自增主鍵值
+		return (Integer) getSession().save(employee);
+	}
+	@Override
+	public int updateEmployee(Employee employee) {
+		// TODO Auto-generated method stub
 		try {
-			session.beginTransaction();
-			List<Employee> list = session.createQuery("from Employee", Employee.class).list();
-			session.getTransaction().commit();
-			return list;
+			getSession().update(employee);
+			return 1;
 		} catch (Exception e) {
-			e.printStackTrace();
-			session.getTransaction().rollback();
+			return -1;
 		}
-		return null;
+	}
+	@Override
+	public int deleteEmployee(Integer empId) {
+		// TODO Auto-generated method stub
+		Employee emp = getSession().get(Employee.class, empId);
+		if (emp != null) {
+			getSession().delete(emp);
+			// 回傳給 service，1代表刪除成功
+			return 1;
+		} else {
+			// 回傳給 service，-1代表刪除失敗
+			return -1;
+		}
 	}
 
-	@Override
-	public void addEmployee(Employee employee) {
-		// TODO Auto-generated method stub
+	
+	
 		
-	}
-
-	@Override
-	public void updateEmployee(Employee employee) {
-		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public void deleteEmployee(Integer empId) {
-		// TODO Auto-generated method stub
 		
-	}
+			
 	
 }
