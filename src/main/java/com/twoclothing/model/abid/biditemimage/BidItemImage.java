@@ -19,7 +19,7 @@ public class BidItemImage implements Serializable {
     @Column(name = "biditemid", updatable = false, nullable = false)
     private Integer bidItemId;
 
-    @Column(name = "image", updatable = false, nullable = false, columnDefinition = "mediumblob")
+    @Column(name = "image", nullable = false, columnDefinition = "mediumblob")
     private byte[] image;
 
     public BidItemImage() {
@@ -40,25 +40,16 @@ public class BidItemImage implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + Arrays.hashCode(image);
-        result = prime * result + Objects.hash(bidItemId, imageId);
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BidItemImage that = (BidItemImage) o;
+        return Objects.equals(imageId, that.imageId);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        BidItemImage other = (BidItemImage) obj;
-        return Objects.equals(bidItemId, other.bidItemId) && Arrays.equals(image, other.image)
-                && Objects.equals(imageId, other.imageId);
+    public int hashCode() {
+        return Objects.hash(imageId);
     }
 
     public Integer getImageId() {

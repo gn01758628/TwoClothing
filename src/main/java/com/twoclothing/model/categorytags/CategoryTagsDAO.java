@@ -4,7 +4,10 @@ import java.util.List;
 
 public interface CategoryTagsDAO {
 
-    void insert(CategoryTags categoryTags);
+    /**
+     * @return PrimaryKey
+     */
+    int insert(CategoryTags categoryTags);
 
     CategoryTags getByPrimaryKey(Integer tagId);
 
@@ -12,8 +15,13 @@ public interface CategoryTagsDAO {
 
     List<CategoryTags> getAllByEmpId(Integer empId);
 
-    // 根據主鍵查詢其所有的子標籤
+    /**
+     * @return 所有的子孫標籤
+     */
     List<CategoryTags> getAllSubByPrimaryKey(Integer tagId);
 
-    void update(CategoryTags categoryTags);
+    /**
+     * @return 修改是否成功
+     */
+    boolean update(CategoryTags categoryTags);
 }

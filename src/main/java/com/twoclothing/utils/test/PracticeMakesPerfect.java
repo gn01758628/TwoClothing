@@ -1,9 +1,6 @@
 package com.twoclothing.utils.test;
 
-import com.twoclothing.utils.HibernateUtil;
-import com.twoclothing.model.abid.biditem.BidItem;
-import com.twoclothing.model.abid.biditem.BidItemHibernateDAO;
-import com.twoclothing.model.abid.biditem.BiditemDAO;
+import com.twoclothing.model.abid.biditemimage.BidItemImage;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,33 +8,33 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.List;
+import java.io.InputStream;
+
 
 @WebServlet("/practice")
 public class PracticeMakesPerfect extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        BiditemDAO biditemDAO = new BidItemHibernateDAO(HibernateUtil.getSessionFactory());
-//        Timestamp timestamp1 = Timestamp.valueOf("2023-10-15 12:30:00");
-//        Timestamp timestamp2 = Timestamp.valueOf("2023-10-22 12:30:00");
-//        BidItem bidItem = new BidItem("七彩霓虹鞋", "有7種顏色喔", 1, 10, 100, 500, 1000, timestamp1, timestamp2, null);
-//        System.out.println(biditemDAO.insert(bidItem));
-//        System.out.println(biditemDAO.getByPrimaryKey(11));
-//        System.out.println(biditemDAO.getByPrimaryKey(12));
-        Timestamp timestamp = Timestamp.valueOf("2023-10-01 00:00:00");
-        Timestamp timestamp2 = Timestamp.valueOf("2023-10-03 00:00:00");
-        Timestamp timestamp3 = Timestamp.valueOf("2023-10-09 00:00:00");
-        Timestamp timestamp4 = Timestamp.valueOf("2023-12-01 00:00:00");
-        Timestamp timestamp5 = Timestamp.valueOf("2023-12-05 00:00:00");
-        Timestamp timestamp6 = Timestamp.valueOf("2023-12-09 00:00:00");
 
-        List<BidItem> allByBidStatus = biditemDAO.getAllByEmpId(303);
-        for (BidItem b : allByBidStatus) {
-            System.out.println(b);
-        }
+        InputStream resourceAsStream = getServletContext().getResourceAsStream("/images/clothing/clothes-01.jpg");
+        byte[] bytes1 = new byte[resourceAsStream.available()];
+        resourceAsStream.read(bytes1);
+        resourceAsStream.close();
 
+        InputStream resourceAsStream2 = getServletContext().getResourceAsStream("/images/clothing/clothes-02.jpg");
+        byte[] bytes2 = new byte[resourceAsStream2.available()];
+        resourceAsStream2.read(bytes2);
+        resourceAsStream2.close();
+
+        InputStream resourceAsStream3 = getServletContext().getResourceAsStream("/images/clothing/pants-01.jpg");
+        byte[] bytes3 = new byte[resourceAsStream3.available()];
+        resourceAsStream3.read(bytes3);
+        resourceAsStream3.close();
+
+        BidItemImage b1 = new BidItemImage(1,10,bytes1);
+        BidItemImage b2 = new BidItemImage(1,10,bytes2);
+        BidItemImage b3 = new BidItemImage(1,11,bytes3);
 
     }
 }
