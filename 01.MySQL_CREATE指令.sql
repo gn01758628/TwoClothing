@@ -1060,8 +1060,8 @@ VALUES (1, '競標商品1', '商品描述1', 101, 201, 100, 80, 150, 0, '2023-10
        (10, '競標商品10', '商品描述10', 110, 210, 80, 60, 120, 1, '2023-08-25 16:00:00', '2023-12-09 12:30:00', 303);
 
 -- 表格：競標商品 檢查
-SELECT * FROM biditem;
-DESCRIBE biditem;
+-- SELECT * FROM biditem;
+-- DESCRIBE biditem;
 
 -- 表格：競標商品 添加FK
 -- ALTER TABLE biditem
