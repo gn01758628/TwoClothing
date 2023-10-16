@@ -36,20 +36,26 @@ public class ItemHibernateDAO implements ItemDAO {
 	@Override
 	public List<Item> getAllByTagId(Integer tagId) {
 		//???
-		return getSession().createQuery("from Item where tagId = 1", Item.class).list();
+		return getSession().createQuery("from Item where tagId = :tagId", Item.class)
+				.setParameter("tagId", tagId)
+				.list();
 	}
 
 	@Override
 	public List<Item> getAllByMbrId(Integer mbrId) {
 		//???
-		return getSession().createQuery("from Item where mbrId = 1", Item.class).list();
+		return getSession().createQuery("from Item where mbrId = :mbrId", Item.class)
+				.setParameter("mbrId", mbrId)
+				.list();
 	}
 	
 
 	@Override
 	public List<Item> getAllByItemStatus(Integer itemStatus) {
 		//???
-		return getSession().createQuery("from Item where itemStatus = 1", Item.class).list();
+		return getSession().createQuery("from Item where itemStatus = :itemStatus", Item.class)
+				.setParameter("itemStatus", itemStatus)
+				.list();
 	}
 
 	@Override
