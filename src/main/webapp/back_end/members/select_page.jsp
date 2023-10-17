@@ -43,9 +43,9 @@
 <ul>
   <li><a href='listAllEmp.jsp'>List</a> all Members.  <br><br></li>
   
-  
+
 <li>
-    <FORM METHOD="post" ACTION="Members.do" >
+    <FORM METHOD="post" ACTION="/TwoClothing/Members.do" >
         <b>輸入會員編號 (如1):</b>
         <input type="text" name="mbrId" value="${param.mbrId}"><font color=red>${errorMsgs.mbrId}</font>
         <input type="hidden" name="action" value="getOne_For_Display">
@@ -53,43 +53,18 @@
     </FORM>
 </li>
 
-<jsp:useBean id="MembersServiceImpl" scope="page" class="com.twoclothing.model.members.MembersServiceImpl" />
+<jsp:useBean id="MembersServiceImpl" scope="page" class="com.twoclothing.gordon.service.MembersServiceImpl" />
+
 
 <li>
-    <FORM METHOD="post" ACTION="Members.do" >
-        <b>選擇會員編號:</b>
-<!--         <select size="1" name="mbrId"> -->
-<%--             <c:forEach var="Members" items="${MembersServiceImpl.all}" >  --%>
-<%--                 <option value="${Members.mbrId}">${Members.mbrId}  使用Members.mbrName --%>
-<%--             </c:forEach> --%>
-<!--         </select> -->
-        <input type="hidden" name="action" value="getOne_For_Display">
-        <input type="submit" value="送出">
-    </FORM>
-</li>
-
-<li>
-    <FORM METHOD="post" ACTION="Members.do" >
+    <FORM METHOD="post" ACTION="/TwoClothing/Members.do" >
         <b>選擇會員姓名:</b>
-<%--         <select size="1" name="mbrName">  使用mbrName 作為名稱 --%>
-<%--             <c:forEach var="Members" items="${MembersServiceImpl.all}" > --%>
-<%--                 <option value="${Members.mbrId}">${Members.mbrName}  使用Members.mbrName --%>
-<%--             </c:forEach> --%>
-<!--         </select> -->
+        <input type="text" name="mbrName" value="${param.mbrName}"><font color=red>${errorMsgs.mbrId}</font>
+
         <input type="hidden" name="action" value="getOne_For_Display">
         <input type="submit" value="送出">
     </FORM>
 </li>
-
-
-
-
-
-
-
-
-
-
 
 
 </ul>

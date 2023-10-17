@@ -1,6 +1,8 @@
-package com.twoclothing.model.members;
+package com.twoclothing.gordon.service;
 
 import java.util.List;
+
+import com.twoclothing.model.members.Members;
 
 public interface MembersService {
 	Members addMembers (Members members);

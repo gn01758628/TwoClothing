@@ -2,11 +2,21 @@ package com.twoclothing.model.members;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+
+import com.twoclothing.utils.HibernateUtil;
 
 
 
+
+
+
+
+@Transactional
 public class MembersHibernateDAO implements MembersDAO {
 
 	private SessionFactory factory;
@@ -20,6 +30,7 @@ public class MembersHibernateDAO implements MembersDAO {
 	}
 
 	@Override
+	
 	public int insert(Members members) {
 			Integer mbrId = (Integer) getSession().save(members);
 			return mbrId;
@@ -29,9 +40,24 @@ public class MembersHibernateDAO implements MembersDAO {
 			return getSession().get(Members.class, mbrId);
 		}
 
-	@Override
+//	@Override
+//	public List<Members> getAll() {
+//			return getSession().createQuery("from Members", Members.class).list();
+//	}
+	
 	public List<Members> getAll() {
-			return getSession().createQuery("from Members", Members.class).list();
+		List<Members> list = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query<Members> query = session.createQuery("from Members", Members.class);
+			list = query.getResultList();
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
+		}
+		return list;
 	}
 
 	@Override
