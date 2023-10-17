@@ -1,4 +1,4 @@
-package com.twoclothing.utils.test;
+package com.twoclothing.utils.test.generic;
 
 //引用的JavaAPI
 import java.util.List;
@@ -15,7 +15,7 @@ public class GenericTest {
 		GenericDAO<Employee> employeeDAO = new GenericDAO<>(Employee.class);
 		GenericDAO<BalanceHistory> balanceHistoryDAO = new GenericDAO<>(BalanceHistory.class);
 		GenericDAO<CategoryTags> categorytagsDAO = new GenericDAO<>(CategoryTags.class);
-
+		
 //		========================= insert =========================
 
 //		List<Employee> employees = new ArrayList<>();

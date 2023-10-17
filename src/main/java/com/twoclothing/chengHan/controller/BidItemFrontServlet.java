@@ -2,6 +2,9 @@ package com.twoclothing.chengHan.controller;
 
 import com.twoclothing.chengHan.service.BidItemFrontService;
 import com.twoclothing.chengHan.service.BidItemFrontServiceImpl;
+import com.twoclothing.model.abid.biditembrowsing.BidItemBrowsing;
+import com.twoclothing.model.employee.Employee;
+import com.twoclothing.utils.test.generic.GenerciHibernateDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -31,6 +34,7 @@ public class BidItemFrontServlet extends HttpServlet {
 
     // 一個Servlet物件對應一個Service物件
     private BidItemFrontService bidItemFrontService;
+    GenerciHibernateDAO<BidItemBrowsing> employeeHDAO = new GenerciHibernateDAO<>(BidItemBrowsing.class);
 
     @Override
     public void init() throws ServletException {
