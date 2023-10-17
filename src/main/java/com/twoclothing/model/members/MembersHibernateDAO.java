@@ -3,146 +3,83 @@ package com.twoclothing.model.members;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.exception.ConstraintViolationException;
-
-import com.twoclothing.utils.HibernateUtil;
+import org.hibernate.SessionFactory;
 
 
-public class MembersHibernateDAO implements MembersDAO{
-	
+
+public class MembersHibernateDAO implements MembersDAO {
+
+	private SessionFactory factory;
+
+	public MembersHibernateDAO(SessionFactory factory) {
+		this.factory = factory;
+	}
+
+	private Session getSession() {
+		return factory.getCurrentSession();
+	}
 
 	@Override
 	public int insert(Members members) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-		session.beginTransaction();
-		Integer id = (Integer) session.save(members);
-		session.getTransaction().commit();
-		return id;
-		}catch (ConstraintViolationException e) {
-		    // 处理电子邮件重复数据的异常
-		    e.printStackTrace();
-		    session.getTransaction().rollback();
-		    return -1;
-		}catch (Exception e) {
-			e.printStackTrace();
-			session.getTransaction().rollback();
-		}
-		return -1;
-	}
-
-	@Override
-	public Members getByPrimaryKey(Integer mbrId) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			Members members = session.get(Members.class, mbrId);
-			session.getTransaction().commit();
-			return members;
-		}catch (Exception e) {
-			e.printStackTrace();
-			session.getTransaction().rollback();
-		}
-		return null;
-	}
+			Integer mbrId = (Integer) getSession().save(members);
+			return mbrId;
+			}
 	
+	public Members getByPrimaryKey(Integer mbrId) {
+			return getSession().get(Members.class, mbrId);
+		}
 
 	@Override
 	public List<Members> getAll() {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			List<Members> list = session.createQuery("from Members", Members.class).list();
-			session.getTransaction().commit();
-			return list;
-		}catch (Exception e) {
-			e.printStackTrace();
-			session.getTransaction().rollback();
-		}
-		return null;
+			return getSession().createQuery("from Members", Members.class).list();
 	}
 
 	@Override
 	public List<Members> getAllByMbrName(String mbrName) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			  List<Members> list = session.createQuery("from Members where mbrname like :mbrname", Members.class)
-			            .setParameter("mbrname", "%" + mbrName + "%")
-			            .list();
-//			List<Members> list = session.createQuery("from mbrName", Members.class).list();
-			session.getTransaction().commit();
-			return list;
-		}catch (Exception e) {
-			e.printStackTrace();
-			session.getTransaction().rollback();
-		}
-		return null;
+			return getSession().createQuery("from Members where mbrname like :mbrname", Members.class)
+					.setParameter("mbrname", "%" + mbrName + "%").list();
 	}
 
 	@Override
 	public List<Members> getAllByMbrStatus(Integer mbrStatus) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			List<Members> list = session.createQuery("from Members where mbrstatus = :mbrstatus", Members.class)
-			 .setParameter("mbrstatus", mbrStatus).list();
-			session.getTransaction().commit();
-			return list;
-		}catch (Exception e) {
-			e.printStackTrace();
-			session.getTransaction().rollback();
-		}
-		return null;
+			return getSession().createQuery("from Members where mbrstatus = :mbrstatus", Members.class)
+					.setParameter("mbrstatus", mbrStatus).list();
+			
 	}
 
 	@Override
 	public List<Members> getAllBySellScore(Integer sellScore) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			List<Members> list = session.createQuery("from Members where sellscore = :sellscore", Members.class)
-			 .setParameter("sellscore", sellScore).list();
-			session.getTransaction().commit();
-			return list;
-		}catch (Exception e) {
-			e.printStackTrace();
-			session.getTransaction().rollback();
-		}
-		return null;
+			return getSession().createQuery("from Members where sellscore = :sellscore", Members.class)
+					.setParameter("sellscore", sellScore).list();
 	}
 
 	@Override
 	public List<Members> getAllByBuyScore(Integer buyScore) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			List<Members> list = session.createQuery("from Members where buyscore = :buyscore", Members.class)
-			 .setParameter("buyscore", buyScore).list();
-			session.getTransaction().commit();
-			return list;
-		}catch (Exception e) {
-			e.printStackTrace();
-			session.getTransaction().rollback();
-		}
-		return null;
+			return getSession().createQuery("from Members where buyscore = :buyscore", Members.class)
+					.setParameter("buyscore", buyScore).list();
 	}
 
 	@Override
 	public int update(Members members) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
-		session.beginTransaction();
-		session.update(members);
-		session.getTransaction().commit();
-		return 1;
-	} catch (Exception e) {
-		e.printStackTrace();
-		session.getTransaction().rollback();
+			getSession().update(members);
+			return 1;
+		} catch (Exception e) {
+			return -1;
+		}
 	}
-	return -1;
-}
 
-	
-	
+	@Override
+	public int delete(Integer mbrId) {
+		Members members = getSession().get(Members.class, mbrId);
+		if (members != null) {
+			getSession().delete(members);
+			// 回傳給 service，1代表刪除成功
+			return 1;
+		} else {
+			// 回傳給 service，-1代表刪除失敗
+			return -1;
+		}
+	}
+
 }

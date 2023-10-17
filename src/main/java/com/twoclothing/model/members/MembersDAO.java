@@ -23,6 +23,7 @@ public interface MembersDAO {
 
     int update(Members members);
     
+    int delete(Integer mbrId);
     
    
 }
