@@ -6,14 +6,14 @@
     <session-factory>
 
 <!--        &lt;!&ndash;        &lt;!&ndash; 載入驅動 &ndash;&gt;&ndash;&gt;-->
-<!--        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>-->
+<!--        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property> -->
 <!--        &lt;!&ndash;        &lt;!&ndash; 建立連線 &ndash;&gt;&ndash;&gt;-->
-<!--        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/twoclothing?serverTimezone=Asia/Taipei-->
-<!--        </property>-->
+<!--        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/twoclothing?serverTimezone=Asia/Taipei -->
+<!--        </property> -->
 <!--        &lt;!&ndash;        &lt;!&ndash; 設定帳號 &ndash;&gt;&ndash;&gt;-->
-<!--        <property name="hibernate.connection.username">root</property>-->
+<!--        <property name="hibernate.connection.username">root</property> -->
 <!--        &lt;!&ndash;        &lt;!&ndash; 設定密碼 &ndash;&gt;&ndash;&gt;-->
-<!--        <property name="hibernate.connection.password">root</property>-->
+<!--        <property name="hibernate.connection.password">root</property> -->
 
         <!-- 改用JNDI設定連線池 -->
         <property name="connection.datasource">java:comp/env/jdbc/TestDB</property>
