@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ItemImageDAO {
 	
-	 public void insert(ItemImage imgId);
+	 public int insert(ItemImage imgId);
 
 	 public ItemImage getByPrimaryKey(Integer imgId);
 
@@ -12,7 +12,7 @@ public interface ItemImageDAO {
 
 	 public List<ItemImage> getAllByItemId(Integer itemId);
 
-	 public void update(Integer imgId);
+	 public boolean update(ItemImage itemImage);
 	 
 	 public void delete(Integer imgId);
 }
