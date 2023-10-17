@@ -21,11 +21,17 @@
 </c:if>
 
 
-<form method="post" action=" /TwoClothing/ItemServlet" >
+<form method="post" action="/TwoClothing/Item" >
 	<h1>商品上傳</h1>
 	<br>
 	<label>商品名稱</label>
 	<input type="text" name="itemName" maxlength = 20>
+	<br>
+	<label>商品新舊程度</label>
+	<input type="text" name="grade">
+	<br>
+	<label>尺寸</label>
+	<input type="text" name="size">
 	<br>
 	<label>類別</label>
 	<input type="text" name="tagId" value="1">
@@ -37,7 +43,7 @@
 	<input type="text" name="price">
 	<br>
 	<label>狀態</label>
-	<input type="text" name="itemStatus" value="1">
+	<input type="text" name="itemStatus" value="0">
 	<br>
 	<label>數量</label>
 	<input type="text" name="quantity" autocomplete="on">

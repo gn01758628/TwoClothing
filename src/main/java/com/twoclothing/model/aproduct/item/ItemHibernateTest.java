@@ -1,12 +1,14 @@
 package com.twoclothing.model.aproduct.item;
 
+import com.twoclothing.utils.HibernateUtil;
+
 public class ItemHibernateTest {
 	
 	public static void main(String[] args) throws Exception{
 		
 //		ItemDAO dao = new ItemHibernateDAO();
-		//新增
-		Item item1 = new Item();
+//		//新增
+//		Item item1 = new Item();
 //		item1.setItemName("Product11");
 //		item1.setDetail("11");
 //		item1.setTagId(1);

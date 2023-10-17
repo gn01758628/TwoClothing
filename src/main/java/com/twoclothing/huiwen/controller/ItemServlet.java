@@ -16,7 +16,7 @@ import com.twoclothing.huiwen.service.ItemServiceImpl;
 import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.utils.HibernateUtil;
 
-@WebServlet("/itemsellerupload.jsp")
+@WebServlet("/Item/*")
 public class ItemServlet extends HttpServlet {
 
 	private ItemService itemService;
@@ -46,15 +46,33 @@ public class ItemServlet extends HttpServlet {
 			String itemName = req.getParameter("itemName");
 			if (itemName == null || itemName.trim().length() == 0) {
 				errorMsgs.add("商品名稱請勿空白");
+				return;
 			}
 			
 			String detail = req.getParameter("detail");
+			
+			Integer grade = null;
+			try {
+				grade = Integer.valueOf(req.getParameter("grade").trim());
+			}catch(NumberFormatException e) {
+				errorMsgs.add("新舊請填數字");
+				return;
+			}
+			
+			Integer size = null;
+			try {
+				size = Integer.valueOf(req.getParameter("size").trim());
+			}catch(NumberFormatException e) {
+				errorMsgs.add("尺寸請填數字");
+				return;
+			}
 			
 			Integer tagId = null;
 			try {
 				tagId = Integer.valueOf(req.getParameter("tagId").trim());
 			}catch(NumberFormatException e) {
 				errorMsgs.add("類別請填數字");
+				return;
 			}
 			
 			Integer mbrId = null;
@@ -62,6 +80,7 @@ public class ItemServlet extends HttpServlet {
 				mbrId = Integer.valueOf(req.getParameter("mbrId").trim());
 			}catch(NumberFormatException e) {
 				errorMsgs.add("員編請填數字");
+				return;
 			}
 			
 			Integer price = null;
@@ -69,6 +88,7 @@ public class ItemServlet extends HttpServlet {
 				price = Integer.valueOf(req.getParameter("price").trim());
 			}catch(NumberFormatException e) {
 				errorMsgs.add("價格請填數字");
+				return;
 			}
 			
 			Integer itemStatus = null;
@@ -76,6 +96,7 @@ public class ItemServlet extends HttpServlet {
 				itemStatus = Integer.valueOf(req.getParameter("itemStatus").trim());
 			}catch(NumberFormatException e) {
 				errorMsgs.add("狀態請填數字");
+				return;
 			}
 			
 			Integer quantity = null;
@@ -83,25 +104,14 @@ public class ItemServlet extends HttpServlet {
 				quantity = Integer.valueOf(req.getParameter("quantity"));
 			}catch(NumberFormatException e) {
 				errorMsgs.add("數量請填數字");
+				return;
 			}
-			
-			Item item = new Item();
-			item.setItemName(itemName);
-			item.setDetail(detail);
-			item.setTagId(tagId);
-			item.setMbrId(mbrId);
-			item.setItemStatus(itemStatus);
-			item.setPrice(price);
-			item.setQuantity(quantity);
-			
-			
-			ItemService itemSvc = new ItemServiceImpl();
-			item = itemSvc.addItem(itemName, detail, tagId, mbrId, price, itemStatus, quantity);
-			out.print("aaa");
 
-//		String url = "/twoClothing/itemSellerUpload.jsp";
-//		RequestDispatcher successView = req.getRequestDispatcher(url); 
-//		successView.forward(req, res);
+			itemService.addItem(itemName, grade, size, detail, tagId, mbrId, price, itemStatus, quantity);
+			
+	//		String url = "/twoClothing/itemSellerUpload.jsp";
+	//		RequestDispatcher successView = req.getRequestDispatcher(url); 
+	//		successView.forward(req, res);
 
 		}
 	}

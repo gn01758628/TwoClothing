@@ -21,6 +21,12 @@ public class Item implements Serializable{
 	@Column(name = "itemname" , nullable = false)
 	private String itemName;
 	
+	@Column(name = "grade", columnDefinition = "TINYINT" , nullable = false)
+	private Integer grade;
+	
+	@Column(name = "size", columnDefinition = "TINYINT" , nullable = false)
+	private Integer size;
+	
 	@Column(name = "detail")
 	private String detail;
 	
@@ -42,10 +48,13 @@ public class Item implements Serializable{
 	public Item() {
 	}
 	
-	public Item(Integer itemId, String itemName, String detail, Integer tagId, Integer mbrId, Integer price,
-			Integer itemStatus, Integer quantity) {
+	public Item(Integer itemId, String itemName, Integer grade, Integer size, String detail, Integer tagId, Integer mbrId,
+			Integer price, Integer itemStatus, Integer quantity) {
+		super();
 		this.itemId = itemId;
 		this.itemName = itemName;
+		this.grade = grade;
+		this.size = size;
 		this.detail = detail;
 		this.tagId = tagId;
 		this.mbrId = mbrId;
@@ -53,18 +62,20 @@ public class Item implements Serializable{
 		this.itemStatus = itemStatus;
 		this.quantity = quantity;
 	}
+
 	
 	@Override
 	public String toString() {
-		return "Item [itemId=" + itemId + ", itenName=" + itemName + ", detail=" + detail + ", tagId=" + tagId + ", mbrId="
-				+ mbrId + ", price=" + price + ", itemStatus=" + itemStatus + ", quantity=" + quantity + "]";
+		return "Item [itemId=" + itemId + ", itemName=" + itemName + ", grade=" + grade + ", size=" + size + ", detail="
+				+ detail + ", tagId=" + tagId + ", mbrId=" + mbrId + ", price=" + price + ", itemStatus=" + itemStatus
+				+ ", quantity=" + quantity + "]";
 	}
-	
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(detail, itemId, itemStatus, mbrId, itemName, price, quantity, tagId);
+		return Objects.hash(detail, grade, itemId, itemName, itemStatus, mbrId, price, quantity, size, tagId);
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -74,10 +85,11 @@ public class Item implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Item other = (Item) obj;
-		return Objects.equals(detail, other.detail) && Objects.equals(itemId, other.itemId)
+		return Objects.equals(detail, other.detail) && Objects.equals(grade, other.grade)
+				&& Objects.equals(itemId, other.itemId) && Objects.equals(itemName, other.itemName)
 				&& Objects.equals(itemStatus, other.itemStatus) && Objects.equals(mbrId, other.mbrId)
-				&& Objects.equals(itemName, other.itemName) && Objects.equals(price, other.price)
-				&& Objects.equals(quantity, other.quantity) && Objects.equals(tagId, other.tagId);
+				&& Objects.equals(price, other.price) && Objects.equals(quantity, other.quantity)
+				&& Objects.equals(size, other.size) && Objects.equals(tagId, other.tagId);
 	}
 
 	public Integer getItemId() {
@@ -142,5 +154,21 @@ public class Item implements Serializable{
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
+	}
+
+	public Integer getSize() {
+		return size;
+	}
+
+	public void setSize(Integer size) {
+		this.size = size;
 	}
 }

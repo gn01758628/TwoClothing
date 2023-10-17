@@ -19,9 +19,9 @@ public class ItemHibernateDAO implements ItemDAO {
 	
 	@Override
 	public int insert(Item item) {
-			Integer itemId = (Integer) getSession().save(item);			
-			return itemId;
+		return (Integer) getSession().save(item);	
 	}
+	
 
 	@Override
 	public Item getByPrimaryKey(Integer itemId) {
