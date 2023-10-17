@@ -1,7 +1,10 @@
-package com.twoclothing.model.members;
+package com.twoclothing.gordon.service;
 
 import java.util.List;
 
+import com.twoclothing.model.members.Members;
+import com.twoclothing.model.members.MembersDAO;
+import com.twoclothing.model.members.MembersHibernateDAO;
 import com.twoclothing.utils.HibernateUtil;
 
 
@@ -31,7 +34,7 @@ public class MembersServiceImpl {
 //	}
 
 	
-	public List<Members> getAllMembers(int currentPage) {
+	public List<Members> getAll() {
 		return dao.getAll();
 	}
 

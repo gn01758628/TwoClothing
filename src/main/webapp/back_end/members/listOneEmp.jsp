@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
-<%@ page import="com.twoclothing.model.members.*"%>
+<%@ page import="com.twoclothing.gordon.service.*"%>
 <%-- 此頁暫練習採用 Script 的寫法取值 --%>
 
 <%
@@ -50,7 +50,7 @@
 <table id="table-1">
 	<tr><td>
 		 <h3>員工資料 - listOneEmp.jsp</h3>
-		 <h4><a href="select_page.jsp"><img src="images/back1.gif" width="100" height="32" border="0">回首頁</a></h4>
+		 <h4><a href="back_end/members/select_page.jsp"><img src="images/back1.gif" width="100" height="32" border="0">回首頁</a></h4>
 	</td></tr>
 </table>
 
@@ -75,23 +75,23 @@
 		<th>買家權限分數</th>
 	</tr>
 	<tr>
-		<td>${members.mbrId}</td>
-		<td>${members.mbrname}</td>
-		<td>${members.email}</td>
-		<td>${members.pswdhash}</td>
-		<td>${members.mbrstatus}</td>
-		<td>${members.avatar}</td>
-		<td>${members.shopimg01}</td>
-		<td>${members.shopimg02}</td>
-		<td>${members.mbrpoint}</td>
-		<td>${members.balance}</td>
-		<td>${members.buystar}</td>
-		<td>${members.buyrating}</td>
-		<td>${members.sellstar}</td>
-		<td>${members.sellrating}</td>
-		<td>${members.lastlogin}</td>
-		<td>${members.sellscore}</td>
-		<td>${members.sellscore}</td>	
+		<td>${Members.mbrId}</td>
+		<td>${Members.mbrName}</td>
+		<td>${Members.email}</td>
+		<td>${Members.pswdHash}</td>
+		<td>${Members.mbrStatus}</td>
+		<td>${Members.avatar}</td>
+		<td>${Members.shopImg01}</td>
+		<td>${Members.shopImg02}</td>
+		<td>${Members.mbrPoint}</td>
+		<td>${Members.balance}</td>
+		<td>${Members.buyStar}</td>
+		<td>${Members.buyRating}</td>
+		<td>${Members.sellStar}</td>
+		<td>${Members.sellRating}</td>
+		<td>${Members.lastLogin}</td>
+		<td>${Members.sellScore}</td>
+		<td>${Members.buyScore}</td>	
 <%-- 		<td>${empVO.deptno}-[${empVO.deptVO.dname}]</td> --%>
 	</tr>
 </table>

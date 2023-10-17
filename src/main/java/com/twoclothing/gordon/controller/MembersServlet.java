@@ -1,12 +1,16 @@
-package com.twoclothing.model.members;
+package com.twoclothing.gordon.controller;
 
 import java.io.*;
 import java.util.*;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-public class MembersServlet {
+import com.twoclothing.gordon.service.MembersServiceImpl;
+import com.twoclothing.model.members.Members;
+@WebServlet("/Members.do")
+public class MembersServlet extends HttpServlet{
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
@@ -25,12 +29,12 @@ public class MembersServlet {
 			/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 			String str = req.getParameter("mbrId");
 			if (str == null || (str.trim()).length() == 0) {
-				errorMsgs.put("empno","請輸入員工編號");
+				errorMsgs.put("empno","請輸入會員編號");
 			}
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/emp/select_page.jsp");
+						.getRequestDispatcher("/back_end/members/select_page.jsp");
 				failureView.forward(req, res);
 				return;//程式中斷
 			}
@@ -39,12 +43,12 @@ public class MembersServlet {
 			try {
 				mbrId = Integer.valueOf(str);
 			} catch (Exception e) {
-				errorMsgs.put("mbrid","員工編號格式不正確");
+				errorMsgs.put("mbrId","會員編號格式不正確");
 			}
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/emp/select_page.jsp");
+						.getRequestDispatcher("/back_end/members/select_page.jsp");
 				failureView.forward(req, res);
 				return;//程式中斷
 			}
@@ -52,20 +56,20 @@ public class MembersServlet {
 			/***************************2.開始查詢資料*****************************************/
 
 			MembersServiceImpl mbrServiceHibernate = new MembersServiceImpl();
-			Members members = (Members) mbrServiceHibernate.getAllMembers(mbrId);
+			Members members = (Members) mbrServiceHibernate.getByPrimaryKey(mbrId);
 			if(members == null) {
-				errorMsgs.put("mbrid","查無資料");
+				errorMsgs.put("mbrId","查無資料");
 			}
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/emp/select_page.jsp");
+						.getRequestDispatcher("/back_end/members/select_page.jsp");
 				failureView.forward(req, res);
 				return;//程式中斷
 			}
 			/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 			req.setAttribute("Members", members); // 資料庫取出的empVO物件,存入req
-			String url = "/emp/listOneEmp.jsp";
+			String url = "/back_end/members/listOneEmp.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 			successView.forward(req, res);
 			
