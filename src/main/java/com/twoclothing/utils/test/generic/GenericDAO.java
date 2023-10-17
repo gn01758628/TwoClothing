@@ -1,4 +1,4 @@
-package com.twoclothing.utils.test;
+package com.twoclothing.utils.test.generic;
 
 import com.twoclothing.utils.JDBCUtil;
 import org.apache.commons.lang3.reflect.FieldUtils;
