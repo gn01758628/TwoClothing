@@ -1,7 +1,7 @@
-package com.twoclothing.chengHan.controller;
+package com.twoclothing.chenghan.controller;
 
-import com.twoclothing.chengHan.service.BidItemFrontService;
-import com.twoclothing.chengHan.service.BidItemFrontServiceImpl;
+import com.twoclothing.chenghan.service.BidItemFrontService;
+import com.twoclothing.chenghan.service.BidItemFrontServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -13,7 +13,6 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 
@@ -47,7 +46,7 @@ public class BidItemFrontServlet extends HttpServlet {
         Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             String name = parameterNames.nextElement();
-            out.print(name + " = " + Arrays.toString(request.getParameterValues(name)) + "<br>");
+            out.print(name + " = " + request.getParameter(name) + "<br>");
         }
 
         Collection<Part> parts = request.getParts();
@@ -61,7 +60,6 @@ public class BidItemFrontServlet extends HttpServlet {
                 out.print(buffer + "<br>");
             }
         }
-
 
         out.print("</h1>");
     }
