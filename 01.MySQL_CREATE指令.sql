@@ -1033,18 +1033,18 @@ DROP TABLE IF EXISTS biditem;
 CREATE TABLE biditem
 (
     biditemid    INT AUTO_INCREMENT NOT NULL,
-    bidname      VARCHAR(20)  NOT NULL,
+    bidname      VARCHAR(50)  NOT NULL,
     grade        TINYINT      NOT NULL,
     size         TINYINT,
-    detail       VARCHAR(200) NOT NULL,
+    detail       VARCHAR(255) NOT NULL,
     tagid        INT          NOT NULL,
     mbrid        INT          NOT NULL,
     startprice   INT          NOT NULL,
     reserveprice INT          NOT NULL,
     directprice  INT          NOT NULL,
     bidstatus    TINYINT      NOT NULL DEFAULT 0,
-    starttime    DATETIME     NOT NULL,
-    endtime      DATETIME     NOT NULL,
+    starttime    DATETIME     ,
+    endtime      DATETIME     ,
     empid        INT,
     PRIMARY KEY (biditemid)
 );

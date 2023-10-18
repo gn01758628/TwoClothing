@@ -18,8 +18,4 @@ public interface EmployeeDAO {
 
     // 根據ID刪除員工資訊
     int deleteEmployee(Integer empId);
-    
-    List<Employee> getAllEmployees(int currentPage);
-    
-    long getTotal();
 }

@@ -58,20 +58,6 @@ public class EmployeeHibernateDAO implements EmployeeDAO{
 			return -1;
 		}
 	}
-	@Override
-	public List<Employee> getAllEmployees(int currentPage) {
-		// TODO Auto-generated method stub
-		int first = (currentPage - 1) * 4;
-		return getSession().createQuery("from Employee", Employee.class)
-				.setFirstResult(first)
-				.setMaxResults(4)
-				.list();
-	}
-	@Override
-	public long getTotal() {
-		// TODO Auto-generated method stub
-		return getSession().createQuery("select count(*) from Employee", Long.class).uniqueResult();
-	}
 
 	
 	

@@ -1,4 +1,4 @@
-package com.twoclothing.chengHan.service;
+package com.twoclothing.chenghan.service;
 
 import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.abid.biditem.BidItemDAO;

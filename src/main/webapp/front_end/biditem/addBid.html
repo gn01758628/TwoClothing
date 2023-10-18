@@ -1,99 +1,357 @@
 <!doctype html>
-<html lang="zh-hant">
+<html lang="zh-hant" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>新增競標商品</title>
+    <!--bootstrap5 css-->
     <link rel="stylesheet" href="/TwoClothing/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
     <style>
-        * {
-            font-family: 'Noto Sans TC', sans-serif;
+
+        ul, ul li {
+            list-style: none;
         }
+
+        ul {
+            margin-top: 10px;
+        }
+
+        .selectable::before {
+            content: "🌟";
+            padding-right: 5px;
+        }
+
+        .selectable:hover::before, .selectable:hover {
+            content: "🔯";
+            cursor: pointer;
+        }
+
+        .non-selectable::before {
+            content: "🢂";
+            padding-right: 5px;
+            color: #561729;
+        }
+
+        .non-selectable:hover::before, .non-selectable:hover {
+            content: "🢆";
+            padding-right: 0;
+            cursor: not-allowed;
+        }
+
+        .modal-content {
+            background-color: rgb(249, 237, 242);
+            color: #00302e;
+        }
+
+        .fixed-button {
+            position: sticky;
+            bottom: 20px;
+            right: 10px;
+            float: right;
+            z-index: 1000;
+        }
+
+        .text-danger {
+            margin-left: 5px;
+            font-size: 20px;
+        }
+
     </style>
 </head>
 
-<body>
+<body style="background-color:#fff8fb">
+
 <div class="container">
     <div class="row justify-content-center my-5">
-        <div class="col-8">
+        <div class="col-12">
             <form action="/TwoClothing/servlet/front/biditem" method="post" enctype="multipart/form-data">
 
-                <div class="mb-3">
-                    <label for="bidname" class="form-label">商品標題</label>
-                    <input type="text" class="form-control" id="bidname" aria-describedby="bidnameHelp"
-                           name="bidname" required>
-                    <div id="bidnameHelp" class="form-text">精心挑選標題，提升您的商品曝光率</div>
-                </div>
-                <div class="mb-3">
-                    <label for="grade" class="form-label">商品新舊程度</label>
-                    <select class="form-select" id="grade" aria-describedby="gradeHelp" name="grade" required>
-                        <option value="" selected>請選擇商品新舊程度</option>
-                        <option value="0">全新(沒使用過且包裝未拆,吊牌未剪)</option>
-                        <option value="1">9成5新(沒有使用痕跡,但包裝已拆,吊牌已剪)</option>
-                        <option value="2">9成新(有使用痕跡,但沒有瑕疵)</option>
-                        <option value="3">8成新(有使用痕跡,少量瑕疵)</option>
-                        <option value="4">5成新(有使用痕跡,明顯瑕疵)</option>
-                        <option value="5">破損商品(需要修補)</option>
-                    </select>
-                    <div id="gradeHelp" class="form-text">請依選項說明選擇商品新舊成度,</div>
-                </div>
-                <div class="mb-3">
-                    <label for="size" class="form-label">商品尺寸</label>
-                    <select class="form-select" id="size" name="size">
-                        <option value="9" selected>如果您的商品不是以下列選項來描述尺寸,請跳過此選擇</option>
-                        <option value="0">XS(含)以下</option>
-                        <option value="1">S</option>
-                        <option value="2">M</option>
-                        <option value="3">L</option>
-                        <option value="4">XL</option>
-                        <option value="5">2XL</option>
-                        <option value="6">3XL</option>
-                        <option value="7">4XL(含)以上</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="sizeDetail" class="form-label">商品尺寸詳述</label>
-                    <input type="text" class="form-control" id="sizeDetail" aria-describedby="sizeDetailHelp"
-                           name="detail" required maxlength="100">
-                    <div id="bsizeDetailHelp" class="form-text">清楚的描述商品尺寸，協助買家做出選擇</div>
-                </div>
-                <div class="mb-3">
-                    <label for="itemDetail" class="form-label">商品簡述</label>
-                    <input type="text" class="form-control" id="itemDetail" aria-describedby="itemDetailHelp"
-                           name="detail" maxlength="100">
-                    <div id="itemDetailHelp" class="form-text">簡短敘述您的商品，協助買家做出選</div>
-                </div>
-                <div class="mb-3">
-                    <label for="image01" class="form-label">上傳你的商品圖片</label>
-                    <input class="form-control" type="file" id="image01" name="image01" accept="image/jpeg, image/png">
-                </div>
-                <div class="mb-3">
-                    <label for="image02" class="form-label">上傳你的商品圖片</label>
-                    <input class="form-control" type="file" id="image02" name="image02" accept="image/jpeg, image/png">
-                </div>
-                <div class="mb-3">
-                    <label for="test" class="form-label">test</label>
-                    <select class="form-select" id="test" name="size">
-                        <option value="9" selected>test</option>
-                        <option value="0">XS(含)以下</option>
-                        <option value="1"></option>
-                    </select>
+                <div class="mb-4 border p-4 rounded-3" style="background-color:white">
+                    <h2 class="mb-4">商品資訊</h2>
+                    <div class="mb-3">
+                        <label for="bidname" class="form-label">商品標題<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="bidname" aria-describedby="bidnameHelp"
+                               name="bidname" required maxlength="40">
+                        <div id="bidnameHelp" class="form-text">精心挑選標題，提升您的商品曝光率(最大字數40)</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="categorySelect" class="form-label">商品類別標籤<span
+                                class="text-danger">*</span></label>
+                        <!-- 顯示選擇的完整結構,但不往後傳 -->
+                        <input type="text" class="form-control" id="categorySelect"
+                               aria-describedby="categorySelectHelp" readonly>
+                        <!--儲存標籤的id傳給後端-->
+                        <input type="hidden" id="selectedCategoryId" name="tagId">
+                        <div id="categorySelectHelp" class="form-text">選擇適當的標籤，讓更多人能找到您的商品</div>
+                    </div>
+                    <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog"
+                         aria-labelledby="categoryModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="categoryModalLabel">選擇商品類別標籤</h5>
+                                </div>
+                                <div class="modal-body" id="categoryTree">
+                                    <!-- 類別標籤樹狀結構在這裡生成 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="grade" class="form-label">商品新舊程度<span class="text-danger">*</span></label>
+                        <select class="form-select" id="grade" aria-describedby="gradeHelp" name="grade" required>
+                            <option value="" selected>請選擇商品新舊程度</option>
+                            <option value="0">全新(沒使用過且包裝未拆,吊牌未剪)</option>
+                            <option value="1">9成5新(沒有使用痕跡,但包裝已拆,吊牌已剪)</option>
+                            <option value="2">9成新(有使用痕跡,但沒有瑕疵)</option>
+                            <option value="3">8成新(有使用痕跡,少量瑕疵)</option>
+                            <option value="4">5成新(有使用痕跡,明顯瑕疵)</option>
+                            <option value="5">破損商品(需要修補)</option>
+                        </select>
+                        <div id="gradeHelp" class="form-text">請依選項說明選擇商品新舊成度</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="size" class="form-label">商品尺寸</label>
+                        <select class="form-select" id="size" name="size">
+                            <option value="9" selected>如果您的商品不是以下列選項來描述尺寸，請跳過此選擇</option>
+                            <option value="0">XS(含)以下</option>
+                            <option value="1">S</option>
+                            <option value="2">M</option>
+                            <option value="3">L</option>
+                            <option value="4">XL</option>
+                            <option value="5">2XL</option>
+                            <option value="6">3XL</option>
+                            <option value="7">4XL(含)以上</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="detail" class="form-label">商品簡述</label>
+                        <textarea class="form-control" id="detail" aria-describedby="detailHelp"
+                                  name="detail" maxlength="100" rows="5"></textarea>
+                        <div id="detailHelp" class="form-text">清楚的描述商品尺寸，協助買家做出選擇</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image01" class="form-label">上傳商品的主圖片<span
+                                class="text-danger">*</span></label>
+                        <input class="form-control" type="file" id="image01" name="image01"
+                               accept="image/jpeg, image/png" required aria-describedby="image01Help">
+                        <div id="image01Help" class="form-text">請至少選擇一張商品圖片</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image02" class="form-label">上傳商品的補充圖片</label>
+                        <input class="form-control" type="file" id="image02" name="image02"
+                               accept="image/jpeg, image/png">
+                    </div>
+
                 </div>
 
-                <button type="submit" class="btn btn-primary">確定新增</button>
+                <div class="mb-4 border p-4 rounded-3" style="background-color:white">
+                    <h2 class="mb-4">銷售資訊</h2>
+                    <div class="mb-3">
+                        <label for="startprice" class="form-labe">起標價格<span
+                                class="text-danger">*</span></label>
+                        <input type="text" class="form-control money" id="startprice" name="startPrice" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reserverprice" class="form-label">拍賣底價</label>
+                        <input type="text" class="form-control money" id="reserverprice" name="reserverPrice"
+                               aria-describedby="reserverpriceHelp">
+                        <div id="reserverpriceHelp" class="form-text">
+                            如果出價未超過您所設定的底價，競標將在截止時自動流標
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="directprice" class="form-label">立即結標價</label>
+                        <input type="text" class="form-control money" id="directprice" name="directPrice"
+                               aria-describedby="directpriceHelp">
+                        <div id="directpriceHelp" class="form-text">
+                            一旦有人出價達到您所設定的價格，競標將立即結束並成交
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4 border p-4 rounded-3" style="background-color:white">
+                    <h2 class="mb-4">其他資訊</h2>
+                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="btnradio1">馬上上架</label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btnradio2">預約上架</label>
+                    </div>
+                </div>
+
+
+                <button type="submit" class="btn btn-success btn-lg fixed-button rounded-3">確定提出申請</button>
 
             </form>
         </div>
     </div>
 </div>
 
-
+<!--bootstrap5 js-->
 <script src="/TwoClothing/js/bootstrap5/popper.min.js"></script>
 <script src="/TwoClothing/js/bootstrap5/bootstrap.min.js"></script>
+<!--jQuery-->
+<script src="/TwoClothing/js/jQuery/jquery-3.7.1.min.js"></script>
+<!-- 處理商品類別標籤 -->
+<script>
+    $(document).ready(function () {
+        const categorySelect = $("#categorySelect");
+        const selectedCategoryId = $("#selectedCategoryId");
+        const categoryModal = new bootstrap.Modal(document.getElementById("categoryModal"));
+        const categoryTreeContainer = $("#categoryTree");
+        // 點擊或是獲得焦點，打開模態框
+        categorySelect.on("focus click", function () {
+            categoryModal.show();
+        });
+        // 輸入資料結構
+        const categoryData = [
+            {id: 2, name: "類別1", parentId: 1},
+            {id: 3, name: "類別2", parentId: 1},
+            {id: 4, name: "類別3", parentId: 1},
+            {id: 5, name: "子類別1.1", parentId: 2},
+            {id: 6, name: "子類別1.2", parentId: 2},
+            {id: 7, name: "子類別2.1", parentId: 3},
+            {id: 8, name: "子類別2.2", parentId: 3},
+            {id: 9, name: "子類別3.1", parentId: 4},
+            {id: 10, name: "子類別2.2.1", parentId: 8},
+            {id: 11, name: "子類別2.2.1.1", parentId: 10},
+            {id: 12, name: "子類別2.2.1.1.1", parentId: 11},
+            {id: 13, name: "子類別2.2.1.2", parentId: 10},
+            {id: 14, name: "子類別2.2.1.1.1.1", parentId: 12},
+        ];
+
+        // 根據選項的ID,或的完整的路徑
+        function getFullCategoryName(categoryId, data) {
+            const category = data.find((item) => item.id === categoryId);
+            if (category.parentId !== 1) {
+                const parentCategory = getFullCategoryName(category.parentId, data);
+                return `${parentCategory} ➽ ${category.name}`;
+            }
+            return category.name;
+        }
+
+        // 根據輸入的參數,動態生成樹狀結構
+        function buildCategoryTree(data, parentId) {
+            const tree = document.createElement("ul");
+            data.forEach((category) => {
+                if (category.parentId === parentId) {
+                    // 檢查該標籤是否是葉子(不存在子標籤)
+                    const isLeafCategory = !data.some((childCategory) => childCategory.parentId === category.id);
+
+                    const listItem = document.createElement("li");
+                    // 添加選項的底邊距離
+                    listItem.classList.add("mb-3");
+                    listItem.textContent = category.name;
+                    // 替可選跟不可選的標籤添加class(方便css改變樣式)
+                    if (isLeafCategory) {
+                        listItem.classList.add("selectable");
+                    } else {
+                        listItem.classList.add("non-selectable");
+                    }
+                    // 綁定點擊事件
+                    listItem.addEventListener("click", function () {
+                        // 還有子標籤的標籤不能被選擇
+                        if (isLeafCategory) {
+                            // 隱藏框儲存標籤Id
+                            selectedCategoryId.val(category.id);
+                            // 文本框顯示完整路徑內容
+                            categorySelect.val(getFullCategoryName(category.id, categoryData));
+                            categoryModal.hide();
+                        }
+                    });
+                    const childTree = buildCategoryTree(data, category.id);
+                    if (childTree.childElementCount > 0) {
+                        listItem.appendChild(childTree);
+                    }
+                    tree.appendChild(listItem);
+                }
+            });
+            return tree;
+        }
+
+        // 丟入參數 添加內容
+        const categoryTree = buildCategoryTree(categoryData, 1);
+        categoryTreeContainer.append(categoryTree);
+    });
+</script>
+
+<!--判斷價格-->
+<script>
+    $(document).ready(function () {
+        // 即時顯示錯誤訊息
+        const moneyInputs = $('.money');
+        moneyInputs.each(function () {
+            const input = $(this);
+            const errorMessage = $('<div class="error-message text-danger"></div>');
+            input.parent().append(errorMessage);
+
+            input.on('blur', function () {
+                const value = input.val();
+                if (value.trim() !== '' && !/^(0|[1-9]\d*)$/.test(value)) {
+                    errorMessage.text('請填寫整數數字');
+                    input.addClass('is-invalid');
+                } else {
+                    errorMessage.text('');
+                    input.removeClass('is-invalid');
+                }
+            });
+        });
+    });
+</script>
+
+<!--表單提交時檢查欄位-->
+<script>
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+        let firstInvalidInput = null;
+
+        // 檢查類別標籤有無選擇
+        const categorySelect = $('#categorySelect');
+        if (categorySelect.val().trim() === '') {
+            firstInvalidInput = categorySelect;
+        }
+
+        // 檢查價格欄位是否錯誤
+        const priceInputs = $('.money');
+        for (let i = 0; i < priceInputs.length; i++) {
+            const input = $(priceInputs[i]);
+            const value = input.val();
+            if (value.trim() !== '' && !/^(0|[1-9]\d*)$/.test(value)) {
+                if (firstInvalidInput === null) {
+                    firstInvalidInput = input;
+                }
+            }
+        }
+
+        // 根據第一個錯誤的欄位alert
+        if (firstInvalidInput !== null) {
+            const errorMessage = firstInvalidInput === categorySelect
+                ? '請選擇商品類別標籤'
+                : '銷售資訊裡的價格欄位，請填有效數字(整數)';
+            alert(errorMessage);
+            firstInvalidInput.focus();
+            // 滾動視窗到第一個錯誤欄未
+            const position = firstInvalidInput.offset().top - 100;
+            $('html, body').animate({scrollTop: position}, 500);
+        } else {
+            this.submit();
+        }
+    });
+</script>
 
 </body>
 
