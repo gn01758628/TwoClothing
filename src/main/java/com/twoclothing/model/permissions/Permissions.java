@@ -32,8 +32,7 @@ public class Permissions implements Serializable {
 	}
 
 	// 帶參數建構子
-	public Permissions(Integer permissionId, String permissionName, String descriptions) {
-		this.permissionId = permissionId;
+	public Permissions(String permissionName, String descriptions) {
 		this.permissionName = permissionName;
 		this.descriptions = descriptions;
 	}

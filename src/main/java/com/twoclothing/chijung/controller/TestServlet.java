@@ -15,10 +15,11 @@ import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.abid.biditembrowsing.BidItemBrowsing;
 import com.twoclothing.model.abid.biditembrowsing.BidItemBrowsing.CompositeDrtail;
 import com.twoclothing.model.employee.Employee;
+import com.twoclothing.model.permissions.Permissions;
 import com.twoclothing.utils.HibernateUtil;
 import com.twoclothing.utils.test.generic.GenerciHibernateDAO;
+import com.twoclothing.utils.test.generic.GenericService;
 import com.twoclothing.utils.test.generic.QueryCondition;
-
 
 // @MultipartConfig
 //  fileSizeThreshold = 檔案小於這個值,檔案寫入內存,提高效率
@@ -31,73 +32,63 @@ import com.twoclothing.utils.test.generic.QueryCondition;
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class TestServlet extends HttpServlet {
 
-    GenerciHibernateDAO<BidItem> bidItemHDAO = new GenerciHibernateDAO<>(BidItem.class);
-    GenerciHibernateDAO<BidItemBrowsing> bidItemBrowsingHDAO = new GenerciHibernateDAO<>(BidItemBrowsing.class);
-    GenerciHibernateDAO<Employee> employeeHDAO = new GenerciHibernateDAO<>(Employee.class,HibernateUtil.getSessionFactory());
+	GenericService gs = GenericService.getInstance();
 
-    @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    	QueryCondition qc = new QueryCondition();
-    	qc.toMap("and","empId","=",5);
-    	qc.toMap("and","empName","like","七");
-    	qc.toMap("and","empStatus","between",0,1);
-//    	qc.printList();
-    
-    	List<Employee> B3 = new ArrayList<>();
-    	B3 = employeeHDAO.getByQueryConditions(qc.getList());
-    	for (Object item : B3) {
-    		System.out.println(item);
-    	}
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-//    	BidItem A1 = new BidItem();
-//    	List<BidItem> B1 = new ArrayList<>();
-//    	List<BidItem> C1 = new ArrayList<>();
-//    	A1=bidItemHDAO.getByPK(10);
-//    	B1=bidItemHDAO.getAll();
-//    	C1=bidItemHDAO.getAllDescByPK();
-//    	System.out.println(A1);
-//    	System.out.println("================");
-//    	for (Object item : B1) {
-//    		System.out.println(item);
-//    	}
-//    	System.out.println("================");
-//    	for (Object item : C1) {
-//    		System.out.println(item);
-//    	}
-    	
-    	
-//==========================================================
-    	
-    	
-//    	BidItemBrowsing A2 = new BidItemBrowsing();
-//    	List<BidItemBrowsing> B2 = new ArrayList<>();
-//    	List<BidItemBrowsing> C2 = new ArrayList<>();
-//    	CompositeDrtail AA2 = new CompositeDrtail();
-//    	AA2.setBiditemid(2);
-//    	AA2.setMbrId(2);
-//    	A2.setCompositeKey(AA2);
-//    	
-//    	A2=bidItemBrowsingHDAO.getByPK(A2.getCompositeKey());
-//    	B2=bidItemBrowsingHDAO.getAll();
-//    	C2=bidItemBrowsingHDAO.getAllDescByPK();
-//    	System.out.println(A2);
-//    	System.out.println("================");
-//    	for (Object item : B2) {
-//    		System.out.println(item);
-//    	}
-//    	System.out.println("================");
-//    	for (Object item : C2) {
-//    		System.out.println(item);
-//    	}
-    }
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		// 二版測試
+		// insert
+		System.out.println("========== inesrt ==========");
+		Permissions pm = new Permissions("AAA", "AAA");
+		gs.insert(pm);
+
+		// update
+		System.out.println("========== update ==========");
+		pm.setPermissionName("BBBBBBB");
+		gs.update(pm);
+
+		// delete
+		System.out.println("========== delete ==========");
+		gs.delete(Permissions.class, 2);
+
+		// query1
+		System.out.println("========== query1 ==========");
+		Employee emp = gs.getByPK(Employee.class, 3);
+
+		System.out.println(emp);
+		// query2
+		System.out.println("========== query2 ==========");
+		List<Employee> list1 = new ArrayList<>();
+
+		list1 = gs.getAll(Employee.class);
+
+		for (Employee enetity : list1) {
+			System.out.println(enetity);
+		}
+		// query3
+		System.out.println("========== query3 ==========");
+		List<Employee> list2 = new ArrayList<>();
+
+		list2 = gs.getAllDescByPK(Employee.class);
+
+		for (Employee enetity : list2) {
+			System.out.println(enetity);
+		}
+		// query4 目前僅提供 like,=,>,<,>=,<=,between 等運算子判斷
+		System.out.println("========== query4 ==========");
+		List<Employee> list3 = new ArrayList<>();
+
+		QueryCondition qc = new QueryCondition();
+		qc.toMap("and", "empId", "between", 2, 8);
+		qc.toMap("and", "deptId", "=", 2);
+
+		list3 = gs.getByQueryConditions(Employee.class, qc.getConditionList());
+
+		for (Employee enetity : list3) {
+			System.out.println(enetity);
+		}
+
+	}
 }

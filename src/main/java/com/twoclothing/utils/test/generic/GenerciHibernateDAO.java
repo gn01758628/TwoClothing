@@ -47,7 +47,6 @@ public class GenerciHibernateDAO<T> {
 		initializeFieldMap();
 		this.tableName = initializeTableName();
 		this.factory = factory;
-		System.out.println(getSession());
 	}
 
 	private void initializeFieldMap() {
@@ -97,27 +96,47 @@ public class GenerciHibernateDAO<T> {
 	private Session getSession() {
 		return factory.getCurrentSession();
 	}
-
+	
+	//========================= insert =========================
+	
+	public Serializable insert(T entity) {
+		System.out.println("資料新增成功");
+		return getSession().save(entity);
+	}
+	
+	//========================= update =========================
+	
+	public boolean update(T entity) {
+		try {
+			getSession().update(entity);
+			System.out.println("資料更新成功");
+			return true;
+		} catch (Exception e) {
+			System.out.println("資料更新失敗");
+			return false;
+		}
+	}
+	
+	//========================= delete =========================
+	
+	public int delete(Serializable id) {
+		T entity = getSession().get(type, id);
+		if (entity != null) {
+			getSession().delete(entity);
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+	
+	//========================= query  =========================
+	
+	//查詢By PK
 	public T getByPK(Serializable Id) {
 		return getSession().get(type, Id);
 	}
-
+	//查詢全部 OrderBy PK
 	public List<T> getAll() {
-		String orderBy;
-		Map<String, String> orderByMap = new LinkedHashMap<>();
-
-		for (Map.Entry<String, String> entry : PKMap.entrySet()) {
-			if ("Id".equals(entry.getValue())) {
-				orderByMap.put(entry.getKey(), "desc");
-			}
-		}
-
-		orderBy = buildOrderBy(orderByMap);
-		System.out.println("from " + tableName + orderBy);
-		return getSession().createQuery("from " + className + orderBy, type).list();
-	}
-
-	public List<T> getAllDescByPK() {
 		String orderBy;
 		Map<String, String> orderByMap = new LinkedHashMap<>();
 
@@ -130,14 +149,29 @@ public class GenerciHibernateDAO<T> {
 		orderBy = buildOrderBy(orderByMap);
 		return getSession().createQuery("from " + className + orderBy, type).list();
 	}
+	//查詢全部 OrderBy PK desc
+	public List<T> getAllDescByPK() {
+		String orderBy;
+		Map<String, String> orderByMap = new LinkedHashMap<>();
 
+		for (Map.Entry<String, String> entry : PKMap.entrySet()) {
+			if ("Id".equals(entry.getValue())) {
+				orderByMap.put(entry.getKey(), "desc");
+			}
+		}
+
+		orderBy = buildOrderBy(orderByMap);
+		return getSession().createQuery("from " + className + orderBy, type).list();
+	}
+	
+	//複合查詢
 	public List<T> getByQueryConditions(List<Map<String, Object>> conditionList) {
 		Session session = getSession();
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(type);
 		Root<T> root = criteria.from(type);
 
-		// 初始化最终的Predicate为null
+		// 初始化最终的Predicate為null
 		Predicate finalPredicate = null;
 		for (Map<String, Object> conditionMap : conditionList) {
 			String fieldName = (String) conditionMap.get("fieldName");
@@ -145,11 +179,11 @@ public class GenerciHibernateDAO<T> {
 			Object value = conditionMap.get("value");
 			String logicalOperator = (String) conditionMap.get("logicalOperator");
 
-			// 根据fieldName、operator和value构建单个Predicate
+			// 根據fieldName、operator和value生成Predicate
 			Predicate predicate = buildPredicate(fieldName, operator, value, builder, root);
 
 
-			// 判断逻辑运算符
+			// 判斷邏輯運算符(AND OR)
 			if (finalPredicate == null) {
 				finalPredicate = predicate;
 
@@ -163,11 +197,10 @@ public class GenerciHibernateDAO<T> {
 				}
 			}
 		}
-		System.out.println("Final Predicate: " + criteria.getRestriction());
-		// 将最终的Predicate应用到查询
+		
+		// 將最終的Predicate應用到查詢
 		if (finalPredicate != null) {
 			criteria.where(finalPredicate);
-			System.out.println("Final Predicate: " + criteria.getRestriction());
 		} else {
 			return getAll();
 		}
@@ -175,16 +208,15 @@ public class GenerciHibernateDAO<T> {
 		List<T> resultList = session.createQuery(criteria).getResultList();
 		return resultList;
 	}
+	
+	
 
-	public boolean update(T entity) {
-		try {
-			getSession().update(entity);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
+	
+	
+	
+	
+	
+	
 //================================以下是非公開方法================================
 	private String buildOrderBy(Map<String, String> orderFields) {
 		if (orderFields == null || orderFields.isEmpty()) {
@@ -237,11 +269,11 @@ public class GenerciHibernateDAO<T> {
 					return builder.between(root.get(fieldName), (Comparable) values[0], (Comparable) values[1]);
 				}
 			}
-// 如果不符合条件，可以抛出异常或返回一个默认的Predicate
+			// 如果不符合條件，可以拋出異常或返回一個默認的Predicate
 			throw new IllegalArgumentException("Invalid 'between' operator values");
 
 		default:
-// 如果操作符无法识别，可以抛出异常或返回一个默认的Predicate
+			// 如果運算符無法識別，可以拋出異常或返回一個默認的Predicate
 			throw new IllegalArgumentException("Unsupported operator: " + operator);
 		}
 	}

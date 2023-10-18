@@ -12,11 +12,11 @@ public class QueryCondition {
     }
 
 
-    public List<Map<String, Object>> getList() {
+    public List<Map<String, Object>> getConditionList() {
 		return conditionList;
 	}
     
-    public void printList() {
+    public void printConditionList() {
     	int i = 0;
     	for (Map<String, Object> conditionMap : conditionList) {
     		i++;
@@ -24,12 +24,12 @@ public class QueryCondition {
     	        String key = entry.getKey();
     	        Object value = entry.getValue();
 
-    	        // 如果值是数组，将数组转换为字符串并打印
+    	     // 如果值是陣列，將陣列轉換為字串並列印
     	        if (value instanceof Object[]) {
     	            String arrayString = Arrays.toString((Object[]) value);
     	            System.out.println("Key: " + key + ", Value: " + arrayString);
     	        } else {
-    	            // 否则直接打印键值对
+    	        	// 否則直接列印鍵值對
     	            System.out.println("Key: " + key + ", Value: " + value);
     	        }
     	    }
@@ -43,16 +43,16 @@ public class QueryCondition {
         conditionMap.put("operator", operator);
         conditionMap.put("logicalOperator", logicalOperator);
 
-        // 根据不同的操作符处理值
+     // 根據不同的運算符處理值
         if ("between".equals(operator) && values.length == 2 && values[0] != null && values[1] != null) {
-            // 如果操作符是 "between"，且有两个非空值，将它们放入数组或列表中，然后放入 conditionMap
+        	// 如果運算符是 "between"，且有兩個非空值，將它們放入陣列或列表中，然後放入 conditionMap
             Object[] betweenValues = {values[0], values[1]};
             conditionMap.put("value", betweenValues);
         } else if (!"between".equals(operator) && values.length == 1 && values[0] != null) {
-            // 如果操作符不是 "between"，且只有一个非空值，直接将该值放入 conditionMap
+        	// 如果運算符不是 "between"，且只有一個非空值，直接將該值放入 conditionMap
             conditionMap.put("value", values[0]);
         } else {
-            // 如果不符合以上条件，可以选择抛出异常或进行其他处理
+        	// 如果不符合以上條件，可以選擇拋出異常或進行其他處理
             throw new IllegalArgumentException("Invalid operator or values");
         }
         conditionList.add(conditionMap);
