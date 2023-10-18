@@ -29,7 +29,7 @@ public class ItemTracking implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ItemTracking [compositeKey=" + compositeKey + ", trackingTime=" + trackingTime + "]";
+		return "ItemTracking [itemId=" + compositeKey.getItemId() + ", mbrId=" + compositeKey.getMbrId() + ", trackingTime=" + trackingTime + "]";
 	}
 
 	public CompositeDetail getCompositeKey() {

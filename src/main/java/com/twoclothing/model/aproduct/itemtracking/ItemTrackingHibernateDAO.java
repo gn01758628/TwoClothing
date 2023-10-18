@@ -17,36 +17,42 @@ public class ItemTrackingHibernateDAO implements ItemTrackingDAO {
 	}
 
 	@Override
-	public void insert(ItemTracking itemTracking) {
+	public int insert(ItemTracking itemTracking) {
+		return (Integer) getSession().save(itemTracking);
 	}
 
 	@Override
 	public ItemTracking getByCompositeKey(Integer itemId, Integer mbrId) {
-		// TODO Auto-generated method stub
-		return null;
+		ItemTracking.CompositeDetail compositeKey = new ItemTracking.CompositeDetail(itemId, mbrId);
+		return getSession().get(ItemTracking.class, compositeKey);
 	}
 
 	@Override
 	public List<ItemTracking> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return getSession().createQuery("from ItemTracking", ItemTracking.class).list();
 	}
 
 	@Override
 	public List<ItemTracking> getAllByItemId(Integer itemId) {
-		// TODO Auto-generated method stub
-		return null;
+		return getSession().createQuery("from ItemTracking where itemId = :itemId", ItemTracking.class)
+				.setParameter("itemId", itemId).list();
 	}
 
 	@Override
 	public List<ItemTracking> getAllByMbrId(Integer mbrId) {
-		// TODO Auto-generated method stub
-		return null;
+		return getSession().createQuery("from ItemTracking where mbrId = :mbrId", ItemTracking.class)
+				.setParameter("mbrId", mbrId).list();
 	}
 
 	@Override
-	public void delete(Integer itemId, Integer mbrId) {
-		// TODO Auto-generated method stub
-
+	public int delete(Integer itemId, Integer mbrId) {
+		ItemTracking.CompositeDetail compositeKey = new ItemTracking.CompositeDetail(itemId, mbrId);
+		ItemTracking itemTracking = getSession().get(ItemTracking.class, compositeKey);
+		if (itemTracking != null) {
+			getSession().delete(itemTracking);
+			return 1;
+		} else {
+			return -1;
+		}
 	}
 }

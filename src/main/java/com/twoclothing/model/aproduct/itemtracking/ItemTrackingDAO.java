@@ -3,7 +3,7 @@ package com.twoclothing.model.aproduct.itemtracking;
 import java.util.List;
 
 public interface ItemTrackingDAO {
-	void insert(ItemTracking itemTracking);
+	int insert(ItemTracking itemTracking);
 
     ItemTracking getByCompositeKey(Integer itemId, Integer mbrId);
 
@@ -13,5 +13,5 @@ public interface ItemTrackingDAO {
 
     List<ItemTracking> getAllByMbrId(Integer mbrId);
 
-    void delete(Integer itemId, Integer mbrId);
+    int delete(Integer itemId, Integer mbrId);
 }
