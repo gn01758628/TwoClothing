@@ -5,9 +5,12 @@ import java.util.List;
 import com.twoclothing.model.members.Members;
 
 public interface MembersService {
+	
+	Members addMembers(String email, String pswdHash);
+	
 	Members addMembers (Members members);
 	
-	List<Members> getAllMembers(int currentPage);
+	List<Members> getAll();
 	
 	Members getByPrimaryKey(Integer mbrId);
 	
