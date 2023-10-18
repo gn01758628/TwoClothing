@@ -49,7 +49,7 @@ public class ItemTracking implements Serializable {
 	}
 
 	@Embeddable
-	static class CompositeDetail implements Serializable {
+	public static class CompositeDetail implements Serializable {
 		private static final long serialVersionUID = 1L;
 
 		@Column(name = "itemid")
