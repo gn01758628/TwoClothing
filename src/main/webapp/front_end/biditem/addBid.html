@@ -171,7 +171,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="reserverprice" class="form-label">拍賣底價</label>
-                        <input type="text" class="form-control money" id="reserverprice" name="reserverPrice"
+                        <input type=            "text" class="form-control money" id="reserverprice" name="reserverPrice"
                                aria-describedby="reserverpriceHelp">
                         <div id="reserverpriceHelp" class="form-text">
                             如果出價未超過您所設定的底價，競標將在截止時自動流標
@@ -188,19 +188,24 @@
                 </div>
 
                 <div class="mb-4 border p-4 rounded-3" style="background-color:white">
-                    <h2 class="mb-4">其他資訊</h2>
+                    <h2 class="mb-4">上架時間</h2>
+
                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                        <label class="btn btn-outline-primary" for="btnradio1">馬上上架</label>
+                        <label class="btn btn-outline-primary" for="btnradio1">通過後立刻刊登</label>
 
                         <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btnradio2">預約上架</label>
+                        <label class="btn btn-outline-primary" for="btnradio2">預約刊登</label>
+                    </div>
+                    <div class="form-text mb-4" id="timeDesc"></div>
+
+                    <div class="mt-3 col-3" id="datePickerContainer" style="display: none;">
+                        <input type="date" class="form-control" id="starttime" name="starttime">
+                        <label for="starttime" class="form-label mt-2">可預約刊日期的範圍：<br>今日後的2到10天之間</label>
                     </div>
                 </div>
 
-
                 <button type="submit" class="btn btn-success btn-lg fixed-button rounded-3">確定提出申請</button>
-
             </form>
         </div>
     </div>
@@ -211,7 +216,7 @@
 <script src="/TwoClothing/js/bootstrap5/bootstrap.min.js"></script>
 <!--jQuery-->
 <script src="/TwoClothing/js/jQuery/jquery-3.7.1.min.js"></script>
-<!--我的cs-->
+<!--我的js-->
 <script src="/TwoClothing/js/chengHan/addBid.js" type="text/javascript"></script>
 
 <!-- 處理商品類別標籤 -->
