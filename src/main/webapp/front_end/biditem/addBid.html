@@ -135,10 +135,15 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="detail" class="form-label">商品簡述</label>
-                        <textarea class="form-control" id="detail" aria-describedby="detailHelp"
-                                  name="detail" maxlength="100" rows="5"></textarea>
-                        <div id="detailHelp" class="form-text">清楚的描述商品尺寸，協助買家做出選擇</div>
+                        <label for="fakedetail" class="form-label">商品簡述</label>
+                        <textarea class="form-control" id="fakedetail" aria-describedby="fakedetailHelp"
+                                  maxlength="250" rows="4"></textarea>
+                        <input type="hidden" name="detail" id="detail">
+                        <div id="fakedetaillHelp" class="form-text">
+                            您可以在此處提供商品的詳細尺寸或其他相關資訊，我們將保留您輸入的格式，以便在商品頁面顯示
+                            <br>
+                            字數上限為250，空格和換行符也計入字數
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -206,6 +211,9 @@
 <script src="/TwoClothing/js/bootstrap5/bootstrap.min.js"></script>
 <!--jQuery-->
 <script src="/TwoClothing/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--我的cs-->
+<script src="/TwoClothing/js/chengHan/addBid.js" type="text/javascript"></script>
+
 <!-- 處理商品類別標籤 -->
 <script>
     $(document).ready(function () {
@@ -251,7 +259,6 @@
                 if (category.parentId === parentId) {
                     // 檢查該標籤是否是葉子(不存在子標籤)
                     const isLeafCategory = !data.some((childCategory) => childCategory.parentId === category.id);
-
                     const listItem = document.createElement("li");
                     // 添加選項的底邊距離
                     listItem.classList.add("mb-3");
@@ -286,70 +293,6 @@
         // 丟入參數 添加內容
         const categoryTree = buildCategoryTree(categoryData, 1);
         categoryTreeContainer.append(categoryTree);
-    });
-</script>
-
-<!--判斷價格-->
-<script>
-    $(document).ready(function () {
-        // 即時顯示錯誤訊息
-        const moneyInputs = $('.money');
-        moneyInputs.each(function () {
-            const input = $(this);
-            const errorMessage = $('<div class="error-message text-danger"></div>');
-            input.parent().append(errorMessage);
-
-            input.on('blur', function () {
-                const value = input.val();
-                if (value.trim() !== '' && !/^(0|[1-9]\d*)$/.test(value)) {
-                    errorMessage.text('請填寫整數數字');
-                    input.addClass('is-invalid');
-                } else {
-                    errorMessage.text('');
-                    input.removeClass('is-invalid');
-                }
-            });
-        });
-    });
-</script>
-
-<!--表單提交時檢查欄位-->
-<script>
-    $('form').on('submit', function (e) {
-        e.preventDefault();
-        let firstInvalidInput = null;
-
-        // 檢查類別標籤有無選擇
-        const categorySelect = $('#categorySelect');
-        if (categorySelect.val().trim() === '') {
-            firstInvalidInput = categorySelect;
-        }
-
-        // 檢查價格欄位是否錯誤
-        const priceInputs = $('.money');
-        for (let i = 0; i < priceInputs.length; i++) {
-            const input = $(priceInputs[i]);
-            const value = input.val();
-            if (value.trim() !== '' && !/^(0|[1-9]\d*)$/.test(value)) {
-                if (firstInvalidInput === null) {
-                    firstInvalidInput = input;
-                }
-            }
-        }
-
-        // 根據第一個錯誤的欄位alert
-        if (firstInvalidInput !== null) {
-            const errorMessage = firstInvalidInput === categorySelect
-                ? '請選擇商品類別標籤'
-                : '銷售資訊裡的價格欄位，請填有效數字(整數)';
-            alert(errorMessage);
-            firstInvalidInput.focus();
-            // 滾動視窗到第一個錯誤欄未
-            const position = firstInvalidInput.offset().top - 100;
-            $('html, body').animate({scrollTop: position}, 500);
-        } else {
-            this.submit();
-        }
     });
 </script>
 
