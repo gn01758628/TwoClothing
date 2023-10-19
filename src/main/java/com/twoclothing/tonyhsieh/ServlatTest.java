@@ -1,4 +1,4 @@
-package com.twoclothing.tonyHsieh;
+package com.twoclothing.tonyhsieh;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
