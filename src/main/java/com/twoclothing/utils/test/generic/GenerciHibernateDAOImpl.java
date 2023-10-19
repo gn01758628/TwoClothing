@@ -18,7 +18,7 @@ import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
 
-public class GenerciHibernateDAO<T> {
+public class GenerciHibernateDAOImpl<T> implements  GenericDAO<T>{
 	private final Class<T> type;
 	private final String className;
 	private final Field[] fields;
@@ -28,7 +28,7 @@ public class GenerciHibernateDAO<T> {
 
 	private final SessionFactory factory;
 
-	public GenerciHibernateDAO(Class<T> type) {
+	public GenerciHibernateDAOImpl(Class<T> type) {
 		this.type = type;
 		this.className = type.getSimpleName();
 		fields = type.getDeclaredFields();
@@ -40,7 +40,7 @@ public class GenerciHibernateDAO<T> {
 		// TODO Auto-generated constructor stub
 	}
 
-	public GenerciHibernateDAO(Class<T> type, SessionFactory factory) {
+	public GenerciHibernateDAOImpl(Class<T> type, SessionFactory factory) {
 		this.type = type;
 		this.className = type.getSimpleName();
 		fields = type.getDeclaredFields();
@@ -132,8 +132,8 @@ public class GenerciHibernateDAO<T> {
 	//========================= query  =========================
 	
 	//查詢By PK
-	public T getByPK(Serializable Id) {
-		return getSession().get(type, Id);
+	public T getByPK(Serializable id) {
+		return getSession().get(type, id);
 	}
 	//查詢全部 OrderBy PK
 	public List<T> getAll() {

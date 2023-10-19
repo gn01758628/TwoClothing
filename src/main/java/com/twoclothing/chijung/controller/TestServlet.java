@@ -17,7 +17,9 @@ import com.twoclothing.model.abid.biditembrowsing.BidItemBrowsing.CompositeDrtai
 import com.twoclothing.model.employee.Employee;
 import com.twoclothing.model.permissions.Permissions;
 import com.twoclothing.utils.HibernateUtil;
-import com.twoclothing.utils.test.generic.GenerciHibernateDAO;
+import com.twoclothing.utils.test.generic.DAOSelector;
+import com.twoclothing.utils.test.generic.GenerciHibernateDAOImpl;
+import com.twoclothing.utils.test.generic.GenericDAO;
 import com.twoclothing.utils.test.generic.GenericService;
 import com.twoclothing.utils.test.generic.QueryCondition;
 
@@ -33,11 +35,11 @@ import com.twoclothing.utils.test.generic.QueryCondition;
 public class TestServlet extends HttpServlet {
 
 	GenericService gs = GenericService.getInstance();
-
+	
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		
 		// 二版測試
 		// insert
 		System.out.println("========== inesrt ==========");
@@ -46,7 +48,8 @@ public class TestServlet extends HttpServlet {
 
 		// update
 		System.out.println("========== update ==========");
-		pm.setPermissionName("BBBBBBB");
+		pm= new Permissions("CCCCC", "AAA");
+		pm.setPermissionId(4);
 		gs.update(pm);
 
 		// delete
@@ -77,18 +80,21 @@ public class TestServlet extends HttpServlet {
 			System.out.println(enetity);
 		}
 		// query4 目前僅提供 like,=,>,<,>=,<=,between 等運算子判斷
+		// !!複合查詢會導致Servlet要提前處理業務邏輯 所以拿掉通用service中複合查詢的功能 如有需要請在自己的Servie調用通用DAO
 		System.out.println("========== query4 ==========");
 		List<Employee> list3 = new ArrayList<>();
+		//生成通用DAO方法
+		GenericDAO dao = DAOSelector.getDAO(Employee.class);
 
 		QueryCondition qc = new QueryCondition();
 		qc.toMap("and", "empId", "between", 2, 8);
 		qc.toMap("and", "deptId", "=", 2);
-
-		list3 = gs.getByQueryConditions(Employee.class, qc.getConditionList());
+		list3 = dao.getByQueryConditions(qc.getConditionList());
 
 		for (Employee enetity : list3) {
 			System.out.println(enetity);
 		}
+		
 
 	}
 }

@@ -1,23 +1,23 @@
-package com.twoclothing.utils.test.generic;
-
+//package com.twoclothing.utils.test.generic;
+//
 //引用的JavaAPI
-import java.util.List;
-
-//測試用的各類別VO
-		import com.twoclothing.model.balancehistory.BalanceHistory;
-import com.twoclothing.model.categorytags.CategoryTags;
-		import com.twoclothing.model.employee.Employee;
-
-public class GenericTest {
-
-	public static void main(String[] args) {
-
-		GenericDAO<Employee> employeeDAO = new GenericDAO<>(Employee.class);
-		GenericDAO<BalanceHistory> balanceHistoryDAO = new GenericDAO<>(BalanceHistory.class);
-		GenericDAO<CategoryTags> categorytagsDAO = new GenericDAO<>(CategoryTags.class);
-		
+//import java.util.List;
+//
+////測試用的各類別VO
+//		import com.twoclothing.model.balancehistory.BalanceHistory;
+//import com.twoclothing.model.categorytags.CategoryTags;
+//		import com.twoclothing.model.employee.Employee;
+//
+//public class GenericTest {
+//
+//	public static void main(String[] args) {
+//
+//		GenericDAOImpl<Employee> employeeDAO = new GenericDAOImpl<>(Employee.class);
+//		GenericDAOImpl<BalanceHistory> balanceHistoryDAO = new GenericDAOImpl<>(BalanceHistory.class);
+//		GenericDAOImpl<CategoryTags> categorytagsDAO = new GenericDAOImpl<>(CategoryTags.class);
+//		
 //		========================= insert =========================
-
+//
 //		List<Employee> employees = new ArrayList<>();
 //
 //		for (int i = 0; i < 5; i++) {
@@ -94,7 +94,7 @@ public class GenericTest {
 //				e.printStackTrace();
 //			}
 //        }
-		
+//		
 //		========================= update =========================
 //		Map<String, Object> map2 = new LinkedHashMap<>();
 //		map2.put("empId", 13);
@@ -104,21 +104,21 @@ public class GenericTest {
 //		map1.put("address", "台北市大安區456號");
 //		emp.setAvatar(list.get(0).getAvatar());
 //		employeeDAO.update(emp, map1);
-		
-		
+//		
+//		
 //		========================= delete =========================
-		
+//		
 //		Map<String, Object> map1 = new LinkedHashMap<>();
 //		map1.put("address", "台北市中正區123號");
 //		map1.put("phone", "0912345678");
 //		employeeDAO.delete(map1);
-		
+//		
 //		========================= getAll =========================
-		List<Employee> list = employeeDAO.getAll();
-		for (Employee x : list) {
-			System.out.println(x);
-		}
-		System.out.println("=============================");
+//		List<Employee> list = employeeDAO.getAll();
+//		for (Employee x : list) {
+//			System.out.println(x);
+//		}
+//		System.out.println("=============================");
 //
 //		List<BalanceHistory> list1 = balanceHistoryDAO.getAll();
 //		for (BalanceHistory x : list1) {
@@ -130,7 +130,7 @@ public class GenericTest {
 //		for (CategoryTags x : list2) {
 //			System.out.println(x);
 //		}
-
+//
 //		========================= getBy 使用時需傳入 存放 ("變數名稱",搜尋數值) 的Map =========================
 //		Map<String, Object> map1 = new LinkedHashMap<>();
 //		map1.put("address", "%1%");
@@ -154,7 +154,7 @@ public class GenericTest {
 //			System.out.println(x);
 //		}
 //
-	}
+//	}
 //	
 //	public static byte[] getPictureByteArray(String path) throws IOException {
 //        FileInputStream fis = new FileInputStream(path);
@@ -162,5 +162,5 @@ public class GenericTest {
 //        fis.close();
 //        return pictureArr;
 //    }
-	
-}
+//	
+//}
