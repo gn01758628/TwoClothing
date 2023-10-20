@@ -4,15 +4,20 @@ import java.util.List;
 
 public interface ItemImageDAO {
 	
-	 public int insert(ItemImage imgId);
+	 int insert(ItemImage imgId);
 
-	 public ItemImage getByPrimaryKey(Integer imgId);
+	 ItemImage getByPrimaryKey(Integer imgId);
 
-	 public List<ItemImage> getAll();
+	/**
+	 * @param position 第幾張圖片
+	 */
+	ItemImage getPositionImageByItemId(Integer itemId, int position);
 
-	 public List<ItemImage> getAllByItemId(Integer itemId);
+	 List<ItemImage> getAll();
 
-	 public boolean update(ItemImage itemImage);
+	 List<ItemImage> getAllByItemId(Integer itemId);
+
+	 boolean update(ItemImage itemImage);
 	 
-	 public void delete(Integer imgId);
+	 void delete(Integer imgId);
 }

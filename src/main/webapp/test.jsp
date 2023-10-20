@@ -16,16 +16,22 @@
 <div class="container">
     <div class="row">
         <div class="col-2">
-            <img src="ReadIMG/biditem?id=11&position=1" alt="描述圖片的文字" class="img-fluid mx-auto">
+            <img src="ReadItemIMG/biditem" alt="描述圖片的文字" class="img-fluid mx-auto">
         </div>
         <div class="col-2">
-            <img src="ReadIMG/biditem?id=1&position=5" alt="描述圖片的文字" class="img-fluid mx-auto">
+            <img src="ReadItemIMG/biditem?id=1&position=3" alt="描述圖片的文字" class="img-fluid mx-auto">
         </div>
         <div class="col-2">
-            <img src="ReadIMG/biditem" alt="描述圖片的文字" class="img-fluid mx-auto">
+            <img src="ReadItemIMG/biditem" alt="描述圖片的文字" class="img-fluid mx-auto">
         </div>
         <div class="col-2">
-            <img src="images/NoIMG.png" alt="描述圖片的文字" class="img-fluid mx-auto">
+            <img src="ReadItemIMG/item?id=1&position=1" alt="描述圖片的文字" class="img-fluid mx-auto">
+        </div>
+        <div class="col-2">
+            <img src="ReadItemIMG/item?id=1&position=2" alt="描述圖片的文字" class="img-fluid mx-auto">
+        </div>
+        <div class="col-2">
+            <img src="ReadItemIMG/item" alt="描述圖片的文字" class="img-fluid mx-auto">
         </div>
     </div>
 </div>
