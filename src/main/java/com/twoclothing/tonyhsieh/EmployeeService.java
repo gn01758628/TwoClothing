@@ -8,11 +8,14 @@ import com.twoclothing.model.employee.Employee;
 
 public interface EmployeeService {
 
-	void deleteEmployee(Integer empId);
+	int deleteEmployee(Integer empId);
 	
 	Employee getEmployeeById(Integer empId);
 	
-	List<Employee> getAllEmployees(int currentPage);
+	List<Employee> getAllEmployees();
 	
-	int getPageTotal();
+	int addEmployee(Employee employee);
+	
+	int updateEmployee(Employee employee);
+	
 }

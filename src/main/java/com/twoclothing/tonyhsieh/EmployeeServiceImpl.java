@@ -16,11 +16,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeDAO = new EmployeeHibernateDAO(HibernateUtil.getSessionFactory());
 	}
 
+	
+	
+	
+
 	@Override
-	public void deleteEmployee(Integer empId) {
+	public int deleteEmployee(Integer empId) {
 		// TODO Auto-generated method stub
-		
+		Employee emp = employeeDAO.getEmployeeById(empId);
+		if (emp != null) {
+			employeeDAO.deleteEmployee(empId);
+			// 回傳給 service，1代表刪除成功
+			return 1;
+		} else {
+			// 回傳給 service，-1代表刪除失敗
+			return -1;
+		}
 	}
+
+
+
+
 
 	@Override
 	public Employee getEmployeeById(Integer empId) {
@@ -29,19 +45,26 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public List<Employee> getAllEmployees(int currentPage) {
+	public List<Employee> getAllEmployees() {
 		// TODO Auto-generated method stub
-		return null;
+		return employeeDAO.getAllEmployees() ;
 	}
 
 	@Override
-	public int getPageTotal() {
+	public int addEmployee(Employee employee) {
 		// TODO Auto-generated method stub
-		long total = employeeDAO.getTotal();
-		// 計算Emp數量每頁3筆的話總共有幾頁
-		int pageQty = (int)(total % 4 == 0 ? (total / 4) : (total / 4 + 1));
-		return pageQty;
+		// 回傳給 service 剛新增成功的自增主鍵值
+		return employeeDAO.addEmployee(employee);
+	
 	}
+
+	@Override
+	public int updateEmployee(Employee employee) {
+		// TODO Auto-generated method stub
+		return employeeDAO.updateEmployee(employee);
+	}
+
+	
 
 	
 	
