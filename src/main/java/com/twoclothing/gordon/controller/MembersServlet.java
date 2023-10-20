@@ -25,6 +25,12 @@ public class MembersServlet extends HttpServlet {
 
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
+		/***************************pk查詢 **********************/
+		/***************************pk查詢 **********************/
+		/***************************pk查詢 **********************/
+		/***************************pk查詢 **********************/
+		/***************************pk查詢 **********************/
+		/***************************pk查詢 **********************/
 
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
 
@@ -38,7 +44,7 @@ public class MembersServlet extends HttpServlet {
 			}
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/select_page.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("select_page.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
@@ -51,7 +57,7 @@ public class MembersServlet extends HttpServlet {
 			}
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/select_page.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("select_page.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
@@ -65,7 +71,7 @@ public class MembersServlet extends HttpServlet {
 			}
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/select_page.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("select_page.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
@@ -76,6 +82,12 @@ public class MembersServlet extends HttpServlet {
 			successView.forward(req, res);
 
 		}
+		/*************************** update ****************************************/
+		/*************************** update ****************************************/
+		/*************************** update ****************************************/
+		/*************************** update ****************************************/
+		/*************************** update ****************************************/
+
 		if ("getOne_For_Update".equals(action)) {
 			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -121,14 +133,14 @@ public class MembersServlet extends HttpServlet {
 			try {
 			 sellScore = Integer.valueOf(req.getParameter("sellScore").trim());
 			}catch (NumberFormatException e) {
-				errorMsgs.put("sellScore","賣家分數薪水請填數字");
+				errorMsgs.put("sellScore","賣家分數請填數字");
 			}
 			
 			Integer buyScore  = null;
 			try {
 				buyScore = Integer.valueOf(req.getParameter("buyScore").trim());
 			}catch (NumberFormatException e) {
-				errorMsgs.put("buyScore","賣家分數薪水請填數字");
+				errorMsgs.put("buyScore","賣家分數請填數字");
 			}
 		
 			
@@ -150,6 +162,121 @@ public class MembersServlet extends HttpServlet {
 			
 			
 		}
+		/***********************註冊*************************/
+		/***********************註冊*************************/
+		/***********************註冊*************************/
+		/***********************註冊*************************/
+		/***********************註冊*************************/
+
+//		if("insert".equals(action)) {
+//
+//
+//			
+//			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+//			req.setAttribute("errorMsgs", errorMsgs);
+//			
+//			/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
+//			String email = req.getParameter("email");
+//			String emailReg = "^[a-zA-Z0-9_!#$%&'\\*+/=?{|}~^.-]+@[a-zA-Z0-9.-]+$";
+//			if (email == null || email.trim().length() == 0) {
+//				errorMsgs.put("email","email: 請勿空白");
+//			} else if(!email.trim().matches(emailReg)) { //以下練習正則(規)表示式(regular-expression)
+//				errorMsgs.put("email","email格式不正確");
+//            }
+//			System.out.println(email);
+//			String pswdHash = req.getParameter("pswdHash");
+//			String pswdHashReg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$";
+//			if (pswdHash == null || pswdHash.trim().length() == 0) {
+//				errorMsgs.put("pswdHash","密碼: 請勿空白");
+//			} else if(!pswdHash.trim().matches(pswdHashReg)) { //以下練習正則(規)表示式(regular-expression)
+//				errorMsgs.put("pswdHash","包含至少一个小写字母、一个大写字母和一个数字");
+//            }
+//			System.out.println(pswdHash);
+//			if (!errorMsgs.isEmpty()) {
+//				RequestDispatcher failureView = req
+//						.getRequestDispatcher("register.jsp");
+//				failureView.forward(req, res);
+//				return;
+//			}
+//
+//			/***************************2.開始新增資料***************************************/
+//			MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
+//			membersServiceImpl.addMembers(email,pswdHash);
+//		
+//			/***************************3.修改完成,準備轉交(Send the Success view)*************/
+//			String url = "/TwoClothing/front_end/members/logon.jsp";
+//			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+//			successView.forward(req, res);
+//			
+//		}
+		/***********************註冊*************************/
+		/***********************註冊*************************/
+		/***********************註冊*************************/
+		/***********************註冊*************************/
+		/***********************註冊*************************/
+		
+			if("register".equals(action)) {
+
+
+			
+			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
+			String mbrName = req.getParameter("mbrName");
+			String mbrNameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
+			if (mbrName == null || mbrName.trim().length() == 0) {
+				errorMsgs.put("mbrName","姓名: 請勿空白");
+			} else if(!mbrName.trim().matches(mbrNameReg)) { //以下練習正則(規)表示式(regular-expression)
+				errorMsgs.put("mbrName","姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
+            }
+			
+			
+			String email = req.getParameter("email");
+			String emailReg = "^[a-zA-Z0-9_!#$%&'\\*+/=?{|}~^.-]+@[a-zA-Z0-9.-]+$";
+			if (email == null || email.trim().length() == 0) {
+				errorMsgs.put("email","email: 請勿空白");
+			} else if(!email.trim().matches(emailReg)) { //以下練習正則(規)表示式(regular-expression)
+				errorMsgs.put("email","email格式不正確");
+            }
+			System.out.println(email);
+			String pswdHash = req.getParameter("pswdHash");
+			String pswdHashReg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$";
+			if (pswdHash == null || pswdHash.trim().length() == 0) {
+				errorMsgs.put("pswdHash","密碼: 請勿空白");
+			} else if(!pswdHash.trim().matches(pswdHashReg)) { //以下練習正則(規)表示式(regular-expression)
+				errorMsgs.put("pswdHash","包含至少一个小写字母、一个大写字母和一个数字");
+            }
+			System.out.println(pswdHash);
+			if (!errorMsgs.isEmpty()) {
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front_end/members/registerLogin.jsp");
+				failureView.forward(req, res);
+				return;
+			}
+
+			/***************************2.開始新增資料***************************************/
+			MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
+			membersServiceImpl.addMembers(mbrName, email,pswdHash);
+		
+			/***************************3.修改完成,準備轉交(Send the Success view)*************/
+			String url = "/front_end/members/registerLogin.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+			successView.forward(req, res);
+			
+		}
+			/***********************登入*************************/
+			/***********************登入*************************/
+			/***********************登入*************************/
+			/***********************登入*************************/
+			/***********************登入*************************/
+			if("login".equals(action)) {
+				
+				Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+				req.setAttribute("errorMsgs", errorMsgs);
+				
+			}
+		
 	}
 
 }

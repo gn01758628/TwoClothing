@@ -15,7 +15,7 @@ public class Members implements Serializable {
     @Column(name = "mbrid", updatable = false)
     private Integer mbrId;
 
-    @Column(name = "mbrname", insertable = false)
+    @Column(name = "mbrname")
     private String mbrName;
 
     @Column(name = "email", updatable = false, nullable = false, unique = true)

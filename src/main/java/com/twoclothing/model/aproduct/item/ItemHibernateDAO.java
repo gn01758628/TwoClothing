@@ -1,6 +1,16 @@
 package com.twoclothing.model.aproduct.item;
 
+import java.math.BigDecimal;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -66,5 +76,43 @@ public class ItemHibernateDAO implements ItemDAO {
 		}catch(Exception e) {
 			return -1;
 		}
+	}
+
+	@Override
+	public List<Item> getByCompositeQuery(Map<String, String> map) {
+		if(map.size()==0) {
+			return getAll();
+		}
+		
+
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<Item> criteria = builder.createQuery(Item.class);
+		Root<Item> root = criteria.from(Item.class);
+		
+		List<Predicate> predicates = new ArrayList<>();
+		
+		if (map.containsKey("itemPriceSearchStart") && map.containsKey("itemPriceSearchEnd"))
+			predicates.add(builder.between(root.get("price"), new BigDecimal(map.get("itemPriceSearchStart")), new BigDecimal(map.get("endsal"))));
+
+		
+		for (Map.Entry<String, String> row : map.entrySet()) {
+
+			if("itemNameSearch".equals(row.getKey())){
+				predicates.add(builder.like(root.get("itemName"), "%" + row.getValue() + "%"));
+			}
+			if("itemPriceSearchStart".equals(row.getKey())){
+				predicates.add(builder.greaterThanOrEqualTo(root.get("price"), new BigDecimal(row.getValue())));
+			}
+			if("itemPriceSearchEnd".equals(row.getKey())){
+				predicates.add(builder.greaterThanOrEqualTo(root.get("price"), new BigDecimal(row.getValue())));
+			}
+			
+		}
+		
+		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
+		criteria.orderBy(builder.asc(root.get("itemId")));
+		TypedQuery<Item> query = getSession().createQuery(criteria);
+
+		return query.getResultList();
 	}
 }
