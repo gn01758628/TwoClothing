@@ -13,6 +13,22 @@
 <h1>測試如何套用css跟js</h1>
 <button class="btn btn-info">測試用按鈕</button>
 
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+            <img src="ReadIMG/biditem?id=11&position=1" alt="描述圖片的文字" class="img-fluid mx-auto">
+        </div>
+        <div class="col-2">
+            <img src="ReadIMG/biditem?id=1&position=5" alt="描述圖片的文字" class="img-fluid mx-auto">
+        </div>
+        <div class="col-2">
+            <img src="ReadIMG/biditem" alt="描述圖片的文字" class="img-fluid mx-auto">
+        </div>
+        <div class="col-2">
+            <img src="images/NoIMG.png" alt="描述圖片的文字" class="img-fluid mx-auto">
+        </div>
+    </div>
+</div>
 
 <script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>

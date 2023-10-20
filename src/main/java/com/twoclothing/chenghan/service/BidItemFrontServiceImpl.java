@@ -16,17 +16,15 @@ import java.util.List;
 
 public class BidItemFrontServiceImpl implements BidItemFrontService {
 
-    private BidItemDAO bidItemDAO;
+    private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
-    private BidItemImageDAO bidItemImageDAO;
+    private final BidItemDAO bidItemDAO = new BidItemHibernateDAO(sessionFactory);
 
-    private CategoryTagsDAO categoryTagsDAO;
+    private final BidItemImageDAO bidItemImageDAO = new BidItemImageHibernateDAO(sessionFactory);
+
+    private final CategoryTagsDAO categoryTagsDAO = new CategoryTagsHibernateDAO(sessionFactory);
 
     public BidItemFrontServiceImpl() {
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        bidItemDAO = new BidItemHibernateDAO(sessionFactory);
-        bidItemImageDAO = new BidItemImageHibernateDAO(sessionFactory);
-        categoryTagsDAO = new CategoryTagsHibernateDAO(sessionFactory);
     }
 
     @Override
