@@ -6,7 +6,13 @@ import com.twoclothing.model.abid.biditem.BidItemHibernateDAO;
 import com.twoclothing.model.abid.biditemimage.BidItemImage;
 import com.twoclothing.model.abid.biditemimage.BidItemImageDAO;
 import com.twoclothing.model.abid.biditemimage.BidItemImageHibernateDAO;
+import com.twoclothing.model.categorytags.CategoryTags;
+import com.twoclothing.model.categorytags.CategoryTagsDAO;
+import com.twoclothing.model.categorytags.CategoryTagsHibernateDAO;
 import com.twoclothing.utils.HibernateUtil;
+import org.hibernate.SessionFactory;
+
+import java.util.List;
 
 public class BidItemFrontServiceImpl implements BidItemFrontService {
 
@@ -14,9 +20,13 @@ public class BidItemFrontServiceImpl implements BidItemFrontService {
 
     private BidItemImageDAO bidItemImageDAO;
 
+    private CategoryTagsDAO categoryTagsDAO;
+
     public BidItemFrontServiceImpl() {
-        bidItemDAO = new BidItemHibernateDAO(HibernateUtil.getSessionFactory());
-        bidItemImageDAO = new BidItemImageHibernateDAO(HibernateUtil.getSessionFactory());
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        bidItemDAO = new BidItemHibernateDAO(sessionFactory);
+        bidItemImageDAO = new BidItemImageHibernateDAO(sessionFactory);
+        categoryTagsDAO = new CategoryTagsHibernateDAO(sessionFactory);
     }
 
     @Override
@@ -27,5 +37,10 @@ public class BidItemFrontServiceImpl implements BidItemFrontService {
     @Override
     public void addBidItemImage(BidItemImage bidItemImage) {
 
+    }
+
+    @Override
+    public List<CategoryTags> getAllCategoryTags() {
+        return categoryTagsDAO.getAll();
     }
 }

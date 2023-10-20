@@ -2,6 +2,7 @@ package com.twoclothing.chenghan.controller;
 
 import com.twoclothing.chenghan.service.BidItemFrontService;
 import com.twoclothing.chenghan.service.BidItemFrontServiceImpl;
+import com.twoclothing.model.categorytags.CategoryTags;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -9,12 +10,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.util.Collection;
-import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 
 
 // @MultipartConfig
@@ -24,7 +22,7 @@ import java.util.Enumeration;
 //  單位是bytes( 1024bytes = 1KB )
 //  超過maxFileSize或maxRequestSize都會拋出IegalStateException
 
-@WebServlet("/servlet/front/biditem/*")
+@WebServlet("/front/biditem/*")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class BidItemFrontServlet extends HttpServlet {
 
@@ -39,28 +37,31 @@ public class BidItemFrontServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        out.print("<h1>");
-        Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            String name = parameterNames.nextElement();
-            out.print(name + " = " + request.getParameter(name) + "<br>");
+        // 獲取servlet path
+        String servletPath = request.getServletPath() + request.getPathInfo();
+        // 裡用路徑來判斷執行哪個方法
+        // 設計思路等同 HttpServlet 裡的 service(Http..)方法
+        if ("/front/biditem/add".equals(servletPath)) {
+            doAdd(request, response);
+        } else if ("/front/biditem/save".equals(servletPath)) {
+            doSave(request,response);
         }
 
-        Collection<Part> parts = request.getParts();
-        for (Part part : parts) {
-            String fileName = part.getSubmittedFileName();
-            if(fileName != null && !fileName.isEmpty() && part.getContentType()!=null) {
-                InputStream inputStream = part.getInputStream();
-                byte[] buffer = new byte[inputStream.available()];
-                inputStream.read(buffer);
-                inputStream.close();
-                out.print(buffer + "<br>");
-            }
-        }
 
-        out.print("</h1>");
+    }
+
+
+    private void doAdd(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException{
+        List<CategoryTags> allCategoryTags = bidItemFrontService.getAllCategoryTags();
+        request.setAttribute("categoryTags",allCategoryTags);
+        request.getRequestDispatcher("/front_end/biditem/addBid.jsp").forward(request,response);
+    }
+
+    private void doSave(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException{
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        System.out.println(parameterMap);
+
     }
 }
