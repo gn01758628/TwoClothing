@@ -1,6 +1,7 @@
 package com.twoclothing.model.aproduct.item;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface ItemDAO {
@@ -18,5 +19,7 @@ public interface ItemDAO {
 	 public List<Item> getAllByItemStatus(Integer itemStatus);
 
 	 public int update(Item item);
+
+	public List<Item> getByCompositeQuery(Map<String, String> map);
 
 }
