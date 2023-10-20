@@ -16,6 +16,7 @@ import com.twoclothing.utils.HibernateUtil;
 
 
 
+
 @Transactional
 public class MembersHibernateDAO implements MembersDAO {
 
@@ -41,29 +42,36 @@ public class MembersHibernateDAO implements MembersDAO {
 		}
 
 //	@Override
-//	public List<Members> getAll() {
-//			return getSession().createQuery("from Members", Members.class).list();
-//	}
-	
 	public List<Members> getAll() {
-		List<Members> list = null;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			Query<Members> query = session.createQuery("from Members", Members.class);
-			list = query.getResultList();
-			session.getTransaction().commit();
-		} catch (RuntimeException ex) {
-			session.getTransaction().rollback();
-			throw ex;
-		}
-		return list;
-	}
+			return getSession().createQuery("from Members", Members.class).list();
+	}				
+	
+//	public List<Members> getAll() {
+//		List<Members> list = null;
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		try {
+//			session.beginTransaction();
+//			Query<Members> query = session.createQuery("from Members", Members.class);
+//			list = query.getResultList();
+//			session.getTransaction().commit();
+//		} catch (RuntimeException ex) {
+//			session.getTransaction().rollback();
+//			throw ex;
+//		}
+//		return list;
+//	}
 
 	@Override
 	public List<Members> getAllByMbrName(String mbrName) {
 			return getSession().createQuery("from Members where mbrname like :mbrname", Members.class)
 					.setParameter("mbrname", "%" + mbrName + "%").list();
+	}
+	
+	
+	@Override
+	public List<Members> getAllByEmail(String email) {
+		return getSession().createQuery("from Members where mbrname like :email", Members.class)
+				.setParameter("email", "%" + email + "%").list();
 	}
 
 	@Override
@@ -107,5 +115,6 @@ public class MembersHibernateDAO implements MembersDAO {
 			return -1;
 		}
 	}
+
 
 }
