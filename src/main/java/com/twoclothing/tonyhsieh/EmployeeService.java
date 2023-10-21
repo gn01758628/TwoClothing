@@ -14,8 +14,9 @@ public interface EmployeeService {
 	
 	List<Employee> getAllEmployees();
 	
-	int addEmployee(Employee employee);
-	
 	int updateEmployee(Employee employee);
+
+	int addEmployee(Integer empId, Integer deptId, String empName, String phone, String address, String email,
+			String pswdHash, Integer empStatus);
 	
 }

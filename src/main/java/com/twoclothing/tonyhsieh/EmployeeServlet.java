@@ -142,33 +142,35 @@ public class EmployeeServlet extends HttpServlet {
 					errorMsgs.put("phone","電話請勿空白");
 				}
 				
-				Double sal = null;
-				try {
-					sal = Double.valueOf(req.getParameter("sal").trim());
-				} catch (NumberFormatException e) {
-					errorMsgs.put("sal","薪水請填數字");
-				}
+//				Double sal = null;
+//				try {
+//					sal = Double.valueOf(req.getParameter("sal").trim());
+//				} catch (NumberFormatException e) {
+//					errorMsgs.put("sal","薪水請填數字");
+//				}
 								
-				Integer deptno = Integer.valueOf(req.getParameter("deptno").trim());
+//				Integer deptno = Integer.valueOf(req.getParameter("deptno").trim());
 
 				// Send the use back to the form, if there were errors
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/emp/update_emp_input.jsp");
-					failureView.forward(req, resp);
-					return; //程式中斷
-				}
-				
-				/***************************2.開始修改資料*****************************************/
-//				EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-//				int employee = employeeServiceImpl.updateEmployee(employee);
+//				if (!errorMsgs.isEmpty()) {
+//					RequestDispatcher failureView = req
+//							.getRequestDispatcher("/front_end/employee/update_emp_input.jsp");
+//					failureView.forward(req, resp);
+//					return; //程式中斷
+//				}
 //				
-//				/***************************3.修改完成,準備轉交(Send the Success view)*************/
-//				req.setAttribute("Employee", employee); // 資料庫update成功後,正確的的empVO物件,存入req
-//				String url = "/emp/listOneEmp.jsp";
-//				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
-//				successView.forward(req, resp);
-//		}
+//				/***************************2.開始修改資料*****************************************/
+//				EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
+//				Employee employee = new 
+//				
+////				int employee = employeeServiceImpl.updateEmployee(employee);
+////				
+////				/***************************3.修改完成,準備轉交(Send the Success view)*************/
+////				req.setAttribute("Employee", employee); // 資料庫update成功後,正確的的empVO物件,存入req
+////				String url = "/front_end/employee/listOneEmp.jsp";
+////				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+////				successView.forward(req, resp);
+////		}
 
 //        if ("insert".equals(action)) { // 來自addEmp.jsp的請求  
 //			
@@ -215,17 +217,17 @@ public class EmployeeServlet extends HttpServlet {
 //				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/emp/addEmp.jsp");
+							.getRequestDispatcher("/front_end/employee/addEmp.jsp");
 					failureView.forward(req, resp);
 					return;
 				}
 				
 				/***************************2.開始新增資料***************************************/
 				EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-//				employeeServiceImpl.;
+				employeeServiceImpl.addEmployee(empid, empid, empnameReg, phone, address, phone, action, empid);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "/emp/listAllEmp.jsp";
+				String url = "/front_end/employee/listAllEmp.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 				successView.forward(req, resp);				
 		}
