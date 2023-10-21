@@ -23,7 +23,7 @@ th, td {
 <body>
 	<h1>這是一位廢*作的網頁 QQ</h1>
 	<h2>員工系統</h2>
-	<a href="${pageContext.request.contextPath}/front_end/employee.do?action=getAll">查詢所有員工</a>
+	<a href="${pageContext.request.contextPath}/front_end/employee/listAllEmps?action=getAll">查詢所有員工</a>
 	<br><br>
 <!-- 	<h3><b>複合查詢 (使用 Criteria Query)：</b></h3> -->
 <%-- 	<form action="${pageContext.request.contextPath}/emp/emp.do" method="post"> --%>

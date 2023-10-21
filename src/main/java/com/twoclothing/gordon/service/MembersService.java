@@ -6,7 +6,7 @@ import com.twoclothing.model.members.Members;
 
 public interface MembersService {
 	
-	Members addMembers(String email, String pswdHash);
+	Members addMembers(String mbrName, String email, String pswdHash);
 	
 	Members addMembers (Members members);
 	
@@ -14,7 +14,11 @@ public interface MembersService {
 	
 	Members getByPrimaryKey(Integer mbrId);
 	
+	Members getByEmail(String email);
+	
 	Members updateMembers (Members members);
+	
+	
 	
 	int getPageTotal();
 }

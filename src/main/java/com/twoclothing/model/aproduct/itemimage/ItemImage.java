@@ -23,14 +23,14 @@ public class ItemImage implements Serializable {
 	private Integer itemId;
 	
 	@Column(name = "image", columnDefinition = "mediumblob")
-	private Byte[] image;
+	private byte[] image;
 	
 	
 	
 	public ItemImage() {
 	}
 
-	public ItemImage(Integer imgId, Integer itemId, Byte[] image) {
+	public ItemImage(Integer imgId, Integer itemId, byte[] image) {
 		this.imgId = imgId;
 		this.itemId = itemId;
 		this.image = image;
@@ -79,11 +79,11 @@ public class ItemImage implements Serializable {
 		this.itemId = itemId;
 	}
 
-	public Byte[] getImage() {
+	public byte[] getImage() {
 		return image;
 	}
 
-	public void setImage(Byte[] image) {
+	public void setImage(byte[] image) {
 		this.image = image;
 	}	
 }

@@ -19,8 +19,9 @@ public class MembersServiceImpl implements MembersService{
 	}
 	
 	
-	public Members addMembers(String email, String pswdHash) {
+	public Members addMembers(String mbrName, String email, String pswdHash) {
 		Members members = new Members();
+		members.setMbrName(mbrName);
 		members.setEmail(email);
 		members.setPswdHash(pswdHash);
 		
@@ -43,7 +44,14 @@ public class MembersServiceImpl implements MembersService{
 	public Members getByPrimaryKey(Integer mbrId) {		
 		return dao.getByPrimaryKey(mbrId);
 	}
-
+	
+	public Members getByEmail(String email) {
+	    List<Members> membersList = dao.getAllByEmail(email);
+	    if (membersList != null && !membersList.isEmpty()) {
+	        return membersList.get(0); // 返回列表中的第一个对象
+	    }
+	    return null; // 或者返回 null，如果没有匹配的对象
+	}
 
 	
 	public Members updateMembers(Integer mbeId, Integer sellScore, Integer buyScore) {
@@ -55,6 +63,7 @@ public class MembersServiceImpl implements MembersService{
 	    }
 	    return members; // 返回已更新的 Members 物件
 	}
+	
 	public int deleteMembers(Integer mbrId) {
 		return dao.delete(mbrId);
 	}
@@ -72,6 +81,9 @@ public class MembersServiceImpl implements MembersService{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+
+
 	
 
 }

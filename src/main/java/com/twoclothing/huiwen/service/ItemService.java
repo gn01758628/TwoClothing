@@ -1,6 +1,7 @@
 package com.twoclothing.huiwen.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.twoclothing.model.aproduct.item.Item;
 
@@ -13,6 +14,8 @@ public interface ItemService {
 	void deleteItem(Integer itemId);
 	
 	Item getItemByItemId(Integer itemId);
+	
+	List<Item> getItemByCompositeQuery(Map<String, String[]> map);
 	
 	List<Item> getAllItems(int page);
 	

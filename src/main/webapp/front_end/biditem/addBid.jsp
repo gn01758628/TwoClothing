@@ -1,67 +1,21 @@
+<%@ page import="com.twoclothing.model.categorytags.CategoryTags" %>
+<%@ page import="java.util.List" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="zh-hant" xmlns="http://www.w3.org/1999/html">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>新增競標商品</title>
     <!--bootstrap5 css-->
-    <link rel="stylesheet" href="/TwoClothing/css/bootstrap5/bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
-    <style>
-
-        ul, ul li {
-            list-style: none;
-        }
-
-        ul {
-            margin-top: 10px;
-        }
-
-        .selectable::before {
-            content: "🌟";
-            padding-right: 5px;
-        }
-
-        .selectable:hover::before, .selectable:hover {
-            content: "🔯";
-            cursor: pointer;
-        }
-
-        .non-selectable::before {
-            content: "🢂";
-            padding-right: 5px;
-            color: #561729;
-        }
-
-        .non-selectable:hover::before, .non-selectable:hover {
-            content: "🢆";
-            padding-right: 0;
-            cursor: not-allowed;
-        }
-
-        .modal-content {
-            background-color: rgb(249, 237, 242);
-            color: #00302e;
-        }
-
-        .fixed-button {
-            position: sticky;
-            bottom: 20px;
-            right: 10px;
-            float: right;
-            z-index: 1000;
-        }
-
-        .text-danger {
-            margin-left: 5px;
-            font-size: 20px;
-        }
-
-    </style>
+    <!--我的css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/addBid.css">
 </head>
 
 <body style="background-color:#fff8fb">
@@ -69,7 +23,8 @@
 <div class="container">
     <div class="row justify-content-center my-5">
         <div class="col-12">
-            <form action="/TwoClothing/servlet/front/biditem" method="post" enctype="multipart/form-data">
+            <form action="${pageContext.request.contextPath}/front/biditem/save" method="post"
+                  enctype="multipart/form-data">
 
                 <div class="mb-4 border p-4 rounded-3" style="background-color:white">
                     <h2 class="mb-4">商品資訊</h2>
@@ -171,7 +126,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="reserverprice" class="form-label">拍賣底價</label>
-                        <input type=            "text" class="form-control money" id="reserverprice" name="reserverPrice"
+                        <input type="text" class="form-control money" id="reserverprice" name="reserverPrice"
                                aria-describedby="reserverpriceHelp">
                         <div id="reserverpriceHelp" class="form-text">
                             如果出價未超過您所設定的底價，競標將在截止時自動流標
@@ -201,106 +156,40 @@
 
                     <div class="mt-3 col-3" id="datePickerContainer" style="display: none;">
                         <input type="date" class="form-control" id="starttime" name="starttime">
-                        <label for="starttime" class="form-label mt-2">可預約刊日期的範圍：<br>今日後的2到10天之間</label>
+                        <label for="starttime"
+                               class="form-label mt-2">可預約刊日期的範圍：<br>今日後的2到10天之間</label>
                     </div>
                 </div>
 
                 <button type="submit" class="btn btn-success btn-lg fixed-button rounded-3">確定提出申請</button>
+
             </form>
         </div>
     </div>
 </div>
 
 <!--bootstrap5 js-->
-<script src="/TwoClothing/js/bootstrap5/popper.min.js"></script>
-<script src="/TwoClothing/js/bootstrap5/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
 <!--jQuery-->
-<script src="/TwoClothing/js/jQuery/jquery-3.7.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
 <!--我的js-->
-<script src="/TwoClothing/js/chengHan/addBid.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/chengHan/addBid.js" type="text/javascript"></script>
 
-<!-- 處理商品類別標籤 -->
+<!--輸入資料結構(必須在引用標籤js檔之前宣告)-->
 <script>
-    $(document).ready(function () {
-        const categorySelect = $("#categorySelect");
-        const selectedCategoryId = $("#selectedCategoryId");
-        const categoryModal = new bootstrap.Modal(document.getElementById("categoryModal"));
-        const categoryTreeContainer = $("#categoryTree");
-        // 點擊或是獲得焦點，打開模態框
-        categorySelect.on("focus click", function () {
-            categoryModal.show();
-        });
-        // 輸入資料結構
-        const categoryData = [
-            {id: 2, name: "類別1", parentId: 1},
-            {id: 3, name: "類別2", parentId: 1},
-            {id: 4, name: "類別3", parentId: 1},
-            {id: 5, name: "子類別1.1", parentId: 2},
-            {id: 6, name: "子類別1.2", parentId: 2},
-            {id: 7, name: "子類別2.1", parentId: 3},
-            {id: 8, name: "子類別2.2", parentId: 3},
-            {id: 9, name: "子類別3.1", parentId: 4},
-            {id: 10, name: "子類別2.2.1", parentId: 8},
-            {id: 11, name: "子類別2.2.1.1", parentId: 10},
-            {id: 12, name: "子類別2.2.1.1.1", parentId: 11},
-            {id: 13, name: "子類別2.2.1.2", parentId: 10},
-            {id: 14, name: "子類別2.2.1.1.1.1", parentId: 12},
-        ];
-
-        // 根據選項的ID,或的完整的路徑
-        function getFullCategoryName(categoryId, data) {
-            const category = data.find((item) => item.id === categoryId);
-            if (category.parentId !== 1) {
-                const parentCategory = getFullCategoryName(category.parentId, data);
-                return `${parentCategory} ➽ ${category.name}`;
-            }
-            return category.name;
-        }
-
-        // 根據輸入的參數,動態生成樹狀結構
-        function buildCategoryTree(data, parentId) {
-            const tree = document.createElement("ul");
-            data.forEach((category) => {
-                if (category.parentId === parentId) {
-                    // 檢查該標籤是否是葉子(不存在子標籤)
-                    const isLeafCategory = !data.some((childCategory) => childCategory.parentId === category.id);
-                    const listItem = document.createElement("li");
-                    // 添加選項的底邊距離
-                    listItem.classList.add("mb-3");
-                    listItem.textContent = category.name;
-                    // 替可選跟不可選的標籤添加class(方便css改變樣式)
-                    if (isLeafCategory) {
-                        listItem.classList.add("selectable");
-                    } else {
-                        listItem.classList.add("non-selectable");
-                    }
-                    // 綁定點擊事件
-                    listItem.addEventListener("click", function () {
-                        // 還有子標籤的標籤不能被選擇
-                        if (isLeafCategory) {
-                            // 隱藏框儲存標籤Id
-                            selectedCategoryId.val(category.id);
-                            // 文本框顯示完整路徑內容
-                            categorySelect.val(getFullCategoryName(category.id, categoryData));
-                            categoryModal.hide();
-                        }
-                    });
-                    const childTree = buildCategoryTree(data, category.id);
-                    if (childTree.childElementCount > 0) {
-                        listItem.appendChild(childTree);
-                    }
-                    tree.appendChild(listItem);
-                }
-            });
-            return tree;
-        }
-
-        // 丟入參數 添加內容
-        const categoryTree = buildCategoryTree(categoryData, 1);
-        categoryTreeContainer.append(categoryTree);
-    });
+    <%
+    List<CategoryTags> list = (List<CategoryTags>) request.getAttribute("categoryTags");
+    pageContext.setAttribute("list",list);
+    %>
+    const categoryData = [
+        <c:forEach var="tags" items="${list}" begin="1">
+        {id:${tags.tagId},name:'${tags.categoryName}',parentId:${tags.superTagId}},
+        </c:forEach>
+    ];
 </script>
 
+<!--商品類別標籤的js-->
+<script src="${pageContext.request.contextPath}/js/chengHan/addBidCategoryTags.js"></script>
 </body>
-
 </html>

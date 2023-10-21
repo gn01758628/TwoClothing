@@ -1,6 +1,9 @@
 package com.twoclothing.huiwen.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.aproduct.item.ItemDAO;
@@ -64,6 +67,35 @@ public class ItemServiceImpl implements ItemService{
 	public int getPageTotal() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+
+
+	@Override
+	public List<Item> getItemByCompositeQuery(Map<String, String[]> map) {
+		Map<String, String> query = new HashMap<>();
+		// Map.Entry即代表一組key-value
+		Set<Map.Entry<String, String[]>> entry = map.entrySet();
+		
+		for (Map.Entry<String, String[]> row : entry) {
+			String key = row.getKey();
+			// 因為請求參數裡包含了action，做個去除動作
+			if ("action".equals(key)) {
+				continue;
+			}
+			// 若是value為空即代表沒有查詢條件，做個去除動作
+			String value = row.getValue()[0];
+			if ( value == null || value.isEmpty()) {
+				continue;
+			}
+			query.put(key, value);
+		}
+		
+		System.out.println("query :" + query);
+		
+		return dao.getByCompositeQuery(query);
+
+
 	}
 
 }

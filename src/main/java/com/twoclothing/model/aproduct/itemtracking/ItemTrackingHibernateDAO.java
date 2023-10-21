@@ -1,5 +1,6 @@
 package com.twoclothing.model.aproduct.itemtracking;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -17,8 +18,8 @@ public class ItemTrackingHibernateDAO implements ItemTrackingDAO {
 	}
 
 	@Override
-	public int insert(ItemTracking itemTracking) {
-		return (Integer) getSession().save(itemTracking);
+	public Serializable insert(ItemTracking itemTracking) {
+		return (Serializable) getSession().save(itemTracking);
 	}
 
 	@Override
@@ -33,15 +34,22 @@ public class ItemTrackingHibernateDAO implements ItemTrackingDAO {
 	}
 
 	@Override
-	public List<ItemTracking> getAllByItemId(Integer itemId) {
-		return getSession().createQuery("from ItemTracking where itemId = :itemId", ItemTracking.class)
-				.setParameter("itemId", itemId).list();
+	public List<ItemTracking> getAll(int currentPage) {
+		int first = (currentPage - 1) * 10;
+		return getSession().createQuery("from ItemTracking", ItemTracking.class).setFirstResult(first).setMaxResults(10)
+				.list();
 	}
 
 	@Override
-	public List<ItemTracking> getAllByMbrId(Integer mbrId) {
+	public long getTotal() {
+		return getSession().createQuery("select count(*) from ItemTracking", Long.class).uniqueResult();
+	}
+
+	@Override
+	public List<ItemTracking> getAllByMbrId(Integer mbrId, int currentPage) {
+		int first = (currentPage - 1) * 10;
 		return getSession().createQuery("from ItemTracking where mbrId = :mbrId", ItemTracking.class)
-				.setParameter("mbrId", mbrId).list();
+				.setParameter("mbrId", mbrId).setFirstResult(first).setMaxResults(10).list();
 	}
 
 	@Override
