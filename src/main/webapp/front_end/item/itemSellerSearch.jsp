@@ -12,6 +12,8 @@
 </head>
 <body>
     <h1>商品查詢</h1>
+    <a href="${pageContext.request.contextPath}/Item/searchAll?action=getAll">查詢所有員工</a>
+    <br>
 
     <form class="form_search" method="post" action="/TwoClothing/Item/search">
         <label>商品名稱</label>
@@ -29,6 +31,8 @@
 
         <input type="hidden" name="action" value="search">
         <input type="submit" value="查詢">
+            <a href="${pageContext.request.contextPath}/front_end/item/itemSellerUpload.jsp">回首頁</a>
+        
     </form>
 
 

@@ -56,6 +56,9 @@
 <input type="hidden" name="action" value="insert">
 <input type="submit" value="送出新增">
 </form>	
+
+    <a href="${pageContext.request.contextPath}/Item/searchAll?action=SearchItems">查詢</a>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
 </body>
 </html>
