@@ -1,4 +1,4 @@
-package com.twoclothing.utils.test.generic;
+package com.twoclothing.utils.generic;
 
 import java.util.Map;
 
@@ -27,7 +27,6 @@ public class GenericService {
 
 	public static GenericService getInstance() {
 		return instance;
-
 	}
 
 	// ========================= insert =========================
@@ -45,17 +44,23 @@ public class GenericService {
 	}
 
 	// ========================= delete =========================
-	
-	public <T> int delete(Class<T> type,Serializable id) {
+
+	public <T> int delete(Class<T> type, Serializable id) {
 		GenerciHibernateDAOImpl dao = DAOSelector.getDAO(type);
 		return dao.delete(id);
 	}
-	
-	// ========================= query  =========================
 
+	// ========================= query =========================
+
+	// 查詢By PK
 	public <T> T getByPK(Class<T> type, Serializable Id) {
 		GenerciHibernateDAOImpl dao = DAOSelector.getDAO(type);
 		return (T) dao.getByPK(Id);
+	}
+
+	public <T> List<T> getBy(Class<T> type,String fieldName, Serializable value) {
+		GenerciHibernateDAOImpl dao = DAOSelector.getDAO(type);
+		return dao.getBy(fieldName, value);
 	}
 
 	// 查詢全部 OrderBy PK
@@ -76,6 +81,10 @@ public class GenericService {
 		return dao.getByQueryConditions(conditionList);
 	}
 
-	
+	// 取得資料總筆數
+	public <T> long getTotal(Class<T> type) {
+		GenerciHibernateDAOImpl dao = DAOSelector.getDAO(type);
+		return dao.getTotal();
+	}
 
 }

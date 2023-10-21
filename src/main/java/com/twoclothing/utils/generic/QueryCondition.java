@@ -1,4 +1,4 @@
-package com.twoclothing.utils.test.generic;
+package com.twoclothing.utils.generic;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
