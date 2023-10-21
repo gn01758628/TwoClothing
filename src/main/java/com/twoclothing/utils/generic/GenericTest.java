@@ -1,3 +1,4 @@
+package com.twoclothing.utils.generic;
 //package com.twoclothing.utils.test.generic;
 //
 //引用的JavaAPI

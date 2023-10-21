@@ -1,7 +1,9 @@
-<%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="com.twoclothing.model.categorytags.CategoryTags" %>
+<%@ page import="java.util.List" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="zh-hant" xmlns="http://www.w3.org/1999/html">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,57 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
     <!--我的css-->
-    <style>
-
-        ul, ul li {
-            list-style: none;
-        }
-
-        ul {
-            margin-top: 10px;
-        }
-
-        .selectable::before {
-            content: "🌟";
-            padding-right: 5px;
-        }
-
-        .selectable:hover::before, .selectable:hover {
-            content: "🔯";
-            cursor: pointer;
-        }
-
-        .non-selectable::before {
-            content: "🢂";
-            padding-right: 5px;
-            color: #561729;
-        }
-
-        .non-selectable:hover::before, .non-selectable:hover {
-            content: "🢆";
-            padding-right: 0;
-            cursor: not-allowed;
-        }
-
-        .modal-content {
-            background-color: rgb(249, 237, 242);
-            color: #00302e;
-        }
-
-        .fixed-button {
-            position: sticky;
-            bottom: 20px;
-            right: 10px;
-            float: right;
-            z-index: 1000;
-        }
-
-        .text-danger {
-            margin-left: 5px;
-            font-size: 20px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/addBid.css">
 </head>
 
 <body style="background-color:#fff8fb">
@@ -71,7 +23,7 @@
 <div class="container">
     <div class="row justify-content-center my-5">
         <div class="col-12">
-            <form action="${pageContext.request.contextPath}/servlet/front/biditem" method="post"
+            <form action="${pageContext.request.contextPath}/front/biditem/save" method="post"
                   enctype="multipart/form-data">
 
                 <div class="mb-4 border p-4 rounded-3" style="background-color:white">
@@ -210,6 +162,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-success btn-lg fixed-button rounded-3">確定提出申請</button>
+
             </form>
         </div>
     </div>
@@ -225,21 +178,14 @@
 
 <!--輸入資料結構(必須在引用標籤js檔之前宣告)-->
 <script>
+    <%
+    List<CategoryTags> list = (List<CategoryTags>) request.getAttribute("categoryTags");
+    pageContext.setAttribute("list",list);
+    %>
     const categoryData = [
-        {id: 2, name: "類別1", parentId: 1},
-        {id: 3, name: "類別2", parentId: 1},
-        {id: 4, name: "類別3", parentId: 1},
-        {id: 5, name: "子類別1.1", parentId: 2},
-        {id: 6, name: "子類別2.1", parentId: 3},
-        {id: 7, name: "子類別3.1", parentId: 4},
-        {id: 8, name: "子類別1.1.1", parentId: 5},
-        {id: 9, name: "子類別1.1.2", parentId: 5},
-        {id: 10, name: "子類別2.1.1", parentId: 6},
-        {id: 11, name: "子類別3.1.1", parentId: 7},
-        {id: 12, name: "子類別1.1.2.1", parentId: 9},
-        {id: 13, name: "子類別2.1.1.1", parentId: 10},
-        {id: 14, name: "子類別2.1.1.2", parentId: 10},
-        {id: 15, name: "子類別1.2", parentId: 2},
+        <c:forEach var="tags" items="${list}" begin="1">
+        {id:${tags.tagId},name:'${tags.categoryName}',parentId:${tags.superTagId}},
+        </c:forEach>
     ];
 </script>
 

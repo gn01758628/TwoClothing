@@ -1,4 +1,4 @@
-package com.twoclothing.utils.test.generic;
+package com.twoclothing.utils.generic;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,7 +18,7 @@ import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
 
-public class GenerciHibernateDAOImpl<T> implements  GenericDAO<T>{
+public class GenerciHibernateDAOImpl<T> implements GenericDAO<T> {
 	private final Class<T> type;
 	private final String className;
 	private final Field[] fields;
@@ -26,18 +26,13 @@ public class GenerciHibernateDAOImpl<T> implements  GenericDAO<T>{
 	private final Map<String, Class<?>> fieldMap = new HashMap<>();
 	private final Map<String, String> PKMap = new LinkedHashMap<>();
 
-	private final SessionFactory factory;
-
 	public GenerciHibernateDAOImpl(Class<T> type) {
 		this.type = type;
 		this.className = type.getSimpleName();
 		fields = type.getDeclaredFields();
 		initializeFieldMap();
 		this.tableName = initializeTableName();
-		this.factory = HibernateUtil.getSessionFactory();
 
-
-		// TODO Auto-generated constructor stub
 	}
 
 	public GenerciHibernateDAOImpl(Class<T> type, SessionFactory factory) {
@@ -46,7 +41,7 @@ public class GenerciHibernateDAOImpl<T> implements  GenericDAO<T>{
 		fields = type.getDeclaredFields();
 		initializeFieldMap();
 		this.tableName = initializeTableName();
-		this.factory = factory;
+
 	}
 
 	private void initializeFieldMap() {
@@ -94,31 +89,28 @@ public class GenerciHibernateDAOImpl<T> implements  GenericDAO<T>{
 
 	// session執行序不安全,由各方法內部調用
 	private Session getSession() {
-		return factory.getCurrentSession();
+		return HibernateUtil.getSessionFactory().getCurrentSession();
 	}
-	
-	//========================= insert =========================
-	
+
+	// ========================= insert =========================
+	@Override
 	public Serializable insert(T entity) {
-		System.out.println("資料新增成功");
 		return getSession().save(entity);
 	}
-	
-	//========================= update =========================
-	
+
+	// ========================= update =========================
+	@Override
 	public boolean update(T entity) {
 		try {
 			getSession().update(entity);
-			System.out.println("資料更新成功");
 			return true;
 		} catch (Exception e) {
-			System.out.println("資料更新失敗");
 			return false;
 		}
 	}
-	
-	//========================= delete =========================
-	
+
+	// ========================= delete =========================
+	@Override
 	public int delete(Serializable id) {
 		T entity = getSession().get(type, id);
 		if (entity != null) {
@@ -128,14 +120,37 @@ public class GenerciHibernateDAOImpl<T> implements  GenericDAO<T>{
 			return -1;
 		}
 	}
-	
-	//========================= query  =========================
-	
-	//查詢By PK
+
+	// ========================= query =========================
+
+	// 查詢By PK
+	@Override
 	public T getByPK(Serializable id) {
 		return getSession().get(type, id);
 	}
-	//查詢全部 OrderBy PK
+	
+	// 查詢By 欄位,值
+	@Override
+	public List<T> getBy(String fieldName,Serializable value){
+		Class<?> fieldType = fieldMap.get(fieldName);
+		String hql;
+		
+		if (fieldType != null && fieldType.isAssignableFrom(String.class)) {
+		    // 如果 fieldType 是 String 或者 String 的子類
+			hql = "from "+className+" where "+fieldName+" like :"+fieldName;
+		} else {
+		    // 如果 fieldType 不是 String 或者為 null
+			hql = "from "+className+" where "+fieldName+" = :"+fieldName;
+		}
+		System.out.println(hql);
+		
+		Query query = getSession().createQuery(hql);
+		query.setParameter(fieldName,value);
+		return query.getResultList();
+	}
+	
+	// 查詢全部 OrderBy PK
+	@Override
 	public List<T> getAll() {
 		String orderBy;
 		Map<String, String> orderByMap = new LinkedHashMap<>();
@@ -149,7 +164,9 @@ public class GenerciHibernateDAOImpl<T> implements  GenericDAO<T>{
 		orderBy = buildOrderBy(orderByMap);
 		return getSession().createQuery("from " + className + orderBy, type).list();
 	}
-	//查詢全部 OrderBy PK desc
+
+	// 查詢全部 OrderBy PK desc
+	@Override
 	public List<T> getAllDescByPK() {
 		String orderBy;
 		Map<String, String> orderByMap = new LinkedHashMap<>();
@@ -163,8 +180,9 @@ public class GenerciHibernateDAOImpl<T> implements  GenericDAO<T>{
 		orderBy = buildOrderBy(orderByMap);
 		return getSession().createQuery("from " + className + orderBy, type).list();
 	}
-	
-	//複合查詢
+
+	// 複合查詢
+	@Override
 	public List<T> getByQueryConditions(List<Map<String, Object>> conditionList) {
 		Session session = getSession();
 		CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -182,7 +200,6 @@ public class GenerciHibernateDAOImpl<T> implements  GenericDAO<T>{
 			// 根據fieldName、operator和value生成Predicate
 			Predicate predicate = buildPredicate(fieldName, operator, value, builder, root);
 
-
 			// 判斷邏輯運算符(AND OR)
 			if (finalPredicate == null) {
 				finalPredicate = predicate;
@@ -197,7 +214,7 @@ public class GenerciHibernateDAOImpl<T> implements  GenericDAO<T>{
 				}
 			}
 		}
-		
+
 		// 將最終的Predicate應用到查詢
 		if (finalPredicate != null) {
 			criteria.where(finalPredicate);
@@ -209,14 +226,12 @@ public class GenerciHibernateDAOImpl<T> implements  GenericDAO<T>{
 		return resultList;
 	}
 	
-	
+	//取得資料總筆數
+	@Override
+	public long getTotal() {
+		return getSession().createQuery("select count(*) from " + className, Long.class).uniqueResult();
+	}
 
-	
-	
-	
-	
-	
-	
 //================================以下是非公開方法================================
 	private String buildOrderBy(Map<String, String> orderFields) {
 		if (orderFields == null || orderFields.isEmpty()) {
@@ -241,11 +256,11 @@ public class GenerciHibernateDAOImpl<T> implements  GenericDAO<T>{
 			Root<T> root) {
 		switch (operator.toLowerCase()) {
 		case "like":
-            String stringValue = value.toString();
-            if (!stringValue.contains("%")) {
-                stringValue = "%" + stringValue + "%";
-            }
-            return builder.like(root.get(fieldName), stringValue);
+			String stringValue = value.toString();
+			if (!stringValue.contains("%")) {
+				stringValue = "%" + stringValue + "%";
+			}
+			return builder.like(root.get(fieldName), stringValue);
 
 		case "=":
 			return builder.equal(root.get(fieldName), value);

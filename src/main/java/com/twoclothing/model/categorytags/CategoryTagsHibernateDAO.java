@@ -31,7 +31,7 @@ public class CategoryTagsHibernateDAO implements CategoryTagsDAO {
 
     @Override
     public List<CategoryTags> getAll() {
-        return getSession().createQuery("from CategoryTags order by tagId desc ", CategoryTags.class).list();
+        return getSession().createQuery("from CategoryTags order by tagId", CategoryTags.class).list();
     }
 
     @Override
