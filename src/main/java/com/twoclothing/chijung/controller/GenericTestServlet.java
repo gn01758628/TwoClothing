@@ -17,11 +17,7 @@ import com.twoclothing.model.abid.biditembrowsing.BidItemBrowsing.CompositeDrtai
 import com.twoclothing.model.employee.Employee;
 import com.twoclothing.model.permissions.Permissions;
 import com.twoclothing.utils.HibernateUtil;
-import com.twoclothing.utils.test.generic.DAOSelector;
-import com.twoclothing.utils.test.generic.GenerciHibernateDAOImpl;
-import com.twoclothing.utils.test.generic.GenericDAO;
-import com.twoclothing.utils.test.generic.GenericService;
-import com.twoclothing.utils.test.generic.QueryCondition;
+import com.twoclothing.utils.generic.*;
 
 // @MultipartConfig
 //  fileSizeThreshold = 檔案小於這個值,檔案寫入內存,提高效率
@@ -32,7 +28,7 @@ import com.twoclothing.utils.test.generic.QueryCondition;
 
 @WebServlet("/servlet/front/generic/*")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
-public class TestServlet extends HttpServlet {
+public class GenericTestServlet extends HttpServlet {
 
 	GenericService gs = GenericService.getInstance();
 	
@@ -94,7 +90,16 @@ public class TestServlet extends HttpServlet {
 		for (Employee enetity : list3) {
 			System.out.println(enetity);
 		}
+		// query5 查詢資料總筆數
+		System.out.println(gs.getTotal(Employee.class));
+		// query6 依單一條件查詢
+		List<Employee> list4 = new ArrayList<>();
+		list4 = gs.getBy(Employee.class, "deptId", 2);
+		for (Employee enetity : list4) {
+			System.out.println(enetity);
+		}
+		//新增判斷是否關聯到資料庫 如果沒有就在console印出XXX類別沒有關聯資料庫不予受理
+		GenericDAO dao1 = DAOSelector.getDAO(String.class);
 		
-
 	}
 }

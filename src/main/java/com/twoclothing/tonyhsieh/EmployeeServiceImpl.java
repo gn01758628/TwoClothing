@@ -3,6 +3,7 @@ package com.twoclothing.tonyhsieh;
 
 import java.util.List;
 
+import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.employee.Employee;
 import com.twoclothing.model.employee.EmployeeDAO;
 import com.twoclothing.model.employee.EmployeeHibernateDAO;
@@ -16,11 +17,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeDAO = new EmployeeHibernateDAO(HibernateUtil.getSessionFactory());
 	}
 
+	
 	@Override
-	public void deleteEmployee(Integer empId) {
+	public int deleteEmployee(Integer empId) {
 		// TODO Auto-generated method stub
-		
+		Employee emp = employeeDAO.getEmployeeById(empId);
+		if (emp != null) {
+			employeeDAO.deleteEmployee(empId);
+			// 回傳給 service，1代表刪除成功
+			return 1;
+		} else {
+			// 回傳給 service，-1代表刪除失敗
+			return -1;
+		}
 	}
+
+
+
+
 
 	@Override
 	public Employee getEmployeeById(Integer empId) {
@@ -29,19 +43,41 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public List<Employee> getAllEmployees(int currentPage) {
+	public List<Employee> getAllEmployees() {
 		// TODO Auto-generated method stub
-		return null;
+		return employeeDAO.getAllEmployees() ;
 	}
 
 	@Override
-	public int getPageTotal() {
+	public int addEmployee(Integer empId,Integer deptId,String empName,String phone,String address,String email,String pswdHash, Integer empStatus) {
 		// TODO Auto-generated method stub
-		long total = employeeDAO.getTotal();
-		// 計算Emp數量每頁3筆的話總共有幾頁
-		int pageQty = (int)(total % 4 == 0 ? (total / 4) : (total / 4 + 1));
-		return pageQty;
+		
+		Employee employee = new Employee();		
+		employee.setEmpId(empId);
+		employee.setDeptId(deptId);
+		employee.setEmpName(empName);
+		employee.setPhone(phone);
+		employee.setAddress(address);
+		employee.setEmail(email);
+		employee.setPswdHash(pswdHash);
+		employee.setEmpStatus(empStatus);
+//		employee.setAvatar(null);
+		employeeDAO.addEmployee(employee);
+	
+		return employeeDAO.addEmployee(employee);
+	
 	}
+
+	
+	
+	
+	@Override
+	public	int updateEmployee(Employee employee) {
+		// TODO Auto-generated method stub
+		return employeeDAO.updateEmployee(employee);
+	}
+
+	
 
 	
 	

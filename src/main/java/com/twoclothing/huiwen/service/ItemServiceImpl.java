@@ -1,5 +1,22 @@
 package com.twoclothing.huiwen.service;
 
+import static com.twoclothing.huiwen.Constants.ITEM_PAGE_MAX_RESULT;
+
+import java.math.BigDecimal;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,21 +75,29 @@ public class ItemServiceImpl implements ItemService{
 	}
 
 	@Override
-	public List<Item> getAllItems(int page) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Item> getAllItems() {
+		List<Item> list = dao.getAll();
+		System.out.println("service");
+		return list;
 	}
 
+	@Override
+	public List<Item> getAllItems(int page) {
+		List<Item> list = dao.getAll();
+		return list;
+	}
 	@Override
 	public int getPageTotal() {
-		// TODO Auto-generated method stub
-		return 0;
+		long total = dao.getTotal();
+		//計算5筆為一頁的話共有幾頁
+		int pageQty = (int)(total % ITEM_PAGE_MAX_RESULT == 0 ? (total / ITEM_PAGE_MAX_RESULT) : (total / ITEM_PAGE_MAX_RESULT + 1));
+		return pageQty;
 	}
 
 
 
 	@Override
-	public List<Item> getItemByCompositeQuery(Map<String, String[]> map) {
+	public List<Item> getItemByCompositeQuery(Map<String, String[]> map, int pageNow) {
 		Map<String, String> query = new HashMap<>();
 		// Map.Entry即代表一組key-value
 		Set<Map.Entry<String, String[]>> entry = map.entrySet();
@@ -86,6 +111,7 @@ public class ItemServiceImpl implements ItemService{
 			// 若是value為空即代表沒有查詢條件，做個去除動作
 			String value = row.getValue()[0];
 			if ( value == null || value.isEmpty()) {
+				System.out.println("Value是空的");
 				continue;
 			}
 			query.put(key, value);
@@ -93,9 +119,12 @@ public class ItemServiceImpl implements ItemService{
 		
 		System.out.println("query :" + query);
 		
-		return dao.getByCompositeQuery(query);
+		return dao.getByCompositeQuery(query, pageNow);
 
 
 	}
+
+
+
 
 }

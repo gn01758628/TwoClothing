@@ -1,7 +1,8 @@
 package com.twoclothing.model.aproduct.item;
 
-import java.math.BigDecimal;
+import static com.twoclothing.huiwen.Constants.ITEM_PAGE_MAX_RESULT;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +40,14 @@ public class ItemHibernateDAO implements ItemDAO {
 	}
 
 	@Override
-	public List<Item> getAll() {		
-		return getSession().createQuery("from Item", Item.class).list();			
+	public List<Item> getAll(int page) {
+		int first = (page - 1) * ITEM_PAGE_MAX_RESULT;
+		System.out.println("拿到頁數");
+		return getSession().createQuery("from Item", Item.class)
+				.setFirstResult(first)
+				.setMaxResults(ITEM_PAGE_MAX_RESULT)
+				.list();
+//		return null;
 	}
 
 	@Override
@@ -79,11 +86,12 @@ public class ItemHibernateDAO implements ItemDAO {
 	}
 
 	@Override
-	public List<Item> getByCompositeQuery(Map<String, String> map) {
-		if(map.size()==0) {
-			return getAll();
-		}
-		
+	public List<Item> getByCompositeQuery(Map<String, String> map, int pageNow) {
+
+//		if(map.size()==0) { 
+//			System.out.println("map:沒資料"+map);
+//		}	
+
 
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
 		CriteriaQuery<Item> criteria = builder.createQuery(Item.class);
@@ -92,27 +100,44 @@ public class ItemHibernateDAO implements ItemDAO {
 		List<Predicate> predicates = new ArrayList<>();
 		
 		if (map.containsKey("itemPriceSearchStart") && map.containsKey("itemPriceSearchEnd"))
-			predicates.add(builder.between(root.get("price"), new BigDecimal(map.get("itemPriceSearchStart")), new BigDecimal(map.get("endsal"))));
-
-		
+			predicates.add(builder.between(root.get("price"), new BigDecimal(map.get("itemPriceSearchStart")), new BigDecimal(map.get("itemPriceSearchEnd"))));
+	
 		for (Map.Entry<String, String> row : map.entrySet()) {
 
 			if("itemNameSearch".equals(row.getKey())){
 				predicates.add(builder.like(root.get("itemName"), "%" + row.getValue() + "%"));
 			}
-			if("itemPriceSearchStart".equals(row.getKey())){
-				predicates.add(builder.greaterThanOrEqualTo(root.get("price"), new BigDecimal(row.getValue())));
+			if("itemPriceSearchStart".equals(row.getKey())) {
+				if(!map.containsKey("itemPriceSearchEnd"))
+					predicates.add(builder.greaterThanOrEqualTo(root.get("price"), new BigDecimal(row.getValue())));
 			}
-			if("itemPriceSearchEnd".equals(row.getKey())){
-				predicates.add(builder.greaterThanOrEqualTo(root.get("price"), new BigDecimal(row.getValue())));
+			if("itemPriceSearchEnd".equals(row.getKey())) {
+				if(!map.containsKey("itemPriceSearchEnd"))
+					predicates.add(builder.greaterThanOrEqualTo(root.get("price"), new BigDecimal(row.getValue())));
 			}
-			
 		}
 		
 		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
 		criteria.orderBy(builder.asc(root.get("itemId")));
 		TypedQuery<Item> query = getSession().createQuery(criteria);
-
-		return query.getResultList();
+		System.out.println("!!!pageNow:"+pageNow);
+		int first = (pageNow - 1) * ITEM_PAGE_MAX_RESULT;
+		
+		
+		System.out.println("return query");
+		return query.setFirstResult(first).setMaxResults(ITEM_PAGE_MAX_RESULT).getResultList();
+		 
 	}
+
+	@Override
+	public List<Item> getAll() {
+		System.out.println("dao.getAll");
+		return getSession().createQuery("from Item", Item.class).list();
+	}
+
+	@Override
+	public long getTotal() {
+		return getSession().createQuery("select count(*) from Item", Long.class).uniqueResult();
+	}
+
 }

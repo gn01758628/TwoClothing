@@ -1,4 +1,4 @@
-package com.twoclothing.utils.test.generic;
+package com.twoclothing.utils.generic;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,9 +14,13 @@ public interface GenericDAO<T> {
 	
 	public T getByPK(Serializable Id);
 	
+	public List<T> getBy(String fieldName,Serializable value);
+	
 	public List<T> getAll();
 	
 	public List<T> getAllDescByPK();
 	
 	public List<T> getByQueryConditions(List<Map<String, Object>> conditionList);
+	
+	public long getTotal();
 }

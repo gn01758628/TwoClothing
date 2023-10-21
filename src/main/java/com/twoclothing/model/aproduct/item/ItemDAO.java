@@ -11,6 +11,8 @@ public interface ItemDAO {
 	 public Item getByPrimaryKey(Integer itemId);
 
 	 public List<Item> getAll();
+	 
+	 public List<Item> getAll(int page);
 
 	 public List<Item> getAllByTagId(Integer tagId);
 
@@ -20,6 +22,7 @@ public interface ItemDAO {
 
 	 public int update(Item item);
 
-	public List<Item> getByCompositeQuery(Map<String, String> map);
+	 public List<Item> getByCompositeQuery(Map<String, String> map, int page);
 
+	 public long getTotal();
 }
