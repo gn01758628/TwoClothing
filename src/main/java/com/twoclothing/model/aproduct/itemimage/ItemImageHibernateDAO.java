@@ -1,13 +1,13 @@
 package com.twoclothing.model.aproduct.itemimage;
 
-import java.util.List;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.util.List;
+
 public class ItemImageHibernateDAO implements ItemImageDAO{
 	
-	private SessionFactory factory;
+	private final SessionFactory factory;
 
 	public ItemImageHibernateDAO(SessionFactory factory) {
 		this.factory = factory;
@@ -26,6 +26,15 @@ public class ItemImageHibernateDAO implements ItemImageDAO{
 	@Override
 	public ItemImage getByPrimaryKey(Integer imgId) {
 		 return getSession().get(ItemImage.class, imgId);
+	}
+
+	@Override
+	public ItemImage getPositionImageByItemId(Integer itemId, int position) {
+		return getSession().createQuery("from ItemImage where itemId = :itemId order by itemId", ItemImage.class)
+				.setParameter("itemId",itemId)
+				.setFirstResult(position - 1)
+				.setMaxResults(1)
+				.uniqueResult();
 	}
 
 	@Override

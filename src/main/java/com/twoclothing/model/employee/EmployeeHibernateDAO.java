@@ -2,11 +2,16 @@ package com.twoclothing.model.employee;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
+import com.twoclothing.model.members.Members;
 import com.twoclothing.utils.HibernateUtil;
 
+@Transactional
 public class EmployeeHibernateDAO implements EmployeeDAO{
 
 	private SessionFactory factory;
@@ -28,6 +33,19 @@ public class EmployeeHibernateDAO implements EmployeeDAO{
 	public List<Employee> getAllEmployees() {
 		// TODO Auto-generated method stub
 		return getSession().createQuery("from Employee", Employee.class).list();
+//		List<Employee> list = null;
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		try {
+//			session.beginTransaction();
+//			Query<Employee> query = session.createQuery("from Employee", Employee.class);
+//			list = query.getResultList();
+//			session.getTransaction().commit();
+//		} catch (RuntimeException ex) {
+//			session.getTransaction().rollback();
+//			throw ex;
+//		}
+//		return list;
+//		
 			}
 	@Override
 	public int addEmployee(Employee employee) {

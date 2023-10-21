@@ -14,6 +14,8 @@ public interface MembersDAO {
     List<Members> getAll();
 
     List<Members> getAllByMbrName(String mbrName);
+    
+    List<Members> getAllByEmail(String email);
 
     List<Members> getAllByMbrStatus(Integer mbrStatus);
 

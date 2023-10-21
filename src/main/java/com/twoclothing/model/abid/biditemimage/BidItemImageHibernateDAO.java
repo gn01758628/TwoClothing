@@ -30,6 +30,15 @@ public class BidItemImageHibernateDAO implements BidItemImageDAO {
     }
 
     @Override
+    public BidItemImage getPositionImageByBidItemId(Integer bidItemId, int position) {
+        return getSession().createQuery("from BidItemImage where bidItemId = :bidItemId order by imageId", BidItemImage.class)
+                .setParameter("bidItemId",bidItemId)
+                .setFirstResult(position - 1)
+                .setMaxResults(1)
+                .uniqueResult();
+    }
+
+    @Override
     public List<BidItemImage> getAllByBidItemId(Integer bidItemId) {
         return getSession().createQuery("from BidItemImage where bidItemId = :bidItemId order by imageId", BidItemImage.class)
                 .setParameter("bidItemId", bidItemId)
