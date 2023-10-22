@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.twoclothing.model.employee.Employee;
 
 @WebServlet("/front_end/employee/Employee.do")
+@MultipartConfig
 public class EmployeeServlet extends HttpServlet {
 	private EmployeeService employeeService;
 
@@ -105,7 +107,8 @@ public class EmployeeServlet extends HttpServlet {
 						       "&phone="+employee.getPhone()+
 						       "&empName="    +employee.getEmpName()+
 						       "&deptId="   +employee.getDeptId()+
-						       "&empStatus=" +employee.getEmpStatus();
+						       "&empStatus=" +employee.getEmpStatus()+
+								"&avatar=" +employee.getAvatar();
 				String url = "update_emp_input.jsp"+param;
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
 				successView.forward(req, resp);
