@@ -1,6 +1,8 @@
 package com.twoclothing.gordon.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -10,7 +12,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 import com.twoclothing.gordon.service.MembersServiceImpl;
 import com.twoclothing.model.members.Members;
 
@@ -247,7 +251,7 @@ public class MembersServlet extends HttpServlet {
 			} else if(!pswdHash.trim().matches(pswdHashReg)) { //以下練習正則(規)表示式(regular-expression)
 				errorMsgs.put("pswdHash","包含至少一个小写字母、一个大写字母和一个数字");
             }
-			System.out.println(pswdHash);
+			
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/front_end/members/registerLogin.jsp");
@@ -258,7 +262,7 @@ public class MembersServlet extends HttpServlet {
 			/***************************2.開始新增資料***************************************/
 			MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 			membersServiceImpl.addMembers(mbrName, email,pswdHash);
-		
+	
 			/***************************3.修改完成,準備轉交(Send the Success view)*************/
 			String url = "/front_end/members/registerLogin.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
@@ -270,12 +274,112 @@ public class MembersServlet extends HttpServlet {
 			/***********************登入*************************/
 			/***********************登入*************************/
 			/***********************登入*************************/
-			if("login".equals(action)) {
-				
-				Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
-				req.setAttribute("errorMsgs", errorMsgs);
-				
+//			if("login".equals(action)) {
+//				
+//				Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+//				req.setAttribute("errorMsgs", errorMsgs);
+//					
+//				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
+//				String email = req.getParameter("email2");
+//				String pswdHash = req.getParameter("pswdHash2");
+//				String contextPath = req.getContextPath();
+//			
+//				
+//				MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
+//				Members members = membersServiceImpl.getByEmail(email);
+//				 System.out.println("+++++++++++++++++");
+//				System.out.println("Members details: " + members);
+//				 System.out.println("+++++++++++++++++");
+//
+//				  if (members != null) {
+//				        String storedPswdHash = members.getPswdHash(); // 假設密碼儲存在member對象的password字段中
+//				        System.out.println("===============");
+//				        System.out.println(storedPswdHash);
+//				        System.out.println("==============");
+//				        System.out.println(storedPswdHash.equals(pswdHash));
+//				        
+//				        
+//				        System.out.println("==============");
+//				        if (storedPswdHash.equals(pswdHash)) {
+//				            // 密碼匹配，執行登入操作
+//				            // 例如，將用戶信息存儲在Session中
+//				            HttpSession session = req.getSession();
+//				            session.setAttribute("user", members);
+//				            // 重定向到登入成功的頁面
+//				            res.sendRedirect(contextPath + "/index.jsp");
+//				        } else {
+//				            // 密碼不匹配，顯示錯誤消息
+//				        	errorMsgs.put("error", "密碼不正確");
+//				        }
+//				    } else {
+//				        // 未找到用戶記錄，顯示錯誤消息
+//				    	errorMsgs.put("error", "用戶不存在");
+//				    }
+//				  
+//					if (!errorMsgs.isEmpty()) {
+//						RequestDispatcher failureView = req
+//								.getRequestDispatcher("/front_end/members/registerLogin.jsp");
+//						failureView.forward(req, res);
+//						return;
+//					}
+//				   
+//			}
+			if ("login".equals(action)) {
+			    Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
+			    req.setAttribute("errorMsgs", errorMsgs);
+			    
+
+			    /***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
+			    String email = req.getParameter("email2");
+			    String pswdHash = req.getParameter("pswdHash2");
+			    String contextPath = req.getContextPath();
+			    //==ajax
+			    Map<String, Object> response = new HashMap<>();
+			    PrintWriter out = res.getWriter();
+			    res.setContentType("application/json");
+			    res.setCharacterEncoding("UTF-8");
+			    //==ajax
+			    MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
+			    Members members = membersServiceImpl.getByEmail(email);
+
+			    if (members != null) {
+			        String storedPswdHash = members.getPswdHash(); // 假設密碼儲存在member對象的password字段中
+
+			        if (storedPswdHash.equals(pswdHash)) {
+			            // 密碼匹配，執行登入操作
+			            // 例如，將用戶信息存儲在Session中
+			            HttpSession session = req.getSession();
+			            session.setAttribute("user", members);
+			            //==ajax
+			            response.put("success", true);
+			            out.write(new Gson().toJson(response)); // 使用Gson库将Map转换为JSON字符串
+					    out.close();
+					    //==ajax
+			            // 重定向到登入成功的頁面
+			            res.sendRedirect(contextPath + "/index.jsp");
+			        } else {
+			            // 密碼不匹配，顯示錯誤消息
+			            errorMsgs.put("error", "密碼不正確");
+			        }
+			    } else {
+			        // 未找到用戶記錄，顯示錯誤消息
+			        errorMsgs.put("error", "用戶不存在");
+			    }
+
+			    // 构建错误消息的JSON响应
+			    
+			   
+			    response.put("errors", errorMsgs);
+
+			    // 设置响应类型和字符编码
+			    
+
+			    // 将JSON响应发送回客户端
+			    
+			    out.write(new Gson().toJson(response)); // 使用Gson库将Map转换为JSON字符串
+			    out.close();
 			}
+			
 		
 	}
 

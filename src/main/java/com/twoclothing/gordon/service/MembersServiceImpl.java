@@ -46,9 +46,9 @@ public class MembersServiceImpl implements MembersService{
 	}
 	
 	public Members getByEmail(String email) {
-	    List<Members> membersList = dao.getAllByEmail(email);
-	    if (membersList != null && !membersList.isEmpty()) {
-	        return membersList.get(0); // 返回列表中的第一个对象
+		Members members = dao.getByEmail(email);
+	    if (members != null ) {
+	        return members; // 返回列表中的第一个对象
 	    }
 	    return null; // 或者返回 null，如果没有匹配的对象
 	}
