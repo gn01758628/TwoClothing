@@ -23,6 +23,15 @@ public class ItemTrackingHibernateDAO implements ItemTrackingDAO {
 	}
 
 	@Override
+	public boolean exists(ItemTracking itemTracking) {
+		ItemTracking.CompositeDetail compositeKey = itemTracking.getCompositeKey();
+		Long count = getSession()
+				.createQuery("select count(*) from ItemTracking it where it.compositeKey = :compositeKey", Long.class)
+				.setParameter("compositeKey", compositeKey).uniqueResult();
+		return count > 0;
+	}
+
+	@Override
 	public ItemTracking getByCompositeKey(Integer itemId, Integer mbrId) {
 		ItemTracking.CompositeDetail compositeKey = new ItemTracking.CompositeDetail(itemId, mbrId);
 		return getSession().get(ItemTracking.class, compositeKey);
@@ -41,15 +50,20 @@ public class ItemTrackingHibernateDAO implements ItemTrackingDAO {
 	}
 
 	@Override
-	public long getTotal() {
-		return getSession().createQuery("select count(*) from ItemTracking", Long.class).uniqueResult();
+	public long getTotal(Integer mbrId) {
+		if (mbrId != -1) {
+			return getSession().createQuery("select count(*) from ItemTracking where mbrId = :mbrId", Long.class)
+					.setParameter("mbrId", mbrId).uniqueResult();
+		} else {
+			return getSession().createQuery("select count(*) from ItemTracking", Long.class).uniqueResult();
+		}
 	}
 
 	@Override
 	public List<ItemTracking> getAllByMbrId(Integer mbrId, int currentPage) {
 		int first = (currentPage - 1) * 10;
 		return getSession().createQuery("from ItemTracking where mbrId = :mbrId", ItemTracking.class)
-				.setParameter("mbrId", mbrId).setFirstResult(first).setMaxResults(10).list();
+				.setFirstResult(first).setMaxResults(10).setParameter("mbrId", mbrId).list();
 	}
 
 	@Override
