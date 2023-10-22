@@ -34,10 +34,10 @@ public class BidItem implements Serializable {
     @Column(name = "startprice", nullable = false)
     private Integer startPrice;
 
-    @Column(name = "reserveprice", nullable = false)
+    @Column(name = "reserveprice")
     private Integer reservePrice;
 
-    @Column(name = "directprice", nullable = false)
+    @Column(name = "directprice")
     private Integer directPrice;
 
     @Column(name = "bidstatus", insertable = false, nullable = false, columnDefinition = "TINYINT")
@@ -55,7 +55,7 @@ public class BidItem implements Serializable {
     public BidItem() {
     }
 
-    public BidItem(Integer bidItemId, String bidName, String grade, String size, String detail, Integer tagId, Integer mbrId, Integer startPrice, Integer reservePrice, Integer directPrice, Integer bidStatus, Timestamp startTime, Timestamp endTime, Integer empId) {
+    public BidItem(String bidName, String grade, String size, String detail, Integer tagId, Integer mbrId, Integer startPrice, Integer reservePrice, Integer directPrice, Integer bidStatus, Timestamp startTime, Timestamp endTime, Integer empId) {
         this.bidName = bidName;
         this.grade = grade;
         this.size = size;
