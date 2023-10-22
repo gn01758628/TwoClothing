@@ -87,12 +87,6 @@
 		    <version>1.6.2</version>
 		</dependency>
 
-
-		<dependency>
-			<groupId>CHA103_B_WebApp_To_Maven</groupId>
-			<artifactId>CHA103_B_WebApp_To_Maven</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 
 	<build>
