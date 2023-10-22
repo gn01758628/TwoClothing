@@ -28,17 +28,22 @@ public class BidItemFrontServiceImpl implements BidItemFrontService {
     }
 
     @Override
-    public void addBidItem(BidItem bidItem) {
-
+    public int addBidItem(BidItem bidItem) {
+        return bidItemDAO.insert(bidItem);
     }
 
     @Override
     public void addBidItemImage(BidItemImage bidItemImage) {
-
+        bidItemImageDAO.insert(bidItemImage);
     }
 
     @Override
     public List<CategoryTags> getAllCategoryTags() {
         return categoryTagsDAO.getAll();
+    }
+
+    @Override
+    public List<Integer> getAllSelectableTagsId() {
+        return categoryTagsDAO.getTagIdsWithoutChildren();
     }
 }

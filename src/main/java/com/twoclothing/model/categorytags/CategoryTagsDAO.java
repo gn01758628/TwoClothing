@@ -15,6 +15,8 @@ public interface CategoryTagsDAO {
 
     List<CategoryTags> getAllByEmpId(Integer empId);
 
+    List<Integer> getTagIdsWithoutChildren();
+
     /**
      * @return 所有的子孫標籤
      */

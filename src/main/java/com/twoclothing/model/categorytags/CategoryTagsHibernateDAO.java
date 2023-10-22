@@ -42,6 +42,13 @@ public class CategoryTagsHibernateDAO implements CategoryTagsDAO {
     }
 
     @Override
+    public List<Integer> getTagIdsWithoutChildren() {
+        return getSession()
+                .createQuery("SELECT t.tagId FROM CategoryTags t WHERE t.tagId NOT IN (SELECT DISTINCT s.superTagId FROM CategoryTags s WHERE s.superTagId IS NOT NULL)", Integer.class)
+                .list();
+    }
+
+    @Override
     public List<CategoryTags> getAllSubByPrimaryKey(Integer tagId) {
         String sql =
                 " WITH RECURSIVE tahhierarchy AS ( " +

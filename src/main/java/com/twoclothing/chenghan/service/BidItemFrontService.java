@@ -8,9 +8,15 @@ import java.util.List;
 
 public interface BidItemFrontService {
 
-    void addBidItem(BidItem bidItem);
+    /**
+     * @return 返回主鍵
+     */
+    int addBidItem(BidItem bidItem);
 
     void addBidItemImage(BidItemImage bidItemImage);
 
     List<CategoryTags> getAllCategoryTags();
+
+    List<Integer> getAllSelectableTagsId();
+
 }

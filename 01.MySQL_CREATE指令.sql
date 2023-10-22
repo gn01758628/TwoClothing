@@ -1043,8 +1043,8 @@ CREATE TABLE biditem
     reserveprice INT,
     directprice  INT,
     bidstatus    TINYINT      NOT NULL DEFAULT 0,
-    starttime    DATETIME     ,
-    endtime      DATETIME     ,
+    starttime    DATETIME,
+    endtime      DATETIME,
     empid        INT,
     PRIMARY KEY (biditemid)
 );
@@ -1288,7 +1288,7 @@ CREATE TABLE biditemimage
 --        (10, '假圖片10');
 
 -- 表格：競標商品圖片 檢查
-SELECT * FROM biditemimage;
+-- SELECT * FROM biditemimage;
 -- DESCRIBE biditemimage;
 
 -- 表格：競標商品圖片 添加FK
