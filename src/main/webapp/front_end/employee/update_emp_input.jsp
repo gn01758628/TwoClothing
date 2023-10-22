@@ -73,6 +73,18 @@
 		<td>${param.empId}</td>
 	</tr>
 	<tr>
+		<td>員工部門:</td>
+		<td><input type="TEXT" name="deptid" value="${param.deptId}" size="45"/></td> <td>${errorMsgs.deptid}</td>
+	</tr>
+	<tr>
+		<td>員工姓名:</td>
+		<td><input type="TEXT" name="empname" value="${param.empName}" size="45"/></td> <td>${errorMsgs.empname}</td>
+	</tr>
+	<tr>
+		<td>電話:</td>
+		<td><input type="text" name="phone" value="${param.phone}"  size="45"/></td> <td>${errorMsgs.phone}</td>
+	</tr>	
+	<tr>
 		<td>員工地址:</td>
 		<td><input type="TEXT" name="address" value="${param.address}" size="45"/></td> <td>${errorMsgs.address}</td>
 	</tr>
@@ -81,16 +93,12 @@
 		<td><input type="TEXT" name="email"   value="${param.email}"   size="45"/></td> <td>${errorMsgs.email}</td>
 	</tr>
 	<tr>
-		<td>電話:</td>
-		<td><input name="phone" id="phone" type="text" ></td> <td>${errorMsgs.phone}</td>
-	</tr>
-	<tr>
-		<td>姓名:</td>
-		<td><input type="TEXT" name="empname"   value="${param.empName}"   size="45"/></td> <td>${errorMsgs.empName}</td>
+		<td>密碼:</td>
+		<td><input type="TEXT" name="pswdhash"   value="${param.pswdHash}"   size="45"/></td> <td>${errorMsgs.pswdhash}</td>
 	</tr>
 	<tr>
 		<td>狀態:</td>
-		<td><input type="TEXT" name="empstatus"  value="${param.empStatus}"  size="45"/></td> <td>${errorMsgs.empStatus}</td>
+		<td><input type="TEXT" name="empstatus"  value="${param.empStatus}"  size="45"/></td> <td>${errorMsgs.empstatus}</td>
 	</tr>
 
 	<jsp:useBean id="EmployeeServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.EmployeeServiceImpl" />

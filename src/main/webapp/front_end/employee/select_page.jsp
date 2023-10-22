@@ -62,33 +62,33 @@
     </FORM>
   </li>
 
-  <jsp:useBean id="EmployeeServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.EmployeeServiceImpl" />
+<%--   <jsp:useBean id="emp" scope="page" class="com.twoclothing.tonyhsieh.EmployeeServiceImpl" /> --%>
    
-  <li>
-     <FORM METHOD="post" ACTION="Employee.do" >
-       <b>選擇員工編號:</b>
-       <select size="1" name="empId">
-         <c:forEach var="employee" items="${employee.all}" > 
-          <option value="${employee.empId}">${employee.empId}
-         </c:forEach>   
-       </select>
-       <input type="hidden" name="action" value="getOne_For_Display">
-       <input type="submit" value="送出">
-    </FORM>
-  </li>
+<!--   <li> -->
+<!--      <FORM METHOD="post" ACTION="Employee.do" > -->
+<!--        <b>選擇員工編號:</b> -->
+<!--        <select size="1" name="empId"> -->
+<%--          <c:forEach var="employee" items="${employee.all}" >  --%>
+<%--           <option value="${employee.empId}">${employee.empId} --%>
+<%--          </c:forEach>    --%>
+<!--        </select> -->
+<!--        <input type="hidden" name="action" value="getOne_For_Display"> -->
+<!--        <input type="submit" value="送出"> -->
+<!--     </FORM> -->
+<!--   </li> -->
   
-  <li>
-     <FORM METHOD="post" ACTION="Employee.do" >
-       <b>選擇員工姓名:</b>
-       <select size="1" name="empId">
-         <c:forEach var="employee" items="${employee.all}" > 
-          <option value="${employee.empId}">${employee.empName}
-         </c:forEach>   
-       </select>
-       <input type="hidden" name="action" value="getOne_For_Display">
-       <input type="submit" value="送出">
-     </FORM>
-  </li>
+<!--   <li> -->
+<!--      <FORM METHOD="post" ACTION="Employee.do" > -->
+<!--        <b>選擇員工姓名:</b> -->
+<!--        <select size="1" name="empName"> -->
+<%--          <c:forEach var="employee" items="${employee.all}" >  --%>
+<%--           <option value="${employee.empId}">${employee.empName} --%>
+<%--          </c:forEach>    --%>
+<!--        </select> -->
+<!--        <input type="hidden" name="action" value="getOne_For_Display"> -->
+<!--        <input type="submit" value="送出"> -->
+<!--      </FORM> -->
+<!--   </li> -->
 </ul>
 
 

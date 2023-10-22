@@ -101,6 +101,7 @@ public class EmployeeServlet extends HttpServlet {
 				String param = "?empId="  +employee.getEmpId()+
 						       "&address="  +employee.getAddress()+
 						       "&email="    +employee.getEmail()+
+						       "&pswdHash="    +employee.getPswdHash()+
 						       "&phone="+employee.getPhone()+
 						       "&empName="    +employee.getEmpName()+
 						       "&deptId="   +employee.getDeptId()+
@@ -117,19 +118,26 @@ public class EmployeeServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 		
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-				Integer empid = Integer.valueOf(req.getParameter("empId").trim());
+				Integer empid = Integer.valueOf(req.getParameter("empid").trim());
 				
-				String empname = req.getParameter("empName");
-				String empnameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
+				Integer deptid = null;
+				try {
+					deptid = Integer.valueOf(req.getParameter("deptid").trim());
+				} catch (NumberFormatException e) {
+					errorMsgs.put("deptid","部門請填數字");
+				}				
+				
+				String empname = req.getParameter("empname");
+				String enameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
 				if (empname == null || empname.trim().length() == 0) {
 					errorMsgs.put("empname","員工姓名: 請勿空白");
-				} else if(!empname.trim().matches(empnameReg)) { //以下練習正則(規)表示式(regular-expression)
-					errorMsgs.put("empname","員工姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
+				} else if(!empname.trim().matches(enameReg)) { //以下練習正則(規)表示式(regular-expression)
+					errorMsgs.put("ename","員工姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
 	            }
 				
-				String deptid = req.getParameter("deptId").trim();
-				if (deptid == null || deptid.trim().length() == 0) {
-					errorMsgs.put("deptid","狀態請勿空白");
+				String phone = req.getParameter("phone").trim();
+				if (phone == null || phone.trim().length() == 0) {
+					errorMsgs.put("phone","手機請勿空白");
 				}
 				
 				String address = req.getParameter("address").trim();
@@ -137,10 +145,23 @@ public class EmployeeServlet extends HttpServlet {
 					errorMsgs.put("address","地址請勿空白");
 				}
 				
-				String phone = req.getParameter("phone").trim();
-				if (phone == null || phone.trim().length() == 0) {
-					errorMsgs.put("phone","電話請勿空白");
+				String email = req.getParameter("email");
+				String emailReg = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+				if (!email.trim().matches(emailReg)) { //以下練習正則(規)表示式(regular-expression)
+					errorMsgs.put("email","EMAIL: 請符合EMAIL格式");
+	            }
+				
+				String pswdhash = req.getParameter("pswdhash").trim();
+				if (pswdhash == null || pswdhash.trim().length() == 0) {
+					errorMsgs.put("pswdhash","密碼請勿空白");
 				}
+								
+				Integer empstatus = null;
+				try {
+					empstatus = Integer.valueOf(req.getParameter("empstatus").trim());
+				} catch (NumberFormatException e) {
+					errorMsgs.put("empstatus","狀態請填數字");
+				}		
 				
 //				Double sal = null;
 //				try {
@@ -148,73 +169,103 @@ public class EmployeeServlet extends HttpServlet {
 //				} catch (NumberFormatException e) {
 //					errorMsgs.put("sal","薪水請填數字");
 //				}
-								
+//								
 //				Integer deptno = Integer.valueOf(req.getParameter("deptno").trim());
 
 				// Send the use back to the form, if there were errors
-//				if (!errorMsgs.isEmpty()) {
-//					RequestDispatcher failureView = req
-//							.getRequestDispatcher("/front_end/employee/update_emp_input.jsp");
-//					failureView.forward(req, resp);
-//					return; //程式中斷
-//				}
-//				
-//				/***************************2.開始修改資料*****************************************/
-//				EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-//				Employee employee = new 
-//				
-////				int employee = employeeServiceImpl.updateEmployee(employee);
-////				
-////				/***************************3.修改完成,準備轉交(Send the Success view)*************/
-////				req.setAttribute("Employee", employee); // 資料庫update成功後,正確的的empVO物件,存入req
-////				String url = "/front_end/employee/listOneEmp.jsp";
-////				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
-////				successView.forward(req, resp);
-////		}
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front_end/employee/update_emp_input.jsp");
+					failureView.forward(req, resp);
+					return; //程式中斷
+				}
+				
+				/***************************2.開始修改資料*****************************************/
+				EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
+				Employee employee = employeeServiceImpl.updateEmployee(empid, deptid, empname, phone, address, email, pswdhash, empstatus);
+								
+				/***************************3.修改完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("Employee", employee); // 資料庫update成功後,正確的的empVO物件,存入req
+				String url = "/front_end/employee/listOneEmp.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+				successView.forward(req, resp);
+		}
 
-//        if ("insert".equals(action)) { // 來自addEmp.jsp的請求  
-//			
-//			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
-//			req.setAttribute("errorMsgs", errorMsgs);
-//
-//				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-//				String ename = req.getParameter("ename");
-//				String enameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
-//				if (ename == null || ename.trim().length() == 0) {
-//					errorMsgs.put("ename","員工姓名: 請勿空白");
-//				} else if(!ename.trim().matches(enameReg)) { //以下練習正則(規)表示式(regular-expression)
-//					errorMsgs.put("ename","員工姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
-//	            }
-//				
-//				String job = req.getParameter("job").trim();
-//				if (job == null || job.trim().length() == 0) {
-//					errorMsgs.put("job","職位請勿空白");
-//				}
-//				
+        if ("insert".equals(action)) { // 來自addEmp.jsp的請求  
+			
+			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+
+				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
+
+			
+				Integer deptid = null;
+				try {
+					deptid = Integer.valueOf(req.getParameter("deptid").trim());
+				} catch (NumberFormatException e) {
+					errorMsgs.put("deptid","部門請填數字");
+				}		
+			
+				String empname = req.getParameter("empname");
+				String enameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
+				if (empname == null || empname.trim().length() == 0) {
+					errorMsgs.put("empname","員工姓名: 請勿空白");
+				} else if(!empname.trim().matches(enameReg)) { //以下練習正則(規)表示式(regular-expression)
+					errorMsgs.put("ename","員工姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
+	            }
+				
+				String phone = req.getParameter("phone").trim();
+				if (phone == null || phone.trim().length() == 0) {
+					errorMsgs.put("phone","手機請勿空白");
+				}
+												
+				String address = req.getParameter("address").trim();
+				if (address == null || address.trim().length() == 0) {
+					errorMsgs.put("address","地址請勿空白");
+				}
+				
+				String email = req.getParameter("email");
+				String emailReg = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+				if (!email.trim().matches(emailReg)) { //以下練習正則(規)表示式(regular-expression)
+					errorMsgs.put("email","EMAIL: 請符合EMAIL格式");
+	            }
+			
+				String pswdhash = req.getParameter("pswdhash").trim();
+				if (pswdhash == null || pswdhash.trim().length() == 0) {
+					errorMsgs.put("pswdhash","密碼請勿空白");
+				}
+								
+				Integer empstatus = null;
+				try {
+					empstatus = Integer.valueOf(req.getParameter("empstatus").trim());
+				} catch (NumberFormatException e) {
+					errorMsgs.put("empstatus","狀態請填數字");
+				}		
+				
 //				java.sql.Date hiredate = null;
 //				try {
 //					hiredate = java.sql.Date.valueOf(req.getParameter("hiredate").trim());
 //				} catch (IllegalArgumentException e) {
 //					errorMsgs.put("hiredate","請輸入日期");
 //				}
-//				
+				
 //				Double sal = null;
 //				try {
 //					sal = Double.valueOf(req.getParameter("sal").trim());
 //				} catch (NumberFormatException e) {
 //					errorMsgs.put("sal","薪水請填數字");
 //				}
-//				
+				
 //				Double comm = null;
 //				try {
 //					comm = Double.valueOf(req.getParameter("comm").trim());
 //				} catch (NumberFormatException e) {
 //					errorMsgs.put("comm","獎金請填數字");
 //				}
-//				
+				
 //				Integer deptno = Integer.valueOf(req.getParameter("deptno").trim());
-//
-//				// Send the use back to the form, if there were errors
+
+				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req
 							.getRequestDispatcher("/front_end/employee/addEmp.jsp");
@@ -224,8 +275,7 @@ public class EmployeeServlet extends HttpServlet {
 				
 				/***************************2.開始新增資料***************************************/
 				EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-				employeeServiceImpl.addEmployee(empid, empid, empnameReg, phone, address, phone, action, empid);
-				
+				employeeServiceImpl.addEmployee(deptid, empname, phone, address, email, pswdhash, empstatus);				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/front_end/employee/listAllEmp.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
