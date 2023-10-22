@@ -51,13 +51,15 @@ public class EmployeeHibernateDAO implements EmployeeDAO{
 	public int addEmployee(Employee employee) {
 		// TODO Auto-generated method stub
 		// 回傳給 service 剛新增成功的自增主鍵值
-		return (Integer) getSession().save(employee);
+		Integer empId = (Integer) getSession().save(employee);
+		return empId;
+		
 	}
 	@Override
 	public int updateEmployee(Employee employee) {
 		// TODO Auto-generated method stub
 		try {
-			getSession().update(employee);
+			getSession().merge(employee);
 			return 1;
 		} catch (Exception e) {
 			return -1;
