@@ -2,24 +2,10 @@ package com.twoclothing.huiwen.service;
 
 import static com.twoclothing.huiwen.Constants.ITEM_PAGE_MAX_RESULT;
 
-import java.math.BigDecimal;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.twoclothing.model.aproduct.item.Item;
@@ -35,8 +21,6 @@ public class ItemServiceImpl implements ItemService{
 	public ItemServiceImpl() {
 		dao = new ItemHibernateDAO(HibernateUtil.getSessionFactory());
 	}
-	
-	
 	
 	@Override
 	public Item addItem(String itemName, Integer grade, Integer size, String detail, Integer tagId, Integer mbrId, Integer price, Integer itemStatus, Integer quantity) {
@@ -75,15 +59,8 @@ public class ItemServiceImpl implements ItemService{
 	}
 
 	@Override
-	public List<Item> getAllItems() {
-		List<Item> list = dao.getAll();
-		System.out.println("service");
-		return list;
-	}
-
-	@Override
 	public List<Item> getAllItems(int page) {
-		List<Item> list = dao.getAll();
+		List<Item> list = dao.getAll(page);
 		return list;
 	}
 	@Override
@@ -95,9 +72,34 @@ public class ItemServiceImpl implements ItemService{
 	}
 
 
-
 	@Override
-	public List<Item> getItemByCompositeQuery(Map<String, String[]> map, int pageNow) {
+	public List<Item> getItemByCompositeQuery(Map<String, String[]> map, int page) {
+		Map<String, String> query = new HashMap<>();
+		// Map.Entry即代表一組key-value
+		Set<Map.Entry<String, String[]>> entry = map.entrySet();
+		
+		for (Map.Entry<String, String[]> row : entry) {
+			String key = row.getKey();
+			// 因為請求參數裡包含了action，做個去除動作
+			if ("action".equals(key)) {
+				continue;
+			}
+			// 若是value為空即代表沒有查詢條件，做個去除動作
+			String value = row.getValue()[0];
+
+			System.out.println("keyValue:"+key+":"+value);
+			
+			if ( value == null || value.isEmpty()) {
+				continue;
+			}
+			query.put(key, value);
+		}
+
+		return dao.getByCompositeQuery(query, page);
+	}
+
+
+	public int getResultTotalCondition(Map<String, String[]> map) {
 		Map<String, String> query = new HashMap<>();
 		// Map.Entry即代表一組key-value
 		Set<Map.Entry<String, String[]>> entry = map.entrySet();
@@ -111,7 +113,6 @@ public class ItemServiceImpl implements ItemService{
 			// 若是value為空即代表沒有查詢條件，做個去除動作
 			String value = row.getValue()[0];
 			if ( value == null || value.isEmpty()) {
-				System.out.println("Value是空的");
 				continue;
 			}
 			query.put(key, value);
@@ -119,12 +120,8 @@ public class ItemServiceImpl implements ItemService{
 		
 		System.out.println("query :" + query);
 		
-		return dao.getByCompositeQuery(query, pageNow);
-
-
+		return dao.getResultTotal(query);
 	}
-
-
 
 
 }

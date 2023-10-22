@@ -12,7 +12,7 @@
 </head>
 <body>
     <h1>商品查詢</h1>
-    <a href="${pageContext.request.contextPath}/Item/searchAll?action=getAll">查詢所有員工</a>
+    <a href="${pageContext.request.contextPath}/Item/searchAll?action=getAll">查詢所有商品</a>
     <br>
 
     <form class="form_search" method="post" action="/TwoClothing/Item/search">

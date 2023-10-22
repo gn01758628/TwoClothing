@@ -29,6 +29,7 @@
 		</tr>
 	</table>
 
+	<a href="${pageContext.request.contextPath}/front_end/itemtracking/itemTrackingIndex.jsp">測試其他功能</a>
 	<a href="${pageContext.request.contextPath}">回首頁</a>
 </body>
 </html>
