@@ -7,6 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 * {
 	box-sizing: border-box;
@@ -30,25 +31,27 @@ div[name="block"] {
 </head>
 <body>
 	<div>
-		<a href="itemorder.do?action=getmemberitems">獲取商場資料</a>
+		<a href="itemorder.do?action=getMembersItems">獲取商場資料</a>
 	</div>
 
-	<form action="#" method="#">
+	<form action="itemorder.do" method="Post">
 		<div>
 			<div name="block" style="width:30%;">
 				<div>
-					<label>選擇買家編號：</label> <select id="buyer">
+					<label>選擇買家編號：</label> <select id="buyer" name="buyer">
 						<c:forEach items="${memberList}" var="memberItem">
 							<option value="${memberItem.mbrId}">${memberItem.mbrName}</option>
 						</c:forEach>
 					</select>
+					<input type="submit" name="action" value="buyer">
 				</div>
 				<div>
-					<label>選擇賣家編號：</label> <select id="seller">
+					<label>選擇賣家編號：</label> <select id="seller" name="seller">
 						<c:forEach items="${memberList}" var="memberItem">
 							<option value="${memberItem.mbrId}">${memberItem.mbrName}</option>
 						</c:forEach>
 					</select>
+					<input type="submit" name="action" value="seller">
 				</div>
 
 				<div>
@@ -70,6 +73,7 @@ div[name="block"] {
 				<button type="button" id="the_button">新增商品</button>
 				<button type="button" id="the_clear">清空購物車</button>
 				<button type="button" id="all_clear">清空所有購物車</button>
+				<button type="button" id="checkout_button">生成訂單</button>
 			</div>
 			<div name="block" style="width:60%;">
 				<div id="cart"></div>
@@ -177,6 +181,44 @@ div[name="block"] {
 				displayCart();
 				alert('已清除所有資料！'); // 提示用戶資料已清除
 			});
+			
+			
+			$("#checkout_button").click(function() {
+			    // 獲取當前買家的購物清單
+			    var currentBuyerCart = buyerMap[currentBuyerId] || [];
+
+			    // 設置需要傳遞的資料，包括"action"參數
+			    var requestData = {
+			    	buyerId:currentBuyerId,
+			        cartData: currentBuyerCart // 其他需要傳遞的資料
+			    };
+
+			    // 發送AJAX請求
+			    $.ajax({
+			        type: "POST",
+			        url: "itemorder.do?action=addOrder",  
+			        data: JSON.stringify(requestData),
+			        contentType: "application/json; charset=utf-8",
+			        dataType: "json",
+			        success: function(response) {
+			            // 成功結帳後的處理邏輯，例如顯示成功消息、重置購物車等
+			            alert("結帳成功！");
+			            // 清空當前會員的購物車
+			            buyerMap[currentBuyerId] = [];
+			            // 更新localStorage中的資料
+			            localStorage.setItem('buyerMap', JSON.stringify(buyerMap));
+			            // 重新顯示購物車
+			            displayCart();
+			        },
+			        error: function(xhr, status, error) {
+			            console.log(xhr.responseText); // 这里会打印出详细的错误信息
+			            alert("結帳失敗：" + error);
+			        }
+			    });
+			});
+
+			
+			
 		
 		
 			// 顯示購物清單的函數
@@ -192,10 +234,10 @@ div[name="block"] {
 			    memberIdDiv.textContent = "當前會員ID: " + currentBuyerId;
 			    cartDiv.appendChild(memberIdDiv);
 
-			    // 以卖家编号为键，存储不同卖家的商品
+			    // 以賣家編號為鍵，儲存不同賣家的商品
 			    var sellerItems = {};
 
-			    // 遍历购物清单，按照卖家编号分类商品
+			    // 遍歷購物清單，按照賣家編號分類商品
 			    currentBuyerCart.forEach(function(item) {
 			        var sellerId = item.sellerId;
 
