@@ -3,7 +3,7 @@ package com.twoclothing.tonyhsieh;
 
 import java.util.List;
 
-import com.twoclothing.model.aproduct.item.Item;
+
 import com.twoclothing.model.employee.Employee;
 import com.twoclothing.model.employee.EmployeeDAO;
 import com.twoclothing.model.employee.EmployeeHibernateDAO;
@@ -15,6 +15,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	public EmployeeServiceImpl() {
 		employeeDAO = new EmployeeHibernateDAO(HibernateUtil.getSessionFactory());
+		
 	}
 
 	
@@ -48,12 +49,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeDAO.getAllEmployees() ;
 	}
 
-	@Override
-	public int addEmployee(Integer empId,Integer deptId,String empName,String phone,String address,String email,String pswdHash, Integer empStatus) {
+
+	public Employee addEmployee(Integer deptId,String empName,String phone,String address,String email,String pswdHash, Integer empStatus) {
 		// TODO Auto-generated method stub
 		
-		Employee employee = new Employee();		
-		employee.setEmpId(empId);
+		Employee employee = new Employee();
 		employee.setDeptId(deptId);
 		employee.setEmpName(empName);
 		employee.setPhone(phone);
@@ -64,18 +64,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 //		employee.setAvatar(null);
 		employeeDAO.addEmployee(employee);
 	
-		return employeeDAO.addEmployee(employee);
+		return employee;
 	
+	}
+	
+	public	Employee updateEmployee(Integer empId,Integer deptId,String empName,String phone,String address,String email,String pswdHash, Integer empStatus) {
+		// TODO Auto-generated method stub
+		Employee employee = new Employee();	
+		employee.setEmpId(empId);
+		employee.setDeptId(deptId);
+		employee.setEmpName(empName);
+		employee.setPhone(phone);
+		employee.setAddress(address);
+		employee.setEmail(email);
+		employee.setPswdHash(pswdHash);
+		employee.setEmpStatus(empStatus);
+		employeeDAO.updateEmployee(employee);
+		return employee;
 	}
 
+
 	
-	
-	
-	@Override
-	public	int updateEmployee(Employee employee) {
-		// TODO Auto-generated method stub
-		return employeeDAO.updateEmployee(employee);
-	}
 
 	
 

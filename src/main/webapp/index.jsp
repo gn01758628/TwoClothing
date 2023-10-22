@@ -28,7 +28,7 @@
 <body>
 <h1>測試用首頁</h1>
 
-<a href='/TwoClothing/front_end/members/registerLogin.jsp'>註冊</a>
+<a href='${pageContext.request.contextPath}/front_end/members/registerLogin.jsp'>註冊</a>
 
 </body>
 </html>

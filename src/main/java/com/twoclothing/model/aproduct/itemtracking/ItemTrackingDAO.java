@@ -5,6 +5,8 @@ import java.util.List;
 
 public interface ItemTrackingDAO {
 	Serializable insert(ItemTracking itemTracking);
+	
+	boolean exists(ItemTracking itemTracking);
 
     ItemTracking getByCompositeKey(Integer itemId, Integer mbrId);
     
@@ -12,7 +14,7 @@ public interface ItemTrackingDAO {
 
     List<ItemTracking> getAll(int currentPage);
     
-    long getTotal();
+    long getTotal(Integer mbrId);
 
     List<ItemTracking> getAllByMbrId(Integer mbrId, int currentPage);
 

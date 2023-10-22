@@ -49,9 +49,14 @@ public class ItemTrackingServiceImpl implements ItemTrackingService {
 	}
 
 	@Override
-	public int getPageTotal() {
-		long total = dao.getTotal();
+	public int getPageTotal(Integer mbrId) {
+		long total = dao.getTotal(mbrId);
 		int pageQty = (int) (total % 10 == 0 ? (total / 10) : (total / 10 + 1));
 		return pageQty;
+	}
+
+	@Override
+	public boolean isExists(ItemTracking itemTracking) {
+		return dao.exists(itemTracking);
 	}
 }

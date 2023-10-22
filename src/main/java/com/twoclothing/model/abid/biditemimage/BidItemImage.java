@@ -26,9 +26,7 @@ public class BidItemImage implements Serializable {
 
     }
 
-    public BidItemImage(Integer imageId, Integer bidItemId, byte[] image) {
-        super();
-        this.imageId = imageId;
+    public BidItemImage(Integer bidItemId, byte[] image) {
         this.bidItemId = bidItemId;
         this.image = image;
     }

@@ -2,8 +2,7 @@ package com.twoclothing.tonyhsieh;
 
 import java.util.List;
 
-import com.twoclothing.model.abid.biditem.BidItem;
-import com.twoclothing.model.abid.biditemimage.BidItemImage;
+
 import com.twoclothing.model.employee.Employee;
 
 public interface EmployeeService {
@@ -14,9 +13,10 @@ public interface EmployeeService {
 	
 	List<Employee> getAllEmployees();
 	
-	int updateEmployee(Employee employee);
+	Employee addEmployee(Integer deptId, String empName, String phone, String address, String email,
+			String pswdHash, Integer empStatus);
 
-	int addEmployee(Integer empId, Integer deptId, String empName, String phone, String address, String email,
+	Employee updateEmployee(Integer empId,Integer deptId, String empName, String phone, String address, String email,
 			String pswdHash, Integer empStatus);
 	
 }
