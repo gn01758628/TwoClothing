@@ -1,4 +1,30 @@
+// noinspection JSUnresolvedReference
+
 $(document).ready(function () {
+    // 錯誤訊息模態框
+    if (messages.length > 0) {
+        // 初始化模態框，防止通過點擊模態框外部區域來關閉
+        $('#messageModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+
+        // 將內容動態添加
+        let listGroup = $(".list-group");
+        messages.forEach(function (message) {
+            let messageLink = $('<a href="#" class="list-group-item list-group-item-action">' + message + '</a>');
+            listGroup.append(messageLink);
+        });
+
+        // 顯示模態框
+        $("#messageModal").modal("show");
+    }
+    // 按鈕關閉模態框
+    $("#closeMessageBtn").click(function () {
+        $("#messageModal").modal("hide");
+    });
+
+
     // 商品簡述字串檢查及轉換
     const textarea = $("#fakedetail");
     const hiddenInput = $("#detail");
@@ -29,16 +55,41 @@ $(document).ready(function () {
     const moneyInputs = $('.money');
     moneyInputs.each(function () {
         const input = $(this);
-        const errorMessage = $('<div class="error-message text-danger"></div>');
-        input.parent().append(errorMessage);
+        const errorMessageDiv = $('<div class="error-message text-danger"></div>');
+        input.parent().append(errorMessageDiv);
+
         input.on('blur', function () {
             const value = input.val();
-            if (value.trim() !== '' && !/^(0|[1-9]\d*)$/.test(value)) {
-                errorMessage.text('請填寫整數數字');
+            if (value === '') {
+                errorMessageDiv.text('');
+                input.removeClass('is-invalid');
+            } else if (value === '0' || !/^[1-9]\d*$/.test(value)) {
+                errorMessageDiv.text('請填寫整數數字');
                 input.addClass('is-invalid');
             } else {
-                errorMessage.text('');
+                errorMessageDiv.text('');
                 input.removeClass('is-invalid');
+
+                const startPrice = parseInt($('#startprice').val(), 10);
+                const reserverPrice = parseInt($('#reserverprice').val(), 10);
+                const directPrice = parseInt($('#directprice').val(), 10);
+
+                if (reserverPrice > 0 && reserverPrice < startPrice) {
+                    errorMessageDiv.text('拍賣底價不能小於起標價格');
+                    input.addClass('is-invalid');
+                } else if (directPrice > 0) {
+                    if (!reserverPrice) {
+                        // 2.1 如果沒有拍賣底價，則應該大於起標價格
+                        if (directPrice <= startPrice) {
+                            errorMessageDiv.text('立即結標價應該大於起標價格');
+                            input.addClass('is-invalid');
+                        }
+                    } else if (directPrice <= reserverPrice) {
+                        // 2.2 如果有拍賣底價，則應該大於拍賣底價
+                        errorMessageDiv.text('立即結標價應該大於拍賣底價');
+                        input.addClass('is-invalid');
+                    }
+                }
             }
         });
     });
@@ -96,11 +147,13 @@ $(document).ready(function () {
 
         if (window.confirm("您確定要提交申請了嗎?")) {
             let firstInvalidInput = null;
+            let errorMessage = '';
 
             // 檢查類別標籤有無選擇
             const categorySelect = $('#categorySelect');
             if (categorySelect.val().trim() === '') {
                 firstInvalidInput = categorySelect;
+                errorMessage = '請選擇商品類別標籤';
             }
 
             // 檢查價格欄位是否錯誤
@@ -111,15 +164,33 @@ $(document).ready(function () {
                 if (value.trim() !== '' && !/^(0|[1-9]\d*)$/.test(value)) {
                     if (firstInvalidInput === null) {
                         firstInvalidInput = input;
+                        errorMessage = '銷售資訊裡的價格欄位，請填有效數字(整數)';
                     }
                 }
             }
 
-            // 根據第一個錯誤的欄位alert
+            // 檢查價格關係
+            const startPrice = parseInt($('#startprice').val(), 10);
+            const reserverPrice = parseInt($('#reserverprice').val(), 10);
+            const directPrice = parseInt($('#directprice').val(), 10);
+
+            if (!isNaN(reserverPrice) && reserverPrice < startPrice) {
+                firstInvalidInput = $('#reserverprice');
+                errorMessage = '拍賣底價不可低於起標價格';
+            }
+
+            if (!isNaN(directPrice)) {
+                if (!isNaN(reserverPrice) && directPrice <= reserverPrice) {
+                    firstInvalidInput = $('#directprice');
+                    errorMessage = '立即結標價必須高於拍賣底價';
+                } else if (directPrice <= startPrice) {
+                    firstInvalidInput = $('#directprice');
+                    errorMessage = '立即結標價必須高於起標價格';
+                }
+            }
+
+            // 根據第一個錯誤的欄位alert和滾動視窗
             if (firstInvalidInput !== null) {
-                const errorMessage = firstInvalidInput === categorySelect
-                    ? '請選擇商品類別標籤'
-                    : '銷售資訊裡的價格欄位，請填有效數字(整數)';
                 alert(errorMessage);
                 firstInvalidInput.focus();
 
@@ -131,5 +202,4 @@ $(document).ready(function () {
             }
         }
     });
-
 })

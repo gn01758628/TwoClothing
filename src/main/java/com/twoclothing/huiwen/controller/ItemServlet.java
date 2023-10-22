@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -33,6 +32,7 @@ public class ItemServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+
 		doPost(req, res);
 	}
 
@@ -45,9 +45,10 @@ public class ItemServlet extends HttpServlet {
 
 		PrintWriter out = res.getWriter();
 
+		System.out.println(action);
 		// 新增資料
 		if ("insert".equals(action)) {
-
+			System.out.println("insert");
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 
@@ -117,154 +118,110 @@ public class ItemServlet extends HttpServlet {
 
 			itemService.addItem(itemName, grade, size, detail, tagId, mbrId, price, itemStatus, quantity);
 
-		
-	}
+		}
 
-	// 複合查詢
-
-	String actionGetAll = req.getParameter("action");
-	String forwardPath = "";
+		// 複合查詢
+		if ("search".equals(action)) {
+			String actionGetAll = req.getParameter("action");
+			String forwardPath = "";
 //			if (str == null || (str.trim().length()) == 0) {
 //				return;
 //			}
-	switch(actionGetAll){
-		case "getAll":
-			System.out.println("拿到getAll路徑");
-//			forwardPath = itemService.getAllItems();
-			
-			forwardPath = getAllItems(req, res);		
-			break;
-		case "search":
-			System.out.println("拿到search路徑");
-			forwardPath = getCompositeItemQuery(req, res);
-			break;
-			
-		case "SearchItems":
-			System.out.println("拿到SearchItems路徑");
-			forwardPath = "/front_end/item/itemSellerSearch.jsp";
-			break;
-		default:
-			forwardPath = "/front_end/item/itemSellerUpload.jsp";			
-		}
-	System.out.println("forwardPath"+forwardPath);
-	RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
-	dispatcher.forward(req, res);
-	}
-	
-	
+			switch (actionGetAll) {
+			case "getAll":
+				System.out.println("拿到getAll路徑");
+				forwardPath = getAllItemsPage(req, res);
+				break;
+			case "search":
+				System.out.println("拿到search路徑");
+				forwardPath = getCompositeItemQuery(req, res);
+				break;
 
-//	private String getAllItems(HttpServletRequest req, HttpServletResponse res) {
-//		String page = req.getParameter("page");
-//		int pageNow = (page == null) ? 1 : Integer.parseInt(page);
-//
-//		List<Item> itemList = itemService.getAllItems(pageNow);
-//		
-//		if (req.getSession().getAttribute("itemPageQty") == null) {
-//			int itemPageQty = itemService.getPageTotal();
-//			req.getSession().setAttribute("itemPageQty", itemPageQty);
-//			System.out.println("==itemPageQty:"+itemPageQty);
-//		}
-//		
-//		req.setAttribute("itemList", itemList);
-//		req.setAttribute("pageNow", pageNow);
-//		
-//		System.out.println("///pageNow:"+pageNow);
-//		return "/front_end/item/itemSellerListCompositeQuery.jsp";
-//	}
-	
-	private String getAllItems(HttpServletRequest req, HttpServletResponse res) {
-		
-		List<Item> itemList = itemService.getAllItems();
+			case "SearchItems":
+				System.out.println("拿到SearchItems路徑");
+				forwardPath = "/front_end/item/itemSellerSearch.jsp";
+				break;
+
+			default:
+				forwardPath = "/front_end/item/itemSellerUpload.jsp";
+			}
+			RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
+			dispatcher.forward(req, res);
+		}
+	}
+
+	// 查全部
+	private String getAllItemsPage(HttpServletRequest req, HttpServletResponse res) {
+		String page = req.getParameter("page");
+		int pageNow = (page == null) ? 1 : Integer.parseInt(page);
+
+		List<Item> itemList = itemService.getAllItems(pageNow);
+
+		if (req.getAttribute("itemPageQty") == null) {
+			int itemPageQty = itemService.getPageTotal();
+			req.setAttribute("itemPageQty", itemPageQty);
+		}
+
 		req.setAttribute("itemList", itemList);
-		System.out.println("itemList:"+itemList);
-		return "/front_end/item/itemSellerListCompositeQuery.jsp";
+		req.setAttribute("pageNow", pageNow);
+
+		return "/front_end/item/itemSellerListAll.jsp";
 	}
 
 	private String getCompositeItemQuery(HttpServletRequest req, HttpServletResponse res) {
-		Map<String, String[]> map = req.getParameterMap();
-//		Map<String, String[]> map = new HashMap<>(req.getParameterMap());
+//		Map<String, String[]> map = req.getParameterMap();
+		Map<String, String[]> map = new HashMap<>(req.getParameterMap());
 
+		String page = req.getParameter("page");
+		int pageNow = (page == null) ? 1 : Integer.parseInt(page);
 
-		if (req.getParameter("itemNameSearch") != null) {
-		    String itemNameSearch = req.getParameter("itemNameSearch");
-		    req.getSession().setAttribute("itemNameSearch", itemNameSearch);
-		    // 在map中添加itemNameSearch参数
-		    
-		} else {
-			String itemNameSearch = (String)req.getSession().getAttribute("itemNameSearch");
-			map.put("itemNameSearch", new String[]{itemNameSearch});
-			System.out.println("====================="+itemNameSearch);
-		}
-		if (req.getParameter("itemPriceSearchStart") != null) {
+		// 第一次進來
+		if (page == null) {
+			String itemNameSearch = req.getParameter("itemNameSearch");
+			req.getSession().setAttribute("itemNameSearch", itemNameSearch);
+			// 其他參數比照
 			String itemPriceSearchStart = req.getParameter("itemPriceSearchStart");
 			req.getSession().setAttribute("itemPriceSearchStart", itemPriceSearchStart);
-			// 在map中添加itemNameSearch参数
-			
-		} else {
-			String itemPriceSearchStart = (String)req.getSession().getAttribute("itemPriceSearchStart");
-			map.put("itemPriceSearchStart", new String[]{itemPriceSearchStart});
-			System.out.println("====================="+itemPriceSearchStart);
-		}
-		if (req.getParameter("itemPriceSearchEnd") != null) {
+
 			String itemPriceSearchEnd = req.getParameter("itemPriceSearchEnd");
 			req.getSession().setAttribute("itemPriceSearchEnd", itemPriceSearchEnd);
-			// 在map中添加itemNameSearch参数
-			
+			// 後續切頁
 		} else {
-			String itemPriceSearchEnd = (String)req.getSession().getAttribute("itemPriceSearchEnd");
-			map.put("itemPriceSearchEnd", new String[]{itemPriceSearchEnd});
-			System.out.println("====================="+itemPriceSearchEnd);
+			String itemNameSearch = (String) req.getSession().getAttribute("itemNameSearch");
+			if (itemNameSearch != null) {
+				map.put("itemNameSearch", new String[] { itemNameSearch });
+			}
+
+			String itemPriceSearchStart = (String) req.getSession().getAttribute("itemPriceSearchStart");
+			if (itemPriceSearchStart != null) {
+				map.put("itemPriceSearchStart", new String[] { itemPriceSearchStart });
+			}
+
+			String itemPriceSearchEnd = (String) req.getSession().getAttribute("itemPriceSearchEnd");
+			if (itemPriceSearchEnd != null) {
+				map.put("itemPriceSearchEnd", new String[] { itemPriceSearchEnd });
+			}
 		}
 
-		
-//		for (Map.Entry<String, String[]> entry : map.entrySet()) {
-//		    String key = entry.getKey();
-//		    String[] values = entry.getValue();
-//		    System.out.println("Key: " + key);
-//		    for (String value : values) {
-//		        System.out.println("Value: " + value);
-//		    }
-//		}
-		
-		if (!map.isEmpty()) {
+		System.out.println("map:" + map);
+		System.out.println("mapSize:" + map.size());
 
-			String page = req.getParameter("pageNow");
-			System.out.println("///page:"+page);
-			//page=0
-			int pageNow = (page == null) ? 1 : Integer.parseInt(page);
-	
-//			List<Item> itemList = itemService.getAllItems(pageNow);
-//			System.out.println("pageNow:" + pageNow);
-			//pageNow=1
+		if (map.size() != 0) {
 
 			List<Item> itemList = itemService.getItemByCompositeQuery(map, pageNow);
-			
-//			int count = 0 ;
-//			for(Item item : itemList) {
-//				count++;
-//				System.out.println("item:"+item);
-//			}
-			
-//			System.out.println("count:"+count);
-			System.out.println("==================itemPageQty:"+req.getSession().getAttribute("itemPageQty"));
-//			if (req.getSession().getAttribute("itemPageQty") == null) {
-//				int itemPageQty = itemService.getPageTotal();
-//				req.getSession().setAttribute("itemPageQty", itemPageQty);
-//				System.out.println("==itemPageQty:"+itemPageQty);
-//			}
-			
+			int total = itemService.getResultTotalCondition(map);
 
-//			req.setAttribute("itemList", itemList);
-//			req.setAttribute("pageNow", pageNow);
-//			System.out.println(itemList);
+			if (req.getAttribute("itemPageQty") == null) {
+				int pageQty = (int) (total % ITEM_PAGE_MAX_RESULT == 0 ? (total / ITEM_PAGE_MAX_RESULT)
+						: (total / ITEM_PAGE_MAX_RESULT + 1));
+				req.setAttribute("itemPageQty", pageQty);
+			}
+			req.setAttribute("pageNow", pageNow);
+			req.setAttribute("itemList", itemList);
 		} else {
-//			return "/TwoClothing/front_end/item/itemSellerSearch.jsp";
-		}
+			System.out.println("map.size()==0");
 
-//		RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/itemSellerListCompositeQuery.jsp");
-//		dispatcher.forward(req, res);
+		}
 		return "/front_end/item/itemSellerListCompositeQuery.jsp";
 	}
 }
-
-

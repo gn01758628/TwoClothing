@@ -1,8 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.*"%>
 <%@ page import="com.twoclothing.tonyhsieh.*"%>
 <%@ page import="com.twoclothing.model.employee.*"%>
-
+  <%
+	EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
+	List<Employee> list = employeeServiceImpl.getAllEmployees();
+    pageContext.setAttribute("list",list);
+	%>
 <html>
 <head>
 <title>Emp: Home</title>
@@ -62,33 +67,33 @@
     </FORM>
   </li>
 
-<%--   <jsp:useBean id="emp" scope="page" class="com.twoclothing.tonyhsieh.EmployeeServiceImpl" /> --%>
+
    
-<!--   <li> -->
-<!--      <FORM METHOD="post" ACTION="Employee.do" > -->
-<!--        <b>選擇員工編號:</b> -->
-<!--        <select size="1" name="empId"> -->
-<%--          <c:forEach var="employee" items="${employee.all}" >  --%>
-<%--           <option value="${employee.empId}">${employee.empId} --%>
-<%--          </c:forEach>    --%>
-<!--        </select> -->
-<!--        <input type="hidden" name="action" value="getOne_For_Display"> -->
-<!--        <input type="submit" value="送出"> -->
-<!--     </FORM> -->
-<!--   </li> -->
+  <li>
+     <FORM METHOD="post" ACTION="Employee.do" >
+       <b>選擇員工編號:</b>
+       <select size="1" name="empId">
+         <c:forEach var="employee" items="${list}" > 
+          <option value="${employee.empId}">${employee.empId}
+         </c:forEach>   
+       </select>
+       <input type="hidden" name="action" value="getOne_For_Display">
+       <input type="submit" value="送出">
+    </FORM>
+  </li>
   
-<!--   <li> -->
-<!--      <FORM METHOD="post" ACTION="Employee.do" > -->
-<!--        <b>選擇員工姓名:</b> -->
-<!--        <select size="1" name="empName"> -->
-<%--          <c:forEach var="employee" items="${employee.all}" >  --%>
-<%--           <option value="${employee.empId}">${employee.empName} --%>
-<%--          </c:forEach>    --%>
-<!--        </select> -->
-<!--        <input type="hidden" name="action" value="getOne_For_Display"> -->
-<!--        <input type="submit" value="送出"> -->
-<!--      </FORM> -->
-<!--   </li> -->
+  <li>
+     <FORM METHOD="post" ACTION="Employee.do" >
+       <b>選擇員工姓名:</b>
+       <select size="1" name="empId">
+         <c:forEach var="employee" items="${list}" > 
+          <option value="${employee.empId}">${employee.empName}
+         </c:forEach>   
+       </select>
+       <input type="hidden" name="action" value="getOne_For_Display">
+       <input type="submit" value="送出">
+     </FORM>
+  </li>
 </ul>
 
 
