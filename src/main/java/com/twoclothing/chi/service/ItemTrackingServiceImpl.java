@@ -1,5 +1,7 @@
 package com.twoclothing.chi.service;
 
+import java.util.List;
+
 import com.twoclothing.model.aproduct.itemtracking.ItemTracking;
 import com.twoclothing.model.aproduct.itemtracking.ItemTrackingDAO;
 import com.twoclothing.model.aproduct.itemtracking.ItemTrackingHibernateDAO;
@@ -10,6 +12,22 @@ public class ItemTrackingServiceImpl implements ItemTrackingService {
 
 	public ItemTrackingServiceImpl() {
 		dao = new ItemTrackingHibernateDAO(HibernateUtil.getSessionFactory());
+	}
+
+	@Override
+	public List<ItemTracking> getAllItemTracking(int currentPage) {
+		return dao.getAll(currentPage);
+	}
+
+	@Override
+	public List<ItemTracking> getAllByMbrId(Integer mbrId, int currentPage) {
+		return dao.getAllByMbrId(mbrId, currentPage);
+	}
+
+	@Override
+	public ItemTracking getByPrimaryKey(Integer itemId, Integer mbrId) {
+		ItemTracking itemTracking = dao.getByCompositeKey(itemId, mbrId);
+		return itemTracking;
 	}
 
 	@Override
@@ -31,8 +49,9 @@ public class ItemTrackingServiceImpl implements ItemTrackingService {
 	}
 
 	@Override
-	public ItemTracking getByPrimaryKey(Integer itemId, Integer mbrId) {
-		ItemTracking itemTracking = dao.getByCompositeKey(itemId, mbrId);
-		return itemTracking;
+	public int getPageTotal() {
+		long total = dao.getTotal();
+		int pageQty = (int) (total % 10 == 0 ? (total / 10) : (total / 10 + 1));
+		return pageQty;
 	}
 }

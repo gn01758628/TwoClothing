@@ -1,8 +1,11 @@
-package com.twoclothing.utils.test.generic;
+package com.twoclothing.utils.generic;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.persistence.Table;
 
 public class DAOSelector {
 
@@ -32,7 +35,13 @@ public class DAOSelector {
 	public static GenerciHibernateDAOImpl<?> getDAO(Class<?> entityType) {
 		GenerciHibernateDAOImpl<?> daoInstance = daoMap.get(entityType);
 		if (daoInstance == null) {
-			daoInstance = createAndStoreDAO(entityType);
+			Annotation[] annotations = entityType.getAnnotations();
+	        for (Annotation annotation : annotations) {
+	            if (Table.class.equals(annotation.annotationType())) {
+	            	return createAndStoreDAO(entityType);
+	            }
+	        }
+			System.out.println(entityType.getName()+"沒有關聯到資料庫不予受理");
 		}
 		return daoInstance;
 	}

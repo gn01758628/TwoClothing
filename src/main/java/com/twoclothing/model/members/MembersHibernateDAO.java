@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import com.twoclothing.utils.HibernateUtil;
@@ -68,10 +69,30 @@ public class MembersHibernateDAO implements MembersDAO {
 	}
 	
 	
-	@Override
-	public List<Members> getAllByEmail(String email) {
-		return getSession().createQuery("from Members where mbrname like :email", Members.class)
-				.setParameter("email", "%" + email + "%").list();
+//	@Override
+//	public Members getAllByEmail(String email) {
+//		return getSession().get(Members.class, email);
+//	}
+	
+	public Members getByEmail(String email) {
+	    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+	    Transaction transaction = null;
+	    Members member = null;
+
+	    try {
+	        transaction = session.beginTransaction();
+	        member = (Members) session.createQuery("FROM Members WHERE email = :email")
+	                .setParameter("email", email)
+	                .uniqueResult();
+	        transaction.commit();
+	    } catch (RuntimeException ex) {
+	        if (transaction != null) {
+	            transaction.rollback();
+	        }
+	        throw ex;
+	    }
+
+	    return member;
 	}
 
 	@Override

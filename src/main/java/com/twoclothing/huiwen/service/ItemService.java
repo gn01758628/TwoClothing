@@ -15,11 +15,13 @@ public interface ItemService {
 	
 	Item getItemByItemId(Integer itemId);
 	
-	List<Item> getItemByCompositeQuery(Map<String, String[]> map);
+	List<Item> getItemByCompositeQuery(Map<String, String[]> map, int pageNow);
 	
 	List<Item> getAllItems(int page);
 	
 	int getPageTotal();
+
+	List<Item> getAllItems();
 	
 	
 }
