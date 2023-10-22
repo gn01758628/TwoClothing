@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ItemImageDAO {
 	
-	 int insert(ItemImage imgId);
+	 int insert(ItemImage itemImage);
 
 	 ItemImage getByPrimaryKey(Integer imgId);
 

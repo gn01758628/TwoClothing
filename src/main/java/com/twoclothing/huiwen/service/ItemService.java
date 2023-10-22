@@ -3,6 +3,8 @@ package com.twoclothing.huiwen.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.TypedQuery;
+
 import com.twoclothing.model.aproduct.item.Item;
 
 public interface ItemService {
@@ -15,13 +17,12 @@ public interface ItemService {
 	
 	Item getItemByItemId(Integer itemId);
 	
-	List<Item> getItemByCompositeQuery(Map<String, String[]> map, int pageNow);
+	List<Item> getItemByCompositeQuery(Map<String, String[]> map, int page);
 	
 	List<Item> getAllItems(int page);
 	
 	int getPageTotal();
 
-	List<Item> getAllItems();
-	
+	int getResultTotalCondition(Map<String, String[]> map);
 	
 }
