@@ -67,7 +67,7 @@
 <!-- 	</ul> -->
 <%-- </c:if> --%>
 
-<FORM METHOD="post" ACTION="Employee.do" name="form1">
+<FORM METHOD="post" ACTION="Employee.do" name="form1" enctype="multipart/form-data">
 <table>
 	
 
@@ -100,6 +100,13 @@
 		<td>ª¬ºA:</td>
 		<td><input type="TEXT" name="empstatus" value="${param.EmpStatus}"   size="45"/></td> <td>${errorMsgs.comm}</td>
 	</tr>
+	<tr>
+		<td>¹Ï¤ù:</td>
+		<td><input class="form-control" type="file" id="image01" name="image01"  size="45"/>
+	   
+		</td>
+	</tr>
+	
 
 	<jsp:useBean id="EmployeeServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.EmployeeServiceImpl" />
 <!-- 	<tr> -->
