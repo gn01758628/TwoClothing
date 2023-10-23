@@ -65,7 +65,7 @@ public class BidItemFrontServlet extends HttpServlet {
             throws ServletException, IOException {
         List<CategoryTags> allCategoryTags = bidItemFrontService.getAllCategoryTags();
         request.setAttribute("categoryTags", allCategoryTags);
-        request.getRequestDispatcher("/front_end/biditem/addBid.jsp").forward(request, response);
+        request.getRequestDispatcher("/front_end/biditem/BidItemAdd.jsp").forward(request, response);
     }
 
     private void doSave(HttpServletRequest request, HttpServletResponse response)
