@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="">
-<title>ItemTracking all list</title>
+<title>ItemTracking</title>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
@@ -22,7 +22,7 @@
 			<th>紀錄時間</th>
 		</tr>
 		<tr>
-			<td><img src=""></td>
+			<td><img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${itemTracking.compositeKey.itemId}&position=1"></td>
 			<td>${itemTracking.compositeKey.itemId}</td>
 			<td>${itemTracking.compositeKey.mbrId}</td>
 			<td>${itemTracking.trackingTime}</td>
