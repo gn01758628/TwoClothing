@@ -19,9 +19,12 @@
 	.orderDetailItem{
 		border: 1px solid deeppink;
 	}
+	img{
+		max-width:250px;
+	}
 	</style>
 
-<title>全部訂單</title>
+<title>所有訂單</title>
 </head>
 <body>
 <main> 
@@ -54,7 +57,9 @@
 
     <!-- 输出 itemOrder 的属性 -->
     <div class="itemOrderDiv">
-        <p>訂單編號: ${itemOrder.orderId}</p>
+    	
+        <pre>賣家編號: ${itemOrder.sellMbrId}
+訂單編號: ${itemOrder.orderId}</pre>
     
 
 	    <!-- 迭代 orderDetailsList -->
@@ -62,10 +67,9 @@
 	        <c:forEach var="orderDetail" items="${orderDetailsList}">
 	            <!-- 输出 orderDetail 的属性 -->
 	            <div class="orderDetailItem">
-	            	<img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${orderDetail.compositeKey.itemId}&position=1" alt="商品的第一張圖片" class="img-fluid mx-auto">
-	                <p>商品編號 : ${orderDetail.compositeKey.itemId}</p>
-	                <p>數量 : ${orderDetail.quantity}</p>
-	                <p>價錢 : ${orderDetail.buyingPrice}</p>
+	            	<img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${orderDetail.compositeKey.itemId}&position=1" alt="商品的第一張圖片" class= "mx-auto">
+	                <pre>商品編號 : ${orderDetail.compositeKey.itemId}  數量 : ${orderDetail.quantity}  總價 : ${orderDetail.buyingPrice}</pre>
+	          
 	            </div>
 	        </c:forEach>
 	    </div>
