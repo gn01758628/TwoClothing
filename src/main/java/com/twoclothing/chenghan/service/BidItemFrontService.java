@@ -4,6 +4,7 @@ import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.abid.biditemimage.BidItemImage;
 import com.twoclothing.model.categorytags.CategoryTags;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 public interface BidItemFrontService {
@@ -14,6 +15,10 @@ public interface BidItemFrontService {
     int addBidItem(BidItem bidItem);
 
     void addBidItemImage(BidItemImage bidItemImage);
+
+    BidItem getBidItemByBidItemId(Integer bidItemId);
+
+    List<BidItem> getAllBidItemByMbrid(Integer mbrId);
 
     List<CategoryTags> getAllCategoryTags();
 

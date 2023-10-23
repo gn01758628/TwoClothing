@@ -19,9 +19,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 
 // @MultipartConfig
@@ -58,6 +56,10 @@ public class BidItemFrontServlet extends HttpServlet {
             doAdd(request, response);
         } else if ("/front/biditem/save".equals(servletPath)) {
             doSave(request, response);
+        } else if ("/front/biditem/list".equals(servletPath)) {
+            doList(request, response);
+        } else if ("/front/biditem/detail".equals(servletPath)) {
+            doDetail(request, response);
         }
     }
 
@@ -200,7 +202,7 @@ public class BidItemFrontServlet extends HttpServlet {
         if (image01 == null || image01.length == 0) errorMessages.add("每個商品都必須要有主圖片");
         if (image02 == null) errorMessages.add("請正確的選擇商品補充圖片");
 
-        // 如果錯誤訊系不為空則轉發回新增頁面
+        // 如果錯誤訊息不為空則轉發回新增頁面
         if (!errorMessages.isEmpty()) {
             request.getRequestDispatcher("/front/biditem/add").forward(request, response);
         }
@@ -258,6 +260,32 @@ public class BidItemFrontServlet extends HttpServlet {
             bidItemFrontService.addBidItemImage(bidItemImage02);
         }
 
-        response.sendRedirect(request.getContextPath() + "/front_end/biditem/bidmain.html");
+        response.sendRedirect(request.getContextPath() + "/front/biditem/list");
+    }
+
+    private void doList(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // TODO 會員編號先寫死,之後要從session取
+        Integer mbrId = 1;
+
+        List<BidItem> allBidItemByMbrid = bidItemFrontService.getAllBidItemByMbrid(mbrId);
+        request.setAttribute("allBidItemByMbrid", allBidItemByMbrid);
+        Map<Integer, String> statusMap = new HashMap<>();
+        statusMap.put(0, "待審核");
+        statusMap.put(1, "已過審");
+        statusMap.put(2, "得標");
+        statusMap.put(3, "流標");
+        request.setAttribute("statusMap", statusMap);
+        request.getRequestDispatcher("/front_end/biditem/BidItemPersonalList.jsp").forward(request, response);
+    }
+
+    private void doDetail(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String bidItemId = request.getParameter("bidItemId");
+        BidItem bidItem = bidItemFrontService.getBidItemByBidItemId(Integer.parseInt(bidItemId));
+        request.setAttribute("bidItem", bidItem);
+        request.getRequestDispatcher("/front_end/biditem/BidItemDetail.jsp").forward(request, response);
+
     }
 }

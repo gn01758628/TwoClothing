@@ -66,6 +66,7 @@
 		<th>員工姓名</th>
 		<th>員工部門</th>
 		<th>員工狀態</th>
+		<th>照片</th>
 	</tr>
 	<tr>
 			<td>${Employee.empId}</td>
@@ -74,7 +75,8 @@
 			<td>${Employee.phone}</td>
 			<td>${Employee.empName}</td>
 			<td>${Employee.deptId}</td>
-			<td>${Employee.empStatus}</td>  
+			<td>${Employee.empStatus}</td> 
+			<td><img src="${pageContext.request.contextPath}/ReadIMG?empId=${Employee.empId}" width=100px height=100px></td> 
 <%-- 		<td>${empVO.deptno}-[${empVO.deptVO.dname}]</td> --%>
 	</tr>
 </table>

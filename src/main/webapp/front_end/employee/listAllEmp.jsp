@@ -88,7 +88,8 @@
 			<td>${employee.deptId}</td>
 			<td>${employee.empStatus}</td>
 			<td>${employee.pswdHash}</td>
-			<td>${employee.avatar}</td>  
+			<td><img src="${pageContext.request.contextPath}/ReadIMG?empId=${employee.empId}" width=100px height=100px>
+			</td>  
 			
 <%-- 			<td>${employee.deptno}-[${empVO.deptVO.dname}]</td> --%>
 			<td>

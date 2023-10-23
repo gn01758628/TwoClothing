@@ -87,7 +87,7 @@
 <!-- 	</ul> -->
 <%-- </c:if> --%>
 
-<FORM METHOD="post" ACTION="Employee.do" name="form1">
+<FORM METHOD="post" ACTION="Employee.do" name="form1" enctype="multipart/form-data">
 <table>
     <tr>
 		<td>員工編號:<font color=red><b>*</b></font></td>
@@ -123,11 +123,8 @@
 	</tr>
 	<tr>
 		<td>圖片:</td>
-		<td><input type="TEXT" name="avatar"  value="${param.avatar}"  size="45"/>
-			<div id="preview">
-		   	 <span class="text">預覽圖</span>
-		      </div>
-		     <input type="file" id="p_file">
+		<td><input class="form-control" type="file" id="image01" name="image01"  size="45"/>
+	   
 		</td>
 	</tr>
 	
