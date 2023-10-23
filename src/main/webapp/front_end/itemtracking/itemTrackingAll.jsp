@@ -15,8 +15,6 @@
 </head>
 <body>
 	<h1>商品追蹤清單</h1>
-	
-	<p>当前页码: ${currentPage}</p>
 
 	<c:if test="${itemTrackingPageQty > 0}">
 		<b><font color=red>第${currentPage}/${itemTrackingPageQty}頁</font></b>

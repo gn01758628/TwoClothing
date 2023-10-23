@@ -38,6 +38,16 @@ public class BidItemFrontServiceImpl implements BidItemFrontService {
     }
 
     @Override
+    public BidItem getBidItemByBidItemId(Integer bidItemId) {
+        return bidItemDAO.getByPrimaryKey(bidItemId);
+    }
+
+    @Override
+    public List<BidItem> getAllBidItemByMbrid(Integer mbrId) {
+        return bidItemDAO.getAllByMbrId(mbrId);
+    }
+
+    @Override
     public List<CategoryTags> getAllCategoryTags() {
         return categoryTagsDAO.getAll();
     }

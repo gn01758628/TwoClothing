@@ -368,7 +368,7 @@ public class MembersServlet extends HttpServlet {
 
 			    // 构建错误消息的JSON响应
 			    
-			   
+			    //==ajax
 			    response.put("errors", errorMsgs);
 
 			    // 设置响应类型和字符编码
@@ -378,6 +378,7 @@ public class MembersServlet extends HttpServlet {
 			    
 			    out.write(new Gson().toJson(response)); // 使用Gson库将Map转换为JSON字符串
 			    out.close();
+			    //==ajax
 			}
 			
 		
