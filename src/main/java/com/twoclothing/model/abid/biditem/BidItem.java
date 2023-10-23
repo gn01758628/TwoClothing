@@ -17,10 +17,10 @@ public class BidItem implements Serializable {
     private String bidName;
 
     @Column(name = "grade", nullable = false, columnDefinition = "TINYINT")
-    private String grade;
+    private Integer grade;
 
     @Column(name = "size", columnDefinition = "TINYINT")
-    private String size;
+    private Integer size;
 
     @Column(name = "detail", nullable = false)
     private String detail;
@@ -34,19 +34,19 @@ public class BidItem implements Serializable {
     @Column(name = "startprice", nullable = false)
     private Integer startPrice;
 
-    @Column(name = "reserveprice", nullable = false)
+    @Column(name = "reserveprice")
     private Integer reservePrice;
 
-    @Column(name = "directprice", nullable = false)
+    @Column(name = "directprice")
     private Integer directPrice;
 
     @Column(name = "bidstatus", insertable = false, nullable = false, columnDefinition = "TINYINT")
     private Integer bidStatus = 0;
 
-    @Column(name = "starttime", nullable = false)
+    @Column(name = "starttime")
     private Timestamp startTime;
 
-    @Column(name = "endtime", nullable = false)
+    @Column(name = "endtime")
     private Timestamp endTime;
 
     @Column(name = "empid", insertable = false)
@@ -55,7 +55,7 @@ public class BidItem implements Serializable {
     public BidItem() {
     }
 
-    public BidItem(Integer bidItemId, String bidName, String grade, String size, String detail, Integer tagId, Integer mbrId, Integer startPrice, Integer reservePrice, Integer directPrice, Integer bidStatus, Timestamp startTime, Timestamp endTime, Integer empId) {
+    public BidItem(String bidName, Integer grade, Integer size, String detail, Integer tagId, Integer mbrId, Integer startPrice, Integer reservePrice, Integer directPrice, Integer bidStatus, Timestamp startTime, Timestamp endTime, Integer empId) {
         this.bidName = bidName;
         this.grade = grade;
         this.size = size;
@@ -76,8 +76,8 @@ public class BidItem implements Serializable {
         return "BidItem{" +
                 "bidItemId=" + bidItemId +
                 ", bidName='" + bidName + '\'' +
-                ", grade='" + grade + '\'' +
-                ", size='" + size + '\'' +
+                ", grade=" + grade +
+                ", size=" + size +
                 ", detail='" + detail + '\'' +
                 ", tagId=" + tagId +
                 ", mbrId=" + mbrId +
@@ -120,19 +120,19 @@ public class BidItem implements Serializable {
         this.bidName = bidName;
     }
 
-    public String getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(String grade) {
+    public void setGrade(Integer grade) {
         this.grade = grade;
     }
 
-    public String getSize() {
+    public Integer getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(Integer size) {
         this.size = size;
     }
 

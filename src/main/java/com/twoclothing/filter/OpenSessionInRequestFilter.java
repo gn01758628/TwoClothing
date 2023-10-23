@@ -26,6 +26,7 @@ public class OpenSessionInRequestFilter implements Filter {
             System.out.println("Session Commit");
         } catch (Exception e) {
             sessionFactory.getCurrentSession().getTransaction().rollback();
+            e.printStackTrace();
             filterChain.doFilter(servletRequest, servletResponse);
         }
     }

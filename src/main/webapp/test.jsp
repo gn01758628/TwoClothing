@@ -16,22 +16,22 @@
 <div class="container">
     <div class="row">
         <div class="col-2">
-            <img src="ReadItemIMG/biditem" alt="描述圖片的文字" class="img-fluid mx-auto">
+            <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=1&position=1" alt="競標商品編號1的第一張圖片" class="img-fluid mx-auto">
         </div>
         <div class="col-2">
-            <img src="ReadItemIMG/biditem?id=1&position=3" alt="描述圖片的文字" class="img-fluid mx-auto">
+            <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=1&position=2" alt="競標商品編號1的第二張圖片" class="img-fluid mx-auto">
         </div>
         <div class="col-2">
-            <img src="ReadItemIMG/biditem" alt="描述圖片的文字" class="img-fluid mx-auto">
+            <img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=1&position=1" alt="一般商品編號1的第一張圖片" class="img-fluid mx-auto">
         </div>
         <div class="col-2">
-            <img src="ReadItemIMG/item?id=1&position=1" alt="描述圖片的文字" class="img-fluid mx-auto">
+            <img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=1&position=2" alt="一般商品編號1的第二張圖片" class="img-fluid mx-auto">
         </div>
         <div class="col-2">
-            <img src="ReadItemIMG/item?id=1&position=2" alt="描述圖片的文字" class="img-fluid mx-auto">
+            <img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=99&position=2" alt="找不到圖片" class="img-fluid mx-auto">
         </div>
         <div class="col-2">
-            <img src="ReadItemIMG/item" alt="描述圖片的文字" class="img-fluid mx-auto">
+            <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem" alt="沒有參數" class="img-fluid mx-auto">
         </div>
     </div>
 </div>

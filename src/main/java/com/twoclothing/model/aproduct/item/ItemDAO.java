@@ -3,6 +3,8 @@ package com.twoclothing.model.aproduct.item;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.TypedQuery;
+
 
 public interface ItemDAO {
 	
@@ -10,7 +12,7 @@ public interface ItemDAO {
 
 	 public Item getByPrimaryKey(Integer itemId);
 
-	 public List<Item> getAll();
+//	 public List<Item> getAll();
 	 
 	 public List<Item> getAll(int page);
 
@@ -22,7 +24,10 @@ public interface ItemDAO {
 
 	 public int update(Item item);
 
-	 public List<Item> getByCompositeQuery(Map<String, String> map, int page);
-
 	 public long getTotal();
+
+	 List<Item> getByCompositeQuery(Map<String, String> map, int page);
+
+	 public int getResultTotal(Map<String, String> map);
+	
 }

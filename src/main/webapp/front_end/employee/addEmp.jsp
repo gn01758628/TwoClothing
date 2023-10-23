@@ -70,12 +70,18 @@
 <FORM METHOD="post" ACTION="Employee.do" name="form1">
 <table>
 	
-	
-	
-	
+
+	<tr>
+		<td>部門ID:</td>
+		<td><input type="TEXT" name="deptid" value="${param.deptId}" size="45"/></td> <td>${errorMsgs.deptid}</td>
+	</tr>
 	<tr>
 		<td>員工姓名:</td>
-		<td><input type="TEXT" name="empname" value="${param.empName}" size="45"/></td> <td>${errorMsgs.empName}</td>
+		<td><input type="TEXT" name="empname" value="${param.empName}" size="45"/></td> <td>${errorMsgs.empname}</td>
+	</tr>
+	<tr>
+		<td>電話:</td>
+		<td><input type="TEXT" name="phone"   value="${param.phone}"   size="45"/></td> <td>${errorMsgs.phone}</td>
 	</tr>
 	<tr>
 		<td>地址:</td>
@@ -83,15 +89,16 @@
 	</tr>
 	<tr>
 		<td>EMAIL:</td>
-		<td><input name="email" id="email" type="text" ></td> <td>${errorMsgs.email}</td>
+		<td><input type="TEXT" name="email"   value="${param.email}"   size="45"/></td> <td>${errorMsgs.email}</td>
 	</tr>
 	<tr>
-		<td>電話:</td>
-		<td><input type="TEXT" name="phone"   value="${param.phone}"   size="45"/></td> <td>${errorMsgs.sal}</td>
+		<td>密碼:</td>
+		<td><input type="TEXT" name="pswdhash"   value="${param.pswdHash}"   size="45"/></td> 
 	</tr>
+	
 	<tr>
-		<td>姓名:</td>
-		<td><input type="TEXT" name="empName" value="${param.empName}"   size="45"/></td> <td>${errorMsgs.comm}</td>
+		<td>狀態:</td>
+		<td><input type="TEXT" name="empstatus" value="${param.EmpStatus}"   size="45"/></td> <td>${errorMsgs.comm}</td>
 	</tr>
 
 	<jsp:useBean id="EmployeeServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.EmployeeServiceImpl" />

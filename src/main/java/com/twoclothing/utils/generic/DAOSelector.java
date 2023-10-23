@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 public class DAOSelector {
 
-	private static final Map<Class<?>, GenerciHibernateDAOImpl<?>> daoMap = new HashMap<>();
+	private static final Map<Class<?>, GenericDAO<?>> daoMap = new HashMap<>();
 
 	private static final DAOSelector instance = new DAOSelector();
 
@@ -25,15 +25,15 @@ public class DAOSelector {
 	// 印出當前Map中存放的類別及對應的DAO物件
 	public static void printDaoMap() {
 		System.out.println("DAO Map Contents:");
-		for (Map.Entry<Class<?>, GenerciHibernateDAOImpl<?>> entry : daoMap.entrySet()) {
+		for (Map.Entry<Class<?>, GenericDAO<?>> entry : daoMap.entrySet()) {
 			Class<?> entityType = entry.getKey();
-			GenerciHibernateDAOImpl<?> daoInstance = entry.getValue();
+			GenericDAO<?> daoInstance = entry.getValue();
 			System.out.println("Entity Type: " + entityType.getSimpleName() + ", DAO Instance: " + daoInstance);
 		}
 	}
 
-	public static GenerciHibernateDAOImpl<?> getDAO(Class<?> entityType) {
-		GenerciHibernateDAOImpl<?> daoInstance = daoMap.get(entityType);
+	public static GenericDAO<?> getDAO(Class<?> entityType) {
+		GenericDAO<?> daoInstance = daoMap.get(entityType);
 		if (daoInstance == null) {
 			Annotation[] annotations = entityType.getAnnotations();
 	        for (Annotation annotation : annotations) {
@@ -47,13 +47,13 @@ public class DAOSelector {
 	}
 
 	// 以下方法不開放調用
-	private static GenerciHibernateDAOImpl<?> createAndStoreDAO(Class<?> entityType) {
-		String daoClassName = GenerciHibernateDAOImpl.class.getName();
+	private static GenericDAO<?> createAndStoreDAO(Class<?> entityType) {
+		String daoClassName = GenericHibernateDAOImpl.class.getName();
 		try {
 			@SuppressWarnings("unchecked")
-			Class<GenerciHibernateDAOImpl<?>> daoClass = (Class<GenerciHibernateDAOImpl<?>>) Class.forName(daoClassName);
-			Constructor<GenerciHibernateDAOImpl<?>> constructor = daoClass.getConstructor(Class.class);
-			GenerciHibernateDAOImpl<?> daoInstance = constructor.newInstance(entityType);
+			Class<GenericDAO<?>> daoClass = (Class<GenericDAO<?>>) Class.forName(daoClassName);
+			Constructor<GenericDAO<?>> constructor = daoClass.getConstructor(Class.class);
+			GenericDAO<?> daoInstance = constructor.newInstance(entityType);
 			daoMap.put(entityType, daoInstance);
 			return daoInstance;
 		} catch (Exception e) {

@@ -2,6 +2,7 @@ package com.twoclothing.chi.controller;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -66,50 +67,52 @@ public class ItemTrackingServlet extends HttpServlet {
 	}
 
 	private String getAllItemTracking(HttpServletRequest req, HttpServletResponse res) {
+		int mbrId = -1;
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 		List<ItemTracking> itemTrackingList = itemTrackingService.getAllItemTracking(currentPage);
 
-		if (req.getSession().getAttribute("itemTrackingPageQty") == null) {
-			int itemTrackingPageQty = itemTrackingService.getPageTotal();
-			req.getSession().setAttribute("itemTrackingPageQty", itemTrackingPageQty);
-		}
+		int itemTrackingPageQty = itemTrackingService.getPageTotal(mbrId);
+		req.getSession().setAttribute("itemTrackingPageQty", itemTrackingPageQty);
 
 		req.setAttribute("itemTrackingList", itemTrackingList);
 		req.setAttribute("currentPage", currentPage);
-		
+
 		return "/front_end/itemtracking/itemTrackingAll.jsp";
 	}
 
 	private String getAllByMbrId(HttpServletRequest req, HttpServletResponse res) {
 		String mbrIdString = req.getParameter("mbrId");
+		int mbrId = 0;
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+		List<ItemTracking> itemTrackingList = new ArrayList<ItemTracking>();
 		List<String> errorMsgs = new LinkedList<String>();
 		if (mbrIdString == null || mbrIdString.trim().isEmpty()) {
 			errorMsgs.add("會員編號未填寫");
 		} else {
 			try {
-				Integer.parseInt(mbrIdString);
+				mbrId = Integer.parseInt(mbrIdString);
+				itemTrackingList = itemTrackingService.getAllByMbrId(mbrId, currentPage);
+				if (itemTrackingList.size() == 0) {
+					errorMsgs.add("查無資料");
+				}
 			} catch (NumberFormatException e) {
 				errorMsgs.add("會員編號應填數字");
 			}
-		}
-		
-		List<ItemTracking> itemTrackingList = itemTrackingService.getAllByMbrId(Integer.valueOf(mbrIdString), currentPage);
-		
-		if (itemTrackingList.size() == 0) {
-			errorMsgs.add("查無資料");
 		}
 
 		if (!errorMsgs.isEmpty()) {
 			req.setAttribute("errorMsgs", errorMsgs);
 			return "/front_end/itemtracking/itemTrackingIndex.jsp";
 		}
-		
+
+		int itemTrackingPageQty = itemTrackingService.getPageTotal(mbrId);
+		req.getSession().setAttribute("itemTrackingPageQty", itemTrackingPageQty);
+
 		req.setAttribute("itemTrackingList", itemTrackingList);
 		req.setAttribute("currentPage", currentPage);
-		
+
 		return "/front_end/itemtracking/itemTrackingAll.jsp";
 	}
 
@@ -118,35 +121,55 @@ public class ItemTrackingServlet extends HttpServlet {
 		String itemIdString = req.getParameter("itemId");
 		String mbrIdString = req.getParameter("mbrId");
 		ItemTracking itemTracking = new ItemTracking();
-		itemTracking = itemTrackingService.getByPrimaryKey(Integer.valueOf(itemIdString), Integer.valueOf(mbrIdString));
-		
+		if (errorMsgs.isEmpty()) {
+			try {
+				int itemId = Integer.parseInt(itemIdString);
+				int mbrId = Integer.parseInt(mbrIdString);
+				itemTracking = itemTrackingService.getByPrimaryKey(itemId, mbrId);
+			} catch (NumberFormatException e) {
+			}
+		}
+
 		if (itemTracking == null) {
 			errorMsgs.add("查無資料");
 		}
-		
+
 		if (!errorMsgs.isEmpty()) {
 			return "/front_end/itemtracking/itemTrackingIndex.jsp";
 		}
-		
+
 		req.setAttribute("itemTracking", itemTracking);
-		
+
 		return "/front_end/itemtracking/itemTracking.jsp";
 	}
 
 	private String addItemTracking(HttpServletRequest req, HttpServletResponse res) {
 		List<String> errorMsgs = checkinEerror(req, res);
+		String itemIdString = req.getParameter("itemId");
+		String mbrIdString = req.getParameter("mbrId");
+		ItemTracking itemTracking = new ItemTracking();
+
+		if (errorMsgs.isEmpty()) {
+			try {
+				int itemId = Integer.parseInt(itemIdString);
+				int mbrId = Integer.parseInt(mbrIdString);
+				itemTracking.setCompositeKey(new ItemTracking.CompositeDetail(itemId, mbrId));
+				Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+				itemTracking.setTrackingTime(currentTime);
+			} catch (NumberFormatException e) {
+			}
+		}
+
+		if (itemTrackingService.isExists(itemTracking)) {
+			errorMsgs.add("已有該筆資料");
+		}
+
 		if (!errorMsgs.isEmpty()) {
 			return "/front_end/itemtracking/itemTrackingIndex.jsp";
 		}
 
-		String itemIdString = req.getParameter("itemId");
-		String mbrIdString = req.getParameter("mbrId");
-		ItemTracking itemTracking = new ItemTracking();
-		itemTracking.setCompositeKey(new ItemTracking.CompositeDetail(Integer.valueOf(itemIdString), Integer.valueOf(mbrIdString)));
-		Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-		itemTracking.setTrackingTime(currentTime);
 		req.setAttribute("itemTracking", itemTrackingService.addItemTracking(itemTracking));
-		
+
 		return "/front_end/itemtracking/itemTracking.jsp";
 	}
 
@@ -160,9 +183,9 @@ public class ItemTrackingServlet extends HttpServlet {
 		String mbrIdString = req.getParameter("mbrId");
 		if (itemTrackingService.deleteItemTracking(Integer.valueOf(itemIdString), Integer.valueOf(mbrIdString)) == 1) {
 			return "/front_end/itemtracking/itemTrackingDeleteSuccess.jsp";
+		} else {
+			return "/front_end/itemtracking/itemTrackingDeleteFail.jsp";
 		}
-		
-		return "/front_end/itemtracking/itemTrackingIndex.jsp";
 	}
 
 	List<String> checkinEerror(HttpServletRequest req, HttpServletResponse res) {

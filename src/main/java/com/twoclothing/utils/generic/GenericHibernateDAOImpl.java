@@ -18,7 +18,7 @@ import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
 
-public class GenerciHibernateDAOImpl<T> implements GenericDAO<T> {
+public class GenericHibernateDAOImpl<T> implements GenericDAO<T> {
 	private final Class<T> type;
 	private final String className;
 	private final Field[] fields;
@@ -26,16 +26,16 @@ public class GenerciHibernateDAOImpl<T> implements GenericDAO<T> {
 	private final Map<String, Class<?>> fieldMap = new HashMap<>();
 	private final Map<String, String> PKMap = new LinkedHashMap<>();
 
-	public GenerciHibernateDAOImpl(Class<T> type) {
+	public GenericHibernateDAOImpl(Class<T> type) {
 		this.type = type;
 		this.className = type.getSimpleName();
 		fields = type.getDeclaredFields();
 		initializeFieldMap();
 		this.tableName = initializeTableName();
-
+		
 	}
 
-	public GenerciHibernateDAOImpl(Class<T> type, SessionFactory factory) {
+	public GenericHibernateDAOImpl(Class<T> type, SessionFactory factory) {
 		this.type = type;
 		this.className = type.getSimpleName();
 		fields = type.getDeclaredFields();
@@ -134,18 +134,24 @@ public class GenerciHibernateDAOImpl<T> implements GenericDAO<T> {
 	public List<T> getBy(String fieldName,Serializable value){
 		Class<?> fieldType = fieldMap.get(fieldName);
 		String hql;
-		
+		String alias;
+		if (fieldName.contains(".")) {
+		    int dotIndex = fieldName.indexOf(".");
+		    alias = fieldName.substring(dotIndex + 1);
+		} else {
+			alias = fieldName;
+		}
 		if (fieldType != null && fieldType.isAssignableFrom(String.class)) {
 		    // 如果 fieldType 是 String 或者 String 的子類
-			hql = "from "+className+" where "+fieldName+" like :"+fieldName;
+			hql = "from "+className+" where "+fieldName+" like :"+alias;
 		} else {
 		    // 如果 fieldType 不是 String 或者為 null
-			hql = "from "+className+" where "+fieldName+" = :"+fieldName;
+			hql = "from "+className+" where "+fieldName+" = :"+alias;
 		}
 		System.out.println(hql);
 		
 		Query query = getSession().createQuery(hql);
-		query.setParameter(fieldName,value);
+		query.setParameter(alias,value);
 		return query.getResultList();
 	}
 	
