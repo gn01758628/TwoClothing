@@ -37,7 +37,7 @@ public class ItemOrder implements Serializable {
 	@Column(name="sellerratingdesc")
 	private String sellerRatingDesc;
 	
-	@Column(name="orderdate")
+	@Column(name="orderdate",updatable = false )
 	private Timestamp orderDate;
 	
 	@Column(name="paytype", columnDefinition = "TINYINT")
