@@ -187,11 +187,16 @@ public class MembersServlet extends HttpServlet {
 		    /***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 		    String email = req.getParameter("email");
 		    String pswdHash = req.getParameter("pswdHash");
-
+		    String userInputCode = req.getParameter("VerificationCode");
+		    HttpSession session = req.getSession();
+		    String sessionCode = (String) session.getAttribute("randStr");
 		    MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 		    Members members = membersServiceImpl.getByEmail(email);
 
 		    if (members == null || !members.getEmail().equals(email)) {
+		    	
+		        if (userInputCode != null && sessionCode != null && userInputCode.equals(sessionCode)) {
+
 		        /***************************2.開始新增資料***************************************/
 		        // MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 		        membersServiceImpl.addMembers(email, pswdHash);
@@ -202,14 +207,24 @@ public class MembersServlet extends HttpServlet {
 		        successView.forward(req, res);
 
 		        success = true;
+		        
+		         }else {
+				       
+				        errors.put("sessionCode", "驗證碼錯誤");
+				        
+				       
+				      
+				    }
+//圖像驗證		       
 		    } else {
 		       
 		        errors.put("email", "用户已存在");
 		        
-		        // 创建一个JSON响应
+		       
 		      
 		    }
 		    response.put("errors", errors);
+		    
 		    response.put("success", success);
 		    // 设置JSON响应的Content-Type
 		    res.setContentType("application/json");
@@ -242,7 +257,7 @@ public class MembersServlet extends HttpServlet {
 			    // 接收请求参数
 			    String email = req.getParameter("email2");
 			    String pswdHash = req.getParameter("pswdHash2");
-			    String contextPath = req.getContextPath();
+//			    String contextPath = req.getContextPath();
 
 			    // 创建 JSON 响应
 			    Map<String, Object> response = new HashMap<>();
@@ -289,7 +304,19 @@ public class MembersServlet extends HttpServlet {
 			    out.write(new Gson().toJson(response));
 			    out.close();
 			}
+			/***********************登出*************************/
+			/***********************登出*************************/
+			/***********************登出*************************/
+			/***********************登出*************************/
+			/***********************登出*************************/
+			
+			if("logout".equals(action)) {
+				HttpSession  session = req.getSession();
+				session.removeAttribute("user");
+				res.sendRedirect(req.getContextPath() + "/index.jsp");
 
+
+			}
 			
 		
 	}
