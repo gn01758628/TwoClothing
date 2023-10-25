@@ -13,7 +13,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!--====圖片驗證點擊刷新===================				 -->
-<script type="text/javascript">
+	<script type="text/javascript">
         function refresh() {
             var imgValidate = document.getElementById("imgValidate");
             var currentSrc = imgValidate.src;
