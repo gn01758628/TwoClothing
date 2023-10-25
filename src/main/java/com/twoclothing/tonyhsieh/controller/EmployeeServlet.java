@@ -1,4 +1,4 @@
-package com.twoclothing.tonyhsieh;
+package com.twoclothing.tonyhsieh.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import com.twoclothing.model.employee.Employee;
+import com.twoclothing.tonyhsieh.service.EmployeeService;
+import com.twoclothing.tonyhsieh.service.EmployeeServiceImpl;
 
 @WebServlet("/front_end/employee/Employee.do")
 @MultipartConfig(fileSizeThreshold = 1024*1024, maxFileSize = 5*1024*1024,maxRequestSize =5*5*1024*1024 )
@@ -170,7 +172,7 @@ public class EmployeeServlet extends HttpServlet {
 				} catch (NumberFormatException e) {
 					errorMsgs.put("empstatus","狀態請填數字");
 				}
-				
+						
 			      Part image = null;
 		            try {
 		                Collection<Part> parts = req.getParts();
@@ -180,19 +182,22 @@ public class EmployeeServlet extends HttpServlet {
 		            } catch (IllegalArgumentException e){
 		                e.printStackTrace();
 		            }
+		            EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
 		            byte[] avatar = null;
-		            if(image != null){
+		            int length = image.getInputStream().available() ;
+		            if(length != 0){
 		                try (InputStream inputStream = image.getInputStream()){
 		                	avatar = inputStream.readAllBytes();
 		                    inputStream.close();
 		                } catch (IOException e){
 		                    e.printStackTrace();
 		                }
+		            }else {
+		            	avatar=employeeServiceImpl.getEmployeeById(empid).getAvatar();
 		            }
-				
-				
-//		
-//		        byte[] avatar = image01;
+		            
+		       
+	   
 //				Double sal = null;
 //				try {
 //					sal = Double.valueOf(req.getParameter("sal").trim());
@@ -211,7 +216,7 @@ public class EmployeeServlet extends HttpServlet {
 				}
 				
 				/***************************2.開始修改資料*****************************************/
-				EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
+				
 				Employee employee = employeeServiceImpl.updateEmployee(empid, deptid, empname, phone, address, email, pswdhash, empstatus,avatar);
 								
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/

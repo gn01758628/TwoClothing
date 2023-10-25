@@ -1,0 +1,46 @@
+body {
+    margin-top: 130px;
+}
+
+#scroll-progress {
+    height: 3px;
+    background-color: #ee90aa;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    z-index: 9999;
+    transition: width 0.1s;
+}
+
+#nav-top {
+    background-color: #fff8fb;
+}
+
+#brand-icon {
+    width: 120px;
+    transition: transform 0.3s;
+}
+
+#brand-icon:hover {
+    transform: scale(1.3);
+}
+
+
+#navbarNav a {
+    color: #561729;
+}
+
+#navbarNav a:hover {
+    color: #00302e;
+}
+
+#search-button {
+    background-color: #561729;
+    color: #fff8fb;
+}
+
+#search-button:hover {
+    background-color: #76d3d3;
+    color: #00302e;
+}

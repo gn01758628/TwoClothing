@@ -2,14 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.twoclothing.tonyhsieh.service.*"%>
-<%@ page import="com.twoclothing.model.employee.*"%>
+<%@ page import="com.twoclothing.model.department.*"%>
 <%-- 此頁練習採用 EL 的寫法取值 --%>
 
-<%
-	EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-	List<Employee> list = employeeServiceImpl.getAllEmployees();
+  <%
+ 	DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
+   	List<Department> list = departmentServiceImpl.getAllDepartment();
     pageContext.setAttribute("list",list);
-%>
+	%>
 
 
 <html>
@@ -65,43 +65,28 @@
 
 <table>
 	<tr>
-		<th>員工編號</th>
-		<th>員工地址</th>
-		<th>員工EMAIL</th>
-		<th>員工電話</th>
-		<th>員工姓名</th>
-		<th>員工部門</th>
-		<th>員工狀態</th>
-		<th>員工密碼</th>
-		<th>員工圖片</th>
+		<th>部門編號</th>
+		<th>部門名稱</th>
+	
 		
 	</tr>
 	<%@ include file="page1.file" %> 
-	<c:forEach var="employee" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+	<c:forEach var="department" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 		
 		<tr>
-			<td>${employee.empId}</td>
-			<td>${employee.address}</td>
-			<td>${employee.email}</td>
-			<td>${employee.phone}</td>
-			<td>${employee.empName}</td>
-			<td>${employee.deptId}</td>
-			<td>${employee.empStatus}</td>
-			<td>${employee.pswdHash}</td>
-			<td><img src="${pageContext.request.contextPath}/ReadIMG?empId=${employee.empId}" width=100px height=100px>
-			</td>  
-			
-<%-- 			<td>${employee.deptno}-[${empVO.deptVO.dname}]</td> --%>
-			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/front_end/employee/Employee.do" style="margin-bottom: 0px;">
+			<td>${department.deptId}</td>
+			<td>${department.deptName}</td>
+
+		<td>
+			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/department/Department.do" style="margin-bottom: 0px;">
 			     <input type="submit" value="修改">
-			     <input type="hidden" name="empId"  value="${employee.empId}">
+			     <input type="hidden" name="deptId"  value="${department.deptId}">
 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
 			</td>
 			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/front_end/employee/Employee.do" style="margin-bottom: 0px;">
+			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/department/Department.do" style="margin-bottom: 0px;">
 			     <input type="submit" value="刪除">
-			     <input type="hidden" name="empId"  value="${employee.empId}">
+			     <input type="hidden" name="deptId"  value="${department.deptId}">
 			     <input type="hidden" name="action" value="delete"></FORM>
 			</td>
 		</tr>
