@@ -2,10 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.twoclothing.tonyhsieh.service.*"%>
-<%@ page import="com.twoclothing.model.employee.*"%>
+<%@ page import="com.twoclothing.model.department.*"%>
   <%
-	EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-	List<Employee> list = employeeServiceImpl.getAllEmployees();
+ 	DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
+   	List<Department> list = departmentServiceImpl.getAllDepartment();
     pageContext.setAttribute("list",list);
 	%>
 <html>
@@ -59,9 +59,9 @@
   
   
   <li>
-    <FORM METHOD="post" ACTION="Employee.do" >
-        <b>輸入員工編號 (如1,2,3,4...):</b>
-        <input type="text" name="empId" value="${param.empId}"><font color=red>${errorMsgs.empId}</font>
+    <FORM METHOD="post" ACTION="Department.do" >
+        <b>輸入部門編號 (如1,2,3,4...):</b>
+        <input type="text" name="deptId" value="${param.deptId}"><font color=red>${errorMsgs.deptId}</font>
         <input type="hidden" name="action" value="getOne_For_Display">
         <input type="submit" value="送出">
     </FORM>
@@ -70,11 +70,11 @@
 
    
   <li>
-     <FORM METHOD="post" ACTION="Employee.do" >
-       <b>選擇員工編號:</b>
-       <select size="1" name="empId">
-         <c:forEach var="employee" items="${list}" > 
-          <option value="${employee.empId}">${employee.empId}
+     <FORM METHOD="post" ACTION="Department.do" >
+       <b>選擇部門編號:</b>
+       <select size="1" name="deptId">
+         <c:forEach var="department" items="${list}" > 
+          <option value="${department.deptId}">${department.deptId}
          </c:forEach>   
        </select>
        <input type="hidden" name="action" value="getOne_For_Display">
@@ -82,22 +82,10 @@
     </FORM>
   </li>
   
-  <li>
-     <FORM METHOD="post" ACTION="Employee.do" >
-       <b>選擇員工姓名:</b>
-       <select size="1" name="empId">
-         <c:forEach var="employee" items="${list}" > 
-          <option value="${employee.empId}">${employee.empName}
-         </c:forEach>   
-       </select>
-       <input type="hidden" name="action" value="getOne_For_Display">
-       <input type="submit" value="送出">
-     </FORM>
-  </li>
 </ul>
 
 
-<h3>員工管理</h3>
+<h3>部門管理</h3>
 
 <ul>
   <li><a href='addEmp.jsp'>Add</a> a new Emp.</li>

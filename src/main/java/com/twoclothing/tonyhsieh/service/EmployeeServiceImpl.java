@@ -1,4 +1,4 @@
-package com.twoclothing.tonyhsieh;
+package com.twoclothing.tonyhsieh.service;
 
 
 import java.util.List;
@@ -34,9 +34,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 
-
-
-
 	@Override
 	public Employee getEmployeeById(Integer empId) {
 		// TODO Auto-generated method stub
@@ -50,7 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 
-	public Employee addEmployee(Integer deptId,String empName,String phone,String address,String email,String pswdHash, Integer empStatus) {
+	public Employee addEmployee(Integer deptId,String empName,String phone,String address,String email,String pswdHash, Integer empStatus,byte[] avatar) {
 		// TODO Auto-generated method stub
 		
 		Employee employee = new Employee();
@@ -61,14 +58,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employee.setEmail(email);
 		employee.setPswdHash(pswdHash);
 		employee.setEmpStatus(empStatus);
-//		employee.setAvatar(null);
+		employee.setAvatar(avatar);
 		employeeDAO.addEmployee(employee);
 	
 		return employee;
 	
 	}
 	
-	public	Employee updateEmployee(Integer empId,Integer deptId,String empName,String phone,String address,String email,String pswdHash, Integer empStatus) {
+	public	Employee updateEmployee(Integer empId,Integer deptId,String empName,String phone,String address,String email,String pswdHash, Integer empStatus,byte[] avatar) {
 		// TODO Auto-generated method stub
 		Employee employee = new Employee();	
 		employee.setEmpId(empId);
@@ -79,6 +76,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employee.setEmail(email);
 		employee.setPswdHash(pswdHash);
 		employee.setEmpStatus(empStatus);
+		employee.setAvatar(avatar);
 		employeeDAO.updateEmployee(employee);
 		return employee;
 	}

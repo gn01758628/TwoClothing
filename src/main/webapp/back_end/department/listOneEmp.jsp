@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.twoclothing.tonyhsieh.service.*"%>
-<%@ page import="com.twoclothing.model.employee.*"%>
+<%@ page import="com.twoclothing.model.department.*"%>
 
 <%-- 此頁暫練習採用 Script 的寫法取值 --%>
 
@@ -59,25 +59,14 @@
 
 <table>
 	<tr>
-		<th>員工編號</th>
-		<th>員工地址</th>
-		<th>員工EMAIL</th>
-		<th>員工電話</th>
-		<th>員工姓名</th>
-		<th>員工部門</th>
-		<th>員工狀態</th>
-		<th>照片</th>
+		<th>部門編號</th>
+		<th>部門名稱</th>
+	
 	</tr>
 	<tr>
-			<td>${Employee.empId}</td>
-			<td>${Employee.address}</td>
-			<td>${Employee.email}</td>
-			<td>${Employee.phone}</td>
-			<td>${Employee.empName}</td>
-			<td>${Employee.deptId}</td>
-			<td>${Employee.empStatus}</td> 
-			<td><img src="${pageContext.request.contextPath}/ReadIMG?empId=${Employee.empId}" width=100px height=100px></td> 
-<%-- 		<td>${empVO.deptno}-[${empVO.deptVO.dname}]</td> --%>
+		<td>${Department.deptId}</td>
+		<td>${Department.deptName}</td>
+
 	</tr>
 </table>
 
