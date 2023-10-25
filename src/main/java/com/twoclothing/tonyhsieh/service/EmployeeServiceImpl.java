@@ -1,4 +1,4 @@
-package com.twoclothing.tonyhsieh;
+package com.twoclothing.tonyhsieh.service;
 
 
 import java.util.List;
@@ -32,9 +32,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 			return -1;
 		}
 	}
-
-
-
 
 
 	@Override

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.twoclothing.tonyhsieh.*"%>
+<%@ page import="com.twoclothing.tonyhsieh.service.*"%>
 <%@ page import="com.twoclothing.model.employee.*"%>
 
 <%
@@ -108,7 +108,7 @@
 	</tr>
 	
 
-	<jsp:useBean id="EmployeeServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.EmployeeServiceImpl" />
+
 <!-- 	<tr> -->
 <!-- 		<td>³¡ªù:<font color=red><b>*</b></font></td> -->
 <!-- 		<td><select size="1" name="deptno"> -->

@@ -1,4 +1,4 @@
-package com.twoclothing.tonyhsieh;
+package com.twoclothing.tonyhsieh.service;
 
 import java.util.List;
 
