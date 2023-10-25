@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.twoclothing.tonyhsieh.*"%>
+<%@ page import="com.twoclothing.tonyhsieh.service.*"%>
 <%@ page import="com.twoclothing.model.employee.*"%>
 
 <%
@@ -67,7 +67,7 @@
 <!-- 	</ul> -->
 <%-- </c:if> --%>
 
-<FORM METHOD="post" ACTION="Employee.do" name="form1">
+<FORM METHOD="post" ACTION="Employee.do" name="form1" enctype="multipart/form-data">
 <table>
 	
 
@@ -100,8 +100,15 @@
 		<td>狀態:</td>
 		<td><input type="TEXT" name="empstatus" value="${param.EmpStatus}"   size="45"/></td> <td>${errorMsgs.comm}</td>
 	</tr>
+	<tr>
+		<td>圖片:</td>
+		<td><input class="form-control" type="file" id="image01" name="image01"  size="45"/>
+	   
+		</td>
+	</tr>
+	
 
-	<jsp:useBean id="EmployeeServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.EmployeeServiceImpl" />
+
 <!-- 	<tr> -->
 <!-- 		<td>部門:<font color=red><b>*</b></font></td> -->
 <!-- 		<td><select size="1" name="deptno"> -->

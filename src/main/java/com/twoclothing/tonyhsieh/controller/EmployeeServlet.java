@@ -1,9 +1,13 @@
-package com.twoclothing.tonyhsieh;
+package com.twoclothing.tonyhsieh.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,11 +16,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import com.twoclothing.model.employee.Employee;
+import com.twoclothing.tonyhsieh.service.EmployeeService;
+import com.twoclothing.tonyhsieh.service.EmployeeServiceImpl;
 
 @WebServlet("/front_end/employee/Employee.do")
-@MultipartConfig
+@MultipartConfig(fileSizeThreshold = 1024*1024, maxFileSize = 5*1024*1024,maxRequestSize =5*5*1024*1024 )
 public class EmployeeServlet extends HttpServlet {
 	private EmployeeService employeeService;
 
@@ -164,8 +171,33 @@ public class EmployeeServlet extends HttpServlet {
 					empstatus = Integer.valueOf(req.getParameter("empstatus").trim());
 				} catch (NumberFormatException e) {
 					errorMsgs.put("empstatus","狀態請填數字");
-				}		
-				
+				}
+						
+			      Part image = null;
+		            try {
+		                Collection<Part> parts = req.getParts();
+		                for (Part part : parts) {
+		                    if ("image01".equals(part.getName())) image = part;
+		                }
+		            } catch (IllegalArgumentException e){
+		                e.printStackTrace();
+		            }
+		            EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
+		            byte[] avatar = null;
+		            int length = image.getInputStream().available() ;
+		            if(length != 0){
+		                try (InputStream inputStream = image.getInputStream()){
+		                	avatar = inputStream.readAllBytes();
+		                    inputStream.close();
+		                } catch (IOException e){
+		                    e.printStackTrace();
+		                }
+		            }else {
+		            	avatar=employeeServiceImpl.getEmployeeById(empid).getAvatar();
+		            }
+		            
+		       
+	   
 //				Double sal = null;
 //				try {
 //					sal = Double.valueOf(req.getParameter("sal").trim());
@@ -184,8 +216,8 @@ public class EmployeeServlet extends HttpServlet {
 				}
 				
 				/***************************2.開始修改資料*****************************************/
-				EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-				Employee employee = employeeServiceImpl.updateEmployee(empid, deptid, empname, phone, address, email, pswdhash, empstatus);
+				
+				Employee employee = employeeServiceImpl.updateEmployee(empid, deptid, empname, phone, address, email, pswdhash, empstatus,avatar);
 								
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("Employee", employee); // 資料庫update成功後,正確的的empVO物件,存入req
@@ -245,6 +277,25 @@ public class EmployeeServlet extends HttpServlet {
 					errorMsgs.put("empstatus","狀態請填數字");
 				}		
 				
+			     Part image = null;
+		            try {
+		                Collection<Part> parts = req.getParts();
+		                for (Part part : parts) {
+		                    if ("image01".equals(part.getName())) image = part;
+		                }
+		            } catch (IllegalArgumentException e){
+		                e.printStackTrace();
+		            }
+		            byte[] avatar = null;
+		            if(image != null){
+		                try (InputStream inputStream = image.getInputStream()){
+		                	avatar = inputStream.readAllBytes();
+		                    inputStream.close();
+		                } catch (IOException e){
+		                    e.printStackTrace();
+		                }
+		            }
+				
 //				java.sql.Date hiredate = null;
 //				try {
 //					hiredate = java.sql.Date.valueOf(req.getParameter("hiredate").trim());
@@ -278,7 +329,7 @@ public class EmployeeServlet extends HttpServlet {
 				
 				/***************************2.開始新增資料***************************************/
 				EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-				employeeServiceImpl.addEmployee(deptid, empname, phone, address, email, pswdhash, empstatus);				
+				employeeServiceImpl.addEmployee(deptid, empname, phone, address, email, pswdhash, empstatus,avatar);				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/front_end/employee/listAllEmp.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp

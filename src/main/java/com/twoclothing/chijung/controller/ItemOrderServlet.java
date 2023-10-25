@@ -85,18 +85,23 @@ public class ItemOrderServlet extends HttpServlet{
 				forwardPath ="sAll.jsp";
 				break;
 			case "seller0":
+				sellerStatus(req,res,0);
 				forwardPath ="sUnpaid.jsp";
 				break;
 			case "seller1":
+				sellerStatus(req,res,1);
 				forwardPath ="sUnshipped.jsp";
 				break;
 			case "seller2":
+				sellerStatus(req,res,2);
 				forwardPath ="sUnreceived.jsp";
 				break;
 			case "seller3":
+				sellerStatus(req,res,3);
 				forwardPath ="sFinished.jsp";
 				break;
 			case "seller4":
+				sellerStatus(req,res,4);
 				forwardPath ="sCancel.jsp";
 				break;
 				
@@ -104,6 +109,7 @@ public class ItemOrderServlet extends HttpServlet{
 				updateOrder(req,res);
 				break;
 			case "cancelOrder":
+				cancelOrder(req,res);
 				break;
 				
 			case "addOrder":
@@ -157,24 +163,6 @@ public class ItemOrderServlet extends HttpServlet{
 		req.setAttribute("itemOrderMap", itemOrderMap);
 	}
 	
-	private void updateOrder(HttpServletRequest req, HttpServletResponse res) throws IOException{
-		Integer orderId = Integer.parseInt(req.getParameter("orderId"));
-		ItemOrder io = gs.getByPK(ItemOrder.class,orderId );
-		if(io.getOrderStatus() < 3 ) {
-			io.setOrderStatus(io.getOrderStatus()+1);
-		}
-		gs.update(io);
-	}
-	
-	private void cancelOrder(HttpServletRequest req, HttpServletResponse res) throws IOException{
-		Integer orderId = Integer.parseInt(req.getParameter("orderId"));
-		ItemOrder io = gs.getByPK(ItemOrder.class,orderId );
-		if(io.getOrderStatus() < 3 ) {
-			io.setOrderStatus(4);
-		}
-		gs.update(io);
-	}
-	
 	
 	
 	private void sellerAll(HttpServletRequest req, HttpServletResponse res) throws IOException{
@@ -188,8 +176,46 @@ public class ItemOrderServlet extends HttpServlet{
 			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", io.getOrderId());
 			itemOrderMap.put(io, orderDetailsList);
 		}
-		req.setAttribute("buyer",sellerId);
+		req.setAttribute("seller",sellerId);
 		req.setAttribute("itemOrderMap", itemOrderMap);
+	}
+	
+	
+	private void sellerStatus(HttpServletRequest req, HttpServletResponse res,Integer status) throws IOException{
+		String sellerParam = req.getParameter("seller");
+		Integer sellerId = Integer.parseInt(sellerParam);
+		
+		Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
+		
+		QueryCondition qc = new QueryCondition();
+		qc.toMap("and", "sellMbrId", "=", sellerId);
+		qc.toMap("and", "orderStatus", "=", status);				
+		List<ItemOrder> itemOrderList = gs.getByQueryConditions(ItemOrder.class, qc.getConditionList());
+		
+		for( ItemOrder io : itemOrderList) {
+			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", io.getOrderId());
+			itemOrderMap.put(io, orderDetailsList);
+		}
+		
+		req.setAttribute("seller",sellerId);
+		req.setAttribute("itemOrderMap", itemOrderMap);
+	}
+	
+	
+	private void updateOrder(HttpServletRequest req, HttpServletResponse res) throws IOException{
+		Integer orderId = Integer.parseInt(req.getParameter("orderId"));
+		ItemOrder io = gs.getByPK(ItemOrder.class,orderId );
+		if(io.getOrderStatus() < 3 ) {
+			io.setOrderStatus(io.getOrderStatus()+1);
+		}
+		gs.update(io);
+	}
+	
+	private void cancelOrder(HttpServletRequest req, HttpServletResponse res) throws IOException{
+		Integer orderId = Integer.parseInt(req.getParameter("orderId"));
+		ItemOrder io = gs.getByPK(ItemOrder.class,orderId );
+		io.setOrderStatus(4);
+		gs.update(io);
 	}
 	
 	

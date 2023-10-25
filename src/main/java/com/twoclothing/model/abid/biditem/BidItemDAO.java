@@ -15,6 +15,8 @@ public interface BidItemDAO {
 
     List<BidItem> getAllByEmpId(Integer empId);
 
+    List<BidItem> getAllByMbrId(Integer mbrId);
+
     /**
      * @return 修改是否成功
      */

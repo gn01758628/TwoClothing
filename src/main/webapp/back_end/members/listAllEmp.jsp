@@ -89,9 +89,9 @@ MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 		<td>${members.email}</td>
 		<td>${members.pswdHash}</td>
 		<td>${members.mbrStatus}</td>
-		<td>${members.avatar}</td>
-		<td>${members.shopImg01}</td>
-		<td>${members.shopImg02}</td>
+		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${members.mbrId}" width=100px height=100px></td>
+		<td><img src="<%=request.getContextPath() %>/DBGifReader6?mbrid=${members.mbrId}" width=100px height=100px></td>
+		<td><img src="<%=request.getContextPath() %>/DBGifReader7?mbrid=${members.mbrId}" width=100px height=100px></td>
 		<td>${members.mbrPoint}</td>
 		<td>${members.balance}</td>
 		<td>${members.buyStar}</td>

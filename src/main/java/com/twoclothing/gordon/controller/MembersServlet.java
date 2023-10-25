@@ -172,212 +172,150 @@ public class MembersServlet extends HttpServlet {
 		/***********************註冊*************************/
 		/***********************註冊*************************/
 
-//		if("insert".equals(action)) {
-//
-//
-//			
-//			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
-//			req.setAttribute("errorMsgs", errorMsgs);
-//			
-//			/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-//			String email = req.getParameter("email");
-//			String emailReg = "^[a-zA-Z0-9_!#$%&'\\*+/=?{|}~^.-]+@[a-zA-Z0-9.-]+$";
-//			if (email == null || email.trim().length() == 0) {
-//				errorMsgs.put("email","email: 請勿空白");
-//			} else if(!email.trim().matches(emailReg)) { //以下練習正則(規)表示式(regular-expression)
-//				errorMsgs.put("email","email格式不正確");
-//            }
-//			System.out.println(email);
-//			String pswdHash = req.getParameter("pswdHash");
-//			String pswdHashReg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$";
-//			if (pswdHash == null || pswdHash.trim().length() == 0) {
-//				errorMsgs.put("pswdHash","密碼: 請勿空白");
-//			} else if(!pswdHash.trim().matches(pswdHashReg)) { //以下練習正則(規)表示式(regular-expression)
-//				errorMsgs.put("pswdHash","包含至少一个小写字母、一个大写字母和一个数字");
-//            }
-//			System.out.println(pswdHash);
-//			if (!errorMsgs.isEmpty()) {
-//				RequestDispatcher failureView = req
-//						.getRequestDispatcher("register.jsp");
-//				failureView.forward(req, res);
-//				return;
-//			}
-//
-//			/***************************2.開始新增資料***************************************/
-//			MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
-//			membersServiceImpl.addMembers(email,pswdHash);
-//		
-//			/***************************3.修改完成,準備轉交(Send the Success view)*************/
-//			String url = "/TwoClothing/front_end/members/logon.jsp";
-//			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
-//			successView.forward(req, res);
-//			
-//		}
-		/***********************註冊*************************/
-		/***********************註冊*************************/
-		/***********************註冊*************************/
-		/***********************註冊*************************/
-		/***********************註冊*************************/
 		
-			if("register".equals(action)) {
+		if ("register".equals(action)) {
+		 
+		    
+		    Map<String, Object> response = new HashMap<>();
+		    Map<String, String> errors = new HashMap<>();
+		    PrintWriter out = res.getWriter();
+		    boolean success = false;
+		    
+		   
+		    
 
+		    /***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
+		    String email = req.getParameter("email");
+		    String pswdHash = req.getParameter("pswdHash");
+		    String userInputCode = req.getParameter("VerificationCode");
+		    HttpSession session = req.getSession();
+		    String sessionCode = (String) session.getAttribute("randStr");
+		    MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
+		    Members members = membersServiceImpl.getByEmail(email);
 
-			
-			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
-			req.setAttribute("errorMsgs", errorMsgs);
-			
-			/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-			String mbrName = req.getParameter("mbrName");
-			String mbrNameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
-			if (mbrName == null || mbrName.trim().length() == 0) {
-				errorMsgs.put("mbrName","姓名: 請勿空白");
-			} else if(!mbrName.trim().matches(mbrNameReg)) { //以下練習正則(規)表示式(regular-expression)
-				errorMsgs.put("mbrName","姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
-            }
-			
-			
-			String email = req.getParameter("email");
-			String emailReg = "^[a-zA-Z0-9_!#$%&'\\*+/=?{|}~^.-]+@[a-zA-Z0-9.-]+$";
-			if (email == null || email.trim().length() == 0) {
-				errorMsgs.put("email","email: 請勿空白");
-			} else if(!email.trim().matches(emailReg)) { //以下練習正則(規)表示式(regular-expression)
-				errorMsgs.put("email","email格式不正確");
-            }
-			System.out.println(email);
-			String pswdHash = req.getParameter("pswdHash");
-			String pswdHashReg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$";
-			if (pswdHash == null || pswdHash.trim().length() == 0) {
-				errorMsgs.put("pswdHash","密碼: 請勿空白");
-			} else if(!pswdHash.trim().matches(pswdHashReg)) { //以下練習正則(規)表示式(regular-expression)
-				errorMsgs.put("pswdHash","包含至少一个小写字母、一个大写字母和一个数字");
-            }
-			
-			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front_end/members/registerLogin.jsp");
-				failureView.forward(req, res);
-				return;
-			}
+		    if (members == null || !members.getEmail().equals(email)) {
+		    	
+		        if (userInputCode != null && sessionCode != null && userInputCode.equals(sessionCode)) {
 
-			/***************************2.開始新增資料***************************************/
-			MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
-			membersServiceImpl.addMembers(mbrName, email,pswdHash);
-	
-			/***************************3.修改完成,準備轉交(Send the Success view)*************/
-			String url = "/front_end/members/registerLogin.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
-			successView.forward(req, res);
-			
+		        /***************************2.開始新增資料***************************************/
+		        // MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
+		        membersServiceImpl.addMembers(email, pswdHash);
+
+		        /***************************3.修改完成,準備轉交(Send the Success view)*************/
+		        String url = "/front_end/members/registerLogin.jsp";
+		        RequestDispatcher successView = req.getRequestDispatcher(url);
+		        successView.forward(req, res);
+
+		        success = true;
+		        
+		         }else {
+				       
+				        errors.put("sessionCode", "驗證碼錯誤");
+				        
+				       
+				      
+				    }
+//圖像驗證		       
+		    } else {
+		       
+		        errors.put("email", "用户已存在");
+		        
+		       
+		      
+		    }
+		    response.put("errors", errors);
+		    
+		    response.put("success", success);
+		    // 设置JSON响应的Content-Type
+		    res.setContentType("application/json");
+		    res.setCharacterEncoding("UTF-8");
+		    
+//		    for (Map.Entry<String, Object> entry : response.entrySet()) {
+//		        String key = entry.getKey();
+//		        Object value = entry.getValue();
+//		        
+//		        System.out.println(key + ": " + value);
+//		    }
+
+		    // 将JSON响应发送回客户端
+		    out.write(new Gson().toJson(response));
+		    out.close();
 		}
+	
+			
+		
 			/***********************登入*************************/
 			/***********************登入*************************/
 			/***********************登入*************************/
 			/***********************登入*************************/
 			/***********************登入*************************/
-//			if("login".equals(action)) {
-//				
-//				Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
-//				req.setAttribute("errorMsgs", errorMsgs);
-//					
-//				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-//				String email = req.getParameter("email2");
-//				String pswdHash = req.getParameter("pswdHash2");
-//				String contextPath = req.getContextPath();
-//			
-//				
-//				MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
-//				Members members = membersServiceImpl.getByEmail(email);
-//				 System.out.println("+++++++++++++++++");
-//				System.out.println("Members details: " + members);
-//				 System.out.println("+++++++++++++++++");
-//
-//				  if (members != null) {
-//				        String storedPswdHash = members.getPswdHash(); // 假設密碼儲存在member對象的password字段中
-//				        System.out.println("===============");
-//				        System.out.println(storedPswdHash);
-//				        System.out.println("==============");
-//				        System.out.println(storedPswdHash.equals(pswdHash));
-//				        
-//				        
-//				        System.out.println("==============");
-//				        if (storedPswdHash.equals(pswdHash)) {
-//				            // 密碼匹配，執行登入操作
-//				            // 例如，將用戶信息存儲在Session中
-//				            HttpSession session = req.getSession();
-//				            session.setAttribute("user", members);
-//				            // 重定向到登入成功的頁面
-//				            res.sendRedirect(contextPath + "/index.jsp");
-//				        } else {
-//				            // 密碼不匹配，顯示錯誤消息
-//				        	errorMsgs.put("error", "密碼不正確");
-//				        }
-//				    } else {
-//				        // 未找到用戶記錄，顯示錯誤消息
-//				    	errorMsgs.put("error", "用戶不存在");
-//				    }
-//				  
-//					if (!errorMsgs.isEmpty()) {
-//						RequestDispatcher failureView = req
-//								.getRequestDispatcher("/front_end/members/registerLogin.jsp");
-//						failureView.forward(req, res);
-//						return;
-//					}
-//				   
-//			}
+
 			if ("login".equals(action)) {
 			    Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
 			    req.setAttribute("errorMsgs", errorMsgs);
-			    
 
-			    /***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
+			    // 接收请求参数
 			    String email = req.getParameter("email2");
 			    String pswdHash = req.getParameter("pswdHash2");
-			    String contextPath = req.getContextPath();
-			    //==ajax
+//			    String contextPath = req.getContextPath();
+
+			    // 创建 JSON 响应
 			    Map<String, Object> response = new HashMap<>();
 			    PrintWriter out = res.getWriter();
-			    res.setContentType("application/json");
-			    res.setCharacterEncoding("UTF-8");
-			    //==ajax
+			    
+
 			    MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 			    Members members = membersServiceImpl.getByEmail(email);
 
+			    // 设置 JSON 响应的成功标志
+			    boolean success = false;
+
 			    if (members != null) {
-			        String storedPswdHash = members.getPswdHash(); // 假設密碼儲存在member對象的password字段中
+			        String storedPswdHash = members.getPswdHash();
 
 			        if (storedPswdHash.equals(pswdHash)) {
-			            // 密碼匹配，執行登入操作
-			            // 例如，將用戶信息存儲在Session中
 			            HttpSession session = req.getSession();
 			            session.setAttribute("user", members);
-			            //==ajax
-			            response.put("success", true);
-			            out.write(new Gson().toJson(response)); // 使用Gson库将Map转换为JSON字符串
-					    out.close();
-					    //==ajax
-			            // 重定向到登入成功的頁面
-			            res.sendRedirect(contextPath + "/index.jsp");
+			            success = true;
+
+			            if (members.getMbrStatus() == 0) {
+			                // 设置 JSON 响应中的 mbrStatus
+			                response.put("mbrStatus", 0);
+			                
+			            }
 			        } else {
-			            // 密碼不匹配，顯示錯誤消息
-			            errorMsgs.put("error", "密碼不正確");
+			            // 密码不匹配，显示错误消息
+			            errorMsgs.put("error", "密码不正确");
 			        }
 			    } else {
-			        // 未找到用戶記錄，顯示錯誤消息
-			        errorMsgs.put("error", "用戶不存在");
+			        // 未找到用户记录，显示错误消息
+			        errorMsgs.put("error", "用户不存在");
 			    }
-
-			    // 构建错误消息的JSON响应
 			    
-			   
+			    res.setContentType("application/json");
+			    res.setCharacterEncoding("UTF-8");
+			    // 设置 JSON 响应的成功标志
+			    response.put("success", success);
+
+			    // 构建错误消息的 JSON 响应
 			    response.put("errors", errorMsgs);
 
-			    // 设置响应类型和字符编码
-			    
-
-			    // 将JSON响应发送回客户端
-			    
-			    out.write(new Gson().toJson(response)); // 使用Gson库将Map转换为JSON字符串
+			    // 将 JSON 响应发送回客户端
+			    out.write(new Gson().toJson(response));
 			    out.close();
+			}
+			/***********************登出*************************/
+			/***********************登出*************************/
+			/***********************登出*************************/
+			/***********************登出*************************/
+			/***********************登出*************************/
+			
+			if("logout".equals(action)) {
+				HttpSession  session = req.getSession();
+				session.removeAttribute("user");
+				res.sendRedirect(req.getContextPath() + "/index.jsp");
+
+
 			}
 			
 		

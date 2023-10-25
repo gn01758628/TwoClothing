@@ -69,31 +69,34 @@ public class MembersHibernateDAO implements MembersDAO {
 	}
 	
 	
-//	@Override
-//	public Members getAllByEmail(String email) {
-//		return getSession().get(Members.class, email);
-//	}
-	
+
+	@Override
 	public Members getByEmail(String email) {
-	    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-	    Transaction transaction = null;
-	    Members member = null;
-
-	    try {
-	        transaction = session.beginTransaction();
-	        member = (Members) session.createQuery("FROM Members WHERE email = :email")
-	                .setParameter("email", email)
-	                .uniqueResult();
-	        transaction.commit();
-	    } catch (RuntimeException ex) {
-	        if (transaction != null) {
-	            transaction.rollback();
-	        }
-	        throw ex;
-	    }
-
-	    return member;
+		return (Members) getSession().createQuery("FROM Members WHERE email = :email")
+                .setParameter("email", email)
+                .uniqueResult();
 	}
+	
+//	public Members getByEmail(String email) {
+//	    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//	    Transaction transaction = null;
+//	    Members member = null;
+//
+//	    try {
+//	        transaction = session.beginTransaction();
+//	        member = (Members) session.createQuery("FROM Members WHERE email = :email")
+//	                .setParameter("email", email)
+//	                .uniqueResult();
+//	        transaction.commit();
+//	    } catch (RuntimeException ex) {
+//	        if (transaction != null) {
+//	            transaction.rollback();
+//	        }
+//	        throw ex;
+//	    }
+//
+//	    return member;
+//	}
 
 	@Override
 	public List<Members> getAllByMbrStatus(Integer mbrStatus) {
