@@ -28,6 +28,13 @@
 	            <td>${item.grade}</td>
 	            <td>${item.size}</td>
 	            <td>${item.detail}</td>
+	            <td>
+			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/Item/Update" style="margin-bottom: 0px;">
+			     <input type="submit" value="修改">
+			     <input type="hidden" name="itemId"  value="${item.itemId}">
+			     <input type="hidden" name="action"	value="getOne">
+			  </FORM>
+			</td>
 	        </tr>
 		</c:forEach>
       </table>  

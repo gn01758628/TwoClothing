@@ -11,6 +11,12 @@ import java.util.Set;
 import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.aproduct.item.ItemDAO;
 import com.twoclothing.model.aproduct.item.ItemHibernateDAO;
+import com.twoclothing.model.aproduct.itemimage.ItemImage;
+import com.twoclothing.model.aproduct.itemimage.ItemImageDAO;
+import com.twoclothing.model.aproduct.itemimage.ItemImageHibernateDAO;
+import com.twoclothing.model.categorytags.CategoryTags;
+import com.twoclothing.model.categorytags.CategoryTagsDAO;
+import com.twoclothing.model.categorytags.CategoryTagsHibernateDAO;
 import com.twoclothing.utils.HibernateUtil;
 
 
@@ -18,26 +24,31 @@ public class ItemServiceImpl implements ItemService{
 	
 	private ItemDAO dao;
 	
+    private CategoryTagsDAO categoryTagsDAO;
+    
+    private ItemImageDAO itemImageDAO ;
+
 	public ItemServiceImpl() {
 		dao = new ItemHibernateDAO(HibernateUtil.getSessionFactory());
+		categoryTagsDAO = new CategoryTagsHibernateDAO(HibernateUtil.getSessionFactory());
+		itemImageDAO = new ItemImageHibernateDAO(HibernateUtil.getSessionFactory());
 	}
 	
 	@Override
-	public Item addItem(String itemName, Integer grade, Integer size, String detail, Integer tagId, Integer mbrId, Integer price, Integer itemStatus, Integer quantity) {
-		
-		Item item = new Item();		
+	public int addItem(Item item) {
+		return dao.insert(item);
+	}
+
+	@Override
+	public int updateItem(Integer itemId, String itemName, Integer grade, Integer size, String detail, Integer price, Integer quantity) {
+		Item item = dao.getByPrimaryKey(itemId);
 		item.setItemName(itemName);
-		item.setDetail(detail);
 		item.setGrade(grade);
 		item.setSize(size);
-		item.setTagId(tagId);
-		item.setMbrId(mbrId);
+		item.setDetail(detail);
 		item.setPrice(price);
-		item.setItemStatus(itemStatus);
 		item.setQuantity(quantity);
-		dao.insert(item);
-
-		return item;
+		return dao.update(item);
 	}
 
 	@Override
@@ -45,7 +56,7 @@ public class ItemServiceImpl implements ItemService{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public void deleteItem(Integer itemId) {
 		// TODO Auto-generated method stub
@@ -54,13 +65,17 @@ public class ItemServiceImpl implements ItemService{
 
 	@Override
 	public Item getItemByItemId(Integer itemId) {
-		// TODO Auto-generated method stub
-		return null;
+		Item item1 = dao.getByPrimaryKey(itemId);
+		System.out.println("item1:"+item1);
+		
+		return item1;
 	}
 
 	@Override
 	public List<Item> getAllItems(int page) {
 		List<Item> list = dao.getAll(page);
+		System.out.println("2222"+list);
+
 		return list;
 	}
 	@Override
@@ -87,7 +102,7 @@ public class ItemServiceImpl implements ItemService{
 			// 若是value為空即代表沒有查詢條件，做個去除動作
 			String value = row.getValue()[0];
 
-			System.out.println("keyValue:"+key+":"+value);
+//			System.out.println("keyValue:"+key+":"+value);
 			
 			if ( value == null || value.isEmpty()) {
 				continue;
@@ -122,6 +137,25 @@ public class ItemServiceImpl implements ItemService{
 		
 		return dao.getResultTotal(query);
 	}
+	
+    @Override
+    public List<CategoryTags> getAllCategoryTags() {
+    	System.out.println("!!!!"+categoryTagsDAO.getAll());
+        return categoryTagsDAO.getAll();
+    }
+	
+	@Override
+    public List<Integer> getAllSelectableTagsId() {
+System.out.println("::"+categoryTagsDAO.getTagIdsWithoutChildren());
+        return categoryTagsDAO.getTagIdsWithoutChildren();
+    }
+
+	@Override
+	public void addItemImage(ItemImage itemImage) {
+		itemImageDAO.insert(itemImage);
+		
+	}
+
 
 
 }

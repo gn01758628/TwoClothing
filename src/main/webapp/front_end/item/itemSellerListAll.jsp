@@ -8,7 +8,7 @@
     <title>List Item Seller</title>
 </head>
 <body>
-	<h1>商品列表</h1>
+	<h1>商品列表這是全部列表</h1>
 		<c:if test="${itemPageQty > 0}">
   			<b><font color=red>第${pageNow}/${itemPageQty}頁</font></b>
 		</c:if>
