@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.twoclothing.tonyhsieh.*"%>
+<%@ page import="com.twoclothing.tonyhsieh.service.*"%>
 <%@ page import="com.twoclothing.model.employee.*"%>
 <%-- 此頁練習採用 EL 的寫法取值 --%>
 
@@ -88,7 +88,8 @@
 			<td>${employee.deptId}</td>
 			<td>${employee.empStatus}</td>
 			<td>${employee.pswdHash}</td>
-			<td>${employee.avatar}</td>  
+			<td><img src="${pageContext.request.contextPath}/ReadIMG?empId=${employee.empId}" width=100px height=100px>
+			</td>  
 			
 <%-- 			<td>${employee.deptno}-[${empVO.deptVO.dname}]</td> --%>
 			<td>

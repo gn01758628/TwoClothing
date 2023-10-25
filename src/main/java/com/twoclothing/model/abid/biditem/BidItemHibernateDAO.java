@@ -42,6 +42,13 @@ public class BidItemHibernateDAO implements BidItemDAO {
     }
 
     @Override
+    public List<BidItem> getAllByMbrId(Integer mbrId) {
+        return getSession().createQuery("from BidItem where mbrId = :mbrId order by bidItemId", BidItem.class)
+                .setParameter("mbrId", mbrId)
+                .list();
+    }
+
+    @Override
     public boolean update(BidItem bidItem) {
         try {
             getSession().update(bidItem);

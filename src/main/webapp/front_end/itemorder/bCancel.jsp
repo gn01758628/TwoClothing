@@ -19,6 +19,9 @@
 	.orderDetailItem{
 		border: 1px solid deeppink;
 	}
+	img{
+		max-width:250px;
+	}
 	</style>
 
 
@@ -39,7 +42,7 @@
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="itemorder.do?action=buyer&buyer=${buyer}" class="link-dark rounded">所有訂單</a></li>
             <li><a href="itemorder.do?action=buyer0&buyer=${buyer}" class="link-dark rounded">待付款</a></li>
-            <li><a href="itemorder.do?action=buyer1&buyer=${buyer}" class="link-dark rounded">待出貨</a></li>
+            <li><a href="itemorder.do?action=buyer1&buyer=${buyer}" class="link-dark rounded">已付款</a></li>
             <li><a href="itemorder.do?action=buyer2&buyer=${buyer}" class="link-dark rounded">待收貨</a></li>
             <li><a href="itemorder.do?action=buyer3&buyer=${buyer}" class="link-dark rounded">已完成</a></li>
             <li><a href="itemorder.do?action=buyer4&buyer=${buyer}" class="link-dark rounded">已取消訂單</a></li>
@@ -48,7 +51,34 @@
     
   </div>
 <div>
-AAAAAAAA
+<h1>會員編號: ${buyer} </h1>
+<h2>已取消訂單</h2>
+<c:forEach var="entry" items="${itemOrderMap}">
+    <c:set var="itemOrder" value="${entry.key}" />
+    <c:set var="orderDetailsList" value="${entry.value}" />
+
+    <!-- 输出 itemOrder 的属性 -->
+    <div class="itemOrderDiv">
+        <pre>賣家編號: ${itemOrder.sellMbrId}
+訂單編號: ${itemOrder.orderId}</pre>
+    
+
+	    <!-- 迭代 orderDetailsList -->
+	    <div class="orderDetailDiv">
+	        <c:forEach var="orderDetail" items="${orderDetailsList}">
+	            <!-- 输出 orderDetail 的属性 -->
+	            <div class="orderDetailItem">
+	            	<img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${orderDetail.compositeKey.itemId}&position=1" alt="商品的第一張圖片" class=" mx-auto">
+	                <pre>商品編號 : ${orderDetail.compositeKey.itemId}  數量 : ${orderDetail.quantity}  總價 : ${orderDetail.buyingPrice}</pre>
+	            </div>
+	        </c:forEach>
+	    </div>
+    	<p>訂單金額: ${itemOrder.finalAmount}</p>
+    	
+        
+    </div>
+    
+</c:forEach>
 </div>
 </main>	
 

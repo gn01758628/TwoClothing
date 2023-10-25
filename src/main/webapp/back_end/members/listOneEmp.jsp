@@ -80,9 +80,9 @@
 		<td>${Members.email}</td>
 		<td>${Members.pswdHash}</td>
 		<td>${Members.mbrStatus}</td>
-		<td>${Members.avatar}</td>
-		<td>${Members.shopImg01}</td>
-		<td>${Members.shopImg02}</td>
+		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}" width=100px height=100px></td>
+		<td><img src="<%=request.getContextPath() %>/DBGifReader6?mbrid=${Members.mbrId}" width=100px height=100px></td>
+		<td><img src="<%=request.getContextPath() %>/DBGifReader7?mbrid=${Members.mbrId}" width=100px height=100px></td>
 		<td>${Members.mbrPoint}</td>
 		<td>${Members.balance}</td>
 		<td>${Members.buyStar}</td>
@@ -92,7 +92,6 @@
 		<td>${Members.lastLogin}</td>
 		<td>${Members.sellScore}</td>
 		<td>${Members.buyScore}</td>	
-<%-- 		<td>${empVO.deptno}-[${empVO.deptVO.dname}]</td> --%>
 	</tr>
 </table>
 
