@@ -15,13 +15,13 @@ public class MembersServiceImpl implements MembersService{
 	
 	public MembersServiceImpl() {
 		dao = new MembersHibernateDAO(HibernateUtil.getSessionFactory());
-//		dao = new EmpDAO();
+
 	}
 	
 	
-	public Members addMembers(String mbrName, String email, String pswdHash) {
+	public Members addMembers(String email, String pswdHash) {
 		Members members = new Members();
-		members.setMbrName(mbrName);
+		
 		members.setEmail(email);
 		members.setPswdHash(pswdHash);
 		
