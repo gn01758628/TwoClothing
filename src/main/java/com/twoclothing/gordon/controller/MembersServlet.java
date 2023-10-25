@@ -188,8 +188,10 @@ public class MembersServlet extends HttpServlet {
 		    String email = req.getParameter("email");
 		    String pswdHash = req.getParameter("pswdHash");
 		    String userInputCode = req.getParameter("VerificationCode");
+//===============================圖片
 		    HttpSession session = req.getSession();
 		    String sessionCode = (String) session.getAttribute("randStr");
+//===============================圖片
 		    MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 		    Members members = membersServiceImpl.getByEmail(email);
 
@@ -211,17 +213,13 @@ public class MembersServlet extends HttpServlet {
 		         }else {
 				       
 				        errors.put("sessionCode", "驗證碼錯誤");
-				        
-				       
-				      
+				        		      
 				    }
 //圖像驗證		       
 		    } else {
 		       
 		        errors.put("email", "用户已存在");
-		        
-		       
-		      
+		    		      
 		    }
 		    response.put("errors", errors);
 		    

@@ -1,17 +1,13 @@
-<%@ page import="org.hibernate.internal.build.AllowSysOut" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page import="org.hibernate.internal.build.AllowSysOut"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/css/bootstrap5/bootstrap.min.css">
 <title>ItemTracking all list</title>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-	crossorigin="anonymous">
 </head>
 <body>
 	<h1>商品追蹤清單</h1>
@@ -40,20 +36,16 @@
 	System.out.println(request.getAttribute("action") + "———————————————————————————————————");
 	%>
 	<c:if test="${currentPage > 1}">
-		<a
-			href="${pageContext.request.contextPath}/itemtracking?action=${requestScope.action}&page=1&mbrId=${mbrId}">至第一頁</a>&nbsp;
+		<a href="${pageContext.request.contextPath}/itemtracking?action=${requestScope.action}&page=1&mbrId=${mbrId}">至第一頁</a>&nbsp;
 	</c:if>
 	<c:if test="${currentPage - 1 != 0}">
-		<a
-			href="${pageContext.request.contextPath}/itemtracking?action=${requestScope.action}&page=${currentPage - 1}&mbrId=${mbrId}">上一頁</a>&nbsp;
+		<a href="${pageContext.request.contextPath}/itemtracking?action=${requestScope.action}&page=${currentPage - 1}&mbrId=${mbrId}">上一頁</a>&nbsp;
 	</c:if>
 	<c:if test="${currentPage + 1 <= itemTrackingPageQty}">
-		<a
-			href="${pageContext.request.contextPath}/itemtracking?action=${requestScope.action}&page=${currentPage + 1}&mbrId=${mbrId}">下一頁</a>&nbsp;
+		<a href="${pageContext.request.contextPath}/itemtracking?action=${requestScope.action}&page=${currentPage + 1}&mbrId=${mbrId}">下一頁</a>&nbsp;
 	</c:if>
 	<c:if test="${currentPage != itemTrackingPageQty}">
-		<a
-			href="${pageContext.request.contextPath}/itemtracking?action=${requestScope.action}&page=${itemTrackingPageQty}&mbrId=${mbrId}">至最後一頁</a>&nbsp;
+		<a href="${pageContext.request.contextPath}/itemtracking?action=${requestScope.action}&page=${itemTrackingPageQty}&mbrId=${mbrId}">至最後一頁</a>&nbsp;
 	</c:if>
 
 	<a href="${pageContext.request.contextPath}/front_end/itemtracking/itemTrackingIndex.jsp">測試其他功能</a>
