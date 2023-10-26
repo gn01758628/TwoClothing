@@ -9,15 +9,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PointHistoryJDBCDAO implements PointHistoryDAO {
+/*public class PointHistoryJDBCDAO {
 
     public static final String INSERT = "INSERT INTO pointhistory (mbrid, orderid, changedate, changevalue) VALUES (?, ?, ?, ?)";
     public static final String GET_BY_PK = "SELECT * FROM pointhistory WHERE pointid = ?";
     public static final String GET_ALL = "SELECT * FROM pointhistory ORDER BY pointid";
     public static final String GET_ALL_BY_MBRID = "SELECT * FROM pointhistory WHERE mbrid = ? ORDER BY changedate";
 
-    @Override
-    public void insert(PointHistory pointHistory) {
+//    @Override
+    public int insert(PointHistory pointHistory) {
         Connection conn = null;
         PreparedStatement ps = null;
         int count = 0;
@@ -45,7 +45,7 @@ public class PointHistoryJDBCDAO implements PointHistoryDAO {
 
     }
 
-    @Override
+//    @Override
     public PointHistory getByPrimaryKey(Integer pointId) {
         PointHistory pointHistory = new PointHistory();
         Connection conn = null;
@@ -73,12 +73,12 @@ public class PointHistoryJDBCDAO implements PointHistoryDAO {
     }
 
 
-    @Override
+//    @Override
     public List<PointHistory> getAll() {
         return getAllBy(GET_ALL);
     }
 
-    @Override
+//    @Override
     public List<PointHistory> getAllByMbrId(Integer mbrId) {
         return getAllBy(GET_ALL_BY_MBRID, mbrId);
     }
@@ -124,4 +124,4 @@ public class PointHistoryJDBCDAO implements PointHistoryDAO {
         if (list.isEmpty()) list.add(null);
         return list;
     }
-}
+}*/
