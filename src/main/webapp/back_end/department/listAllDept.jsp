@@ -3,18 +3,17 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.twoclothing.tonyhsieh.service.*"%>
 <%@ page import="com.twoclothing.model.department.*"%>
-<%-- 此頁練習採用 EL 的寫法取值 --%>
 
-  <%
+
+ <%
  	DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
    	List<Department> list = departmentServiceImpl.getAllDepartment();
     pageContext.setAttribute("list",list);
 	%>
 
-
 <html>
 <head>
-<title>所有員工資料 - listAllEmp.jsp</title>
+<title>所有部門資料 - listAllDept.jsp</title>
 
 <style>
   table#table-1 {
@@ -55,10 +54,10 @@
 </head>
 <body bgcolor='white'>
 
-<h4>此頁練習採用 EL 的寫法取值:</h4>
+
 <table id="table-1">
 	<tr><td>
-		 <h3>所有員工資料 - listAllEmp.jsp</h3>
+		 <h3>所有部門資料 - listAllDepart</h3>
 		 <h4><a href="select_page.jsp">回首頁</a></h4>
 	</td></tr>
 </table>
@@ -70,8 +69,7 @@
 	
 		
 	</tr>
-	<%@ include file="page1.file" %> 
-	<c:forEach var="department" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+	<c:forEach var="department" items="${list}" >
 		
 		<tr>
 			<td>${department.deptId}</td>
@@ -92,7 +90,7 @@
 		</tr>
 	</c:forEach>
 </table>
-<%@ include file="page2.file" %>
+<%-- <%@ include file="page2.file" %> --%>
 
 </body>
 </html>

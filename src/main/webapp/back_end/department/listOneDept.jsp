@@ -5,13 +5,11 @@
 
 <%-- 此頁暫練習採用 Script 的寫法取值 --%>
 
-<%
-  //Employee employee = (Employee) request.getAttribute("employee"); //EmpServlet.java(Concroller), 存入req的empVO物件
-%>
+
 
 <html>
 <head>
-<title>員工資料 - listOneEmp.jsp</title>
+<title>員工資料 - listOneDept.jsp</title>
 
 <style>
   table#table-1 {
@@ -52,7 +50,7 @@
 <h4>此頁暫練習採用 Script 的寫法取值:</h4>
 <table id="table-1">
 	<tr><td>
-		 <h3>員工資料 - listOneEmp.jsp</h3>
+		 <h3>部門資料 - listOneDept.jsp</h3>
 		 <h4><a href="select_page.jsp">回首頁</a></h4>
 	</td></tr>
 </table>

@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface PointHistoryDAO {
 
-    void insert(PointHistory pointHistory);
+    int insert(PointHistory pointHistory);
 
     PointHistory getByPrimaryKey(Integer pointId);
 

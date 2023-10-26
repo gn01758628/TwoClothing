@@ -8,7 +8,7 @@ import java.util.Random;
 public class PointHistoryTest {
     public static void main(String[] args) {
 
-        LocalDateTime currentDateTime = LocalDateTime.now();
+/*        LocalDateTime currentDateTime = LocalDateTime.now();
         Timestamp[] arr1 = new Timestamp[5];
         for (int i = 0; i < arr1.length; i++) {
             Random random = new Random();
@@ -52,7 +52,8 @@ public class PointHistoryTest {
         List<PointHistory> list2 = pointHistoryDAO.getAllByMbrId(10);
         for (PointHistory p : list2) {
             System.out.println(p);
-        }
+        }*/
 
     }
 }
+
