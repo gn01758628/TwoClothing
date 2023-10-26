@@ -71,9 +71,15 @@
 <table>
 	
 
+	<jsp:useBean id="DepartmentServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.service.DepartmentServiceImpl" />
 	<tr>
-		<td>部門ID:</td>
-		<td><input type="TEXT" name="deptid" value="${param.deptId}" size="45"/></td> <td>${errorMsgs.deptid}</td>
+		<td>部門:<font color=red><b>*</b></font></td>
+		<td><select size="1" name="deptid">
+			<c:forEach var="department" items="${DepartmentServiceImpl.allDepartment}">
+				<option value="${department.deptId}"${(param.deptId==employee.deptId)? 'selected':'' } >${department.deptName}
+			
+			</c:forEach>
+		</select></td>
 	</tr>
 	<tr>
 		<td>員工姓名:</td>
@@ -98,7 +104,10 @@
 	
 	<tr>
 		<td>狀態:</td>
-		<td><input type="TEXT" name="empstatus" value="${param.EmpStatus}"   size="45"/></td> <td>${errorMsgs.comm}</td>
+		<td><select size="1" name="empstatus">
+			<option value="0">生效</option>
+			<option value="1">失效</option>
+		</select></td>
 	</tr>
 	<tr>
 		<td>圖片:</td>

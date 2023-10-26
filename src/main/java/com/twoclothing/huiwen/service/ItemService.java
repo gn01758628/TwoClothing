@@ -5,11 +5,14 @@ import java.util.Map;
 
 import javax.persistence.TypedQuery;
 
+import com.twoclothing.model.abid.biditemimage.BidItemImage;
 import com.twoclothing.model.aproduct.item.Item;
+import com.twoclothing.model.aproduct.itemimage.ItemImage;
+import com.twoclothing.model.categorytags.CategoryTags;
 
 public interface ItemService {
 	
-	Item addItem(String itemName, Integer grade, Integer size, String detail, Integer tagId, Integer mbrId, Integer price, Integer itemStatus, Integer quantity);
+	int addItem(Item item);
 	
 	Item updateItem(Item item);
 	
@@ -24,5 +27,13 @@ public interface ItemService {
 	int getPageTotal();
 
 	int getResultTotalCondition(Map<String, String[]> map);
+
+	int updateItem(Integer itemId, String itemName, Integer grade, Integer size, String detail, Integer price, Integer quantity);
+
+	List<Integer> getAllSelectableTagsId();
+
+	List<CategoryTags> getAllCategoryTags();
 	
+    void addItemImage(ItemImage itemImage);
+
 }

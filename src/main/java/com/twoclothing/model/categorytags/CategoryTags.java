@@ -25,8 +25,7 @@ public class CategoryTags implements Serializable {
     public CategoryTags() {
     }
 
-    public CategoryTags(Integer tagId, Integer superTagId, String categoryName, Integer empId) {
-        this.tagId = tagId;
+    public CategoryTags(Integer superTagId, String categoryName, Integer empId) {
         this.superTagId = superTagId;
         this.categoryName = categoryName;
         this.empId = empId;

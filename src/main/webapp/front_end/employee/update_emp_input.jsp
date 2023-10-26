@@ -1,11 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.*"%>
 <%@ page import="com.twoclothing.tonyhsieh.service.*"%>
 <%@ page import="com.twoclothing.model.employee.*"%>
+<%@ page import="com.twoclothing.model.department.*"%>
 
-<%
-  // EmpVO empVO = (EmpVO) request.getAttribute("empVO");
-%>
+ <%
+	
+//  	DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
+//    	List<Department> list = departmentServiceImpl.getAllDepartment();
+//     pageContext.setAttribute("list",list);
+	
+	%>
 
 <html>
 <head>
@@ -93,10 +99,19 @@
 		<td>員工編號:<font color=red><b>*</b></font></td>
 		<td>${param.empId}</td>
 	</tr>
+
+	<jsp:useBean id="DepartmentServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.service.DepartmentServiceImpl" />
 	<tr>
-		<td>員工部門:</td>
-		<td><input type="TEXT" name="deptid" value="${param.deptId}" size="45"/></td> <td>${errorMsgs.deptid}</td>
+		<td>部門:<font color=red><b>*</b></font></td>
+		<td><select size="1" name="deptid">
+			<c:forEach var="department" items="${DepartmentServiceImpl.allDepartment}">
+				<option value="${department.deptId}"${(param.deptId==employee.deptId)? 'selected':'' } >${department.deptName}
+			
+			</c:forEach>
+		</select></td>
 	</tr>
+	
+
 	<tr>
 		<td>員工姓名:</td>
 		<td><input type="TEXT" name="empname" value="${param.empName}" size="45"/></td> <td>${errorMsgs.empname}</td>
@@ -119,7 +134,10 @@
 	</tr>
 	<tr>
 		<td>狀態:</td>
-		<td><input type="TEXT" name="empstatus"  value="${param.empStatus}"  size="45"/></td> <td>${errorMsgs.empstatus}</td>
+		<td><select size="1" name="empstatus">
+			<option value="0">生效</option>
+			<option value="1">失效</option>
+		</select></td>
 	</tr>
 	<tr>
 		<td>圖片:</td>

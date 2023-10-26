@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface BalanceHistoryDAO {
 
-    void insert(BalanceHistory balanceHistory);
+    int insert(BalanceHistory balanceHistory);
 
     BalanceHistory getByPrimaryKey(Integer balanceId);
 

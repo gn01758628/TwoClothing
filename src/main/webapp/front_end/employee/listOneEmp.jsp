@@ -74,10 +74,15 @@
 			<td>${Employee.email}</td>
 			<td>${Employee.phone}</td>
 			<td>${Employee.empName}</td>
-			<td>${Employee.deptId}</td>
-			<td>${Employee.empStatus}</td> 
+			<td>${Employee.deptId}-[${Employee.department.deptName}]</td>
+			<td>
+				 <c:choose>
+       			 <c:when test="${Employee.empStatus == 0}">${Employee.empStatus} - 生效</c:when>
+       			 <c:when test="${Employee.empStatus == 1}">${Employee.empStatus} - 失效</c:when>
+       			 </c:choose>
+			</td> 
 			<td><img src="${pageContext.request.contextPath}/ReadIMG?empId=${Employee.empId}" width=100px height=100px></td> 
-<%-- 		<td>${empVO.deptno}-[${empVO.deptVO.dname}]</td> --%>
+
 	</tr>
 </table>
 
