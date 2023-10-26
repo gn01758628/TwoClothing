@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ShipSettingDAO {
 
-    void insert(ShipSetting shipSetting);
+    int insert(ShipSetting shipSetting);
 
     ShipSetting getByPrimaryKey(Integer shipId);
 
@@ -12,8 +12,8 @@ public interface ShipSettingDAO {
 
     List<ShipSetting> getAllByMbrId(Integer mbrId);
 
-    void update(ShipSetting shipSetting);
+    int update(ShipSetting shipSetting);
 
-    void delete(Integer shipId);
+    int delete(Integer shipId);
 
 }

@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 import com.twoclothing.gordon.service.MembersServiceImpl;
 import com.twoclothing.model.members.Members;
 
-@WebServlet("/back_end/members/Members.do")
+@WebServlet("/members/Members.do")
 public class MembersServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -44,11 +44,11 @@ public class MembersServlet extends HttpServlet {
 			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
 			String str = req.getParameter("mbrId");
 			if (str == null || (str.trim()).length() == 0) {
-				errorMsgs.put("empno", "請輸入會員編號");
+				errorMsgs.put("mbrId", "請輸入會員編號");
 			}
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("select_page.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/select_page.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
@@ -61,7 +61,7 @@ public class MembersServlet extends HttpServlet {
 			}
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("select_page.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/select_page.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
@@ -75,13 +75,13 @@ public class MembersServlet extends HttpServlet {
 			}
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("select_page.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/select_page.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
 			req.setAttribute("Members", members); // 資料庫取出的empVO物件,存入req
-			String url = "/back_end/members/listOneEmp.jsp";
+			String url = "/back_end/members/listOneMembers.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 			successView.forward(req, res);
 
@@ -121,7 +121,7 @@ public class MembersServlet extends HttpServlet {
 					"&lastLogin=" + members.getLastLogin() + 
 					"&sellScore=" + members.getSellScore() + 
 					"&buyScore=" + members.getBuyScore();
-			String url = "update_emp_input.jsp" + param;
+			String url = "/back_end/members/update_Members_input.jsp" + param;
 			RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
 			successView.forward(req, res);
 		}
@@ -150,7 +150,7 @@ public class MembersServlet extends HttpServlet {
 			
 			
 			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("update_emp_input.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/update_Members_input.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
@@ -160,7 +160,7 @@ public class MembersServlet extends HttpServlet {
 		
 			/***************************3.修改完成,準備轉交(Send the Success view)*************/
 			req.setAttribute("Members", members); // 資料庫update成功後,正確的的empVO物件,存入req
-			String url = "listOneEmp.jsp";
+			String url = "/back_end/members/listOneMembers.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 			successView.forward(req, res);
 			
@@ -180,7 +180,7 @@ public class MembersServlet extends HttpServlet {
 		    Map<String, String> errors = new HashMap<>();
 		    PrintWriter out = res.getWriter();
 		    boolean success = false;
-		    
+		    Gson gson = new Gson();
 		   
 		    
 
@@ -225,18 +225,20 @@ public class MembersServlet extends HttpServlet {
 		    
 		    response.put("success", success);
 		    // 设置JSON响应的Content-Type
-		    res.setContentType("application/json");
+		    res.setContentType("application/json: charset=UTF-8");
 		    res.setCharacterEncoding("UTF-8");
 		    
-//		    for (Map.Entry<String, Object> entry : response.entrySet()) {
-//		        String key = entry.getKey();
-//		        Object value = entry.getValue();
-//		        
-//		        System.out.println(key + ": " + value);
-//		    }
-
+		    for (Map.Entry<String, Object> entry : response.entrySet()) {
+		        String key = entry.getKey();
+		        Object value = entry.getValue();
+		        
+		        System.out.println(key + ": " + value);
+		    }
+		    String outResponse= gson.toJson(response);
 		    // 将JSON响应发送回客户端
-		    out.write(new Gson().toJson(response));
+//		    out.write(new Gson().toJson(response));
+		    out.println(outResponse);
+//		    out.write(outResponse);
 		    out.close();
 		}
 	
