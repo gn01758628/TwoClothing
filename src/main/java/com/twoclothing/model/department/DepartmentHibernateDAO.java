@@ -68,6 +68,20 @@ public class DepartmentHibernateDAO implements DepartmentDAO{
 	public List<Department> getAllDepartments() {
 		// TODO Auto-generated method stub
 		return getSession().createQuery("from Department", Department.class).list();
+//		List<Department> list = null;
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		try {
+//			session.beginTransaction();
+//			Query<Department> query = session.createQuery("from Department", Department.class);
+//			list = query.getResultList();
+//			session.getTransaction().commit();
+//		} catch (RuntimeException ex) {
+//			session.getTransaction().rollback();
+//			throw ex;
+//		}
+//		return list;
+	
+	
 	}
 	
 			
