@@ -175,7 +175,7 @@ public class BidItemReport  implements Serializable{
 
 	
 	  public com.twoclothing.model.abid.biditem.BidItem getBidItem() {
-		  com.twoclothing.chenghan.service.BidItemFrontServiceImpl bidItemSvc = new com.twoclothing.chenghan.service.BidItemFrontServiceImpl();
+		  com.twoclothing.chenghan.service.BidItemServiceImpl bidItemSvc = new com.twoclothing.chenghan.service.BidItemServiceImpl();
 		  com.twoclothing.model.abid.biditem.BidItem bidItem = bidItemSvc.getBidItemByBidItemId(bidItemId);
 		    return bidItem;
 	    }
