@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CKEditor 5 jQuery 範例</title>
+    <!-- 引入 CKEditor 5 的 CDN 鏈接 -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+    <!-- 引入 jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1>CKEditor 5 jQuery 範例</h1>
+
+    <!-- 編輯器容器 -->
+    <div id="editor"></div>
+    <!-- 提交按鈕 -->
+    <button id="submitButton">提交</button>
+
+    <script>
+    ClassicEditor
+    .create(document.querySelector('#editor'), {
+        // 其他配置...
+        image: {
+            // 配置圖片上傳的 URL
+            upload: {
+                // 你的上傳圖片的伺服器端 URL
+                // 例如：'/upload-image'
+                // 使用這個 URL 來處理圖片上傳的請求
+                // 更多的上傳配置...
+                // 以下為示例，請替換為你的實際伺服器端處理圖片上傳的 URL
+                url: '/upload-image',
+                // 設置圖片上傳的方法為 POST
+                method: 'POST',
+                // 啟用 CSRF 驗證（如果需要的話）
+                withCredentials: true,
+                // 自定義表頭（如果需要的話）
+                headers: {
+                    'X-CSRF-TOKEN': 'Your-CSRF-Token'
+                },
+                // 自定義文件名（如果需要的話）
+                fileName: 'image'
+            },
+            // 額外的圖片上傳配置（如果需要的話）
+            // 更多的配置...
+        }
+    })
+    .then(editor => {
+        console.log(editor);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+    </script>
+
+    <!-- 隱藏的表單，用於提交編輯器的內容 -->
+    <form id="editorForm" action="YourServletURL" method="post" style="display:none;">
+        <textarea id="editorContent" name="editorContent"></textarea>
+    </form>
+</body>
+
+</html>
