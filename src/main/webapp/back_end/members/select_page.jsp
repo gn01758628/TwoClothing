@@ -41,11 +41,11 @@
 
 
 <ul>
-  <li><a href='listAllEmp.jsp'>List</a> all Members.  <br><br></li>
+  <li><a href='<%=request.getContextPath()%>/back_end/members/listAllMembers.jsp'>List</a> all Members.  <br><br></li>
   
 
 <li>
-    <FORM METHOD="post" ACTION="Members.do" >
+    <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/members/Members.do" >
         <b>輸入會員編號 (如1):</b>
         <input type="text" name="mbrId" value="${param.mbrId}"><font color=red>${errorMsgs.mbrId}</font>
         <input type="hidden" name="action" value="getOne_For_Display">
@@ -57,7 +57,7 @@
 
 
 <li>
-    <FORM METHOD="post" ACTION="Members.do" >
+    <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/members/Members.do" >
         <b>選擇會員姓名:</b>
         <input type="text" name="mbrName" value="${param.mbrName}"><font color=red>${errorMsgs.mbrId}</font>
 
@@ -70,11 +70,7 @@
 </ul>
 
 
-<h3>員工管理</h3>
 
-<ul>
-  <li><a href='addEmp.jsp'>Add</a> a new Members.</li>
-</ul>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/jrIR_tHnf70?si=UUh5VAHJNh3KaFUc&playlist=jrIR_tHnf70&loop=1&autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
   </body>
 </html>

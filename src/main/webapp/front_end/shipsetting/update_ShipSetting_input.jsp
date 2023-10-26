@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>員工資料修改 - update_emp_input.jsp</title>
+<title>員工資料修改 - update_ShipSetting_input.jsp</title>
 
 <style>
   table#table-1 {
@@ -49,101 +49,46 @@
 
 <table id="table-1">
 	<tr><td>
-		 <h3>員工資料修改 - update_emp_input.jsp</h3>
-		 <h4><a href="select_page.jsp"><img src="images/login2.png" width="100" height="102" border="0">回首頁</a></h4>
+		 <h3>員工資料修改 - update_ShipSetting_input.jsp</h3>
+		 <h4><a href='${pageContext.request.contextPath}/MemberCentre.jsp'><img src="images/login2.png" width="100" height="102" border="0">會員中心</a></h4>
 	</td></tr>
 </table>
 
 <h3>資料修改:</h3>
 
-<%-- 錯誤表列 --%>
-<%-- <c:if test="${not empty errorMsgs}"> --%>
-<!-- 	<font style="color:red">請修正以下錯誤:</font> -->
-<!-- 	<ul> -->
-<%-- 		<c:forEach var="message" items="${errorMsgs}"> --%>
-<%-- 			<li style="color:red">${message.value}</li> --%>
-<%-- 		</c:forEach> --%>
-<!-- 	</ul> -->
-<%-- </c:if> --%>
 
-<FORM METHOD="post" ACTION="Members.do" name="form1">
+
+<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/shipsetting/Shipsetting.do" name="form1">
 <table>
     <tr>
-		<td>會員編號:<font color=red><b>*</b></font></td>
+		<td>會員物流設定編號:<font color=red><b>*</b></font></td>
+		<td>${param.shipId}</td>
+	</tr>
+	<tr>
+		<td>會員編號:</td>
 		<td>${param.mbrId}</td>
 	</tr>
 	<tr>
-		<td>會員姓名:</td>
-		<td>${param.mbrName}</td>
-	</tr>
-	<tr>
-		<td>會員信箱(帳號):</td>
-		<td>${param.email}</td>
-	</tr>
-	<tr>
-		<td>會員密碼哈希值:</td>
-		<td>${param.pswdHash}</td>
-	</tr>
-	<tr>
-		<td>帳號狀態:</td>
-		<td>${param.mbrStatus}</td>
-	</tr>
-	<tr>
-		<td>會員大頭貼:</td>
-		<td>${param.avatar}</td>
-	</tr>
-	<tr>
-		<td>會員賣家商場圖片01:</td>
-		<td>${param.shopImg01}</td>
-	</tr>
-	<tr>
-		<td>會員賣家商場圖片02:</td>
-		<td>${param.shopImg02}</td>
-	</tr>
-	<tr>
-		<td>會員點數:</td>
-		<td>${param.mbrPoint}</td>
-	</tr>
-	<tr>
-		<td>會員虛擬錢包餘額:</td>
-		<td>${param.balance}</td>
-	</tr>
-	<tr>
-		<td>買家評價總星數:</td>
-		<td>${param.buyStar}</td>
-	</tr>
-	<tr>
-		<td>買家評價總人數:</td>
-		<td>${param.buyRating}</td>
-	</tr>
-	<tr>
-		<td>賣家評價總星數:</td>
-		<td>${param.sellStar}</td>
-	</tr>
-	<tr>
-		<td>賣家評價總人數:</td>
-		<td>${param.sellRating}</td>
-	</tr>
-	<tr>
-		<td>會員最後登入時間:</td>
-		<td>${param.lastLogin}</td>
-	</tr>
-	<tr>
-		<td>賣家權限分數:</td>
-		<td>${param.sellScore}</td>
-		<td><input type="TEXT" name="sellScore"  value="${param.sellScore}"  size="45"/></td> <td style="color: deeppink;">${errorMsgs.sellScore}</td>
-		
+		<td>收件人姓名:</td>
+		<td>${param.receiveName}</td>
+		<td><input type="TEXT" name="receiveName"  value="${param.receiveName}"  size="45"/></td> <td style="color: deeppink;">${errorMsgs.receiveName}</td>
 		
 	</tr>
 	<tr>
-		<td>買家權限分數:</td>
-		<td>${param.buyScore}</td>
-		<td><input type="TEXT" name="buyScore"  value="${param.buyScore}"  size="45"/></td> <td style="color: deeppink;">${errorMsgs.buyScore}</td>
+		<td>收件人手機:</td>
+		<td>${param.receivePhone}</td>
+		<td><input type="TEXT" name="receivePhone"  value="${param.receivePhone}"  size="45"/></td> <td style="color: deeppink;">${errorMsgs.receivePhone}</td>
 		
 	</tr>
+	<tr>
+		<td>收件人地址:</td>
+		<td>${param.receiveAddress}</td>
+		<td><input type="TEXT" name="receiveAddress"  value="${param.receiveAddress}"  size="45"/></td> <td style="color: deeppink;">${errorMsgs.receiveAddress}</td>
+		
+	</tr>
+	
+	
 
-
-	<jsp:useBean id="MembersServiceImpl" scope="page" class="com.twoclothing.gordon.service.MembersServiceImpl" />
 	
 
 </table>

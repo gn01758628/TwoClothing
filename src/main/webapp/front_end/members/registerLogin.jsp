@@ -137,7 +137,7 @@ input {
 			<div class="login">
 				<h3>登入 Login</h3>
 <!-- ============================登入================================================ -->
-				<form action="${pageContext.request.contextPath}/back_end/members/Members.do" class="login-form">
+				<form action="${pageContext.request.contextPath}/members/Members.do" class="login-form">
 					<input type="text" id="email2" name="email2" placeholder="email"
 						required>
 					<div class="tab"></div>
@@ -162,7 +162,7 @@ input {
 
 <!-- ============================註冊================================================ -->
 				<form id="registrationForm"
-					action="${pageContext.request.contextPath}/back_end/members/Members.do" method="post"
+					action="${pageContext.request.contextPath}/members/Members.do" method="post"
 					class="register-form">
 
 
@@ -289,7 +289,7 @@ input {
 			$.ajax({
 				type : "POST",
 //		 		url : "/TwoClothing/back_end/members/Members.do",
-				url : contextPath + "/back_end/members/Members.do",
+				url : contextPath + "/members/Members.do",
 				data : loginData,
 				dataType : "json",
 				success : function(response) {
@@ -339,7 +339,7 @@ form.addEventListener('submit', function(event) {
     $.ajax({
     	type : "POST",
 // 		url : "/TwoClothing/back_end/members/Members.do",
-		url : contextPath +"/back_end/members/Members.do",
+		url : contextPath +"/members/Members.do",
         data: registerData,
         dataType: "json",
         
@@ -356,8 +356,8 @@ form.addEventListener('submit', function(event) {
                     	
                         if (response.errors.email) {
                             // 使用 alert 显示错误消息
-//                             alert("错误：" + response.errors.email);
-                            alert("错误：用戶已存在" );
+ //                             alert("错误：" + response.errors.email);
+                           alert("错误：用戶已存在" );
             
                             
                         }
@@ -373,17 +373,9 @@ form.addEventListener('submit', function(event) {
         },
 		
         error: function(jqXHR, textStatus, errorThrown) {
-            // 在这里处理 AJAX 请求的错误
-//                alert("AJAX请求发生错误：" + errorThrown);
-			
-			    // 记录错误信息到控制台或服务器端日志
-// 			    console.error("AJAX请求错误：", errorThrown);
-			
-			    // 可选的回退操作
-			    // 清空表单字段
-// 			    clearFormFields();
- //        	 window.location.href = contextPath +"/registerLogin.jsp";
-       	 window.location.href = "registerLogin.jsp";
+
+  //        	 window.location.href = contextPath +"/registerLogin.jsp";
+      	 window.location.href = "registerLogin.jsp";
         }
     });
 });

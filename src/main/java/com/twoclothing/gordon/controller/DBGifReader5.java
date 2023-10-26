@@ -17,6 +17,12 @@ public class DBGifReader5 extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
+		
+	      String imgType = req.getParameter("imgType");
+	        if (imgType == null) {
+	            // 如果imgType参数未提供，默认使用"avatar"
+	            imgType = "avatar";
+	        }
 
 		res.setContentType("image/gif");
 		ServletOutputStream out = res.getOutputStream();
@@ -25,10 +31,10 @@ public class DBGifReader5 extends HttpServlet {
 			Statement stmt = con.createStatement();
 			String mbrid = req.getParameter("mbrid").trim();
 			ResultSet rs = stmt.executeQuery(
-				"SELECT avatar FROM twoclothing.members where mbrid="+mbrid);
+					"SELECT " + imgType + " FROM twoclothing.members where mbrid=" + mbrid);
 
 			if (rs.next()) {
-				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream("avatar"));//�L����
+				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream(imgType));//�L����
 				byte[] buf = new byte[4 * 1024]; // 4K buffer
 				int len;
 				while ((len = in.read(buf)) != -1) {
@@ -37,7 +43,7 @@ public class DBGifReader5 extends HttpServlet {
 				in.close();
 			} else {
 //				res.sendError(HttpServletResponse.SC_NOT_FOUND); //404 p324  p134
-				InputStream in = getServletContext().getResourceAsStream("/NoData/none.jpg");//2g����
+				InputStream in = getServletContext().getResourceAsStream("/images/NoIMG.png");//2g����
 				byte[] b = new byte[in.available()];
 				in.read(b);
 				out.write(b);
@@ -48,7 +54,7 @@ public class DBGifReader5 extends HttpServlet {
 			stmt.close();
 		} catch (Exception e) {
 //			System.out.println(e);
-			InputStream in = getServletContext().getResourceAsStream("/NoData/null.jpg");//��������
+			InputStream in = getServletContext().getResourceAsStream("/images/NoIMG.png");//��������
 			byte[] b = in.readAllBytes();
 //			byte[] b = new byte[in.available()];
 //			in.read(b);
