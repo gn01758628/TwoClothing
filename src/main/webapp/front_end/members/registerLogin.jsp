@@ -12,6 +12,16 @@
 <title>Insert title here</title>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!--====圖片驗證點擊刷新===================				 -->
+	<script type="text/javascript">
+        function refresh() {
+            var imgValidate = document.getElementById("imgValidate");
+            var currentSrc = imgValidate.src;
+            var newSrc = (currentSrc.indexOf("?") === -1) ? currentSrc + "?id=" + Math.random() : currentSrc.replace(/(\?id=\d+)/, "?id=" + Math.random());
+            imgValidate.src = newSrc;
+        }
+    </script>
+ <!-- 	圖片驗證	===================				 -->
 
 <style>
 * {
@@ -22,7 +32,7 @@ body {
 	background-color: white;
 }
 
-#email2, #pswdHash2, h3, #mbrName, #comfirm_password, #email, #pswdHash
+#email2, #pswdHash2, h3, #mbrName, #comfirm_password, #email, #pswdHash, #VerificationCode, #imgValidate
 	{
 	width: 200px;
 	height: 20px;
@@ -116,18 +126,18 @@ input {
 
 </head>
 <body>
-	<a href='/TwoClothing//index.jsp'>回首頁</a>
+	<a href='${pageContext.request.contextPath}/index.jsp'>回首頁</a>
 
 
 	<div class="system_name">
 		<h2>登入</h2>
 	</div>
-
 	<div class="login_page">
 		<div id="container1">
 			<div class="login">
 				<h3>登入 Login</h3>
-				<form action="Members.do" class="login-form">
+<!-- ============================登入================================================ -->
+				<form action="${pageContext.request.contextPath}/back_end/members/Members.do" class="login-form">
 					<input type="text" id="email2" name="email2" placeholder="email"
 						required>
 					<div class="tab"></div>
@@ -136,6 +146,7 @@ input {
 					<div class="tab"></div>
 					<input type="submit" name="action" value="login" class="submit">
 				</form>
+<!-- ============================登入================================================ -->
 				<h5 onclick="show_hide()">註冊帳號</h5>
 			</div>
 			<!-- login end -->
@@ -149,9 +160,9 @@ input {
 			<div class="signup">
 				<h3>註冊 Sign Up</h3>
 
-
+<!-- ============================註冊================================================ -->
 				<form id="registrationForm"
-					action="/TwoClothing/back_end/members/Members.do" method="post"
+					action="${pageContext.request.contextPath}/back_end/members/Members.do" method="post"
 					class="register-form">
 
 
@@ -167,9 +178,18 @@ input {
 					<!-- 确认密码输入字段 -->
 					<input type="password" id="comfirm_password"
 						name="comfirm_password" placeholder="確認密碼" required> <span
-						id="comfirm_passwordError" style="color: red;"></span> <input
-						type="submit" name="action" value="register">
+						id="comfirm_passwordError" style="color: red;"></span> 
+<!-- 	圖片驗證	===================				 -->
+					 <input id=VerificationCode type="VerificationCode" name="VerificationCode" size=10 placeholder=驗證碼>
+					 <span id="VerificationCodeError" style="color: red;"></span>
+					 <%--點選圖片可進行驗證碼重新整理--%>
+					 <img name="imgValidate" id=imgValidate src = "imgValidate.jsp" onclick="refresh()" >
+					 <br>
+<!-- 	圖片驗證	===================				 -->				 
+						<input type="submit" name="action" value="register">
+						
 				</form>
+<!-- ============================註冊================================================ -->
 				<h5 onclick="show_hide()">登入帳號</h5>
 			</div>
 			<!-- signup end -->
@@ -184,18 +204,19 @@ input {
 	</div>
 
 	<script>
+	    var contextPath = "${pageContext.request.contextPath}";
 		const form = document.getElementById('registrationForm');
 		const emailInput = document.getElementById('email');
 		const pswdHashInput = document.getElementById('pswdHash');
-		const comfirmPasswordInput = document
-				.getElementById('comfirm_password');
+	    var verificationCode = document.getElementById("VerificationCode").value;
+		const comfirmPasswordInput = document.getElementById('comfirm_password');
 		const emailError = document.getElementById('emailError');
 		const pswdHashError = document.getElementById('pswdHashError');
+		
 
-		form
-				.addEventListener(
-						'submit',
-						function(event) {
+		
+				form.addEventListener('submit',function(event) {
+						
 							let isValid = true;
 
 							// 电子邮件字段验证
@@ -215,13 +236,19 @@ input {
 							} else {
 								pswdHashError.textContent = ''; // 清空错误消息
 							}
+							if (!verificationCode) {
+						        // 用户没有输入验证码
+						        document.getElementById("VerificationCodeError").textContent = "请输入验证码";
+						        event.preventDefault(); // 阻止表单提交
+						    }
 
 							// 如果 isValid 为 false，则阻止表单提交
 							if (!isValid) {
 								event.preventDefault();
 							}
 						});
-		//     ==========================================
+//===============================================登入註冊切換===============================================
+
 		function show_hide() {
 			var login = document.getElementById("container1");
 			var signup = document.getElementById("container2");
@@ -245,7 +272,8 @@ input {
 			}
 		}
 
-		//======================ajax===========
+//===============================================登入註冊切換===============================================
+//==================================================登入ajax================================================			
 		const loginForm = document.querySelector('.login-form');
 		const loginEmailInput = document.getElementById('email2');
 		const loginPasswordInput = document.getElementById('pswdHash2');
@@ -260,7 +288,8 @@ input {
 
 			$.ajax({
 				type : "POST",
-				url : "/TwoClothing/back_end/members/Members.do",
+//		 		url : "/TwoClothing/back_end/members/Members.do",
+				url : contextPath + "/back_end/members/Members.do",
 				data : loginData,
 				dataType : "json",
 				success : function(response) {
@@ -268,9 +297,11 @@ input {
 
 						if (response.mbrStatus === 0) {
 
-							window.location.href = "verificationEmail.jsp";
+							window.location.href = contextPath +  "/front_end/members/verificationEmail.jsp";
+// 							window.location.href = "verificationEmail.jsp";
 						} else {
-							window.location.href = "/TwoClothing/index.jsp";
+							window.location.href = contextPath + "/index.jsp";
+// 							window.location.href = "/TwoClothing/index.jsp";
 						}
 					} else {
 						if (response.errors) {
@@ -285,22 +316,30 @@ input {
 				}
 			});
 		});
+//==================================================登入ajax================================================			
 
-		//         =====================
+	
 
+//==================================================註冊ajax================================================			
 
+			const VerificationCode = document.getElementById('VerificationCode');
+			const imgValidate = document.getElementById('imgValidate');
+
+	
 form.addEventListener('submit', function(event) {
     event.preventDefault();
 
     const registerData = {
         email: emailInput.value,
         pswdHash: pswdHashInput.value,
+        VerificationCode: VerificationCode.value,
         action: 'register'
     };
 
     $.ajax({
     	type : "POST",
-		url : "/TwoClothing/back_end/members/Members.do",
+// 		url : "/TwoClothing/back_end/members/Members.do",
+		url : contextPath +"/back_end/members/Members.do",
         data: registerData,
         dataType: "json",
         
@@ -309,7 +348,8 @@ form.addEventListener('submit', function(event) {
                 if (response.success) {
                 	
                     // 注册成功的逻辑
-                    window.location.href = "registerLogin.jsp";
+                    window.location.href = contextPath +"/registerLogin.jsp";
+//                     window.location.href = "registerLogin.jsp";
                 } else {
                     // 注册失败，显示错误消息
                     if (response.errors) {
@@ -321,6 +361,9 @@ form.addEventListener('submit', function(event) {
             
                             
                         }
+                        if(response.errors.sessionCode){
+                        	 alert("错误：驗證碼錯誤" );
+                        }
                         // 如果有其他错误字段，可以类似处理
                     }
                 }
@@ -328,15 +371,29 @@ form.addEventListener('submit', function(event) {
                 alert("AJAX 响应解析错误：" + error);
             }
         },
+		
         error: function(jqXHR, textStatus, errorThrown) {
             // 在这里处理 AJAX 请求的错误
-        	 window.location.href = "registerLogin.jsp";
+//                alert("AJAX请求发生错误：" + errorThrown);
+			
+			    // 记录错误信息到控制台或服务器端日志
+// 			    console.error("AJAX请求错误：", errorThrown);
+			
+			    // 可选的回退操作
+			    // 清空表单字段
+// 			    clearFormFields();
+ //        	 window.location.href = contextPath +"/registerLogin.jsp";
+       	 window.location.href = "registerLogin.jsp";
         }
     });
 });
 
+//==================================================註冊ajax================================================			
 
-		//======================ajax===========
-	</script>
+  
+
+		
+	</script>  
+
 </body>
 </html>

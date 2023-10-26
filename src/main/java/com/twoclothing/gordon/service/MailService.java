@@ -36,8 +36,8 @@ public class MailService {
 	        //     ●5-1) 下拉式選單【選取應用程式】--> 選取【郵件】
 	        //     ●5-2) 下拉式選單【選取裝置】--> 選取【Windows 電腦】
 	        //     ●5-3) 最後按【產生】密碼
-			final String myGmail = "ixlogic.wu@gmail.com";
-			final String myGmail_password = "ddjomltcnypgcstn";
+			final String myGmail = "viliage543219988@gmail.com";
+			final String myGmail_password = "mvgelzdnscdmotim";
 			Session session = Session.getInstance(props, new Authenticator() {
 				protected PasswordAuthentication getPasswordAuthentication() {
 					return new PasswordAuthentication(myGmail, myGmail_password);
@@ -63,9 +63,9 @@ public class MailService {
 
 	public static void main(String args[]) {
 
-		String to = "ixlogic.wu@gmail.com";
+		String to = "viliage543219988@gmail.com";
 
-		String subject = "密碼通知";
+		String subject = "TwoClothing 驗證信";
 
 		String ch_name = "peter1";
 		String passRandom = "111";

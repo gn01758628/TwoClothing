@@ -30,14 +30,11 @@ import java.util.*;
 //  超過maxFileSize或maxRequestSize都會拋出IllegalStateException
 
 
-@SuppressWarnings("DataFlowIssue")
+
+
 @WebServlet("/front/biditem/*")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 2 * 1024 * 1024, maxRequestSize = 2 * 2 * 1024 * 1024)
 public class BidItemFrontServlet extends HttpServlet {
-
-    /*
-        TODO 判定是否是會員,不是會員的不應該進入此servlet
-     */
 
     // 一個Servlet物件對應一個Service物件
     private BidItemFrontService bidItemFrontService;
@@ -50,6 +47,11 @@ public class BidItemFrontServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        /*
+        TODO 判定是否是會員,不是會員的不應該進入此servlet
+        */
+
         // 獲取servlet path
         String servletPath = request.getServletPath() + request.getPathInfo();
         if ("/front/biditem/add".equals(servletPath)) {

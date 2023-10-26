@@ -4,20 +4,22 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 </head>
 <body>
 
-<form action="${pageContext.request.contextPath}/back_end/members/Members.do" method="post">
-    <input type="hidden" name="method" value="regist"/>
+<form action="${pageContext.request.contextPath}/back_end/members/SendEmailServlet" method="post">
+    <input type="hidden" name="action" value="verificationEmail"/>
     <table align="center" width="30%">
 
         <tr>
             <td>郵箱</td>
-            <td><input id="email_id" type="text" name="email"/> </td>
+           <td><input id="email" type="text" name="email" value="<c:out value='${user.email}' />"/> </td>
         </tr>
         <tr>
             <td align="center" >
-            <button id="regist_id" type="submit">驗證</button> </td>
+            <button id="action" name="action" value ="verificationEmail" type="submit">驗證</button> </td>
       
             <td><button id="cancel_id" type="button">取消</button> </td>
         </tr>

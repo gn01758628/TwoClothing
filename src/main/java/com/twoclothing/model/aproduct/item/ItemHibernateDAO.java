@@ -18,7 +18,7 @@ import org.hibernate.SessionFactory;
 
 public class ItemHibernateDAO implements ItemDAO {
 
-	private SessionFactory factory;
+	private final SessionFactory factory;
 
 	public ItemHibernateDAO(SessionFactory factory) {
 		this.factory = factory;
@@ -30,12 +30,14 @@ public class ItemHibernateDAO implements ItemDAO {
 	
 	@Override
 	public int insert(Item item) {
+		System.out.println("save方法");
 		return (Integer) getSession().save(item);	
 	}
 	
 
 	@Override
 	public Item getByPrimaryKey(Integer itemId) {
+		System.out.println("PK");
 			return getSession().get(Item.class, itemId);
 	}
 
@@ -69,6 +71,7 @@ public class ItemHibernateDAO implements ItemDAO {
 	public int update(Item item) {
 		try {
 			getSession().update(item);
+			System.out.println("拿到:"+item);
 			return 1;
 		}catch(Exception e) {
 			return -1;
@@ -80,10 +83,10 @@ public class ItemHibernateDAO implements ItemDAO {
 		System.out.println("***map***"+map);
 		
 
-		if(map.size()==0) { 
-			System.out.println("map:沒資料"+map);
-//			return getAll(page);
-		}	
+//		if(map.size()==0) { 
+//			System.out.println("map:沒資料"+map);
+////			return getAll(page);
+//		}	
 
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
 		CriteriaQuery<Item> criteria = builder.createQuery(Item.class);
@@ -131,9 +134,9 @@ public class ItemHibernateDAO implements ItemDAO {
 	public int getResultTotal(Map<String, String> map) {
 		System.out.println("map:"+map);
 
-		if(map.size()==0) { 
-			System.out.println("map:沒資料"+map);
-		}	
+//		if(map.size()==0) { 
+//			System.out.println("map:沒資料"+map);
+//		}	
 
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
 		CriteriaQuery<Item> criteria = builder.createQuery(Item.class);
