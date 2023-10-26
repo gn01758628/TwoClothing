@@ -20,5 +20,5 @@ public interface MembersService {
 	
 	
 	
-	int getPageTotal();
+	
 }
