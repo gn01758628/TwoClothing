@@ -72,18 +72,32 @@ public class BidItemBackServlet extends HttpServlet {
         String[] bidItemIds = parameterMap.get("bidItemId");
         if (!bidItemIds[0].isEmpty()) {
             BidItem bidItem = bidItemService.getBidItemByBidItemId(Integer.parseInt(bidItemIds[0]));
-            bidItemList.add(bidItem);
-            System.out.println(bidItem);
+            if (bidItem != null) {
+                bidItemList.add(bidItem);
+            }
         } else {
+            // 複合條件查詢
+
 
         }
-        // 綁定會員
-        Map<Integer,Members> membersMap = new HashMap<>();
-        for (BidItem bidItem : bidItemList) {
-            Members members = bidItemService.getMembersByMbrId(bidItem.getMbrId());
-            membersMap.put(bidItem.getBidItemId(),members);
+        if (!bidItemList.contains(null)) {
+            // 綁定會員
+            Map<Integer, Members> membersMap = new HashMap<>();
+            // 綁定員工
+            Map<Integer, Employee> employeeMap = new HashMap<>();
+            for (BidItem bidItem : bidItemList) {
+                Members members = bidItemService.getMembersByMbrId(bidItem.getMbrId());
+
+                if (bidItem.getEmpId() != null) {
+                    Employee employee = bidItemService.getEmployeeByEmpId(bidItem.getEmpId());
+                    employeeMap.put(bidItem.getBidItemId(), employee);
+                }
+
+                membersMap.put(bidItem.getBidItemId(), members);
+            }
+            request.setAttribute("membersMap", membersMap);
+            request.setAttribute("employeeMap", employeeMap);
         }
-        request.setAttribute("membersMap", membersMap);
         request.getRequestDispatcher("/back/biditem/search").forward(request, response);
     }
 }

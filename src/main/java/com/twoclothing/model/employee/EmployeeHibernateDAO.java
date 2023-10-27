@@ -23,13 +23,13 @@ public class EmployeeHibernateDAO implements EmployeeDAO{
 	}
 	
 	@Override
-	public Employee getEmployeeById(Integer empId) {
+	public Employee getByPrimaryKey(Integer empId) {
 		// TODO Auto-generated method stub
 		return getSession().get(Employee.class, empId);
 		}
 
 	@Override
-	public List<Employee> getAllEmployees() {
+	public List<Employee> getAll() {
 		// TODO Auto-generated method stub
 		return getSession().createQuery("from Employee", Employee.class).list();
 //		List<Employee> list = null;
@@ -47,7 +47,7 @@ public class EmployeeHibernateDAO implements EmployeeDAO{
 //		
 			}
 	@Override
-	public int addEmployee(Employee employee) {
+	public int insert(Employee employee) {
 		// TODO Auto-generated method stub
 		// 回傳給 service 剛新增成功的自增主鍵值
 		Integer empId = (Integer) getSession().save(employee);
@@ -55,7 +55,7 @@ public class EmployeeHibernateDAO implements EmployeeDAO{
 		
 	}
 	@Override
-	public int updateEmployee(Employee employee) {
+	public int update(Employee employee) {
 		// TODO Auto-generated method stub
 		try {
 			getSession().merge(employee);
@@ -65,7 +65,7 @@ public class EmployeeHibernateDAO implements EmployeeDAO{
 		}
 	}
 	@Override
-	public int deleteEmployee(Integer empId) {
+	public int delete(Integer empId) {
 		// TODO Auto-generated method stub
 		Employee emp = getSession().get(Employee.class, empId);
 		if (emp != null) {
@@ -78,7 +78,7 @@ public class EmployeeHibernateDAO implements EmployeeDAO{
 		}
 	}
 	@Override
-	public List<Employee> getAllEmployees(int currentPage) {
+	public List<Employee> getAll(int currentPage) {
 		// TODO Auto-generated method stub
 		int first = (currentPage - 1) * 4;
 		return getSession().createQuery("from Employee", Employee.class)

@@ -21,7 +21,11 @@ public interface BidItemService {
 
     Members getMembersByMbrId(Integer mbrId);
 
+    Employee getEmployeeByEmpId(Integer empId);
+
     List<BidItem> getAllBidItemByMbrid(Integer mbrId);
+
+    List<BidItem> getAllBidItemByCompositeQuery(Integer mbrId);
 
     List<CategoryTags> getAllCategoryTags();
 

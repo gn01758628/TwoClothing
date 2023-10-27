@@ -7,7 +7,7 @@
 
 <%
 	EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-	List<Employee> list = employeeServiceImpl.getAllEmployees();
+	List<Employee> list = employeeServiceImpl.getAll();
 	System.out.println(list);
     pageContext.setAttribute("list",list);
     

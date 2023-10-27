@@ -58,8 +58,18 @@ public class BidItemServiceImpl implements BidItemService {
     }
 
     @Override
+    public Employee getEmployeeByEmpId(Integer empId) {
+        return employeeDAO.getByPrimaryKey(empId);
+    }
+
+    @Override
     public List<BidItem> getAllBidItemByMbrid(Integer mbrId) {
         return bidItemDAO.getAllByMbrId(mbrId);
+    }
+
+    @Override
+    public List<BidItem> getAllBidItemByCompositeQuery(Integer mbrId) {
+        return null;
     }
 
     @Override
@@ -69,7 +79,7 @@ public class BidItemServiceImpl implements BidItemService {
 
     @Override
     public List<Employee> getAllEmployee() {
-        return employeeDAO.getAllEmployees();
+        return employeeDAO.getAll();
     }
 
     @Override

@@ -92,7 +92,6 @@ div[name="block"] {
 			// 當文件載入完成時執行
 			var buyerSelect = document.getElementById('buyer');
 			var cartDiv = document.getElementById('cart');
-			var buyerMap = JSON.parse(localStorage.getItem('buyerMap')) || {};
 			// 初始化買家編號為1
 			var currentBuyerId = 1;
 			
@@ -109,11 +108,11 @@ div[name="block"] {
 				};
 
 				// 從localStorage中取出資料
-				var existingData = localStorage.getItem('buyerMap');
+				let existingData = localStorage.getItem('buyerMap');
 
 				if (existingData) {
 					// 如果localStorage中已經有資料
-					buyerMap = JSON.parse(existingData);
+					let buyerMap = JSON.parse(existingData);
 
 					// 檢查買家的購物清單中是否已經包含了相同的賣家和商品
 					if (buyerMap[buyerId]) {
@@ -164,7 +163,7 @@ div[name="block"] {
 				
 				// 從 localStorage 中取得資料
 				var existingData = JSON.parse(localStorage.getItem('buyerMap'));
-	
+		
 				// 如果 localStorage 中已經有資料並且要刪除的賣家存在於資料中
 				if (existingData && existingData[buyerId]) {
 					delete existingData[buyerId]; // 刪除特定賣家的資料
@@ -184,6 +183,8 @@ div[name="block"] {
 			
 			
 			$("#checkout_button").click(function() {
+				let existingData = localStorage.getItem('buyerMap');
+				let buyerMap = JSON.parse(existingData);
 			    // 獲取當前買家的購物清單
 			    var currentBuyerCart = buyerMap[currentBuyerId] || [];
 
@@ -224,8 +225,10 @@ div[name="block"] {
 			// 顯示購物清單的函數
 			function displayCart() {
 			    // 獲取當前買家的購物清單
-			    var currentBuyerCart = buyerMap[currentBuyerId] || [];
-
+			    let existingData = localStorage.getItem('buyerMap');
+				let buyerMap = JSON.parse(existingData);
+				
+				let currentBuyerCart = (buyerMap && buyerMap[currentBuyerId]) || [];
 			    // 清空 cartDiv 的內容
 			    cartDiv.innerHTML = '';
 

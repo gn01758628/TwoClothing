@@ -19,13 +19,13 @@ public class EmployeeJDBCDAO {
 //			+ "WHERE empId = ?";
 
 //	@Override
-//	public Employee getEmployeeById(Integer empId) {
+//	public Employee getByPrimaryKey(Integer empId) {
 //		// TODO Auto-generated method stub
 //		return null;
 //	}
 //
 //	@Override
-//	public List<Employee> getAllEmployees() {
+//	public List<Employee> getAll() {
 //		List<Employee> list = new ArrayList<>();
 //		Employee emp = null;
 //
@@ -70,19 +70,19 @@ public class EmployeeJDBCDAO {
 //	}
 //
 //	@Override
-//	public void addEmployee(Employee employee) {
+//	public void insert(Employee employee) {
 //		// TODO Auto-generated method stub
 //
 //	}
 //
 //	@Override
-//	public void updateEmployee(Employee employee) {
+//	public void update(Employee employee) {
 //		// TODO Auto-generated method stub
 //
 //	}
 //
 //	@Override
-//	public void deleteEmployee(Integer empId) {
+//	public void delete(Integer empId) {
 //		// TODO Auto-generated method stub
 //
 //	}
