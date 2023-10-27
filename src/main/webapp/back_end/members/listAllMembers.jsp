@@ -14,7 +14,7 @@ MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 
 <html>
 <head>
-<title>所有員工資料 - listAllEmp.jsp</title>
+<title>所有員工資料 - listAllMembers.jsp</title>
 
 <style>
   table#table-1 {
@@ -56,7 +56,7 @@ MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 <table id="table-1">
 	<tr><td>
 		 <h3>所有員工資料 - listAllEmp.jsp</h3>
-		 <h4><a href="select_page.jsp"><img src="images/login2.png" width="100" height="102" border="0">回首頁</a></h4>
+		 <h4><a href="<%=request.getContextPath()%>/back_end/members/select_page.jsp"><img src="images/login2.png" width="100" height="102" border="0">回首頁</a></h4>
 	</td></tr>
 </table>
 
@@ -89,9 +89,9 @@ MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 		<td>${members.email}</td>
 		<td>${members.pswdHash}</td>
 		<td>${members.mbrStatus}</td>
-		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${members.mbrId}" width=100px height=100px></td>
-		<td><img src="<%=request.getContextPath() %>/DBGifReader6?mbrid=${members.mbrId}" width=100px height=100px></td>
-		<td><img src="<%=request.getContextPath() %>/DBGifReader7?mbrid=${members.mbrId}" width=100px height=100px></td>
+		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${members.mbrId}&imgType=avatar" width=100px height=100px  ></td>
+		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${members.mbrId}&imgType=shopimg01" width=100px height=100px ></td>
+		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${members.mbrId}&imgType=shopimg02" width=100px height=100px ></td>
 		<td>${members.mbrPoint}</td>
 		<td>${members.balance}</td>
 		<td>${members.buyStar}</td>
@@ -102,17 +102,17 @@ MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 		<td>${members.sellScore}</td>
 		<td>${members.buyScore}</td>	
 			<td>
-			  <FORM METHOD="post" ACTION="Members.do" style="margin-bottom: 0px;">
+			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/members/Members.do" style="margin-bottom: 0px;">
 			     <input type="submit" value="修改">
 			     <input type="hidden" name="mbrId"  value="${members.mbrId}">
 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
 			</td>
-			<td>
-			  <FORM METHOD="post" ACTION="Members.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="刪除">
-			     <input type="hidden" name="mbrId"  value="${members.mbrId}">
-			     <input type="hidden" name="action" value="delete"></FORM>
-			</td>
+<!-- 			<td> -->
+<%-- 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/members/Members.do" style="margin-bottom: 0px;"> --%>
+<!-- 			     <input type="submit" value="刪除"> -->
+<%-- 			     <input type="hidden" name="mbrId"  value="${members.mbrId}"> --%>
+<!-- 			     <input type="hidden" name="action" value="delete"></FORM> -->
+<!-- 			</td> -->
 		</tr>
 	</c:forEach>
 </table>

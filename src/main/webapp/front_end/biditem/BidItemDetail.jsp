@@ -27,28 +27,38 @@
 <div class="container">
     <div class="row mt-5">
         <div class="col-md-6">
-            <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${bidItem.bidItemId}&position=1" alt="商品主图" class="img-fluid">
+            <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${bidItem.bidItemId}&position=1"
+                 alt="商品主图" class="img-fluid">
         </div>
         <div class="col-md-6">
             <ul class="list-group">
                 <li class="list-group-item">${bidItem.bidItemId}</li>
                 <li class="list-group-item">${bidItem.bidName}</li>
-                <li class="list-group-item">${bidItem.grade}</li>
-                <li class="list-group-item">${bidItem.size}</li>
+                <li class="list-group-item">${gradeMap[bidItem.grade]}</li>
+                <li class="list-group-item">${sizeMap[bidItem.size]}</li>
                 <li class="list-group-item">${bidItem.detail}</li>
-                <li class="list-group-item">${bidItem.tagId}</li>
+                <li class="list-group-item">${tagMap[bidItem.tagId]}</li>
                 <li class="list-group-item">${bidItem.mbrId}</li>
-                <li class="list-group-item">${bidItem.startPrice}</li>
-                <li class="list-group-item">${bidItem.reservePrice}</li>
-                <li class="list-group-item">${bidItem.directPrice}</li>
-                <li class="list-group-item">${bidItem.startTime}</li>
-                <li class="list-group-item">${bidItem.endTime}</li>
-                <li class="list-group-item">${bidItem.empId}</li>
+                <li class="list-group-item">$${bidItem.startPrice}</li>
+                <c:if test="${not empty bidItem.reservePrice}">
+                    <li class="list-group-item">$${bidItem.reservePrice}</li>
+                </c:if>
+                <c:if test="${not empty bidItem.directPrice}">
+                    <li class="list-group-item">$${bidItem.directPrice}</li>
+                </c:if>
+                <c:if test="${not empty bidItem.startTime}">
+                    <li class="list-group-item">${bidItem.startTime}</li>
+                </c:if>
+                <c:if test="${not empty bidItem.endTime}">
+                    <li class="list-group-item">${bidItem.endTime}</li>
+                </c:if>
+                <c:if test="${not empty bidItem.empId}">
+                    <li class="list-group-item">${bidItem.empId}</li>
+                </c:if>
             </ul>
         </div>
     </div>
 </div>
-
 
 
 <!--bootstrap5 js-->
@@ -58,7 +68,7 @@
 <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         // 設置結束時間
         const endTime = new Date('2023-10-31T12:00:00').getTime();
 

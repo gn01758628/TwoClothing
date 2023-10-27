@@ -4,14 +4,12 @@
 <%@ page import="com.twoclothing.tonyhsieh.service.*"%>
 <%@ page import="com.twoclothing.model.department.*"%>
 
-<%
-  // EmpVO empVO = (EmpVO) request.getAttribute("empVO");
-%>
+
 
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>场戈穝糤 - addEmp.jsp</title>
+<title>场戈穝糤 - addDept.jsp</title>
 
 <style>
   table#table-1 {
@@ -50,7 +48,7 @@
 
 <table id="table-1">
 	<tr><td>
-		 <h3>场戈穝糤 - addEmp.jsp</h3></td><td>
+		 <h3>场戈穝糤 - addDept.jsp</h3></td><td>
 		 <h4><a href="select_page.jsp"></a></h4>
 	</td></tr>
 </table>

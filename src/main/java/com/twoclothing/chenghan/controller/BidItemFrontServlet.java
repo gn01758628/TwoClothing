@@ -1,7 +1,7 @@
 package com.twoclothing.chenghan.controller;
 
-import com.twoclothing.chenghan.service.BidItemFrontService;
-import com.twoclothing.chenghan.service.BidItemFrontServiceImpl;
+import com.twoclothing.chenghan.service.BidItemService;
+import com.twoclothing.chenghan.service.BidItemServiceImpl;
 import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.abid.biditemimage.BidItemImage;
 import com.twoclothing.model.categorytags.CategoryTags;
@@ -30,42 +30,39 @@ import java.util.*;
 //  超過maxFileSize或maxRequestSize都會拋出IllegalStateException
 
 
-@SuppressWarnings("DataFlowIssue")
 @WebServlet("/front/biditem/*")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 2 * 1024 * 1024, maxRequestSize = 2 * 2 * 1024 * 1024)
 public class BidItemFrontServlet extends HttpServlet {
 
-    /*
-        TODO 判定是否是會員,不是會員的不應該進入此servlet
-     */
-
     // 一個Servlet物件對應一個Service物件
-    private BidItemFrontService bidItemFrontService;
+    private BidItemService bidItemService;
 
     @Override
     public void init() throws ServletException {
-        bidItemFrontService = new BidItemFrontServiceImpl();
+        bidItemService = new BidItemServiceImpl();
     }
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        /*
+        TODO 判定是否是會員,不是會員的不應該進入此servlet
+        */
+
         // 獲取servlet path
         String servletPath = request.getServletPath() + request.getPathInfo();
-        if ("/front/biditem/add".equals(servletPath)) {
-            doAdd(request, response);
-        } else if ("/front/biditem/save".equals(servletPath)) {
-            doSave(request, response);
-        } else if ("/front/biditem/list".equals(servletPath)) {
-            doList(request, response);
-        } else if ("/front/biditem/detail".equals(servletPath)) {
-            doDetail(request, response);
+        switch (servletPath) {
+            case "/front/biditem/add" -> doAdd(request, response);
+            case "/front/biditem/save" -> doSave(request, response);
+            case "/front/biditem/list" -> doList(request, response);
+            case "/front/biditem/detail" -> doDetail(request, response);
         }
     }
 
     private void doAdd(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<CategoryTags> allCategoryTags = bidItemFrontService.getAllCategoryTags();
+        List<CategoryTags> allCategoryTags = bidItemService.getAllCategoryTags();
         request.setAttribute("categoryTags", allCategoryTags);
         request.getRequestDispatcher("/front_end/biditem/BidItemAdd.jsp").forward(request, response);
     }
@@ -97,7 +94,7 @@ public class BidItemFrontServlet extends HttpServlet {
         }
 
         String tagId = request.getParameter("tagId");
-        List<Integer> allSelectableTagsId = bidItemFrontService.getAllSelectableTagsId();
+        List<Integer> allSelectableTagsId = bidItemService.getAllSelectableTagsId();
         if (tagId == null || tagId.trim().isEmpty()) {
             errorMessages.add("請正確選擇商品類別標籤");
         } else if (!allSelectableTagsId.contains(Integer.parseInt(tagId))) {
@@ -245,19 +242,19 @@ public class BidItemFrontServlet extends HttpServlet {
             bidItem.setStartTime(timestamp);
         }
 
-        int bidItemPK = bidItemFrontService.addBidItem(bidItem);
+        int bidItemPK = bidItemService.addBidItem(bidItem);
 
         // 儲存BidItemImage
         BidItemImage bidItemImage01 = new BidItemImage();
         bidItemImage01.setBidItemId(bidItemPK);
         bidItemImage01.setImage(image01);
-        bidItemFrontService.addBidItemImage(bidItemImage01);
+        bidItemService.addBidItemImage(bidItemImage01);
 
         if (image02.length != 0) {
             BidItemImage bidItemImage02 = new BidItemImage();
             bidItemImage02.setBidItemId(bidItemPK);
             bidItemImage02.setImage(image02);
-            bidItemFrontService.addBidItemImage(bidItemImage02);
+            bidItemService.addBidItemImage(bidItemImage02);
         }
 
         response.sendRedirect(request.getContextPath() + "/front/biditem/list");
@@ -269,7 +266,7 @@ public class BidItemFrontServlet extends HttpServlet {
         // TODO 會員編號先寫死,之後要從session取
         Integer mbrId = 1;
 
-        List<BidItem> allBidItemByMbrid = bidItemFrontService.getAllBidItemByMbrid(mbrId);
+        List<BidItem> allBidItemByMbrid = bidItemService.getAllBidItemByMbrid(mbrId);
         request.setAttribute("allBidItemByMbrid", allBidItemByMbrid);
         Map<Integer, String> statusMap = new HashMap<>();
         statusMap.put(0, "待審核");
@@ -283,8 +280,31 @@ public class BidItemFrontServlet extends HttpServlet {
     private void doDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String bidItemId = request.getParameter("bidItemId");
-        BidItem bidItem = bidItemFrontService.getBidItemByBidItemId(Integer.parseInt(bidItemId));
+        BidItem bidItem = bidItemService.getBidItemByBidItemId(Integer.parseInt(bidItemId));
+        List<CategoryTags> categoryTags = bidItemService.getAllCategoryTags();
+        Map<Integer, String> tagMap = new HashMap<>();
+        for (CategoryTags tags : categoryTags) {
+            tagMap.put(tags.getTagId(),tags.getCategoryName());
+        }
+        Map<Integer, String> gradeMap = new HashMap<>();
+        gradeMap.put(0, "全新");
+        gradeMap.put(1, "9成5新");
+        gradeMap.put(2, "9成新");
+        gradeMap.put(3, "8成新");
+        gradeMap.put(4, "5成新");
+        Map<Integer, String> sizeMap = new HashMap<>();
+        sizeMap.put(0, "XS(含以下)");
+        sizeMap.put(1, "S");
+        sizeMap.put(2, "M");
+        sizeMap.put(3, "L");
+        sizeMap.put(4, "XL");
+        sizeMap.put(5, "2XL");
+        sizeMap.put(6, "3XL");
+        sizeMap.put(7, "4XL(含以下)");
+        request.setAttribute("tagMap", tagMap);
         request.setAttribute("bidItem", bidItem);
+        request.setAttribute("sizeMap", sizeMap);
+        request.setAttribute("gradeMap", gradeMap);
         request.getRequestDispatcher("/front_end/biditem/BidItemDetail.jsp").forward(request, response);
 
     }

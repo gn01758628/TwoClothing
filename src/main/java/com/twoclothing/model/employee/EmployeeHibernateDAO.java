@@ -8,7 +8,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
-import com.twoclothing.model.members.Members;
 import com.twoclothing.utils.HibernateUtil;
 
 @Transactional

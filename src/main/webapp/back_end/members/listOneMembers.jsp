@@ -50,7 +50,7 @@
 <table id="table-1">
 	<tr><td>
 		 <h3>員工資料 - listOneEmp.jsp</h3>
-		 <h4><a href="select_page.jsp"><img src="images/login2.png" width="100" height="102" border="0">回首頁</a></h4>
+		 <h4><a href="<%=request.getContextPath()%>/back_end/members/select_page.jsp"><img src="images/login2.png" width="100" height="102" border="0">回首頁</a></h4>
 	</td></tr>
 </table>
 
@@ -80,9 +80,9 @@
 		<td>${Members.email}</td>
 		<td>${Members.pswdHash}</td>
 		<td>${Members.mbrStatus}</td>
-		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}" width=100px height=100px></td>
-		<td><img src="<%=request.getContextPath() %>/DBGifReader6?mbrid=${Members.mbrId}" width=100px height=100px></td>
-		<td><img src="<%=request.getContextPath() %>/DBGifReader7?mbrid=${Members.mbrId}" width=100px height=100px></td>
+		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=avatar" width=100px height=100px  ></td>
+		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg01" width=100px height=100px ></td>
+		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg02" width=100px height=100px ></td>
 		<td>${Members.mbrPoint}</td>
 		<td>${Members.balance}</td>
 		<td>${Members.buyStar}</td>

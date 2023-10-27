@@ -8,7 +8,10 @@
 <%
 	EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
 	List<Employee> list = employeeServiceImpl.getAllEmployees();
+	System.out.println(list);
     pageContext.setAttribute("list",list);
+    
+
 %>
 
 
@@ -78,20 +81,25 @@
 	</tr>
 	<%@ include file="page1.file" %> 
 	<c:forEach var="employee" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-		
+	
 		<tr>
 			<td>${employee.empId}</td>
 			<td>${employee.address}</td>
 			<td>${employee.email}</td>
 			<td>${employee.phone}</td>
 			<td>${employee.empName}</td>
-			<td>${employee.deptId}</td>
-			<td>${employee.empStatus}</td>
+			<td>${employee.deptId}-[${employee.department.deptName}]</td>
+			<td>
+				 <c:choose>
+       			 <c:when test="${employee.empStatus == 0}">${employee.empStatus} - ¦bÂ¾</c:when>
+       			 <c:when test="${employee.empStatus == 1}">${employee.empStatus} - Â÷Â¾</c:when>
+       			 </c:choose>
+			</td>
 			<td>${employee.pswdHash}</td>
 			<td><img src="${pageContext.request.contextPath}/ReadIMG?empId=${employee.empId}" width=100px height=100px>
 			</td>  
 			
-<%-- 			<td>${employee.deptno}-[${empVO.deptVO.dname}]</td> --%>
+
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/front_end/employee/Employee.do" style="margin-bottom: 0px;">
 			     <input type="submit" value="­×§ï">

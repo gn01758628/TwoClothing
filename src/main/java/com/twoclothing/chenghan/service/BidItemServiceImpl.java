@@ -9,12 +9,18 @@ import com.twoclothing.model.abid.biditemimage.BidItemImageHibernateDAO;
 import com.twoclothing.model.categorytags.CategoryTags;
 import com.twoclothing.model.categorytags.CategoryTagsDAO;
 import com.twoclothing.model.categorytags.CategoryTagsHibernateDAO;
+import com.twoclothing.model.employee.Employee;
+import com.twoclothing.model.employee.EmployeeDAO;
+import com.twoclothing.model.employee.EmployeeHibernateDAO;
+import com.twoclothing.model.members.Members;
+import com.twoclothing.model.members.MembersDAO;
+import com.twoclothing.model.members.MembersHibernateDAO;
 import com.twoclothing.utils.HibernateUtil;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
 
-public class BidItemFrontServiceImpl implements BidItemFrontService {
+public class BidItemServiceImpl implements BidItemService {
 
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
@@ -24,7 +30,11 @@ public class BidItemFrontServiceImpl implements BidItemFrontService {
 
     private final CategoryTagsDAO categoryTagsDAO = new CategoryTagsHibernateDAO(sessionFactory);
 
-    public BidItemFrontServiceImpl() {
+    private final EmployeeDAO employeeDAO = new EmployeeHibernateDAO(sessionFactory);
+
+    private final MembersDAO membersDAO = new MembersHibernateDAO(sessionFactory);
+
+    public BidItemServiceImpl() {
     }
 
     @Override
@@ -43,6 +53,11 @@ public class BidItemFrontServiceImpl implements BidItemFrontService {
     }
 
     @Override
+    public Members getMembersByMbrId(Integer mbrId) {
+        return membersDAO.getByPrimaryKey(mbrId);
+    }
+
+    @Override
     public List<BidItem> getAllBidItemByMbrid(Integer mbrId) {
         return bidItemDAO.getAllByMbrId(mbrId);
     }
@@ -50,6 +65,11 @@ public class BidItemFrontServiceImpl implements BidItemFrontService {
     @Override
     public List<CategoryTags> getAllCategoryTags() {
         return categoryTagsDAO.getAll();
+    }
+
+    @Override
+    public List<Employee> getAllEmployee() {
+        return employeeDAO.getAllEmployees();
     }
 
     @Override

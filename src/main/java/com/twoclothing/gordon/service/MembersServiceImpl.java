@@ -54,8 +54,8 @@ public class MembersServiceImpl implements MembersService{
 	}
 
 	
-	public Members updateMembers(Integer mbeId, Integer sellScore, Integer buyScore) {
-	    Members members = dao.getByPrimaryKey(mbeId); // ============================先獲取現有的 Members 物件
+	public Members updateMembers(Integer mbrId, Integer sellScore, Integer buyScore) {
+	    Members members = dao.getByPrimaryKey(mbrId); // ============================先獲取現有的 Members 物件
 	    if (members != null) {
 	        members.setSellScore(sellScore);
 	        members.setBuyScore(buyScore);
@@ -76,11 +76,7 @@ public class MembersServiceImpl implements MembersService{
 	}
 
 
-	@Override
-	public int getPageTotal() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 
 
 
