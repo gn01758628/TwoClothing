@@ -10,7 +10,7 @@ import javax.servlet.annotation.WebListener;
 
 // 利用Annotation來註冊
 @WebListener
-public class InitSessionFactoryListener  implements ServletContextListener {
+public class InitToolListener implements ServletContextListener {
 
     // 當webapp啟動時利用HibernateUtil.getSessionFactory(),來創建SessionFactory
     // 當在其它地方呼叫HibernateUtil.getSessionFactory()時,不會再創建新的SessionFactory
@@ -22,6 +22,7 @@ public class InitSessionFactoryListener  implements ServletContextListener {
         System.out.println("Build SessionFactory");
         JedisPoolUtil.getJedisPool();
         System.out.println("Create JedisPool");
+        System.currentTimeMillis();
     }
 
     // 當webapp關閉時關閉資源
