@@ -2,64 +2,208 @@
 <html lang="zh-hant">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CKEditor 5 jQuery 範例</title>
-    <!-- 引入 CKEditor 5 的 CDN 鏈接 -->
-    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
-    <!-- 引入 jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKEditor 5 jQuery 範例</title>
+<!-- 引入 CKEditor 5 的 CDN 鏈接 -->
+<script
+	src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+<!-- 引入 jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
-    <h1>CKEditor 5 jQuery 範例</h1>
+	<h1>CKEditor 5 jQuery 範例</h1>
 
-    <!-- 編輯器容器 -->
-    <div id="editor"></div>
-    <!-- 提交按鈕 -->
-    <button id="submitButton">提交</button>
+	<!-- 編輯器容器 -->
+	<div id="editor"></div>
+	<!-- 提交按鈕 -->
+	<button id="submitButton">提交</button>
 
-    <script>
-    ClassicEditor
-    .create(document.querySelector('#editor'), {
-        // 其他配置...
-        image: {
-            // 配置圖片上傳的 URL
-            upload: {
-                // 你的上傳圖片的伺服器端 URL
-                // 例如：'/upload-image'
-                // 使用這個 URL 來處理圖片上傳的請求
-                // 更多的上傳配置...
-                // 以下為示例，請替換為你的實際伺服器端處理圖片上傳的 URL
-                url: '/upload-image',
-                // 設置圖片上傳的方法為 POST
-                method: 'POST',
-                // 啟用 CSRF 驗證（如果需要的話）
-                withCredentials: true,
-                // 自定義表頭（如果需要的話）
-                headers: {
-                    'X-CSRF-TOKEN': 'Your-CSRF-Token'
-                },
-                // 自定義文件名（如果需要的話）
-                fileName: 'image'
-            },
-            // 額外的圖片上傳配置（如果需要的話）
-            // 更多的配置...
+
+
+	<!-- 隱藏的表單，用於提交編輯器的內容 -->
+	<form id="editorForm" action="YourServletURL" method="post"
+		style="display: none;">
+		<textarea id="editorContent" name="editorContent"></textarea>
+	</form>
+
+
+
+	<script>
+	
+		ClassicEditor
+	    .create(document.querySelector('#editor'), {
+	        extraPlugins: [MyCustomUploadAdapterPlugin],
+	        // 其他配置選項...
+	    })
+	    .catch(error => {
+	        console.error(error);
+	    });
+
+	
+	
+	
+		class MyUploadAdapter {
+		    constructor(loader, servletUrl) {
+		        // The file loader instance to use during the upload.
+		        this.loader = loader;
+		        this.servletUrl = servletUrl;
+		    }
+
+
+		    upload() {
+		        return this.loader.file
+		            .then(file => new Promise((resolve, reject) => {
+		                const xhr = new XMLHttpRequest();
+		                xhr.open('POST', this.servletUrl, true);
+		                xhr.responseType = 'json';
+
+		                xhr.addEventListener('error', () => {
+		                    // 处理上传失败的情况
+		                    reject('Upload failed');
+		                });
+		                xhr.addEventListener('abort', () => {
+		                    // 处理上传中断的情况
+		                    reject('Upload aborted');
+		                });
+		                xhr.addEventListener('load', () => {
+		                    const response = xhr.response;
+
+		                    if (!response || response.error) {
+		                        // 处理无效的服务器响应，不显示默认图片
+		                        console.error('Invalid server response:', response);
+		                        // 返回空字符串，编辑器将不会显示任何图片
+		                        resolve({
+		                            default: ''
+		                        });
+		                    }else if (response.data && response.filename) {
+		                        const blob = base64toBlob(response.data, 'image/jpeg'); // 注意：这里的文件类型需要根据实际情况设置
+		                        blobToDataUrl(blob, (dataUrl) => {
+		                            resolve({
+		                                default: dataUrl
+		                            });
+		                        });
+		                    } else {
+		                        reject('Invalid server response');
+		                    }
+		                });
+
+		                const data = new FormData();
+		                data.append('file', file);
+		                xhr.send(data);
+		            }));
+		    }
+
+            
+            
+		    abort() {
+		        if (this.xhr) {
+		            this.xhr.abort();
+		        }
+		    }
+
+		    // Initializes the XMLHttpRequest object using the URL passed to the constructor.
+		    _initRequest() {
+		        const xhr = this.xhr = new XMLHttpRequest();
+
+		        // Open the request and specify the servlet URL
+		        xhr.open('POST', this.servletUrl, true);
+		        xhr.responseType = 'json';
+		    }
+
+		    // Initializes XMLHttpRequest listeners.
+		    _initListeners(resolve, reject, file) {
+		        const xhr = this.xhr;
+		        const loader = this.loader;
+
+		        xhr.addEventListener('error', () => reject('Upload failed'));
+		        xhr.addEventListener('abort', () => reject());
+		        xhr.addEventListener('load', () => {
+		            const response = xhr.response;
+
+		            if (!response || response.error) {
+		                return reject(response && response.error ? response.error.message : 'Upload failed');
+		            }
+
+		            // Check if the response contains Base64-encoded image data
+		            if (response.data && response.contentType) {
+		                const blob = base64toBlob(response.data, response.contentType);
+		                blobToDataUrl(blob, (dataUrl) => {
+		                    resolve({
+		                        default: dataUrl
+		                    });
+		                });
+		            } else {
+		                reject('Invalid server response');
+		            }
+		        });
+
+		        if (xhr.upload) {
+		            xhr.upload.addEventListener('progress', (evt) => {
+		                if (evt.lengthComputable) {
+		                    loader.uploadTotal = evt.total;
+		                    loader.uploaded = evt.loaded;
+		                }
+		            });
+		        }
+		    }
+
+		    // Prepares the data and sends the request.
+		    _sendRequest(file) {
+		        const data = new FormData();
+		        data.append('file', file);
+
+		        // Important note: This is the right place to implement security mechanisms
+		        // like authentication and CSRF protection. For instance, you can use
+		        // XMLHttpRequest.setRequestHeader() to set the request headers containing
+		        // the CSRF token generated earlier by your application.
+
+		        this.xhr.send(data);
+		    }
+		}
+
+		function blobToDataUrl(blob, callback) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                callback(reader.result);
+            };
+            reader.readAsDataURL(blob);
         }
-    })
-    .then(editor => {
-        console.log(editor);
-    })
-    .catch(error => {
-        console.error(error);
-    });
 
+        function base64toBlob(base64Data, contentType) {
+            const sliceSize = 512;
+            const byteCharacters = atob(base64Data);
+            const byteArrays = [];
+
+            for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+                const byteNumbers = new Array(slice.length);
+                for (let i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+
+                const byteArray = new Uint8Array(byteNumbers);
+                byteArrays.push(byteArray);
+            }
+
+            return new Blob(byteArrays, {
+                type: contentType
+            });
+        }
+	    
+	    function MyCustomUploadAdapterPlugin(editor) {
+	        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+	            // 獲取專案的上下文路徑
+	            const contextPath = window.location.pathname.split('/')[1];
+	            // 使用Servlet的URL，並在前面加上專案的上下文路徑
+	            const servletUrl = `/${contextPath}/UploadServlet`;
+	            return new MyUploadAdapter(loader, servletUrl);
+	        };
+	    }
+	    
     </script>
-
-    <!-- 隱藏的表單，用於提交編輯器的內容 -->
-    <form id="editorForm" action="YourServletURL" method="post" style="display:none;">
-        <textarea id="editorContent" name="editorContent"></textarea>
-    </form>
 </body>
 
 </html>

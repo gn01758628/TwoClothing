@@ -2,145 +2,125 @@
 <html lang="zh-hant">
 
 <head>
-    <meta charset="utf-8">
-    <title>修改</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-
-    <!-- 網站圖標 -->
-    <link rel="shortcut icon" href="/assets/img/favicon.ico">
-
-    <!-- 引入 CSS 文件 -->
-    <link href="/assets/css.css" rel="stylesheet">
-    <link href='/static/css/xxx.css' rel='stylesheet' type='text/css' />
-
-    <!-- HTML5 兼容性支持腳本 -->
-    <!--[if lt IE 9]>
-    <script src="/assets/js/html5shiv.js"></script>
-    <script src="/assets/js/respond.min.js"></script>
-    <![endif]-->
-
-    <!-- 自定義樣式 -->
-    <style>
-        .ck-editor__editable {
-            min-height: 100px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKEditor 5 jQuery 範例</title>
+<!-- 引入 CKEditor 5 的 CDN 鏈接 -->
+<script
+	src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+<!-- 引入 jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
-<body class="inside-header inside-aside is-dialog">
-    <div id="main" role="main">
-        <div class="content" style="padding-top: 18px; padding-left: 80px; padding-right: 80px;">
-            <!-- 表單開始 -->
-            <form id="add-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="/article/edit/">
-                <!-- 標題和排序值輸入框 -->
-                <div class="form-group">
-                    <label for="c-qrcode_id" class="control-label col-xs-12 col-sm-2">标题:</label>
-                    <div class="col-xs-12 col-sm-4">
-                        <input class="form-control" name="row[title]" id="title" value="">
-                    </div>
-                    <label for="c-qrcode_id" class="control-label col-xs-12 col-sm-1">排序值:</label>
-                    <div class="col-xs-4 col-sm-2">
-                        <input class="form-control" name="row[sortrank]" id="title" value="">
-                    </div>
-                </div>
+<body>
+	<h1>CKEditor 5 jQuery 範例</h1>
 
-                <!-- 狀態選擇框 -->
-                <div class="form-group">
-                    <label for="c-status" class="control-label col-xs-12 col-sm-1">状态:</label>
-                    <div class="radio col-xs-12 col-sm-2">
-                        <label for="row[status]-inprogress">
-                            <input id="row[status]-inprogress" name="row[status]" type="radio" value="1" /> 正常
-                        </label>
-                        <label for="row[status]-expired">
-                            <input id="row[status]-expired" name="row[status]" type="radio" value="0" /> 禁用
-                        </label>
-                    </div>
-                </div>
+	<!-- 編輯器容器 -->
+	<div id="editor"></div>
+	<!-- 提交按鈕 -->
+	<button id="submitButton">提交</button>
 
-                <!-- CKEditor 文本編輯器 -->
-                <div class="form-group">
-                    <div id="mdeditor">
-                        <textarea name="content" id="content" style="width: 80%;"></textarea>
-                    </div>
-                </div>
 
-                <!-- 描述文本區域 -->
-                <div class="">
-                    <label for="description" class="">描述:</label>
-                    <div class="">
-                        <textarea name="row[description]" class="form-control" rows="5" id="description"></textarea>
-                    </div>
-                </div>
 
-                <!-- 提交按鈕 -->
-                <div class="form-group" style="text-align: center;">
-                    <button type="submit" class="btn btn-success btn-embossed"> 提交 </button>
-                </div>
-            </form>
-            <!-- 表單結束 -->
-        </div>
-    </div>
+	<!-- 隱藏的表單，用於提交編輯器的內容 -->
+	<form id="editorForm" action="YourServletURL" method="post"
+		style="display: none;">
+		<textarea id="editorContent" name="editorContent"></textarea>
+	</form>
 
-    <!-- 引入必需的 JavaScript 資源 -->
-    <script type="text/javascript" src="/static/js/jquery.js"></script>
-    <script type="text/javascript" src="https://cdn.ckeditor.com/ckeditor5/12.4.0/classic/ckeditor.js"></script>
-    <script type="text/javascript" src="/static/js/layer/layer.js"></script>
-    <script type="text/javascript" src="/static/js/jquery.form.js"></script>
-    <script type="text/javascript">
-        // 初始化编辑器
-        ClassicEditor.create(document.querySelector('#content'), {
-            //removePlugins: ['MediaEmbed'], // 除去视频按钮
-            language: 'zh-hant', // 中文
-            ckfinder: {
-                uploadUrl: "/api/uploader/ckeditor5" // 上傳圖片的 URL
-            }
-        }).then(editor => {
-            // const toolbarContainer = document.querySelector('#toolbar-container')
-            // toolbarContainer.appendChild(editor.ui.view.toolbar.element)
-            // 加载了适配器
-            //editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-            // return new MyUploadAdapter(loader)
-            //}
-            this.editor = editor
-            // 將編輯器保存起來，用來隨時獲取編輯器中的內容等，執行一些操作
-        }).catch(error => {
-            console.error('error')
-        })
 
-        class MyUploadAdapter {
-            constructor(loader) {
-                this.loader = loader;
-            }
 
-            upload() {
-                return new Promise((resolve, reject) => {
-                    const data = new FormData();
-                    let size = this.loader.file.size;
-                    console.error(size);
-                    console.log(this.loader.file);
-                    data.append('imgfile', this.loader.file);
-                    data.append('allowSize', 10); // 允許圖片上傳的大小/兆
-                    $.ajax({
-                        url: '/upload-url/ckeditor5',
-                        type: 'POST',
-                        data: data,
-                        dataType: 'json',
-                        processData: false,
-                        contentType: false,
-                        success: function (data) {
-                            if (data.res) {
-                                resolve({ default: data.url });
-                            } else {
-                                reject(data.msg);
-                            }
-                        }
-                    });
-                });
-            }
-
-            abort() { }
+	<script>
+	
+	const contextPath = window.location.pathname.split('/')[1];
+    // 使用Servlet的URL，並在前面加上專案的上下文路徑
+    const servletUrl = `/${contextPath}/UploadServlet`;
+	
+    class MyUploadAdapter {
+        constructor(loader) {
+            this.loader = loader;
         }
-    </script>
+
+        upload() {
+            return this.loader.file
+                .then(file => new Promise((resolve, reject) => {
+                    this._initRequest();
+                    this._initListeners(resolve, reject, file);
+                    this._sendRequest(file);
+                }));
+        }
+
+        abort() {
+            if (this.xhr) {
+                this.xhr.abort();
+            }
+        }
+
+        _initRequest() {
+            const xhr = this.xhr = new XMLHttpRequest();
+            xhr.open('POST', servletUrl, true);
+            xhr.responseType = 'arraybuffer';
+        }
+
+        _xhrListeners(resolve, reject, file) {
+            const xhr = this.xhr;
+            const loader = this.loader;
+            const genericErrorText = `Couldn't upload file: ${file.name}.`;
+
+            xhr.addEventListener('error', () => reject(genericErrorText));
+            xhr.addEventListener('abort', () => reject());
+            xhr.addEventListener('load', () => {
+                const response = xhr.response;
+
+                if (!response || response.error) {
+                    return reject(response && response.error ? response.error.message : genericErrorText);
+                }
+
+                // 將接收到的 ArrayBuffer 資料轉換為 Blob
+                const blob = new Blob([response], { type: 'image/jpeg' });
+
+                // 將 Blob 資料轉換為 Data URL
+                const reader = new FileReader();
+                reader.onloadend = function () {
+                    // reader.result 包含 Data URL 資料，可以用於顯示圖片
+                    resolve({
+                        default: reader.result
+                    });
+                };
+                reader.readAsDataURL(blob);
+            });
+
+            // ...（之後的代碼）
+        }
+
+        _sendRequest(file) {
+            const data = new FormData();
+            data.append('file', file);
+
+            this.xhr.send(data);
+        }
+    }
+
+    function SimpleUploadAdapterPlugin(editor) {
+        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+            return new MyUploadAdapter(loader);
+        };
+    }
+
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            extraPlugins: [SimpleUploadAdapterPlugin],
+        })
+        .then(editor => {
+            // Simulate label behavior if textarea had a label
+            if (editor.sourceElement.labels.length > 0) {
+                editor.sourceElement.labels[0].addEventListener('click', e => editor.editing.view.focus());
+            }
+        })
+        .catch(error => {
+            console.error();
+        });
+</script>
 </body>
 
 </html>
