@@ -6,7 +6,7 @@ public class EmployeeTest {
 		// TODO Auto-generated method stub
 //		EmployeeDAO employeeDAO = new EmployeeJDBCDAO();
 //		
-//		List<Employee> list = employeeDAO.getAllEmployees();
+//		List<Employee> list = employeeDAO.getAll();
 //		for( Employee emp : list) {
 //			System.out.println(emp);
 //		}	

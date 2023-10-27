@@ -188,7 +188,7 @@ public class BidItemReport  implements Serializable{
 	  
 	  public com.twoclothing.model.employee.Employee getEmployee() {
 		  com.twoclothing.tonyhsieh.service.EmployeeServiceImpl EmpSvcq = new com.twoclothing.tonyhsieh.service.EmployeeServiceImpl();
-		  com.twoclothing.model.employee.Employee employee = EmpSvcq.getEmployeeById(empId);
+		  com.twoclothing.model.employee.Employee employee = EmpSvcq.getByPrimaryKey(empId);
 		    return employee;
 	    }
 	  

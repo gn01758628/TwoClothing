@@ -3,24 +3,23 @@ package com.twoclothing.model.employee;
 import java.util.List;
 
 public interface EmployeeDAO {
+	// 新增員工資訊
+	int insert(Employee employee);
 
-    // 根據ID查詢員工資訊
-    Employee getEmployeeById(Integer empId);
+	// 根據ID查詢員工資訊
+	Employee getByPrimaryKey(Integer empId);
 
-    // 查詢所有員工資訊
-    List<Employee> getAllEmployees();
+	// 查詢所有員工資訊
+	List<Employee> getAll();
 
-    // 新增員工資訊
-    int addEmployee(Employee employee);
+	// 更新員工資訊
+	int update(Employee employee);
 
-    // 更新員工資訊
-    int updateEmployee(Employee employee);
+	// 根據ID刪除員工資訊
+	int delete(Integer empId);
 
-    // 根據ID刪除員工資訊
-    int deleteEmployee(Integer empId);
-    
-    List<Employee> getAllEmployees(int currentPage);
-    
-    long getTotal();
-    
+	List<Employee> getAll(int currentPage);
+
+	long getTotal();
+
 }

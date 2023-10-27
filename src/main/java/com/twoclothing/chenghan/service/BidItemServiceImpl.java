@@ -69,7 +69,7 @@ public class BidItemServiceImpl implements BidItemService {
 
     @Override
     public List<Employee> getAllEmployee() {
-        return employeeDAO.getAllEmployees();
+        return employeeDAO.getAll();
     }
 
     @Override

@@ -83,7 +83,7 @@ public class BidItemReportServlet extends HttpServlet {
 				
 				/***************************2.開始查詢資料****************************************/
 				DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
-				Department department = departmentServiceImpl.getDepartmentById(deptid);
+				Department department = departmentServiceImpl.getByPrimaryKey(deptid);
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				String param = "?deptId="  +department.getDeptId()+
@@ -129,7 +129,7 @@ public class BidItemReportServlet extends HttpServlet {
 				/***************************2.開始修改資料*****************************************/
 						
 				DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
-				Department department = departmentServiceImpl.updateDepartment(deptid, deptname);
+				Department department = departmentServiceImpl.update(deptid, deptname);
 								
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("Department", department); // 資料庫update成功後,正確的的empVO物件,存入req
@@ -171,7 +171,7 @@ public class BidItemReportServlet extends HttpServlet {
 				
 				/***************************2.開始新增資料***************************************/
 				DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
-				departmentServiceImpl.addDepartment(deptid, deptname);				
+				departmentServiceImpl.insert(deptid, deptname);				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/back_end/department/listAllDept.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
@@ -189,7 +189,7 @@ public class BidItemReportServlet extends HttpServlet {
 				
 				/***************************2.開始刪除資料***************************************/
 				DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
-				departmentServiceImpl.deleteDepartment(deptid);
+				departmentServiceImpl.delete(deptid);
 				
 				/***************************3.刪除完成,準備轉交(Send the Success view)***********/								
 				String url = "/back_end/department/listAllDept.jsp";

@@ -25,14 +25,14 @@ public class DepartmentHibernateDAO implements DepartmentDAO{
 	
 	
 	@Override
-	public int addDepartment(Department department) {
+	public int insert(Department department) {
 		// TODO Auto-generated method stub
 		Integer deptId = (Integer) getSession().save(department);
 		return deptId;
 		
 	}
 	@Override
-	public int updateDepartment(Department department) {
+	public int update(Department department) {
 		// TODO Auto-generated method stub
 		try {
 			getSession().merge(department);
@@ -42,7 +42,7 @@ public class DepartmentHibernateDAO implements DepartmentDAO{
 		}
 	}
 	@Override
-	public int deleteDepartment(Integer deptId) {
+	public int delete(Integer deptId) {
 		// TODO Auto-generated method stub
 		Department department = getSession().get(Department.class, deptId);
 		if (department != null) {
@@ -55,17 +55,17 @@ public class DepartmentHibernateDAO implements DepartmentDAO{
 		}
 	}
 	@Override
-	public Department getDepartmentById(Integer deptId) {
+	public Department getByPrimaryKey(Integer deptId) {
 		// TODO Auto-generated method stub
 		return getSession().get(Department.class, deptId);
 	}
 	@Override
-	public Department getDepartmentByName(String deptname) {
+	public Department getByDeptName(String deptname) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
-	public List<Department> getAllDepartments() {
+	public List<Department> getAll() {
 		// TODO Auto-generated method stub
 		return getSession().createQuery("from Department", Department.class).list();
 //		List<Department> list = null;

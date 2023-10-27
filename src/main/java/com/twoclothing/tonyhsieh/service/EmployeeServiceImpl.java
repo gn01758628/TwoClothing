@@ -20,11 +20,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	
 	@Override
-	public int deleteEmployee(Integer empId) {
+	public int delete(Integer empId) {
 		// TODO Auto-generated method stub
-		Employee emp = employeeDAO.getEmployeeById(empId);
+		Employee emp = employeeDAO.getByPrimaryKey(empId);
 		if (emp != null) {
-			employeeDAO.deleteEmployee(empId);
+			employeeDAO.delete(empId);
 			// 回傳給 service，1代表刪除成功
 			return 1;
 		} else {
@@ -35,19 +35,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
 	@Override
-	public Employee getEmployeeById(Integer empId) {
+	public Employee getByPrimaryKey(Integer empId) {
 		// TODO Auto-generated method stub
-		return employeeDAO.getEmployeeById(empId);
+		return employeeDAO.getByPrimaryKey(empId);
 	}
 
 	@Override
-	public List<Employee> getAllEmployees() {
+	public List<Employee> getAll() {
 		// TODO Auto-generated method stub
-		return employeeDAO.getAllEmployees() ;
+		return employeeDAO.getAll() ;
 	}
 
 
-	public Employee addEmployee(Integer deptId,String empName,String phone,String address,String email,String pswdHash, Integer empStatus,byte[] avatar) {
+	public Employee insert(Integer deptId,String empName,String phone,String address,String email,String pswdHash, Integer empStatus,byte[] avatar) {
 		// TODO Auto-generated method stub
 		
 		Employee employee = new Employee();
@@ -59,13 +59,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employee.setPswdHash(pswdHash);
 		employee.setEmpStatus(empStatus);
 		employee.setAvatar(avatar);
-		employeeDAO.addEmployee(employee);
+		employeeDAO.insert(employee);
 	
 		return employee;
 	
 	}
 	
-	public	Employee updateEmployee(Integer empId,Integer deptId,String empName,String phone,String address,String email,String pswdHash, Integer empStatus,byte[] avatar) {
+	public	Employee update(Integer empId,Integer deptId,String empName,String phone,String address,String email,String pswdHash, Integer empStatus,byte[] avatar) {
 		// TODO Auto-generated method stub
 		Employee employee = new Employee();	
 		employee.setEmpId(empId);
@@ -77,7 +77,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employee.setPswdHash(pswdHash);
 		employee.setEmpStatus(empStatus);
 		employee.setAvatar(avatar);
-		employeeDAO.updateEmployee(employee);
+		employeeDAO.update(employee);
 		return employee;
 	}
 

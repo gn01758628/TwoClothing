@@ -74,7 +74,7 @@ public class EmployeeServlet extends HttpServlet {
 				
 				/***************************2.開始查詢資料*****************************************/
 				EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-				Employee employee = (Employee)employeeServiceImpl.getEmployeeById(empid);
+				Employee employee = (Employee)employeeServiceImpl.getByPrimaryKey(empid);
 				if (employee == null) {
 					errorMsgs.put("empId","查無資料");
 				}
@@ -104,7 +104,7 @@ public class EmployeeServlet extends HttpServlet {
 				
 				/***************************2.開始查詢資料****************************************/
 				EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-				Employee employee = employeeServiceImpl.getEmployeeById(empid);
+				Employee employee = employeeServiceImpl.getByPrimaryKey(empid);
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				String param = "?empId="  +employee.getEmpId()+
@@ -193,7 +193,7 @@ public class EmployeeServlet extends HttpServlet {
 		                    e.printStackTrace();
 		                }
 		            }else {
-		            	avatar=employeeServiceImpl.getEmployeeById(empid).getAvatar();
+		            	avatar=employeeServiceImpl.getByPrimaryKey(empid).getAvatar();
 		            }
 		            
 		       
@@ -217,7 +217,7 @@ public class EmployeeServlet extends HttpServlet {
 				
 				/***************************2.開始修改資料*****************************************/
 				
-				Employee employee = employeeServiceImpl.updateEmployee(empid, deptid, empname, phone, address, email, pswdhash, empstatus,avatar);
+				Employee employee = employeeServiceImpl.update(empid, deptid, empname, phone, address, email, pswdhash, empstatus,avatar);
 								
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("Employee", employee); // 資料庫update成功後,正確的的empVO物件,存入req
@@ -329,7 +329,7 @@ public class EmployeeServlet extends HttpServlet {
 				
 				/***************************2.開始新增資料***************************************/
 				EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-				employeeServiceImpl.addEmployee(deptid, empname, phone, address, email, pswdhash, empstatus,avatar);				
+				employeeServiceImpl.insert(deptid, empname, phone, address, email, pswdhash, empstatus,avatar);				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/front_end/employee/listAllEmp.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
@@ -347,7 +347,7 @@ public class EmployeeServlet extends HttpServlet {
 				
 				/***************************2.開始刪除資料***************************************/
 				EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-				employeeServiceImpl.deleteEmployee(empid);
+				employeeServiceImpl.delete(empid);
 				
 				/***************************3.刪除完成,準備轉交(Send the Success view)***********/								
 				String url = "/front_end/employee/listAllEmp.jsp";

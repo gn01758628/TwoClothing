@@ -3,10 +3,16 @@ package com.twoclothing.model.department;
 import java.util.List;
 
 public interface DepartmentDAO {
-	int addDepartment(Department department);
-	int updateDepartment(Department department);
-	int deleteDepartment(Integer deptId);
-    Department getDepartmentById(Integer deptId);
-    Department getDepartmentByName(String deptname);
-    List<Department> getAllDepartments();
+	int insert(Department department);
+
+	Department getByPrimaryKey(Integer deptId);
+
+	List<Department> getAll();
+
+	Department getByDeptName(String deptname);
+
+	int update(Department department);
+
+	int delete(Integer deptId);
+
 }

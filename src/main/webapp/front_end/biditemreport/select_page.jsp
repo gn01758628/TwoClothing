@@ -5,7 +5,7 @@
 
   <%
 // 	EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-// 	List<Employee> list = employeeServiceImpl.getAllEmployees();
+// 	List<Employee> list = employeeServiceImpl.getAll();
 //     pageContext.setAttribute("list",list);
 	%>
 <html>
