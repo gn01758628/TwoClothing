@@ -49,7 +49,7 @@ public class SendEmailServlet extends HttpServlet {
     		
     		
  //   		String messageText =  "註冊成功，請點擊<a href='http://64.190.63.111/back_end/members/SendEmailServlet?active=active&activeCode="
-    		String messageText =  "註冊成功，請點擊<a href='http://192.168.0.32/TwoClothing/back_end/members/SendEmailServlet?action=action&activeCode="
+    		String messageText =  "註冊成功，請點擊<a href='http://192.168.0.32/TwoClothing/members/SendEmailServlet?action=action&activeCode="
     	            +activeCode+"&email="+to;
     	           
     		System.out.println(activeCode);

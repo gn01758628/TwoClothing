@@ -12,12 +12,6 @@ import org.hibernate.query.Query;
 import com.twoclothing.utils.HibernateUtil;
 
 
-
-
-
-
-
-
 @Transactional
 public class MembersHibernateDAO implements MembersDAO {
 
@@ -64,8 +58,8 @@ public class MembersHibernateDAO implements MembersDAO {
 
 	@Override
 	public List<Members> getAllByMbrName(String mbrName) {
-			return getSession().createQuery("from Members where mbrname like :mbrname", Members.class)
-					.setParameter("mbrname", "%" + mbrName + "%").list();
+			return getSession().createQuery("from Members where mbrName like :mbrName", Members.class)
+					.setParameter("mbrName", "%" + mbrName + "%").list();
 	}
 	
 	
@@ -77,6 +71,11 @@ public class MembersHibernateDAO implements MembersDAO {
                 .uniqueResult();
 	}
 	
+	public  List<Members>  getallByEmail(String email) {
+		return getSession().createQuery("FROM Members WHERE email like :email", Members.class)
+				.setParameter("email", "%" + email + "%")
+				.list();
+	}
 //	public Members getByEmail(String email) {
 //	    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 //	    Transaction transaction = null;
@@ -100,21 +99,21 @@ public class MembersHibernateDAO implements MembersDAO {
 
 	@Override
 	public List<Members> getAllByMbrStatus(Integer mbrStatus) {
-			return getSession().createQuery("from Members where mbrstatus = :mbrstatus", Members.class)
-					.setParameter("mbrstatus", mbrStatus).list();
+			return getSession().createQuery("from Members where mbrStatus = :mbrStatus", Members.class)
+					.setParameter("mbrStatus", mbrStatus).list();
 			
 	}
 
 	@Override
 	public List<Members> getAllBySellScore(Integer sellScore) {
-			return getSession().createQuery("from Members where sellscore = :sellscore", Members.class)
-					.setParameter("sellscore", sellScore).list();
+			return getSession().createQuery("from Members where sellScore = :sellScore", Members.class)
+					.setParameter("sellScore", sellScore).list();
 	}
 
 	@Override
 	public List<Members> getAllByBuyScore(Integer buyScore) {
-			return getSession().createQuery("from Members where buyscore = :buyscore", Members.class)
-					.setParameter("buyscore", buyScore).list();
+			return getSession().createQuery("from Members where buyScore = :buyScore", Members.class)
+					.setParameter("buyScore", buyScore).list();
 	}
 
 	@Override

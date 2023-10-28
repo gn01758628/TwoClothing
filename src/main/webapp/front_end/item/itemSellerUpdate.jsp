@@ -171,26 +171,17 @@
 	</tr>
 	<tr>
 		<td>數量</td>
-		<td><input type="TEXT" name="quantity"  value="${item.quantity}" size="45"/></td>
+		<td><input type="TEXT" name="quantity"  vwalue="${item.quantity}" size="45"/></td>
 	</tr>
 	<tr>
 		<td>描述</td>
 		<td><input type="TEXT" name="detail"  value="${item.detail}" size="45"/></td>
 	</tr>
 
-<%-- 	<jsp:useBean id="deptSvc" scope="page" class="com.dept.model.DeptService" /> --%>
-<!-- 	<tr> -->
-<!-- 		<td>部門:<font color=red><b>*</b></font></td> -->
-<!-- 		<td><select size="1" name="deptno"> -->
-<%-- 			<c:forEach var="deptVO" items="${deptSvc.all}"> --%>
-<%-- 				<option value="${deptVO.deptno}" ${(empVO.deptno==deptVO.deptno)?'selected':'' } >${deptVO.dname} --%>
-<%-- 			</c:forEach> --%>
-<!-- 		</select></td> -->
-<!-- 	</tr> -->
 
 </table>
 <br>
-<input type="hidden" name="action" value="update">
+<input type="hidden" name="choice" value="update">
 <input type="hidden" name="ItemId" value="${item.itemId}">
 <input type="submit" value="送出修改"></FORM>
 </body>

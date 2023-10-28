@@ -4,17 +4,17 @@ import java.util.List;
 
 public interface WithdrawRequestDAO {
 
-    void insert(WithdrawRequest withdrawRequest);
+    int insert(WithdrawRequest withdrawRequest);
 
     WithdrawRequest getByPrimaryKey(Integer wrId);
 
     List<WithdrawRequest> getAll();
 
-    List<WithdrawRequest> getAllByEmpID(Integer empId);
+    List<WithdrawRequest> getAllByEmpId(Integer empId);
 
-    List<WithdrawRequest> getAllByMbrid(Integer mbrId);
+    List<WithdrawRequest> getAllByMbrId(Integer mbrId);
 
     List<WithdrawRequest> getAllByReqStatus(Integer reqstatus);
 
-    void update(WithdrawRequest withdrawRequest);
+    int update(WithdrawRequest withdrawRequest);
 }

@@ -16,14 +16,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+
 
 import com.twoclothing.model.department.Department;
-import com.twoclothing.model.employee.Employee;
 import com.twoclothing.tonyhsieh.service.DepartmentService;
 import com.twoclothing.tonyhsieh.service.DepartmentServiceImpl;
-import com.twoclothing.tonyhsieh.service.EmployeeService;
-import com.twoclothing.tonyhsieh.service.EmployeeServiceImpl;
+
 
 @WebServlet("/back_end/department/Department.do")
 @MultipartConfig(fileSizeThreshold = 1024*1024, maxFileSize = 5*1024*1024,maxRequestSize =5*5*1024*1024 )
@@ -42,6 +40,20 @@ public class DepartmentServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
+		
+		if("getAll".equals(action)) {
+	
+				/***************************1.開始查詢資料***************************************/
+				DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
+				List<Department> list = departmentServiceImpl.getAllDepartment();
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)***********/								
+				req.setAttribute("list", list);
+				String url = "/back_end/department/listAllDept.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);// 查詢成功後,轉交回送出來源網頁
+				successView.forward(req, resp);
+
+			}
 		
 		
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
@@ -78,7 +90,7 @@ public class DepartmentServlet extends HttpServlet {
 				
 				/***************************2.開始查詢資料*****************************************/
 				DepartmentServiceImpl departmentServiceImpl =new DepartmentServiceImpl();
-				Department department = (Department)departmentServiceImpl.getDepartmentById(deptid);
+				Department department = (Department)departmentServiceImpl.getByPrimaryKey(deptid);
 				if (department == null) {
 					errorMsgs.put("deptId","查無資料");
 				}
@@ -92,9 +104,11 @@ public class DepartmentServlet extends HttpServlet {
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("Department", department); // 資料庫取出的empVO物件,存入req
-				String url = "/back_end/department/listOneEmp.jsp";
+				String url = "/back_end/department/listOneDept.jsp";
+				
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 				successView.forward(req, resp);
+		
 		}
 		
 		
@@ -108,12 +122,12 @@ public class DepartmentServlet extends HttpServlet {
 				
 				/***************************2.開始查詢資料****************************************/
 				DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
-				Department department = departmentServiceImpl.getDepartmentById(deptid);
+				Department department = departmentServiceImpl.getByPrimaryKey(deptid);
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				String param = "?deptId="  +department.getDeptId()+
 						       "&deptName="  +department.getDeptName();
-				String url = "update_emp_input.jsp"+param;
+				String url = "update_dept_input.jsp"+param;
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
 				successView.forward(req, resp);
 		}
@@ -146,7 +160,7 @@ public class DepartmentServlet extends HttpServlet {
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back_end/department/update_emp_input.jsp");
+							.getRequestDispatcher("/back_end/department/update_dept_input.jsp");
 					failureView.forward(req, resp);
 					return; //程式中斷
 				}
@@ -154,11 +168,11 @@ public class DepartmentServlet extends HttpServlet {
 				/***************************2.開始修改資料*****************************************/
 						
 				DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
-				Department department = departmentServiceImpl.updateDepartment(deptid, deptname);
+				Department department = departmentServiceImpl.update(deptid, deptname);
 								
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("Department", department); // 資料庫update成功後,正確的的empVO物件,存入req
-				String url = "/back_end/department/listOneEmp.jsp";
+				String url = "/back_end/department/listOneDept.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				successView.forward(req, resp);
 		}
@@ -189,16 +203,16 @@ public class DepartmentServlet extends HttpServlet {
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back_end/department/addEmp.jsp");
+							.getRequestDispatcher("/back_end/department/addDept.jsp");
 					failureView.forward(req, resp);
 					return;
 				}
 				
 				/***************************2.開始新增資料***************************************/
 				DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
-				departmentServiceImpl.addDepartment(deptid, deptname);				
+				departmentServiceImpl.insert(deptid, deptname);				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "/back_end/department/listAllEmp.jsp";
+				String url = "/back_end/department/listAllDept.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 				successView.forward(req, resp);				
 		}
@@ -214,10 +228,10 @@ public class DepartmentServlet extends HttpServlet {
 				
 				/***************************2.開始刪除資料***************************************/
 				DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
-				departmentServiceImpl.deleteDepartment(deptid);
+				departmentServiceImpl.delete(deptid);
 				
 				/***************************3.刪除完成,準備轉交(Send the Success view)***********/								
-				String url = "/back_end/department/listAllEmp.jsp";
+				String url = "/back_end/department/listAllDept.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
 				successView.forward(req, resp);
 		}

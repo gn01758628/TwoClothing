@@ -137,7 +137,7 @@ input {
 			<div class="login">
 				<h3>登入 Login</h3>
 <!-- ============================登入================================================ -->
-				<form action="${pageContext.request.contextPath}/back_end/members/Members.do" class="login-form">
+				<form action="${pageContext.request.contextPath}/members/Members.do" class="login-form">
 					<input type="text" id="email2" name="email2" placeholder="email"
 						required>
 					<div class="tab"></div>
@@ -162,7 +162,7 @@ input {
 
 <!-- ============================註冊================================================ -->
 				<form id="registrationForm"
-					action="${pageContext.request.contextPath}/back_end/members/Members.do" method="post"
+					action="${pageContext.request.contextPath}/members/Members.do" method="post"
 					class="register-form">
 
 
@@ -253,7 +253,7 @@ input {
 			var login = document.getElementById("container1");
 			var signup = document.getElementById("container2");
 			var copyright = document.getElementById("copyright");
-
+			var location = null;
 			if (login.style.display === "none") {
 				login.style.display = "block"; //lonin出現
 				document.getElementById("email").value = "";
@@ -289,26 +289,29 @@ input {
 			$.ajax({
 				type : "POST",
 //		 		url : "/TwoClothing/back_end/members/Members.do",
-				url : contextPath + "/back_end/members/Members.do",
+				url : contextPath + "/members/Members.do",
 				data : loginData,
 				dataType : "json",
 				success : function(response) {
+					
 					if (response.success) {
-
+						
 						if (response.mbrStatus === 0) {
-
+							
 							window.location.href = contextPath +  "/front_end/members/verificationEmail.jsp";
 // 							window.location.href = "verificationEmail.jsp";
-						} else {
-							window.location.href = contextPath + "/index.jsp";
-// 							window.location.href = "/TwoClothing/index.jsp";
-						}
-					} else {
-						if (response.errors) {
+						}else{
+							if(response.location !== null && response.location !== undefined){
+								window.location.href = response.location ;
+ 								}else{
+ 									window.location.href = contextPath + "/index.jsp";}
+									
+					}
+					}else{
 // 							alert("帳號密碼錯誤" + response.errors.error);
 							alert("帳號密碼錯誤");
 						}
-					}
+					
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 					// 在這裡處理 AJAX 請求的錯誤
@@ -339,7 +342,7 @@ form.addEventListener('submit', function(event) {
     $.ajax({
     	type : "POST",
 // 		url : "/TwoClothing/back_end/members/Members.do",
-		url : contextPath +"/back_end/members/Members.do",
+		url : contextPath +"/members/Members.do",
         data: registerData,
         dataType: "json",
         
@@ -356,8 +359,8 @@ form.addEventListener('submit', function(event) {
                     	
                         if (response.errors.email) {
                             // 使用 alert 显示错误消息
-//                             alert("错误：" + response.errors.email);
-                            alert("错误：用戶已存在" );
+ //                             alert("错误：" + response.errors.email);
+                           alert("错误：用戶已存在" );
             
                             
                         }
@@ -373,17 +376,9 @@ form.addEventListener('submit', function(event) {
         },
 		
         error: function(jqXHR, textStatus, errorThrown) {
-            // 在这里处理 AJAX 请求的错误
-//                alert("AJAX请求发生错误：" + errorThrown);
-			
-			    // 记录错误信息到控制台或服务器端日志
-// 			    console.error("AJAX请求错误：", errorThrown);
-			
-			    // 可选的回退操作
-			    // 清空表单字段
-// 			    clearFormFields();
- //        	 window.location.href = contextPath +"/registerLogin.jsp";
-       	 window.location.href = "registerLogin.jsp";
+
+  //        	 window.location.href = contextPath +"/registerLogin.jsp";
+      	 window.location.href = "registerLogin.jsp";
         }
     });
 });

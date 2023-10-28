@@ -28,7 +28,7 @@ public class ImageReader extends HttpServlet{
 			int empid = Integer.parseInt(request.getParameter("empId"));
 
 			EmployeeHibernateDAO employeeHibernateDAO = new EmployeeHibernateDAO(sessionFactory);
-			Employee employee = employeeHibernateDAO.getEmployeeById(empid);
+			Employee employee = employeeHibernateDAO.getByPrimaryKey(empid);
 			if (employee != null) {
 				byte[] avatar = employee.getAvatar();
 				System.out.println("avatar");

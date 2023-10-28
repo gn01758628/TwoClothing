@@ -158,4 +158,11 @@ public class Employee implements Serializable {
 				+ ", avatar=" + avatarStr + "]";
 	}
 
+	  public com.twoclothing.model.department.Department getDepartment() {
+		  com.twoclothing.tonyhsieh.service.DepartmentServiceImpl deptSvc = new com.twoclothing.tonyhsieh.service.DepartmentServiceImpl();
+		  com.twoclothing.model.department.Department department = deptSvc.getByPrimaryKey(deptId);
+		    return department;
+	    }
+	
+	
 }

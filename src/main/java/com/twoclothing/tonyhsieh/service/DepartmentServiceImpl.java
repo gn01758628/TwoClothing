@@ -17,11 +17,11 @@ public class DepartmentServiceImpl implements DepartmentService {
 		}
 
 	@Override
-	public int deleteDepartment(Integer deptId) {
+	public int delete(Integer deptId) {
 		// TODO Auto-generated method stub
-		Department depart = departmentDAO.getDepartmentById(deptId);
+		Department depart = departmentDAO.getByPrimaryKey(deptId);
 		if (depart != null) {
-			departmentDAO.deleteDepartment(deptId);
+			departmentDAO.delete(deptId);
 			// 回傳給 service，1代表刪除成功
 			return 1;
 		} else {
@@ -31,25 +31,25 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public Department getDepartmentById(Integer deptId) {
+	public Department getByPrimaryKey(Integer deptId) {
 		// TODO Auto-generated method stub
-		return departmentDAO.getDepartmentById(deptId);
+		return departmentDAO.getByPrimaryKey(deptId);
 	}
 
 
 	@Override
 	public List<Department> getAllDepartment() {
 		// TODO Auto-generated method stub
-		return departmentDAO.getAllDepartments();
+		return departmentDAO.getAll();
 	}
 
 	@Override
-	public Department addDepartment(Integer deptId, String deptName) {
+	public Department insert(Integer deptId, String deptName) {
 		// TODO Auto-generated method stub
 		Department department = new Department();
 		department.setDeptId(deptId);
 		department.setDeptName(deptName);
-		departmentDAO.addDepartment(department);
+		departmentDAO.insert(department);
 		return department;
 	
 	}
@@ -57,12 +57,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 
 	@Override
-	public Department updateDepartment(Integer deptId, String deptName) {
+	public Department update(Integer deptId, String deptName) {
 		// TODO Auto-generated method stub
 		Department department = new Department();
 		department.setDeptId(deptId);
 		department.setDeptName(deptName);
-		departmentDAO.updateDepartment(department);
+		departmentDAO.update(department);
 		return department;
 	
 	}

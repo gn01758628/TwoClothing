@@ -30,21 +30,18 @@ public class ItemHibernateDAO implements ItemDAO {
 	
 	@Override
 	public int insert(Item item) {
-		System.out.println("save方法");
 		return (Integer) getSession().save(item);	
 	}
 	
 
 	@Override
 	public Item getByPrimaryKey(Integer itemId) {
-		System.out.println("PK");
-			return getSession().get(Item.class, itemId);
+		return getSession().get(Item.class, itemId);
 	}
 
 
 	@Override
 	public List<Item> getAllByTagId(Integer tagId) {
-		//???
 		return getSession().createQuery("from Item where tagId = :tagId", Item.class)
 				.setParameter("tagId", tagId)
 				.list();
@@ -52,7 +49,6 @@ public class ItemHibernateDAO implements ItemDAO {
 
 	@Override
 	public List<Item> getAllByMbrId(Integer mbrId) {
-		//???
 		return getSession().createQuery("from Item where mbrId = :mbrId", Item.class)
 				.setParameter("mbrId", mbrId)
 				.list();
@@ -61,7 +57,6 @@ public class ItemHibernateDAO implements ItemDAO {
 
 	@Override
 	public List<Item> getAllByItemStatus(Integer itemStatus) {
-		//???
 		return getSession().createQuery("from Item where itemStatus = :itemStatus", Item.class)
 				.setParameter("itemStatus", itemStatus)
 				.list();
@@ -71,7 +66,6 @@ public class ItemHibernateDAO implements ItemDAO {
 	public int update(Item item) {
 		try {
 			getSession().update(item);
-			System.out.println("拿到:"+item);
 			return 1;
 		}catch(Exception e) {
 			return -1;
