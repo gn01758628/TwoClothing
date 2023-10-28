@@ -1,6 +1,7 @@
 package com.twoclothing.huiwen.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.twoclothing.huiwen.service.PointHistoryService;
 import com.twoclothing.huiwen.service.PointHistoryServiceImpl;
+import com.twoclothing.model.balancehistory.BalanceHistory;
 import com.twoclothing.model.pointhistory.PointHistory;
 
 @WebServlet("/PointHistory/*")
@@ -34,25 +36,80 @@ public class PointHistoryServlet extends HttpServlet {
 		res.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
 		String choice = req.getParameter("choice");
-		System.out.println("choice:"+choice);
-		if ("getOne_For_Display".equals(choice)) {
-			Integer pointId=Integer.parseInt(req.getParameter("pointId"));
-			PointHistory pointHistory = PHSvc.getPHById(pointId);
-
-//			/***************************3.查詢完成,準備轉交(Send the Success view)*************/
-			req.setAttribute("pointHistory", pointHistory);
-			System.out.println("pointHistory:"+pointHistory);
-			String url = "/back_end/pointHistory/listOnePoint.jsp";
+		
+		//連去新增
+		if("add".equals(choice)) {
+			String url = "/back_end/pointHistory/PHAdd.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url);
+			successView.forward(req, res);
+			
+		}
+		
+		//連去搜尋
+		if("search".equals(choice)) {
+			String url = "/back_end/pointHistory/PHSearch.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
 		}
-
+		
+		
+        //PK搜尋
+		if ("searchPK".equals(choice)) {
+			Integer pointId=Integer.parseInt(req.getParameter("pointId"));
+			PointHistory pointHistory = PHSvc.getPHById(pointId);
+			req.setAttribute("pointHistory", pointHistory);
+			System.out.println("pointHistory:"+pointHistory);
+			
+			String url = "/back_end/pointHistory/listAllPoint.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url);
+			successView.forward(req, res);
+		}
+		
+		//會員id搜尋
+		if ("searchMbrId".equals(choice)) {
+			Integer mbrId=Integer.parseInt(req.getParameter("mbrId"));
+			PointHistory pointHistory = PHSvc.getPHById(mbrId);
+			req.setAttribute("pointHistory", pointHistory);
+			System.out.println("pointHistory:"+pointHistory);
+			
+			String url = "/back_end/pointHistory/listAllPoint.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url);
+			successView.forward(req, res);
+		}
+		
+		
+        //查全部
 		if ("getAll".equals(choice)) {
 
 			List<PointHistory> PHList = PHSvc.getAllPH();
 			req.setAttribute("PHList", PHList);
 			System.out.println("PHList:" + PHList);
 			
+			String url = "/back_end/pointHistory/listAllPoint.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url);
+			successView.forward(req, res);			
+		}
+		
+		//新增會員點數異動資訊
+		if("AddOne".equals(choice)) {
+			PointHistory pointHistory = new PointHistory();
+			int mbrId =Integer.parseInt(req.getParameter("mbrId"));
+			if(!req.getParameter("orderId").trim().isEmpty() ) {
+				int orderId =Integer.parseInt(req.getParameter("orderId"));
+			}
+			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+			int changeValue =Integer.parseInt(req.getParameter("changeValue"));
+			
+			pointHistory.setMbrId(1);//從登入資訊取
+			pointHistory.setOrderId(1);//從訂單取
+			//異動時間1/訂單完成(+) 2/訂單確認(-)
+			pointHistory.setChangeDate(currentTime);			
+			pointHistory.setChangeValue(changeValue);
+			
+			int pointHistoryPK = PHSvc.addPH(pointHistory);
+			System.out.println(pointHistory);
+			
+			req.setAttribute("pointHistory", pointHistory);
 			String url = "/back_end/pointHistory/listAllPoint.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);

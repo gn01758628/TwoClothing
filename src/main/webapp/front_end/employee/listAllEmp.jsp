@@ -7,7 +7,7 @@
 
 <%
 	EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-	List<Employee> list = employeeServiceImpl.getAllEmployees();
+	List<Employee> list = employeeServiceImpl.getAll();
 	System.out.println(list);
     pageContext.setAttribute("list",list);
     
@@ -91,8 +91,8 @@
 			<td>${employee.deptId}-[${employee.department.deptName}]</td>
 			<td>
 				 <c:choose>
-       			 <c:when test="${employee.empStatus == 0}">${employee.empStatus} - 生效</c:when>
-       			 <c:when test="${employee.empStatus == 1}">${employee.empStatus} - 失效</c:when>
+       			 <c:when test="${employee.empStatus == 0}">${employee.empStatus} - 在職</c:when>
+       			 <c:when test="${employee.empStatus == 1}">${employee.empStatus} - 離職</c:when>
        			 </c:choose>
 			</td>
 			<td>${employee.pswdHash}</td>

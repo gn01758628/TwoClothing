@@ -1,6 +1,7 @@
 package com.twoclothing.huiwen.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -31,23 +32,24 @@ public class BalanceHistoryServlet extends HttpServlet{
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		System.out.println("找到servlet");
+
 		res.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
 		String choice = req.getParameter("choice");
-		
+		//連去新增
 		if("add".equals(choice)) {
-			String url = "/back_end/balanceHistory/.jsp";
+			String url = "/back_end/balanceHistory/BHAdd.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
 			
 		}
-
+		//連去搜尋
 		if("search".equals(choice)) {
 			String url = "/back_end/balanceHistory/BHSearch.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
 		}
+		
 		
 		//PK搜尋
 		if("searchPK".equals(choice)){
@@ -64,7 +66,6 @@ public class BalanceHistoryServlet extends HttpServlet{
 		//會員id搜尋
 		if("searchMbrId".equals(choice)){
 			Integer mbrId = Integer.parseInt(req.getParameter("mbrId"));
-			System.out.println("1111111");
 			List<BalanceHistory> balanceHistoryList = BHSvc.getAllBHByMbrId(mbrId);
 			req.setAttribute("BHList", balanceHistoryList);
 			
@@ -78,6 +79,38 @@ public class BalanceHistoryServlet extends HttpServlet{
 			List<BalanceHistory> balanceHistoryList = BHSvc.getAllBH();
 			req.setAttribute("BHList", balanceHistoryList);
 			
+			String url = "/back_end/balanceHistory/listAllBalance.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url);
+			successView.forward(req, res);
+			
+		}
+		//新增虛擬錢包異動資訊
+		if("AddOne".equals(choice)) {
+			BalanceHistory balanceHistory = new BalanceHistory();
+			int mbrId =Integer.parseInt(req.getParameter("mbrId"));
+			if(!req.getParameter("orderId").trim().isEmpty() ) {
+				int orderId =Integer.parseInt(req.getParameter("orderId"));
+			}
+			if(req.getParameter("bidOrderId").length()!=0) {
+				int bidOrderId =Integer.parseInt(req.getParameter("bidOrderId"));
+			}
+			if(req.getParameter("wrId").length()!=0) {
+				int wrId =Integer.parseInt(req.getParameter("wrId"));			
+			}
+			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+			int changeValue =Integer.parseInt(req.getParameter("changeValue"));
+			
+			balanceHistory.setMbrId(1);//從登入資訊取
+			balanceHistory.setOrderId(1);//從訂單取
+//			balanceHistory.setBidOrderId(1);//與一般訂單2選1
+			balanceHistory.setWrId(1);//從提款編號取，不一定有
+			balanceHistory.setChangeDate(currentTime);			
+			balanceHistory.setChangeValue(changeValue);
+			
+			int balanceHistoryPK = BHSvc.addBH(balanceHistory);
+			System.out.println(balanceHistory);
+			
+			req.setAttribute("balanceHistory", balanceHistory);
 			String url = "/back_end/balanceHistory/listAllBalance.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);

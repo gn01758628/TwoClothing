@@ -105,8 +105,8 @@
 	<tr>
 		<td>狀態:</td>
 		<td><select size="1" name="empstatus">
-			<option value="0">生效</option>
-			<option value="1">失效</option>
+			<option value="0">在職</option>
+			<option value="1">離職</option>
 		</select></td>
 	</tr>
 	<tr>

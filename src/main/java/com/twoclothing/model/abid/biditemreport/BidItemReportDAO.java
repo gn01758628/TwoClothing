@@ -1,25 +1,25 @@
 package com.twoclothing.model.abid.biditemreport;
 
 import java.util.List;
+import java.util.Map;
+
+import com.twoclothing.model.department.Department;
+
+
 
 
 public interface BidItemReportDAO {
 	
-	void insert(BidItemReport bidItemReport);
 	
-    BidItemReport getByPrimaryKey(Integer reportId);
-    
-    List<BidItemReport> getAll();
+	
+	int insert(BidItemReport bidItemReport);
+	
+	int update(BidItemReport bidItemReport);
+	  
+	List<BidItemReport> getAll();
 
-    List<BidItemReport> getAllByEmpId(Integer empId);
+	List<BidItemReport> getByCompositeQuery(Map<String, String> map);
     
-    List<BidItemReport> getAllByBidItemId(Integer bidItemId);
-    
-	List<BidItemReport> getAllByBidStatus(Integer bidStatus);
-	
-	List<BidItemReport> getAllByResult(Integer result);
-	
-    
-    void update(BidItemReport bidItemReport);
+  
 
 }

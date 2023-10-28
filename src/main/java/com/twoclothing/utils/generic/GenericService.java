@@ -51,9 +51,9 @@ public class GenericService {
 	// ========================= query =========================
 
 	// 查詢By PK
-	public <T> T getByPK(Class<T> type, Serializable Id) {
+	public <T> T getByPrimaryKey(Class<T> type, Serializable Id) {
 		GenericDAO dao = DAOSelector.getDAO(type);
-		return (T) dao.getByPK(Id);
+		return (T) dao.getByPrimaryKey(Id);
 	}
 
 	public <T> List<T> getBy(Class<T> type,String fieldName, Serializable value) {

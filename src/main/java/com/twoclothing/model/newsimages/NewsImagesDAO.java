@@ -3,9 +3,13 @@ package com.twoclothing.model.newsimages;
 import java.util.List;
 
 public interface NewsImagesDAO {
-    void addNewsImage(NewsImages newsImage);
-    void updateNewsImage(NewsImages newsImage);
-    void deleteNewsImage(Integer imageId);
-    NewsImages getNewsImageById(Integer imageId);
-    List<NewsImages> getNewsImagesByNewsId(Integer newsId);
+	void insert(NewsImages newsImage);
+
+	NewsImages getByPrimaryKey(Integer imageId);
+
+	List<NewsImages> getAllByNewsId(Integer newsId);
+
+	void update(NewsImages newsImage);
+
+	void delete(Integer imageId);
 }

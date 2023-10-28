@@ -173,4 +173,24 @@ public class BidItemReport  implements Serializable{
 		this.note = note;
 	}
 
+	
+	  public com.twoclothing.model.abid.biditem.BidItem getBidItem() {
+		  com.twoclothing.chenghan.service.BidItemServiceImpl bidItemSvc = new com.twoclothing.chenghan.service.BidItemServiceImpl();
+		  com.twoclothing.model.abid.biditem.BidItem bidItem = bidItemSvc.getBidItemByBidItemId(bidItemId);
+		    return bidItem;
+	    }
+	
+	  public com.twoclothing.model.members.Members getMembers() {
+		  com.twoclothing.gordon.service.MembersServiceImpl memberSvc = new com.twoclothing.gordon.service.MembersServiceImpl();
+		  com.twoclothing.model.members.Members members = memberSvc.getByPrimaryKey(mbrId);
+		    return members;
+	    }
+	  
+	  public com.twoclothing.model.employee.Employee getEmployee() {
+		  com.twoclothing.tonyhsieh.service.EmployeeServiceImpl EmpSvcq = new com.twoclothing.tonyhsieh.service.EmployeeServiceImpl();
+		  com.twoclothing.model.employee.Employee employee = EmpSvcq.getByPrimaryKey(empId);
+		    return employee;
+	    }
+	  
+	
 }

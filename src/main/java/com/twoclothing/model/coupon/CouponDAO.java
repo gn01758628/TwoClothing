@@ -4,13 +4,19 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface CouponDAO {
-    void addCoupon(Coupon coupon);
-    void updateCoupon(Coupon coupon);
-    void deleteCoupon(Integer cpnId);
-    Coupon getCouponById(Integer cpnId);
-    List<Coupon> getAllCoupons();
-    List<Coupon> getCouponsByEmployeeId(Integer empId);
-    List<Coupon> getCouponsByTagId(Integer tagId);
-    List<Coupon> getCouponsByDateRange(Timestamp  startDate, Timestamp  endDate);
-    List<Coupon> getCouponsByMinAmount(int minAmount);
+	void insert(Coupon coupon);
+
+	Coupon getByPrimaryKey(Integer cpnId);
+
+	List<Coupon> getAll();
+
+	List<Coupon> getByEmpId(Integer empId);
+
+	List<Coupon> getByTagId(Integer tagId);
+
+	List<Coupon> getByMinAmount(int minAmount);
+
+	void update(Coupon coupon);
+
+	void delete(Integer cpnId);
 }

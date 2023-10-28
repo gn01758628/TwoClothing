@@ -1,13 +1,23 @@
 package com.twoclothing.model.memberscoupon;
+
 import java.util.List;
 
+import com.twoclothing.model.memberscoupon.MembersCoupon.MembersCouponCompositeDetail;
+
 public interface MembersCouponDAO {
-    void addMembersCoupon(MembersCoupon membersCoupon);
-    void updateMembersCoupon(MembersCoupon membersCoupon);
-    void deleteMembersCoupon(Integer memberId, Integer couponId);
-    MembersCoupon getMembersCouponByIds(Integer memberId, Integer couponId);
-    List<MembersCoupon> getAllMembersCoupons();
-    List<MembersCoupon> getMembersCouponsByMemberId(Integer memberId);
-    List<MembersCoupon> getMembersCouponsByCouponId(Integer couponId);
-    List<MembersCoupon> getMembersCouponsByStatus(int couponStatus);
+	void insert(MembersCoupon membersCoupon);
+
+	MembersCoupon getByCompositeKey(MembersCouponCompositeDetail compositeKey);
+
+	List<MembersCoupon> getAll();
+
+	List<MembersCoupon> getAllByMemberId(Integer memberId);
+
+	List<MembersCoupon> getAllByCouponId(Integer couponId);
+
+	List<MembersCoupon> getAllByStatus(int couponStatus);
+
+	void update(MembersCoupon membersCoupon);
+
+	void delete(Integer memberId, Integer couponId);
 }

@@ -40,7 +40,7 @@ public class PointHistoryHibernateDAO implements PointHistoryDAO{
 
 	@Override
 	public List<PointHistory> getAllByMbrId(Integer mbrId) {
-		return getSession().createQuery("from PointHistory where by mbrId = :mbrId", PointHistory.class).list();
+		return getSession().createQuery("from PointHistory where by mbrId = :mbrId", PointHistory.class).setParameter("mbrId", mbrId).list();
 
 	}
 

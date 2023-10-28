@@ -99,7 +99,6 @@
                             <option value="2">9成新(有使用痕跡,但沒有瑕疵)</option>
                             <option value="3">8成新(有使用痕跡,少量瑕疵)</option>
                             <option value="4">5成新(有使用痕跡,明顯瑕疵)</option>
-                            <option value="5">破損商品(需要修補)</option>
                         </select>
                         <div id="gradeHelp" class="form-text">請依選項說明選擇商品新舊成度</div>
                     </div>
