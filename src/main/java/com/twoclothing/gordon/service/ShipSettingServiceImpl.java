@@ -22,10 +22,11 @@ public class ShipSettingServiceImpl implements ShipSettingService{
 	public ShipSetting addShipSetting(Integer mbrId, String receiveName, String receivePhone, String receiveAddress ) {
 		ShipSetting shipSetting = new ShipSetting();
 		
+		shipSetting.setMbrId(mbrId);
 		shipSetting.setReceiveName(receiveName);
 		shipSetting.setReceivePhone(receivePhone);
 		shipSetting.setReceiveAddress(receiveAddress);
-		shipSetting.setMbrId(mbrId);
+		dao.insert(shipSetting);
 		return shipSetting;
 	}
 	@Transactional
@@ -52,6 +53,8 @@ public class ShipSettingServiceImpl implements ShipSettingService{
 	public ShipSetting updateShipSetting(Integer shipId, Integer mbrId, String receiveName, String receivePhone, String receiveAddress) {
 		ShipSetting shipSetting = new ShipSetting();
 		
+		shipSetting.setShipId(shipId);
+		shipSetting.setMbrId(mbrId);
 		shipSetting.setReceiveName(receiveName);
 		shipSetting.setReceivePhone(receivePhone);
 		shipSetting.setReceiveAddress(receiveAddress);

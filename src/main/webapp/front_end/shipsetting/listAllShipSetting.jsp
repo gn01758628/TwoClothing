@@ -4,6 +4,16 @@
 <%@ page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ 
+ <% 
+     Object account = session.getAttribute("user");                  // 從 session內取出 (key) account的值
+     if (account == null) {                                             // 如為 null, 代表此user未登入過 , 才做以下工作
+       session.setAttribute("location", request.getRequestURI());       //*工作1 : 同時記下目前位置 , 以便於login.html登入成功後 , 能夠直接導至此網頁(須配合LoginHandler.java) 
+       response.sendRedirect(request.getContextPath()+"/front_end/members/registerLogin.jsp");   //*工作2 : 請該user去登入網頁(login.html) , 進行登入 
+       return; 
+     } 
+ %>  
+
 <!DOCTYPE html>
 
 
@@ -91,6 +101,7 @@
                     <form method="post" action="<%=request.getContextPath()%>/shipsetting/Shipsetting.do" style="margin-bottom: 0px;">
                         <input type="submit" value="刪除">
                         <input type="hidden" name="mbrId"  value="${ShipSetting.mbrId}">
+                        <input type="hidden" name="shipId"  value="${ShipSetting.shipId}">
                         <input type="hidden" name="action" value="delete">
                     </form>
                 </td>
@@ -103,7 +114,10 @@
         </tr>
     </c:otherwise>
 </c:choose>
-
 </table>
+    <form method="post" action="<%=request.getContextPath()%>/front_end/shipsetting/addShipSetting.jsp" style="margin-bottom: 0px;">
+         <input type="submit" value="新增">
+         <input type="hidden" name="action" value="insert">
+     </form>
 </body>
 </html>

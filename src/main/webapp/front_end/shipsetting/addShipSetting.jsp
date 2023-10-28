@@ -1,7 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.twoclothing.gordon.service.*"%>
-<%@ page import="com.twoclothing.model.members.*"%>
+
 
 <%
   // EmpVO empVO = (EmpVO) request.getAttribute("empVO");
@@ -10,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>員工資料修改 - update_ShipSetting_input.jsp</title>
+<title>員工資料新增 - addEmp.jsp</title>
 
 <style>
   table#table-1 {
@@ -49,24 +48,20 @@
 
 <table id="table-1">
 	<tr><td>
-		 <h3>員工資料修改 - update_ShipSetting_input.jsp</h3>
-		 <h4><a href='${pageContext.request.contextPath}/MemberCentre.jsp'><img src="images/login2.png" width="100" height="102" border="0">會員中心</a></h4>
+		 <h3>員工資料新增 - addShipSetting.jsp</h3></td><td>
+		 <h4><a href='${pageContext.request.contextPath}/MemberCentre.jsp'>會員中心</a>
 	</td></tr>
 </table>
 
-<h3>資料修改:</h3>
+<h3>資料新增:</h3>
 
 
 
 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/shipsetting/Shipsetting.do" name="form1">
 <table>
-    <tr>
-		<td>會員物流設定編號:<font color=red><b>*</b></font></td>
-		<td>${param.shipId}</td>
-	</tr>
 	<tr>
 		<td>會員編號:</td>
-		<td>${param.mbrId}</td>
+		<td>${user.mbrId}</td>
 	</tr>
 	<tr>
 		<td>收件人姓名:</td>
@@ -92,17 +87,26 @@
 	
 
 </table>
+
 <br>
-<input type="hidden" name="action" value="update">
-<input type="hidden" name="shipId" value="${param.shipId}">
-<input type="hidden" name="mbrId" value="${param.mbrId}">
-<input type="submit" value="送出修改"></FORM>
+<input type="hidden" name="action" value="insert">
+<input type="hidden" name="mbrId" value="${user.mbrId}">
+<input type="submit" value="送出新增"></FORM>
+
 </body>
 
 
 
 <!-- =========================================以下為 datetimepicker 之相關設定========================================== -->
 
+<% 
+  java.sql.Date hiredate = null;
+  try {
+	    hiredate = java.sql.Date.valueOf(request.getParameter("hiredate").trim());
+   } catch (Exception e) {
+	    hiredate = new java.sql.Date(System.currentTimeMillis());
+   }
+%>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
 <script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
 <script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
@@ -119,11 +123,11 @@
 <script>
         $.datetimepicker.setLocale('zh');
         $('#f_date1').datetimepicker({
-           theme: '',              //theme: 'dark',
- 	       timepicker:false,       //timepicker:true,
- 	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
- 	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
- 		   value: '${param.hiredate}', // value:   new Date(),
+ 	       theme: '',              //theme: 'dark',
+	       timepicker:false,       //timepicker:true,
+	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
+	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
+		   value: '<%=hiredate%>', // value:   new Date(),
            //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
            //startDate:	            '2017/07/10',  // 起始日
            //minDate:               '-1970-01-01', // 去除今日(不含)之前

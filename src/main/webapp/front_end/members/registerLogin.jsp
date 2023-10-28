@@ -253,7 +253,7 @@ input {
 			var login = document.getElementById("container1");
 			var signup = document.getElementById("container2");
 			var copyright = document.getElementById("copyright");
-
+			var location = null;
 			if (login.style.display === "none") {
 				login.style.display = "block"; //lonin出現
 				document.getElementById("email").value = "";
@@ -293,22 +293,25 @@ input {
 				data : loginData,
 				dataType : "json",
 				success : function(response) {
+					
 					if (response.success) {
-
+						
 						if (response.mbrStatus === 0) {
-
+							
 							window.location.href = contextPath +  "/front_end/members/verificationEmail.jsp";
 // 							window.location.href = "verificationEmail.jsp";
-						} else {
-							window.location.href = contextPath + "/index.jsp";
-// 							window.location.href = "/TwoClothing/index.jsp";
-						}
-					} else {
-						if (response.errors) {
+						}else{
+							if(response.location !== null && response.location !== undefined){
+								window.location.href = response.location ;
+ 								}else{
+ 									window.location.href = contextPath + "/index.jsp";}
+									
+					}
+					}else{
 // 							alert("帳號密碼錯誤" + response.errors.error);
 							alert("帳號密碼錯誤");
 						}
-					}
+					
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 					// 在這裡處理 AJAX 請求的錯誤

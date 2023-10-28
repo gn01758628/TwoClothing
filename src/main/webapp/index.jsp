@@ -1,4 +1,6 @@
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,13 +29,14 @@
 </style>
 </head>
 <body>
+
 	<%
 	// 获取存储在 session 中的用户数据
 	com.twoclothing.model.members.Members user = (com.twoclothing.model.members.Members) session.getAttribute("user");
 	%>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-	
 
+	<a href='${pageContext.request.contextPath}/MemberCentre.jsp'>會員中心</a>
 	<c:choose>
 			
 		<c:when test="${not empty user and not empty user.mbrName}">
@@ -43,7 +46,7 @@
 		        <input type="hidden" name="action" value="logout">
 		        <button type="submit">登出</button>
 	        </form>
-	        	<a href='${pageContext.request.contextPath}/MemberCentre.jsp'>會員中心</a>
+<%-- 	        	<a href='${pageContext.request.contextPath}/MemberCentre.jsp'>會員中心</a> --%>
 	        
 		</c:when>
 		<c:when test="${not empty user and not empty user.email}">
@@ -52,7 +55,7 @@
 		        <input type="hidden" name="action" value="logout">
 		        <button type="submit">登出</button>
    			</form>
-   				<a href='${pageContext.request.contextPath}/MemberCentre.jsp'>會員中心</a>
+<%--    				<a href='${pageContext.request.contextPath}/MemberCentre.jsp'>會員中心</a> --%>
    			
 		</c:when>
 		<c:otherwise>
@@ -60,7 +63,7 @@
 			<form
 				action="${pageContext.request.contextPath}/front_end/members/registerLogin.jsp">
 				<button type="submit">登入</button>
-					<a href='${pageContext.request.contextPath}/front_end/members/registerLogin.jsp'>會員中心</a>
+<%-- 					<a href='${pageContext.request.contextPath}/front_end/members/registerLogin.jsp'>會員中心</a> --%>
 				
 			</form>
 <!-- 			<form -->
