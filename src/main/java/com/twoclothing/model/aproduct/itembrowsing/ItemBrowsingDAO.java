@@ -1,18 +1,16 @@
 package com.twoclothing.model.aproduct.itembrowsing;
 
-import java.sql.Timestamp;
+import java.io.Serializable;
 import java.util.List;
 
 public interface ItemBrowsingDAO {
-    void insert(ItemBrowsing itemBrowsing);
+	Serializable insert(ItemBrowsing itemBrowsing);
 
-    ItemBrowsing getByCompositeKey(Integer itemId, Integer mbrId);
+	List<ItemBrowsing> getAllByMbrId(Integer mbrId, int currentPage);
 
-    List<ItemBrowsing> getAll();
-    
-    List<ItemBrowsing> getAllByItemId(Integer itemId);
+	long getTotal(Integer mbrId);
+	
+	ItemBrowsing getByCompositeKey(Integer itemId, Integer mbrId);
 
-    List<ItemBrowsing> getAllByMbrId(Integer mbrId);
-    
-    void update(Timestamp browsingTime, Integer itemId, Integer mbrId);
+	boolean update(ItemBrowsing itemBrowsing);
 }
