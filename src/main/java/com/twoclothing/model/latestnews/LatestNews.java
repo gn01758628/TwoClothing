@@ -11,7 +11,6 @@ import javax.persistence.*;
 public class LatestNews implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-
 	@Column(name = "newsid")
 	private Integer newsId;
 

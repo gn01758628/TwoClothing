@@ -204,7 +204,7 @@ public class ItemOrderServlet extends HttpServlet{
 	
 	private void updateOrder(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		Integer orderId = Integer.parseInt(req.getParameter("orderId"));
-		ItemOrder io = gs.getByPK(ItemOrder.class,orderId );
+		ItemOrder io = gs.getByPrimaryKey(ItemOrder.class,orderId );
 		if(io.getOrderStatus() < 3 ) {
 			io.setOrderStatus(io.getOrderStatus()+1);
 		}
@@ -213,7 +213,7 @@ public class ItemOrderServlet extends HttpServlet{
 	
 	private void cancelOrder(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		Integer orderId = Integer.parseInt(req.getParameter("orderId"));
-		ItemOrder io = gs.getByPK(ItemOrder.class,orderId );
+		ItemOrder io = gs.getByPrimaryKey(ItemOrder.class,orderId );
 		io.setOrderStatus(4);
 		gs.update(io);
 	}
@@ -270,7 +270,7 @@ public class ItemOrderServlet extends HttpServlet{
 	        odc = new OrderDetailsCompositeDetail();
 	        od.setCompositeKey(odc);
 	        od.getCompositeKey().setItemId(itemId);
-	        Item it = gs.getByPK(Item.class, itemId);
+	        Item it = gs.getByPrimaryKey(Item.class, itemId);
 	        Integer itprice = it.getPrice();
 	        od.setPrice(itprice);
 	        od.setQuantity(amount);

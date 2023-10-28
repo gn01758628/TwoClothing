@@ -8,13 +8,13 @@ public class EmployeeHibernateTest {
 //			EmployeeDAO employeeDAO = new EmployeeHibernateDAO();
 //			
 //			//主鍵查詢
-//			Employee emp1 = employeeDAO.getEmployeeById(1);
+//			Employee emp1 = employeeDAO.getByPrimaryKey(1);
 //			System.out.println(emp1.getEmpName());
 //			System.out.println(emp1.getEmail());
 //			System.out.println(emp1.getAddress());
 //			
 //			//全部查詢
-//			List<Employee> list = employeeDAO.getAllEmployees();
+//			List<Employee> list = employeeDAO.getAll();
 //			for(Employee emp2 : list) {
 //				System.out.println(emp2.getEmpName());
 //				System.out.println(emp2.getEmail());

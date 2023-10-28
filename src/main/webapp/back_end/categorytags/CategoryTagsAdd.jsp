@@ -32,8 +32,8 @@
             <label for="superTagId" class="form-label">父類別標籤</label>
             <select class="form-select" id="superTagId" name="superTagId" required>
                 <option value="" disabled selected>選擇標籤</option>
-                <c:forEach var="tags" items="${categoryTags}" varStatus="loop">
-                <option value="${loop.index + 1}">${tags.categoryName}</option>
+                <c:forEach var="tags" items="${categoryTags}">
+                <option value="${tags.tagId}">${tags.categoryName}</option>
                 </c:forEach>
             </select>
         </div>

@@ -35,8 +35,8 @@
         <div class="mb-3">
             <label for="superTagId" class="form-label">父類別標籤</label>
             <select class="form-select" id="superTagId" name="superTagId" required>
-                <c:forEach var="tags" items="${categoryTags}" varStatus="loop">
-                    <option value="${loop.index + 1}" <c:if test="${tags.tagId == currentSuperTagId}">selected</c:if>>
+                <c:forEach var="tags" items="${categoryTags}">
+                    <option value="${tags.tagId}" <c:if test="${tags.tagId == currentSuperTagId}">selected</c:if>>
                             ${tags.categoryName}
                     </option>
                 </c:forEach>

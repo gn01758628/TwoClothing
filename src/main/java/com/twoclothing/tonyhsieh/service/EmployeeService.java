@@ -7,16 +7,16 @@ import com.twoclothing.model.employee.Employee;
 
 public interface EmployeeService {
 
-	int deleteEmployee(Integer empId);
+	int delete(Integer empId);
 	
-	Employee getEmployeeById(Integer empId);
+	Employee getByPrimaryKey(Integer empId);
 	
-	List<Employee> getAllEmployees();
+	List<Employee> getAll();
 	
-	Employee addEmployee(Integer deptId, String empName, String phone, String address, String email,
+	Employee insert(Integer deptId, String empName, String phone, String address, String email,
 			String pswdHash, Integer empStatus,byte[] avatar);
 
-	Employee updateEmployee(Integer empId,Integer deptId, String empName, String phone, String address, String email,
+	Employee update(Integer empId,Integer deptId, String empName, String phone, String address, String email,
 			String pswdHash, Integer empStatus,byte[] avatar);
 	
 }

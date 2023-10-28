@@ -2,13 +2,21 @@ package com.twoclothing.model.empmissions;
 
 import java.util.List;
 
+import com.twoclothing.model.empmissions.EmpMissions.CompositeDetail;
+
 public interface EmpMissionsDAO {
 
-    void addEmpMissions(EmpMissions EmpMissions);
-    void updateEmpMissions(EmpMissions EmpMissions);
-    void deleteEmpMissions(Integer empId, Integer permissionId);
-    List<EmpMissions> getAllEmpMissionss();
-    EmpMissions getEmpMissionsByIds(Integer empId, Integer permissionId);
-    List<EmpMissions> getEmpMissionssByEmpId(Integer empId);
-    List<EmpMissions> getEmpMissionssByPermissionId(Integer permissionId);
+	void insert(EmpMissions EmpMissions);
+
+	List<EmpMissions> getAll();
+
+	EmpMissions getByCompositeKey(CompositeDetail compositeKey);
+
+	List<EmpMissions> getAllByEmpId(Integer empId);
+
+	List<EmpMissions> getAllByPermissionId(Integer permissionId);
+
+	void update(EmpMissions EmpMissions);
+
+	void delete(Integer empId, Integer permissionId);
 }

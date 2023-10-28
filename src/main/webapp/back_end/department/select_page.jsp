@@ -10,7 +10,7 @@
 	%>
 <html>
 <head>
-<title>Emp: Home</title>
+<title>Dept: Home</title>
 
 <style>
   table#table-1 {
@@ -37,10 +37,10 @@
 <body bgcolor='white'>
 
 <table id="table-1">
-   <tr><td><h3>Emp: Home</h3><h4>( MVC )</h4></td></tr>
+   <tr><td><h3>Dept: Home</h3><h4>( MVC )</h4></td></tr>
 </table>
 
-<p>This is the Home page for Emp: Home</p>
+<p>This is the Home page for Dept: Home</p>
 
 <h3>資料查詢:</h3>
 
@@ -55,7 +55,9 @@
 <%-- </c:if> --%>
 
 <ul>
-  <li><a href='listAllEmp.jsp'>List</a> all Emps.  <br><br></li>
+  <li>
+  <a href="${pageContext.request.contextPath}/back_end/department/Department.do?action=getAll">List</a> all Dept.  <br><br>
+ </li>
   
   
   <li>
@@ -88,7 +90,7 @@
 <h3>部門管理</h3>
 
 <ul>
-  <li><a href='addEmp.jsp'>Add</a> a new Emp.</li>
+  <li><a href='addDept.jsp'>Add</a> a new Dept.</li>
 </ul>
 
 </body>

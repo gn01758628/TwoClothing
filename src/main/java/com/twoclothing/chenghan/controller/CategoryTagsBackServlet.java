@@ -34,16 +34,12 @@ public class CategoryTagsBackServlet extends HttpServlet {
         */
 
         String servletPath = request.getServletPath() + request.getPathInfo();
-        if ("/back/tags/list".equals(servletPath)) {
-            doList(request, response);
-        } else if ("/back/tags/add".equals(servletPath)) {
-            doAdd(request, response);
-        } else if ("/back/tags/save".equals(servletPath)) {
-            doSave(request, response);
-        } else if ("/back/tags/modify".equals(servletPath)) {
-            doModify(request, response);
-        } else if ("/back/tags/update".equals(servletPath)) {
-            doUpdate(request, response);
+        switch (servletPath) {
+            case "/back/tags/list" -> doList(request, response);
+            case "/back/tags/add" -> doAdd(request, response);
+            case "/back/tags/save" -> doSave(request, response);
+            case "/back/tags/modify" -> doModify(request, response);
+            case "/back/tags/update" -> doUpdate(request, response);
         }
     }
 

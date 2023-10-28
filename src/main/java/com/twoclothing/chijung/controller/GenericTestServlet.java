@@ -54,7 +54,7 @@ public class GenericTestServlet extends HttpServlet {
 
 		// query1
 		System.out.println("========== query1 ==========");
-		Employee emp = gs.getByPK(Employee.class, 3);
+		Employee emp = gs.getByPrimaryKey(Employee.class, 3);
 
 		System.out.println(emp);
 		// query2

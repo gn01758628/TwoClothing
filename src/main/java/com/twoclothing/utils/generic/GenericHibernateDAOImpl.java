@@ -32,7 +32,7 @@ public class GenericHibernateDAOImpl<T> implements GenericDAO<T> {
 		fields = type.getDeclaredFields();
 		initializeFieldMap();
 		this.tableName = initializeTableName();
-		
+
 	}
 
 	public GenericHibernateDAOImpl(Class<T> type, SessionFactory factory) {
@@ -98,63 +98,40 @@ public class GenericHibernateDAOImpl<T> implements GenericDAO<T> {
 		return getSession().save(entity);
 	}
 
-	// ========================= update =========================
-	@Override
-	public boolean update(T entity) {
-		try {
-			getSession().update(entity);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	// ========================= delete =========================
-	@Override
-	public int delete(Serializable id) {
-		T entity = getSession().get(type, id);
-		if (entity != null) {
-			getSession().delete(entity);
-			return 1;
-		} else {
-			return -1;
-		}
-	}
-
 	// ========================= query =========================
 
 	// 查詢By PK
 	@Override
-	public T getByPK(Serializable id) {
+	public T getByPrimaryKey(Serializable id) {
 		return getSession().get(type, id);
 	}
-	
+
 	// 查詢By 欄位,值
 	@Override
-	public List<T> getBy(String fieldName,Serializable value){
+	public List<T> getBy(String fieldName, Serializable value) {
 		Class<?> fieldType = fieldMap.get(fieldName);
 		String hql;
 		String alias;
 		if (fieldName.contains(".")) {
-		    int dotIndex = fieldName.indexOf(".");
-		    alias = fieldName.substring(dotIndex + 1);
+			int dotIndex = fieldName.indexOf(".");
+			alias = fieldName.substring(dotIndex + 1);
 		} else {
 			alias = fieldName;
 		}
 		if (fieldType != null && fieldType.isAssignableFrom(String.class)) {
-		    // 如果 fieldType 是 String 或者 String 的子類
-			hql = "from "+className+" where "+fieldName+" like :"+alias;
+			// 如果 fieldType 是 String 或者 String 的子類
+			hql = "from " + className + " where " + fieldName + " like :" + alias;
 		} else {
-		    // 如果 fieldType 不是 String 或者為 null
-			hql = "from "+className+" where "+fieldName+" = :"+alias;
+			// 如果 fieldType 不是 String 或者為 null
+			hql = "from " + className + " where " + fieldName + " = :" + alias;
 		}
 		System.out.println(hql);
-		
+
 		Query query = getSession().createQuery(hql);
-		query.setParameter(alias,value);
+		query.setParameter(alias, value);
 		return query.getResultList();
 	}
-	
+
 	// 查詢全部 OrderBy PK
 	@Override
 	public List<T> getAll() {
@@ -231,8 +208,31 @@ public class GenericHibernateDAOImpl<T> implements GenericDAO<T> {
 		List<T> resultList = session.createQuery(criteria).getResultList();
 		return resultList;
 	}
-	
-	//取得資料總筆數
+
+	// ========================= update =========================
+	@Override
+	public boolean update(T entity) {
+		try {
+			getSession().update(entity);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	// ========================= delete =========================
+	@Override
+	public int delete(Serializable id) {
+		T entity = getSession().get(type, id);
+		if (entity != null) {
+			getSession().delete(entity);
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+
+	// 取得資料總筆數
 	@Override
 	public long getTotal() {
 		return getSession().createQuery("select count(*) from " + className, Long.class).uniqueResult();
