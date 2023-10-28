@@ -63,8 +63,9 @@ public class BidItemBackServlet extends HttpServlet {
         bidStatusMap.put(1, "已過審");
         bidStatusMap.put(2, "得標");
         bidStatusMap.put(3, "流標");
-        bidStatusMap.put(4, "刪除");
-        bidStatusMap.put(5, "下架");
+        bidStatusMap.put(4, "上架中");
+        bidStatusMap.put(5, "刪除");
+        bidStatusMap.put(6, "被下架");
         request.setAttribute("bidStatusMap", bidStatusMap);
 
         Map<String, String[]> parameterMap = request.getParameterMap();
@@ -77,9 +78,12 @@ public class BidItemBackServlet extends HttpServlet {
             }
         } else {
             // 複合條件查詢
-
-
+            List<BidItem> allBidItemByCompositeQuery = bidItemService.getAllBidItemByCompositeQuery(parameterMap);
+            if (allBidItemByCompositeQuery != null) {
+                bidItemList.addAll(allBidItemByCompositeQuery);
+            }
         }
+
         if (!bidItemList.contains(null)) {
             // 綁定會員
             Map<Integer, Members> membersMap = new HashMap<>();

@@ -266,13 +266,14 @@ public class BidItemFrontServlet extends HttpServlet {
         // TODO 會員編號先寫死,之後要從session取
         Integer mbrId = 1;
 
-        List<BidItem> allBidItemByMbrid = bidItemService.getAllBidItemByMbrid(mbrId);
-        request.setAttribute("allBidItemByMbrid", allBidItemByMbrid);
+        List<BidItem> allLegalBidItemByMbrid = bidItemService.getAllLegalBidItemByMbrid(mbrId);
+        request.setAttribute("allLegalBidItemByMbrid", allLegalBidItemByMbrid);
         Map<Integer, String> statusMap = new HashMap<>();
         statusMap.put(0, "待審核");
         statusMap.put(1, "已過審");
         statusMap.put(2, "得標");
         statusMap.put(3, "流標");
+        statusMap.put(4, "上架中");
         request.setAttribute("statusMap", statusMap);
         request.getRequestDispatcher("/front_end/biditem/BidItemPersonalList.jsp").forward(request, response);
     }
