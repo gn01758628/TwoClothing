@@ -27,7 +27,6 @@ public class BalanceHistoryServiceImpl implements BalanceHistoryService{
 
 	@Override
 	public List<BalanceHistory> getAllBHByMbrId(Integer mbrId) {
-		System.out.println(BHDAO.getAllByMbrId(mbrId));
 		return BHDAO.getAllByMbrId(mbrId);
 	}
 

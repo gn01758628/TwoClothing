@@ -50,7 +50,7 @@
 <table id="table-1">
 	<tr><td>
 		 <h3>虛擬錢包異動資料</h3>
-		 <h4><a href="">回首頁</a></h4>
+		 <h4><a href="${pageContext.request.contextPath}/back_end/balanceHistory/BHMain.jsp">回首頁</a></h4>
 	</td></tr>
 </table>
 
@@ -73,6 +73,7 @@
 			<td>${balanceHistory.balanceId}</td>
 			<td>${balanceHistory.mbrId}</td>
 			<td>${balanceHistory.orderId}</td>
+			<td>${balanceHistory.bidOrderId}</td>
 			<td>${balanceHistory.wrId}</td>
 			<td>${balanceHistory.changeDate}</td>
 			<td>${balanceHistory.changeValue}</td>
@@ -82,6 +83,7 @@
 			<td>${balanceHistory.balanceId}</td>
 			<td>${balanceHistory.mbrId}</td>
 			<td>${balanceHistory.orderId}</td>
+			<td>${balanceHistory.bidOrderId}</td>
 			<td>${balanceHistory.wrId}</td>
 			<td>${balanceHistory.changeDate}</td>
 			<td>${balanceHistory.changeValue}</td>

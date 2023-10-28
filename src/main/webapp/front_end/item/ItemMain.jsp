@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>會員點數異動</title>
+    <title>一般商品</title>
     <style>
 
     </style>
@@ -14,9 +14,9 @@
 
     <div class="container">
     
-    	<a href="${pageContext.request.contextPath}/PointHistory/point?choice=add">新增</a>
+    	<a href="${pageContext.request.contextPath}/Item/item?choice=add">新增商品</a>
     	<br>
-    	<a href="${pageContext.request.contextPath}/PointHistory/point?choice=search">查詢</a>
+    	<a href="${pageContext.request.contextPath}/Item/item?choice=search">查詢</a>
 
     </div>
 

@@ -10,72 +10,96 @@
 	<link rel="stylesheet" href="">
 	<title>itemSellerUpload</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-	<style type="text/css">
-/* 添加一些全局样式，设置字体和背景颜色 */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
 
-/* 创建一个包含表单的容器 */
-.form-container {
-    max-width: 500px;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-}
-
-/* 设置表单元素的样式 */
-.form-container label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.form-container input[type="text"],
-.form-container select,
-.form-container textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.form-container input[type="file"] {
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.form-container select {
-    background-color: #f9f9f9;
-}
-
-.form-container textarea {
-    resize: vertical;
-}
-
-.form-container input[type="submit"] {
-    background-color: #007BFF;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-/* 添加一些响应式设计，适应不同屏幕尺寸 */
-@media (max-width: 768px) {
-    .form-container {
-        max-width: 100%;
-        padding: 10px;
-    }
-}
-
+	<style>
+			/* 將整個表單置中對齊 */
+		.form_add {
+		    margin: 0 auto;
+		    width: 50%;
+		    padding: 20px;
+		    text-align: center;
+		    display:flex;
+		    flex-direction:column;
+		    justify-content: space-between;
+		    align-items: center
+		}
+		
+		/* 調整文字輸入框、選擇框和數量輸入框的大小 */
+		input[type="text"],
+		select,
+		input[type="number"],
+		textarea {
+		    width: 50%;
+		    padding: 10px;
+		    margin: 10px 0;
+		    border: 1px solid #ccc;
+		    border-radius: 5px;
+		}
+		
+		/* 調整提交按鈕的樣式 */
+		input[type="submit"] {
+		    background-color: #007bff;
+		    color: #fff;
+		    padding: 10px 20px;
+		    border: none;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    font-weight: bold;
+		}
+		
+		/* 標題樣式 */
+		h1 {
+		    font-size: 24px;
+		    margin-bottom: 20px;
+		}
+		
+		/* 標題下的輸入欄位樣式 */
+		label {
+		    font-weight: bold;
+		    display: block;
+		    margin-top: 10px;
+		}
+		
+		/* 錯誤訊息樣式 */
+		ul {
+		    list-style: none;
+		    padding: 0;
+		}
+		
+		li {
+		    margin: 5px 0;
+		}
+		
+		/* 上傳圖片的輸入框樣式 */
+		.form-control {
+		    width: 70%;
+		    padding: 10px;
+		    margin: 10px 0;
+		    border: 1px solid #ccc;
+		    border-radius: 5px;
+		}
+		
+		/* 調整輸入框和選擇框的外觀，以增加質感 */
+		input[type="text"],
+		select,
+		input[type="number"],
+		textarea,
+		.form-control {
+		    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+		
+		/* 選項下拉框的樣式 */
+		select {
+		    -webkit-appearance: none;
+		    -moz-appearance: none;
+		    appearance: none;
+		    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+		    background-repeat: no-repeat;
+		    background-position: right 10px center;
+		}
+			
+			
+	
 	</style>
 </head>
 <body>

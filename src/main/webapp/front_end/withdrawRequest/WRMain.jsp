@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>會員點數異動</title>
+    <title>會員虛擬錢包提款申請</title>
     <style>
 
     </style>
@@ -14,9 +14,9 @@
 
     <div class="container">
     
-    	<a href="${pageContext.request.contextPath}/PointHistory/point?choice=add">新增</a>
+    	<a href="${pageContext.request.contextPath}/WithdrawRequest/withdraw?choice=add">提出申請</a>
     	<br>
-    	<a href="${pageContext.request.contextPath}/PointHistory/point?choice=search">查詢</a>
+    	<a href="${pageContext.request.contextPath}/WithdrawRequest/withdraw?choice=search">查詢</a>
 
     </div>
 
