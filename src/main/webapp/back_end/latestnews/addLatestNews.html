@@ -13,10 +13,6 @@
 	
 <!-- 引入 jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- 引入 jQueryUI -->
-<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js" integrity="sha256-6XMVI0zB8cRzfZjqKcD01PBsAy3FlDASrlC8SxCpInY=" crossorigin="anonymous"></script>
-<!-- 引入 jQueryUI cupertino主題 CSS -->
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/cupertino/jquery-ui.css">
 
 <style>
   #title {
@@ -32,30 +28,36 @@
 <body>
 	<h1>CKEditor 5 jQuery 範例</h1>
 	
+	<div id="errorMsgs"></div>
+	
 	<form id="editorForm" action="/TwoClothing/LatestNewsServlet" method="post" enctype="multipart/form-data">
 	
 		<label for="title">標題：</label>
 		<input type="text" id="title" name="title">
+		
 		<br>
 	
-		<label for="startDate">開始日期：</label>
-		<input type="text" id="startDate" >
+		<label for="startDate">發布時間：</label>
+		<input type="datetime-local" id="startDate" name="startDate" >
+		
 		<br>
 		
-		<label for="endDate">結束日期：</label>
-		<input type="text" id="endDate">
+		<label for="endDate">結束時間：</label>
+		<input type="datetime-local" id="endDate" name="endDate" >
 	
-		
 	    <br>
-		<pre>請選擇封面圖(檔案上限0.9MB):   <span id="warningImageMessage"></span> <input type="file" id="imageUploadInput" name="image">  </pre>  
+	    
+		<pre>請選擇封面圖(檔案上限0.9MB):   <span id="warningImageMessage"></span> <input type="file" id="imageUploadInput" name="coverImage">  </pre>  
 		<button id="togglePreviewButton">顯示封面預覽圖</button>
 		<div id="imagePreview" style="display:none;"></div>
+		
 		<!-- 編輯器容器 -->
 		<div id="contentSize"></div>
 		<div id="warningMessage"></div>
 		
-		<textarea id="editor" name="context"></textarea>
+		<textarea id="texteditor" name="content"></textarea>
 		<!-- 提交按鈕 -->
+		<input type="text" name="action" value="add" hidden>
 		<button id="submitButton">提交</button>
 
 	</form>
@@ -64,51 +66,55 @@
 	
 	//初始設定
 	$(document).ready(function() {
-		
-		// 取得今天的日期
-	    const today = new Date();
-		
-	 	// 格式化日期為 'yy-mm-dd'
-	    const formattedDate = $.datepicker.formatDate('yy-mm-dd', today);
-	 
-	 	//設定開始,結束日期預設值
-	    $('#startDate').val(formattedDate);
-	    $('#endDate').val('9999-12-31');
-	    
-	    // 初始化 Datepicker
-	    $('#startDate,#endDate').datepicker({
-	        minDate: today, // 設定最小日期為今天
-	        dateFormat: 'yy-mm-dd', // 設定日期格式（根據需要調整）
-	    });
+		// 取得現在的日期和時間
+		const now = new Date();
 
+		// 格式化現在的日期和時間為 YYYY-MM-DDTHH:mm（符合datetime-local輸入的格式）
+		const formattedNow = now.toISOString().slice(0, 16);
+
+		// 設定開始日期和時間的最小值為現在的日期和時間
+		document.getElementById("startDate").min = formattedNow;
+
+		// 設定結束日期和時間的最小值為現在的日期和時間
+		document.getElementById("endDate").min = formattedNow;
 	});
+	
 	
 	
 	//上傳圖片按鈕的事件處理
     $('#imageUploadInput').on('change', function() {
         const maxSize = 0.9 * 1024 * 1024; // 0.9MB 的大小限制
         const file = this.files[0];
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']; // 允許的圖片類型
         const fileSize = this.files[0].size; // 獲取所選檔案的大小
-        const reader = new FileReader();
         
-        if (fileSize > maxSize) {
-            // 如果檔案大小超過限制，顯示警告消息並清空檔案欄位
+        
+        if (!allowedTypes.includes(file.type)) {
+        	$('#warningImageMessage').text('警告：請上傳合法的圖片檔（JPEG、PNG 或 GIF）');
+            $('#warningImageMessage').css('color', 'red');
+            $(this).val(''); // 清空檔案欄位
+            $('#imagePreview').empty(); // 清空預覽圖
+            return;
+        } 
+        if (fileSize > maxSize){
+        	// 如果檔案大小超過限制，顯示警告消息並清空檔案欄位
             $('#warningImageMessage').text('警告：檔案大小已超過限制（0.9MB）');
             $('#warningImageMessage').css('color', 'red');
             $(this).val(''); // 清空檔案欄位
             $('#imagePreview').empty(); // 清空預覽圖
-        } else {
-            // 如果檔案大小在限制範圍內，清空警告消息
-            $('#warningImageMessage').text('');
-            //使用reader的readAsDataURL方法讀取file 
-           	reader.readAsDataURL(file);
-            reader.onload = function (e) {
-                // 預覽圖片設置
-            	$('#imagePreview').html(`<img src="${e.target.result}" alt="Preview">`);
-            };
+            return;
         }
+        
+     	// 如果檔案類型合法，清空警告消息
+        $('#warningImageMessage').text('');
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+            // 預覽圖片設置
+            $('#imagePreview').html(`<img src="${e.target.result}" alt="Preview">`);
+        };
     });
-	
 	
  	// 封面預覽按鈕點擊事件
     $('#togglePreviewButton').on('click', function(event) {
@@ -126,12 +132,15 @@
             $(this).text("隱藏封面預覽圖"); // 使用.text()設置按鈕文本
         }
     });
+ 	
+ 	
 	
- 
+	
+	let editor;
     
 	// CKEditor5 生成
 	ClassicEditor
-	    .create(document.querySelector('#editor'), {
+	    .create(document.querySelector('#texteditor'), {
 	    	//UI語言設置
 	        language: 'zh',
 	        //加載 圖片上傳器
@@ -139,7 +148,8 @@
 	        //設定 工具列
 	        toolbar: ["undo", "redo", "|", "heading", "|", "bold", "italic", "blockQuote", "link", "imageUpload", "|", "bulletedList", "numberedList", 'outdent', 'indent'],
 	    })
-	    .then(editor => {
+	    .then(newEditor => {
+	    	editor = newEditor;
 	    	editor.model.document.on('change:data', () => {
 	    		const submitButton = $('#submitButton');
 	            const warningMessage = $('#warningMessage');
@@ -165,6 +175,7 @@
 	                    submitButton.prop('disabled', false);
 	                }
 	            });
+	            
 	        });
 	    })
 	    .catch(error => {
@@ -172,23 +183,26 @@
 	    }
 	);
 	
-	//表單送出按鈕
-	$('#submitButton').on('click', function () {
+	
+	// 表單送出按鈕事件處理
+	$('#submitButton').on('click', function (event) {
+	    event.preventDefault();
+
+	    // 其他表單數據
+	    const title = $('#title').val();
+	    const startDate = $('#startDate').val();
+	    const endDate = $('#endDate').val();
+	    const coverImage = $('#imageUploadInput')[0].files[0] || "";
+	    const content = editor.getData();
+
 	    // 創建一個FormData對象，用於儲存表單數據
 	    const formData = new FormData();
-
-	    // 添加標題、開始日期、結束日期到FormData中
-	    formData.append('title', $('#title').val());
-	    formData.append('startDate', $('#startDate').val());
-	    formData.append('endDate', $('#endDate').val());
-
-	    // 添加封面圖片文件到FormData中
-	    const imageFile = $('#imageUploadInput')[0].files[0];
-	    formData.append('image', imageFile);
-
-	    // 添加編輯器內容到FormData中
-	    const editorContent = editor.getData();
-	    formData.append('content', editorContent);
+	    formData.append('action', 'add');
+	    formData.append('title', title);
+	    formData.append('startDate', startDate);
+	    formData.append('endDate', endDate);
+	    formData.append('coverImage', coverImage);
+	    formData.append('content', content);
 
 	    // 使用$.ajax()发送FormData到服务器的Servlet路径（假设是/upload-form-data）
 	    $.ajax({
@@ -198,16 +212,35 @@
 	        processData: false,
 	        contentType: false,
 	        success: function (data) {
-	            console.log(data.message); // 输出服务器返回的消息
+	            alert("新增成功"); // 输出服务器返回的消息
 	        },
-	        error: function (error) {
-	            console.error('Error uploading form data:', error);
+	        error: function (xhr, status, error) {
+	        	try {
+	                // 嘗試解析後端返回的JSON錯誤訊息
+	                var errorMsgs = JSON.parse(xhr.responseText);
+	                var errorMsgDiv = $('#errorMsgs'); // 要顯示錯誤訊息的HTML元素
+
+	                // 清空錯誤訊息
+	                errorMsgDiv.empty();
+
+	                // 將錯誤訊息插入到HTML元素中
+	                for (var key in errorMsgs) {
+	                    if (errorMsgs.hasOwnProperty(key)) {
+	                        var errorMsg = errorMsgs[key];
+	                        errorMsgDiv.append('<p>' + errorMsg + '</p>');
+	                    }
+	                }
+	            } catch (e) {
+	                // 如果解析JSON失敗，可以顯示一個通用的錯誤訊息
+	                console.error('Error parsing JSON response:', e);
+	                $('#errorMsgs').text('伺服器錯誤。');
+	            }
 	        }
 	    });
 	});
-
 	
-	//以下為各function
+
+	//======================================== 以下為function ========================================
 	
 	function getByteCount(str) {
 	    let byteCount = 0;

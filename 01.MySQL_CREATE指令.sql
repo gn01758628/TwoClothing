@@ -540,14 +540,16 @@ CREATE TABLE latestnews
 (
     newsid    INT AUTO_INCREMENT NOT NULL, -- 消息編號
     title     VARCHAR(100)  DEFAULT '',    -- 標題 (預設為空字串)
-    content   VARCHAR(1000) DEFAULT '',    -- 內容 (預設為空字串)
-    published DATETIME,                    -- 發佈時間
+    startdate DATETIME DEFAULT NULL,       -- 發佈時間
+    enddate	  DATETIME DEFAULT NULL,	   -- 結束時間
+    coverimage MEDIUMBLOB DEFAULT NULL,	   -- 封面圖
+    content   MEDIUMTEXT,    			   -- 內容
     empid     INT NOT NULL,                -- 員工編號 (外鍵參照 employee 表格)
     PRIMARY KEY (newsid)
 );
 
 -- 表格：最新消息 插入假資料
-INSERT INTO latestnews (title, content, published, empid)
+INSERT INTO latestnews (title, content, startdate, empid)
 VALUES ('New Product Launch', 'Introducing our latest product lineup!', '2023-10-01 09:00:00', 1),
        ('Special Promotion', 'Limited time discounts on selected items!', '2023-09-28 15:30:00', 2),
        ('Company Event', 'Join us for our annual company event!', '2023-09-25 14:00:00', 3),
