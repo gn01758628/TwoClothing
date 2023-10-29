@@ -16,6 +16,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import com.twoclothing.model.employee.Employee;
 import com.twoclothing.utils.HibernateUtil;
 
 @Transactional
@@ -48,11 +49,19 @@ public class BidItemReportHibernateDAO implements BidItemReportDAO {
 	public int update(BidItemReport bidItemReport) {
 		// TODO Auto-generated method stub
 		try {
-			getSession().merge(bidItemReport);
+			getSession().update(bidItemReport);
 			return 1;
 		} catch (Exception e) {
 			return -1;
 		}
+	}
+
+	
+	
+	@Override
+	public BidItemReport getByPrimaryKey(Integer reportId) {
+		// TODO Auto-generated method stub
+		return getSession().get(BidItemReport.class, reportId);
 	}
 
 	@Override

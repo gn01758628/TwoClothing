@@ -23,6 +23,15 @@ public class BidItemReportServiceImpl implements BidItemReportService {
 		}
 
 	
+	@Override
+	public BidItemReport getByPrimaryKey(Integer reportId) {
+		// TODO Auto-generated method stub
+		return bidItemReportDAO.getByPrimaryKey(reportId);
+	}
+
+
+
+
 
 	@Override
 	public BidItemReport addBidItemReport(Integer bidItemId, Integer mbrId, Integer empId, Timestamp reportDate,
@@ -58,7 +67,7 @@ public class BidItemReportServiceImpl implements BidItemReportService {
 		 bidItemReport.setAuditDate(auditDate);
 		 bidItemReport.setResult(result);
 		 bidItemReport.setNote(note);		
-		 bidItemReportDAO.insert(bidItemReport);
+		 bidItemReportDAO.update(bidItemReport);
 		 return bidItemReport;
 	}
 
