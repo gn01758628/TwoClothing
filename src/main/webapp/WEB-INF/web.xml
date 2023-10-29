@@ -9,4 +9,29 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+    <!--使用web.xml註冊Filter的優點-->
+        <!--1.易於觀察整個webapp有哪些過濾器以及分別過濾哪些東西-->
+        <!--2.容易調整過濾器之間的執行順序(依web.xml裡的配置順序)-->
+    <filter>
+        <filter-name>RequestCharacterEncoding</filter-name>
+        <filter-class>com.twoclothing.filter.SetRequestCharacterEncodingFilter</filter-class>
+        <!--設置初始化參數-->
+        <init-param>
+            <param-name>characterEncoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>RequestCharacterEncoding</filter-name>
+        <!--路徑匹配-->
+        <url-pattern>/*</url-pattern>
+        <!--不設定任何dispatcher,預設是REQUEST-->
+        <!--Annotation註冊包含全部-->
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+        <dispatcher>ASYNC</dispatcher>
+    </filter-mapping>
+
 </web-app>

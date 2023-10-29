@@ -2,7 +2,6 @@ package com.twoclothing.chi.controller;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -12,17 +11,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.twoclothing.chi.service.ItemTrackingService;
-import com.twoclothing.chi.service.ItemTrackingServiceImpl;
-import com.twoclothing.model.aproduct.itemtracking.ItemTracking;
+import com.twoclothing.chi.service.ItemBrowsingService;
+import com.twoclothing.chi.service.ItemBrowsingServiceImpl;
+import com.twoclothing.model.aproduct.itembrowsing.ItemBrowsing;
 
-@WebServlet("/itemtrackinglist")
-public class ItemTrackingServlet extends HttpServlet {
-	private ItemTrackingService itemTrackingService;
+@WebServlet("/itembrowsing")
+public class ItemBrowsingServlet extends HttpServlet {
+	private ItemBrowsingService itemBrowsingService;
 
 	@Override
 	public void init() throws ServletException {
-		itemTrackingService = new ItemTrackingServiceImpl();
+		itemBrowsingService = new ItemBrowsingServiceImpl();
 	}
 
 	@Override
@@ -43,13 +42,13 @@ public class ItemTrackingServlet extends HttpServlet {
 			url = getAllByMbrId(req, res);
 			break;
 		case "insert":
-			url = addItemTracking(req, res);
+			url = addItemBrowsing(req, res);
 			break;
-		case "delete":
-			url = deleteItemTracking(req, res);
+		case "update":
+			url = updateItemBrowsing(req, res);
 			break;
 		default:
-			url = "/front_end/itemtracking/itemTrackingList.jsp";
+			url = "/front_end/itembrowsing/itemBrowsingList.jsp";
 		}
 
 		res.setContentType("text/html; charset=UTF-8");
@@ -60,48 +59,47 @@ public class ItemTrackingServlet extends HttpServlet {
 	private String getAllByMbrId(HttpServletRequest req, HttpServletResponse res) {
 //		String mbrIdString = req.getParameter("mbrId");
 //		int mbrId = Integer.parseInt(mbrIdString);
-		int mbrId = 103; // 測試用，到時這行可刪
+		int mbrId = 103;
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
-		List<ItemTracking> itemTrackingList = itemTrackingService.getAllByMbrId(mbrId, currentPage);
+		List<ItemBrowsing> itemBrowsingList = itemBrowsingService.getAllByMbrId(mbrId, currentPage);
 
-		int itemTrackingPageQty = itemTrackingService.getPageTotal(mbrId);
-		req.getSession().setAttribute("itemTrackingPageQty", itemTrackingPageQty);
+		int itemBrowsingPageQty = itemBrowsingService.getPageTotal(mbrId);
+		req.getSession().setAttribute("itemBrowsingPageQty", itemBrowsingPageQty);
 
-		req.setAttribute("itemTrackingList", itemTrackingList);
+		req.setAttribute("itemBrowsingList", itemBrowsingList);
 		req.setAttribute("currentPage", currentPage);
 
-		return "/front_end/itemtracking/itemTrackingList.jsp";
+		return "/front_end/itembrowsing/itemBrowsingList.jsp";
 	}
 
-	private String addItemTracking(HttpServletRequest req, HttpServletResponse res) {
+	private String addItemBrowsing(HttpServletRequest req, HttpServletResponse res) {
 		String itemIdString = req.getParameter("itemId");
 		int itemId = Integer.parseInt(itemIdString);
 		String mbrIdString = req.getParameter("mbrId");
 		int mbrId = Integer.parseInt(mbrIdString);
-
-		ItemTracking itemTracking = new ItemTracking();
-		itemTracking.setCompositeKey(new ItemTracking.CompositeDetail(itemId, mbrId));
+		
+		ItemBrowsing itemBrowsing = new ItemBrowsing();
+		itemBrowsing.setCompositeKey(new ItemBrowsing.CompositeDetail(itemId, mbrId));
 		Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-		itemTracking.setTrackingTime(currentTime);
+		itemBrowsing.setBrowsingTime(currentTime);
+		
+		req.setAttribute("itemBrowsing", itemBrowsingService.addItemBrowsing(itemBrowsing));
 
-		req.setAttribute("itemTracking", itemTrackingService.addItemTracking(itemTracking));
-
-		return "/itemtrackinglist?action=getAllByMbrId";
+		return "/itembrowsing?action=getAllByMbrId";
 	}
-
-	private String deleteItemTracking(HttpServletRequest req, HttpServletResponse res) {
+	
+	private String updateItemBrowsing(HttpServletRequest req, HttpServletResponse res) {
 		String itemIdString = req.getParameter("itemId");
 		int itemId = Integer.parseInt(itemIdString);
 		String mbrIdString = req.getParameter("mbrId");
 		int mbrId = Integer.parseInt(mbrIdString);
-		List<String> errorMsgs = new LinkedList<String>();
+		
+		Timestamp browsingTime = new Timestamp(System.currentTimeMillis());
+		
+		req.setAttribute("itemBrowsing", itemBrowsingService.updateItemBrowsing(itemId, mbrId, browsingTime));
 
-		if (itemTrackingService.deleteItemTracking(itemId, mbrId) != 1) {
-			errorMsgs.add("刪除失敗");
-		}
-
-		return "/itemtrackinglist?action=getAllByMbrId";
+		return "/itembrowsing?action=getAllByMbrId";
 	}
 }

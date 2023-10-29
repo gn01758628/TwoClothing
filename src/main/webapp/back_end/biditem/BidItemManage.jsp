@@ -45,8 +45,9 @@
                     <option value="1">已過審</option>
                     <option value="2">得標</option>
                     <option value="3">流標</option>
-                    <option value="4">刪除</option>
-                    <option value="5">已下架</option>
+                    <option value="4">上架中</option>
+                    <option value="5">刪除</option>
+                    <option value="6">被下架</option>
                 </select>
             </div>
             <div class="col-md-3 mb-3">
@@ -83,7 +84,11 @@
 
 
 <c:if test="${bidItemList != null}">
-    <h1>${bidItemList}</h1>
+    <c:if test="${bidItemList == []}">
+        <div class="container mt-3 text-center">
+            <h1>沒有符合條件的資料</h1>
+        </div>
+    </c:if>
     <c:if test="${bidItemList[0] != null}">
         <div class="container mt-5 ">
             <div class="row">
@@ -100,8 +105,8 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <c:forEach var="bidItem" items="${bidItemList}">
                         <tr>
-                            <c:forEach var="bidItem" items="${bidItemList}">
                                 <td class="text-center align-middle">${bidStatusMap[bidItem.bidStatus]}</td>
                                 <td class="text-center align-middle">
                                     <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${bidItem.bidItemId}&position=1"
@@ -115,8 +120,8 @@
                                     <br>
                                     <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">下架商品</a>
                                 </td>
-                            </c:forEach>
                         </tr>
+                        </c:forEach>
                         </tbody>
                     </table>
                 </div>
@@ -169,7 +174,7 @@
                 bidStatusValue === "" &&
                 empIdValue === ""
             ) {
-                alert("至少填写一项搜索条件");
+                alert("至少填寫一項搜尋條件");
                 event.preventDefault();
             }
 

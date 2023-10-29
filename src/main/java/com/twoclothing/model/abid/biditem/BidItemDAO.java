@@ -1,6 +1,7 @@
 package com.twoclothing.model.abid.biditem;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BidItemDAO {
 
@@ -16,6 +17,13 @@ public interface BidItemDAO {
     List<BidItem> getAllByEmpId(Integer empId);
 
     List<BidItem> getAllByMbrId(Integer mbrId);
+
+    /**
+     * @return 狀態不是5或6的全部商品
+     */
+    List<BidItem> getAllLegalByMbrId(Integer mbrId);
+
+    List<BidItem> getAllByCompositeQuery(Map<String, String[]> compositeQuery);
 
     /**
      * @return 修改是否成功

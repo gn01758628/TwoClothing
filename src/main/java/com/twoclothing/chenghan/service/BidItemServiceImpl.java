@@ -18,7 +18,7 @@ import com.twoclothing.model.members.MembersHibernateDAO;
 import com.twoclothing.utils.HibernateUtil;
 import org.hibernate.SessionFactory;
 
-import java.util.List;
+import java.util.*;
 
 public class BidItemServiceImpl implements BidItemService {
 
@@ -68,8 +68,51 @@ public class BidItemServiceImpl implements BidItemService {
     }
 
     @Override
-    public List<BidItem> getAllBidItemByCompositeQuery(Integer mbrId) {
-        return null;
+    public List<BidItem> getAllLegalBidItemByMbrid(Integer mbrId) {
+        return bidItemDAO.getAllLegalByMbrId(mbrId);
+    }
+
+    @Override
+    public List<BidItem> getAllBidItemByCompositeQuery(Map<String, String[]> compositeQuery) {
+        Map<String, String[]> processedQuery = new HashMap<>();
+        Set<Map.Entry<String, String[]>> entries = compositeQuery.entrySet();
+        // 空值的name不放進去
+        for (Map.Entry<String, String[]> entry : entries) {
+            String key = entry.getKey();
+            String[] value = entry.getValue();
+            // 沒有值的key
+            if (value[0] == null || value[0].isEmpty()) continue;
+            processedQuery.put(key, value);
+        }
+
+        // 收集不重覆的會員Id
+        Set<String> mbrIdSet = new HashSet<>();
+        // 處理email模糊查詢
+        if (processedQuery.containsKey("email")) {
+            List<Members> members = membersDAO.getAllByEmail(processedQuery.get("email")[0]);
+            processedQuery.remove("email");
+            // 收集會員Id
+            for (Members member : members) {
+                mbrIdSet.add(String.valueOf(member.getMbrId()));
+            }
+        }
+        // 處理mbrName模糊查詢
+        if (processedQuery.containsKey("mbrName")) {
+            List<Members> members = membersDAO.getAllByMbrName(processedQuery.get("mbrName")[0]);
+            processedQuery.remove("mbrName");
+            // 收集會員Id
+            for (Members member : members) {
+                mbrIdSet.add(String.valueOf(member.getMbrId()));
+            }
+        }
+        // 檢查是否有同時輸入會員編號
+        if (processedQuery.containsKey("mbrId")) mbrIdSet.add(processedQuery.get("mbrId")[0]);
+
+        // 覆蓋mbrId
+        if (!mbrIdSet.isEmpty()) {
+            processedQuery.put("mbrId", mbrIdSet.toArray(new String[0]));
+        }
+        return bidItemDAO.getAllByCompositeQuery(processedQuery);
     }
 
     @Override
