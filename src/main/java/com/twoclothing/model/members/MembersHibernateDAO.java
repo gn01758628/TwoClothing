@@ -26,7 +26,6 @@ public class MembersHibernateDAO implements MembersDAO {
 	}
 
 	@Override
-	
 	public int insert(Members members) {
 			Integer mbrId = (Integer) getSession().save(members);
 			return mbrId;
@@ -58,7 +57,7 @@ public class MembersHibernateDAO implements MembersDAO {
 
 	@Override
 	public List<Members> getAllByMbrName(String mbrName) {
-			return getSession().createQuery("from Members where mbrName like :mbrName", Members.class)
+			return getSession().createQuery("from Members where mbrName like :mbrName ORDER BY mbrId", Members.class)
 					.setParameter("mbrName", "%" + mbrName + "%").list();
 	}
 	
@@ -70,9 +69,10 @@ public class MembersHibernateDAO implements MembersDAO {
                 .setParameter("email", email)
                 .uniqueResult();
 	}
-	
-	public  List<Members>  getallByEmail(String email) {
-		return getSession().createQuery("FROM Members WHERE email like :email", Members.class)
+
+	@Override
+	public  List<Members>  getAllByEmail(String email) {
+		return getSession().createQuery("FROM Members WHERE email like :email ORDER BY mbrId", Members.class)
 				.setParameter("email", "%" + email + "%")
 				.list();
 	}

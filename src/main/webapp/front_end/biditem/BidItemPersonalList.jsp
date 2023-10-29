@@ -52,7 +52,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="bidItem" items="${allBidItemByMbrid}">
+                <c:forEach var="bidItem" items="${allLegalBidItemByMbrid}">
                     <tr>
                         <td class="text-center align-middle">${statusMap[bidItem.bidStatus]}</td>
                         <td class="text-center align-middle"><img

@@ -7,6 +7,7 @@ import com.twoclothing.model.employee.Employee;
 import com.twoclothing.model.members.Members;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BidItemService {
 
@@ -25,7 +26,9 @@ public interface BidItemService {
 
     List<BidItem> getAllBidItemByMbrid(Integer mbrId);
 
-    List<BidItem> getAllBidItemByCompositeQuery(Integer mbrId);
+    List<BidItem> getAllLegalBidItemByMbrid(Integer mbrId);
+
+    List<BidItem> getAllBidItemByCompositeQuery(Map<String,String[]> compositeQuery);
 
     List<CategoryTags> getAllCategoryTags();
 
