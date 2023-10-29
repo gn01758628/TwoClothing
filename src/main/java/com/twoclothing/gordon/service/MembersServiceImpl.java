@@ -1,6 +1,5 @@
 package com.twoclothing.gordon.service;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import com.twoclothing.model.members.Members;
@@ -18,7 +17,7 @@ public class MembersServiceImpl implements MembersService{
 
 	}
 	
-	
+	@Override
 	public Members addMembers(String email, String pswdHash) {
 		Members members = new Members();
 		
@@ -31,20 +30,21 @@ public class MembersServiceImpl implements MembersService{
 	}
 	
 	//預留給 Struts 2 或 Spring MVC 用
+	@Override
 	public Members addMembers (Members members) {
 		return members;
 //		dao.insert(members);
 	}
 
-	
+	@Override
 	public List<Members> getAll() {
 		return dao.getAll();
 	}
-
+	@Override
 	public Members getByPrimaryKey(Integer mbrId) {		
 		return dao.getByPrimaryKey(mbrId);
 	}
-	
+	@Override
 	public Members getByEmail(String email) {
 		Members members = dao.getByEmail(email);
 	    if (members != null ) {
@@ -53,7 +53,7 @@ public class MembersServiceImpl implements MembersService{
 	    return null; // 或者返回 null，如果没有匹配的对象
 	}
 
-	
+	@Override
 	public Members updateMembers(Integer mbrId, Integer sellScore, Integer buyScore) {
 	    Members members = dao.getByPrimaryKey(mbrId); // ============================先獲取現有的 Members 物件
 	    if (members != null) {
@@ -63,7 +63,7 @@ public class MembersServiceImpl implements MembersService{
 	    }
 	    return members; // 返回已更新的 Members 物件
 	}
-	
+	@Override
 	public int deleteMembers(Integer mbrId) {
 		return dao.delete(mbrId);
 	}
