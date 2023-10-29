@@ -92,6 +92,13 @@
 		<td>${Members.lastLogin}</td>
 		<td>${Members.sellScore}</td>
 		<td>${Members.buyScore}</td>	
+		
+		<td>
+		  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/members/Members.do" style="margin-bottom: 0px;">
+	      <input type="submit" value="н╫зя">
+	      <input type="hidden" name="mbrId"  value="${Members.mbrId}">
+	      <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
+		</td>
 	</tr>
 </table>
 

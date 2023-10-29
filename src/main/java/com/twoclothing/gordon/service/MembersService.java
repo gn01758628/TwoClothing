@@ -18,7 +18,9 @@ public interface MembersService {
 	
 	Members updateMembers (Members members);
 	
+	Members updateMembers(Integer mbrId, Integer sellScore, Integer buyScore);
 	
+	int deleteMembers(Integer mbrId);
 	
 	
 }
