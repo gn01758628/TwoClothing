@@ -50,7 +50,7 @@
 <table id="table-1">
 	<tr><td>
 		 <h3>所有點數資料</h3>
-		 <h4><a href="">回首頁</a></h4>
+		 <h4><a href="${pageContext.request.contextPath}/back_end/pointHistory/PHMain.jsp">回首頁</a></h4>
 	</td></tr>
 </table>
 
@@ -73,10 +73,16 @@
 			<td>${pointHistory.orderId}</td>
 			<td>${pointHistory.changeDate}</td>
 			<td>${pointHistory.changeValue}</td>
-
-
 		</tr>
-	</c:forEach>
+	</c:forEach>	
+		<tr>
+			<td>${pointHistory.pointId}</td>
+			<td>${pointHistory.mbrId}</td>
+			<td>${pointHistory.orderId}</td>
+			<td>${pointHistory.changeDate}</td>
+			<td>${pointHistory.changeValue}</td>
+		</tr>
+	
 </table>
 <%-- <%@ include file="page2.file" %> --%>
 

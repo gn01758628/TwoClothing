@@ -95,16 +95,16 @@ CREATE TABLE blacklist
 
 -- 表格：會員黑名單 插入假資料
 INSERT INTO blacklist (mbrid, blackid)
-VALUES (1, 2),
-       (1, 3),
+VALUES (1, 5),
+       (1, 7),
        (2, 1),
-       (3, 4),
-       (4, 5),
-       (5, 3),
-       (6, 2),
+       (3, 2),
+       (4, 3),
+       (5, 6),
+       (6, 1),
        (7, 1),
-       (8, 4),
-       (9, 5);
+       (8, 9),
+       (9, 10);
 
 -- 表格：會員黑名單 檢查
 -- SELECT * FROM blacklist;
@@ -135,16 +135,16 @@ CREATE TABLE coupon
 
 -- 表格：優惠卷 插入假資料
 INSERT INTO coupon (cpnname, tagid, empid, createdate, expiredate, distype, disvalue, minamount)
-VALUES ('優惠卷1', 1, 101, '2023-10-01', '2023-11-01', 0, 100, 500),
-       ('優惠卷2', 2, 102, '2023-10-02', '2023-11-02', 1, 20, 0),
-       ('優惠卷3', 3, 103, '2023-10-03', NULL, 0, 50, 1000),
-       ('優惠卷4', 4, 104, '2023-10-04', '2023-11-04', 1, 10, 0),
-       ('優惠卷5', 5, 105, '2023-10-05', NULL, 0, 30, 200),
-       ('優惠卷6', 6, 106, '2023-10-06', NULL, 0, 25, 300),
-       ('優惠卷7', 7, 107, '2023-10-07', '2023-11-07', 0, 80, 800),
-       ('優惠卷8', 8, 108, '2023-10-08', '2023-11-08', 1, 15, 0),
-       ('優惠卷9', 9, 109, '2023-10-09', NULL, 0, 40, 1500),
-       ('優惠卷10', 10, 110, '2023-10-10', NULL, 0, 35, 400);
+VALUES ('優惠卷1', 1, 1, '2023-10-01', '2023-11-01', 0, 100, 500),
+       ('優惠卷2', 2, 2, '2023-10-02', '2023-11-02', 1, 20, 0),
+       ('優惠卷3', 3, 3, '2023-10-03', NULL, 0, 50, 1000),
+       ('優惠卷4', 4, 4, '2023-10-04', '2023-11-04', 1, 10, 0),
+       ('優惠卷5', 5, 5, '2023-10-05', NULL, 0, 30, 200),
+       ('優惠卷6', 6, 6, '2023-10-06', NULL, 0, 25, 300),
+       ('優惠卷7', 7, 7, '2023-10-07', '2023-11-07', 0, 80, 800),
+       ('優惠卷8', 8, 8, '2023-10-08', '2023-11-08', 1, 15, 0),
+       ('優惠卷9', 9, 9, '2023-10-09', NULL, 0, 40, 1500),
+       ('優惠卷10', 10, 10, '2023-10-10', NULL, 0, 35, 400);
 
 -- 表格：優惠卷 檢查
 -- SELECT * FROM coupon;
@@ -171,14 +171,14 @@ CREATE TABLE memberscoupon
 -- 表格：會員優惠卷 插入假資料
 INSERT INTO memberscoupon (mbrid, cpnid, usedate, cpnstatus)
 VALUES (1, 1, '2023-10-02', 1),
-       (2, 3, NULL, 0),
-       (3, 2, '2023-10-03', 2),
+       (2, 2, NULL, 0),
+       (3, 3, '2023-10-03', 2),
        (4, 4, '2023-10-04', 1),
        (5, 5, NULL, 0),
-       (6, 7, '2023-10-07', 1),
-       (7, 6, NULL, 1),
-       (8, 9, '2023-10-09', 0),
-       (9, 8, NULL, 2),
+       (6, 6, '2023-10-07', 1),
+       (7, 7, NULL, 1),
+       (8, 8, '2023-10-09', 0),
+       (9, 9, NULL, 2),
        (10, 10, NULL, 2);
 
 -- 表格：會員優惠卷 檢查
@@ -551,13 +551,13 @@ INSERT INTO latestnews (title, content, published, empid)
 VALUES ('New Product Launch', 'Introducing our latest product lineup!', '2023-10-01 09:00:00', 1),
        ('Special Promotion', 'Limited time discounts on selected items!', '2023-09-28 15:30:00', 2),
        ('Company Event', 'Join us for our annual company event!', '2023-09-25 14:00:00', 3),
-       ('Holiday Closure', 'Our store will be closed for the holidays.', '2023-09-20 18:00:00', 1),
-       ('Grand Opening', 'Celebrate the grand opening of our new store!', '2023-09-15 10:00:00', 2),
-       ('Product Showcase', 'Explore our featured products in-store.', '2023-09-10 11:45:00', 3),
-       ('Seasonal Sale', 'Enjoy discounts on seasonal items!', '2023-09-05 12:30:00', 1),
-       ('Customer Appreciation', 'Thank you for your continued support!', '2023-09-01 13:15:00', 2),
-       ('New Collection', 'Discover the latest arrivals in our collection.', '2023-08-28 14:20:00', 3),
-       ('Store Renovation', 'Our store is undergoing renovations.', '2023-08-25 16:00:00', 1);
+       ('Holiday Closure', 'Our store will be closed for the holidays.', '2023-09-20 18:00:00', 4),
+       ('Grand Opening', 'Celebrate the grand opening of our new store!', '2023-09-15 10:00:00', 5),
+       ('Product Showcase', 'Explore our featured products in-store.', '2023-09-10 11:45:00', 6),
+       ('Seasonal Sale', 'Enjoy discounts on seasonal items!', '2023-09-05 12:30:00', 7),
+       ('Customer Appreciation', 'Thank you for your continued support!', '2023-09-01 13:15:00', 8),
+       ('New Collection', 'Discover the latest arrivals in our collection.', '2023-08-28 14:20:00', 9),
+       ('Store Renovation', 'Our store is undergoing renovations.', '2023-08-25 16:00:00', 10);
 
 -- 表格：最新消息 檢查
 -- SELECT * FROM latestnews;
@@ -739,23 +739,23 @@ CREATE TABLE itemorder
 -- 表格：一般商品訂單 插入假資料
 INSERT INTO itemorder (buymbrid, sellmbrid, buystar, buyerratingdesc, sellstar, sellerratingdesc, orderdate, paytype,
                        payinfo, amount, pointdiscount, finalamount, orderstatus, receiveaddress, receivename, receivephone, remarks)
-VALUES (1, 2, 4, 'Good seller', 5, 'Excellent buyer', '2023-10-01 09:00:00', 0, 'Credit Card', 150, 0, 150, 3,
+VALUES (1, 10, 4, 'Good seller', 5, 'Excellent buyer', '2023-10-01 09:00:00', 0, 'Credit Card', 150, 0, 150, 3,
         '123 Main St, City', 'John Doe', '1234567890', 'N/A'),
-       (2, 3, 5, 'Great transaction', 4, 'Responsive buyer', '2023-09-28 15:30:00', 1, 'Bank Transfer', 200, 0, 200, 3,
+       (2, 9, 5, 'Great transaction', 4, 'Responsive buyer', '2023-09-28 15:30:00', 1, 'Bank Transfer', 200, 0, 200, 3,
         '456 Elm St, Town', 'Jane Smith', '9876543210', 'Please handle with care'),
-       (3, 4, 3, 'Decent seller', 3, 'Regular buyer', '2023-09-25 14:00:00', 0, 'Credit Card', 80, 0, 80, 3,
+       (3, 8, 3, 'Decent seller', 3, 'Regular buyer', '2023-09-25 14:00:00', 0, 'Credit Card', 80, 0, 80, 3,
         '789 Oak St, Village', 'Robert Johnson', '5551234567', 'N/A'),
-       (4, 5, 5, 'Excellent seller', 4, 'Polite buyer', '2023-09-20 18:00:00', 1, 'Bank Transfer', 120, 0, 120, 3,
+       (4, 7, 5, 'Excellent seller', 4, 'Polite buyer', '2023-09-20 18:00:00', 1, 'Bank Transfer', 120, 0, 120, 3,
         '101 Pine St, Town', 'Sarah Lee', '2223334444', 'Fragile items'),
        (5, 6, 4, 'Responsive seller', 5, 'Prompt buyer', '2023-09-15 10:00:00', 0, 'Credit Card', 90, 0, 90, 3,
         '202 Cedar St, City', 'David Wilson', '7778889999', 'Handle with care'),
-       (6, 7, 3, 'Average seller', 4, 'Regular buyer', '2023-09-10 11:45:00', 2, 'Virtual Wallet', 60, 0, 60, 3,
+       (6, 5, 3, 'Average seller', 4, 'Regular buyer', '2023-09-10 11:45:00', 2, 'Virtual Wallet', 60, 0, 60, 3,
         '303 Elm St, Village', 'Susan Brown', '1112223333', 'N/A'),
-       (7, 8, 5, 'Outstanding seller', 5, 'Excellent buyer', '2023-09-05 12:30:00', 0, 'Credit Card', 70, 0, 70, 3,
+       (7, 4, 5, 'Outstanding seller', 5, 'Excellent buyer', '2023-09-05 12:30:00', 0, 'Credit Card', 70, 0, 70, 3,
         '404 Oak St, Town', 'Michael Davis', '9990001111', 'Please deliver on time'),
-       (8, 9, 4, 'Polite seller', 3, 'Decent buyer', '2023-09-01 13:15:00', 1, 'Bank Transfer', 110, 0, 110, 3,
+       (8, 3, 4, 'Polite seller', 3, 'Decent buyer', '2023-09-01 13:15:00', 1, 'Bank Transfer', 110, 0, 110, 3,
         '505 Pine St, City', 'Karen Miller', '4445556666', 'N/A'),
-       (9, 10, 3, 'Average seller', 4, 'Prompt buyer', '2023-08-28 14:20:00', 2, 'Virtual Wallet', 130, 0, 130, 3,
+       (9, 2, 3, 'Average seller', 4, 'Prompt buyer', '2023-08-28 14:20:00', 2, 'Virtual Wallet', 130, 0, 130, 3,
         '606 Cedar St, Village', 'James Taylor', '8889990000', 'Handle with care'),
        (10, 1, 5, 'Excellent seller', 5, 'Excellent buyer', '2023-08-25 16:00:00', 0, 'Credit Card', 70, 0, 70, 3,
         '707 Oak St, City', 'Emily White', '2223334444', 'Fragile items');
@@ -786,16 +786,16 @@ CREATE TABLE orderdetails
 
 -- 表格：一般商品訂單明細 插入假資料
 INSERT INTO orderdetails (orderid, itemid, quantity, price, discountprice, buyingprice)
-VALUES (1, 1, 2, 100, NULL, 90),
-       (1, 2, 3, 150, 10, 140),
-       (2, 3, 1, 200, NULL, 180),
-       (2, 4, 2, 80, NULL, 80),
-       (3, 5, 1, 120, 20, 100),
-       (3, 6, 4, 90, NULL, 85),
-       (4, 7, 3, 60, NULL, 60),
-       (4, 8, 2, 70, NULL, 70),
-       (5, 9, 1, 110, NULL, 110),
-       (5, 10, 2, 130, NULL, 130);
+VALUES (1, 10, 2, 100, NULL, 90),
+       (1, 9, 3, 150, 10, 140),
+       (2, 8, 1, 200, NULL, 180),
+       (2, 7, 2, 80, NULL, 80),
+       (3, 6, 1, 120, 20, 100),
+       (3, 5, 4, 90, NULL, 85),
+       (4, 4, 3, 60, NULL, 60),
+       (4, 3, 2, 70, NULL, 70),
+       (5, 2, 1, 110, NULL, 110),
+       (5, 1, 2, 130, NULL, 130);
 
 -- 表格：一般商品訂單明細 檢查
 -- SELECT * FROM orderdetails;
@@ -890,16 +890,16 @@ CREATE TABLE itembrowsing
 
 -- 表格：商品瀏覽紀錄 插入假資料
 INSERT INTO itembrowsing (itemid, mbrid, browsingtime)
-VALUES (1, 101, '2023-10-01 09:00:00'),
-       (2, 102, '2023-09-28 15:30:00'),
-       (3, 103, '2023-09-25 14:00:00'),
-       (4, 104, '2023-09-20 18:00:00'),
-       (5, 105, '2023-09-15 10:00:00'),
-       (6, 106, '2023-09-10 11:45:00'),
-       (7, 107, '2023-09-05 12:30:00'),
-       (8, 108, '2023-09-01 13:15:00'),
-       (9, 109, '2023-08-28 14:20:00'),
-       (10, 110, '2023-08-25 16:00:00');
+VALUES (1, 1, '2023-10-01 09:00:00'),
+       (2, 1, '2023-09-28 15:30:00'),
+       (3, 1, '2023-09-25 14:00:00'),
+       (4, 1, '2023-09-20 18:00:00'),
+       (5, 1, '2023-09-15 10:00:00'),
+       (6, 1, '2023-09-10 11:45:00'),
+       (7, 1, '2023-09-05 12:30:00'),
+       (8, 1, '2023-09-01 13:15:00'),
+       (9, 1, '2023-08-28 14:20:00'),
+       (10, 10, '2023-08-25 16:00:00');
 
 -- 表格：商品瀏覽紀錄 檢查
 -- SELECT * FROM itembrowsing;
@@ -924,16 +924,16 @@ CREATE TABLE itemtracking
 
 -- 表格：一般商品追蹤清單 插入假資料
 INSERT INTO itemtracking (itemid, mbrid, trackingtime)
-VALUES (1, 101, '2023-10-01 09:00:00'),
-       (2, 102, '2023-09-28 15:30:00'),
-       (3, 103, '2023-09-25 14:00:00'),
-       (4, 104, '2023-09-20 18:00:00'),
-       (5, 105, '2023-09-15 10:00:00'),
-       (6, 106, '2023-09-10 11:45:00'),
-       (7, 107, '2023-09-05 12:30:00'),
-       (8, 108, '2023-09-01 13:15:00'),
-       (9, 109, '2023-08-28 14:20:00'),
-       (10, 110, '2023-08-25 16:00:00');
+VALUES (1, 1, '2023-10-01 09:00:00'),
+       (2, 2, '2023-09-28 15:30:00'),
+       (3, 3, '2023-09-25 14:00:00'),
+       (4, 4, '2023-09-20 18:00:00'),
+       (5, 5, '2023-09-15 10:00:00'),
+       (6, 1, '2023-09-10 11:45:00'),
+       (7, 1, '2023-09-05 12:30:00'),
+       (8, 1, '2023-09-01 13:15:00'),
+       (9, 1, '2023-08-28 14:20:00'),
+       (10, 10, '2023-08-25 16:00:00');
 
 -- 表格：一般商品追蹤清單 檢查
 -- SELECT * FROM itemtracking;
@@ -965,16 +965,16 @@ CREATE TABLE itemreport
 
 -- 表格：一般商品檢舉 插入假資料
 INSERT INTO itemreport (itemid, mbrid, empid, reportdate, description, rstatus, auditdate, result, note)
-VALUES (1, 101, 201, '2023-10-01 09:00:00', '商品存在問題', 0, NULL, NULL, 'N/A'),
-       (2, 102, 202, '2023-09-28 15:30:00', '可疑行為', 0, NULL, NULL, 'N/A'),
-       (3, 103, 203, '2023-09-25 14:00:00', '垃圾廣告', 0, NULL, NULL, 'N/A'),
-       (4, 104, 204, '2023-09-20 18:00:00', '虛假宣傳', 0, NULL, NULL, 'N/A'),
-       (5, 105, 205, '2023-09-15 10:00:00', '侵權行為', 0, NULL, NULL, 'N/A'),
-       (6, 106, 206, '2023-09-10 11:45:00', '欺詐行為', 0, NULL, NULL, 'N/A'),
-       (7, 107, 207, '2023-09-05 12:30:00', '其他問題', 0, NULL, NULL, 'N/A'),
-       (8, 108, 208, '2023-09-01 13:15:00', '欺騙行為', 0, NULL, NULL, 'N/A'),
-       (9, 109, 209, '2023-08-28 14:20:00', '問題描述', 0, NULL, NULL, 'N/A'),
-       (10, 110, 210, '2023-08-25 16:00:00', '舉報內容', 0, NULL, NULL, 'N/A');
+VALUES (1, 1, 2, '2023-10-01 09:00:00', '商品存在問題', 1, '2023-09-25 14:00:00', 0, 'N/A'),
+       (2, 2, 2, '2023-09-28 15:30:00', '可疑行為', 1, '2023-08-25 16:00:00', 1, 'N/A'),
+       (3, 3, 3, '2023-09-25 14:00:00', '垃圾廣告', 1, '2023-10-01 09:00:00', 0, 'N/A'),
+       (4, 4, NULL, '2023-09-20 18:00:00', '虛假宣傳', 0, NULL, NULL, 'N/A'),
+       (5, 5, NULL, '2023-09-15 10:00:00', '侵權行為', 0, NULL, NULL, 'N/A'),
+       (6, 6, NULL, '2023-09-10 11:45:00', '欺詐行為', 0, NULL, NULL, 'N/A'),
+       (7, 7, NULL, '2023-09-05 12:30:00', '其他問題', 0, NULL, NULL, 'N/A'),
+       (8, 8, NULL, '2023-09-01 13:15:00', '欺騙行為', 0, NULL, NULL, 'N/A'),
+       (9, 9, NULL, '2023-08-28 14:20:00', '問題描述', 0, NULL, NULL, 'N/A'),
+       (10, 10, NULL, '2023-08-25 16:00:00', '舉報內容', 0, NULL, NULL, 'N/A');
 
 -- 表格：一般商品檢舉 檢查
 -- SELECT * FROM itemreport;
@@ -1006,16 +1006,16 @@ CREATE TABLE orderreport
 
 -- 表格：一般商品訂單檢舉 插入假資料
 INSERT INTO orderreport (orderid, empid, reportdate, description, rstatus, auditdate, result, note)
-VALUES (1, 201, '2023-10-01 09:00:00', '商品存在問題', 0, NULL, NULL, 'N/A'),
-       (2, 202, '2023-09-28 15:30:00', '可疑行為', 0, NULL, NULL, 'N/A'),
+VALUES (1, 2, '2023-10-01 09:00:00', '商品存在問題', 1, '2023-08-28 14:20:00', 1, 'N/A'),
+       (2, 2, '2023-09-28 15:30:00', '可疑行為', 1, '2023-09-25 14:00:00', 1, 'N/A'),
        (3, NULL, '2023-09-25 14:00:00', '垃圾廣告', 0, NULL, NULL, 'N/A'),
-       (4, 204, '2023-09-20 18:00:00', '虛假宣傳', 0, NULL, NULL, 'N/A'),
+       (4, NULL, '2023-09-20 18:00:00', '虛假宣傳', 0, NULL, NULL, 'N/A'),
        (5, NULL, '2023-09-15 10:00:00', '侵權行為', 0, NULL, NULL, 'N/A'),
-       (6, 206, '2023-09-10 11:45:00', '欺詐行為', 0, NULL, NULL, 'N/A'),
+       (6, NULL, '2023-09-10 11:45:00', '欺詐行為', 0, NULL, NULL, 'N/A'),
        (7, NULL, '2023-09-05 12:30:00', '其他問題', 0, NULL, NULL, 'N/A'),
-       (8, 208, '2023-09-01 13:15:00', '欺騙行為', 0, NULL, NULL, 'N/A'),
+       (8, NULL, '2023-09-01 13:15:00', '欺騙行為', 0, NULL, NULL, 'N/A'),
        (9, NULL, '2023-08-28 14:20:00', '問題描述', 0, NULL, NULL, 'N/A'),
-       (10, 210, '2023-08-25 16:00:00', '舉報內容', 0, NULL, NULL, 'N/A');
+       (10, NULL, '2023-08-25 16:00:00', '舉報內容', 0, NULL, NULL, 'N/A');
 
 -- 表格：一般商品訂單檢舉 檢查
 -- SELECT * FROM orderreport;
@@ -1441,16 +1441,16 @@ CREATE TABLE bidordernotify
 
 -- 表格：競標訂單通知 插入假資料
 INSERT INTO bidordernotify (mbrid, bidorderid, notifydate, title, content)
-VALUES (101, 1, '2023-10-01 09:00:00', '通知標題1', '通知内容1'),
-       (102, 2, '2023-09-28 15:30:00', '通知標題2', '通知内容2'),
-       (103, 3, '2023-09-25 14:00:00', '通知標題3', '通知内容3'),
-       (104, 4, '2023-09-20 18:00:00', '通知標題4', '通知内容4'),
-       (105, 5, '2023-09-15 10:00:00', '通知標題5', '通知内容5'),
-       (106, 6, '2023-09-10 11:45:00', '通知標題6', '通知内容6'),
-       (107, 7, '2023-09-05 12:30:00', '通知標題7', '通知内容7'),
-       (108, 8, '2023-09-01 13:15:00', '通知標題8', '通知内容8'),
-       (109, 9, '2023-08-28 14:20:00', '通知標題9', '通知内容9'),
-       (110, 10, '2023-08-25 16:00:00', '通知標題10', '通知内容10');
+VALUES (1, 1, '2023-10-01 09:00:00', '通知標題1', '通知内容1'),
+       (2, 2, '2023-09-28 15:30:00', '通知標題2', '通知内容2'),
+       (3, 3, '2023-09-25 14:00:00', '通知標題3', '通知内容3'),
+       (4, 4, '2023-09-20 18:00:00', '通知標題4', '通知内容4'),
+       (5, 5, '2023-09-15 10:00:00', '通知標題5', '通知内容5'),
+       (6, 6, '2023-09-10 11:45:00', '通知標題6', '通知内容6'),
+       (7, 7, '2023-09-05 12:30:00', '通知標題7', '通知内容7'),
+       (8, 8, '2023-09-01 13:15:00', '通知標題8', '通知内容8'),
+       (9, 9, '2023-08-28 14:20:00', '通知標題9', '通知内容9'),
+       (0, 10, '2023-08-25 16:00:00', '通知標題10', '通知内容10');
 
 -- 表格：競標訂單通知 檢查
 -- SELECT * FROM bidordernotify;

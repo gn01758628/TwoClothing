@@ -29,9 +29,9 @@
 <!--         <input type="text" name="itemSizeSearch"> -->
 <!--         <br> -->
 
-        <input type="hidden" name="action" value="search">
+        <input type="hidden" name="choice" value="searchCondition">
         <input type="submit" value="查詢">
-            <a href="${pageContext.request.contextPath}/front_end/item/itemSellerUpload.jsp">回首頁</a>
+            <a href="${pageContext.request.contextPath}/front_end/item/ItemMain.jsp">回首頁</a>
         
     </form>
 

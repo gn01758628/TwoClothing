@@ -125,7 +125,13 @@ public class MembersServlet extends HttpServlet {
 			RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
 			successView.forward(req, res);
 		}
+		/*************************** update ****************************************/
+		/*************************** update ****************************************/
+		/*************************** update ****************************************/
+		/*************************** update ****************************************/
+		/*************************** update ****************************************/
 
+		
 		if ("update".equals(action)) { // 來自update_emp_input.jsp的請求
 			
 			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
@@ -134,8 +140,9 @@ public class MembersServlet extends HttpServlet {
 			 mbrId = Integer.valueOf(req.getParameter("mbrId"));
 
 			Integer sellScore  = null;
-			try {
+			try { 
 			 sellScore = Integer.valueOf(req.getParameter("sellScore").trim());
+///////			 if(sellScore != null)
 			}catch (NumberFormatException e) {
 				errorMsgs.put("sellScore","賣家分數請填數字");
 			}
@@ -253,6 +260,7 @@ public class MembersServlet extends HttpServlet {
 			if ("login".equals(action)) {
 			    Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
 			    req.setAttribute("errorMsgs", errorMsgs);
+			  
 
 			    // 接收请求参数
 			    String email = req.getParameter("email2");
@@ -263,6 +271,12 @@ public class MembersServlet extends HttpServlet {
 			    Map<String, Object> response = new HashMap<>();
 			    PrintWriter out = res.getWriter();
 			    
+			    
+			                                                           
+		    	HttpSession session = req.getSession();
+		    	String location = (String) session.getAttribute("location");
+		 
+		    	
 
 			    MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 			    Members members = membersServiceImpl.getByEmail(email);
@@ -272,12 +286,21 @@ public class MembersServlet extends HttpServlet {
 
 			    if (members != null) {
 			        String storedPswdHash = members.getPswdHash();
-
+			        
 			        if (storedPswdHash.equals(pswdHash)) {
-			            HttpSession session = req.getSession();
+			        	
 			            session.setAttribute("user", members);
 			            success = true;
+/////////////////			            
+			           	if (location != null) {			    		
+						    
+						    session.removeAttribute("location");   
+					    
+						    response.put("location", location);
+					    
 
+				    	}
+/////////////////			           	
 			            if (members.getMbrStatus() == 0) {
 			                // 设置 JSON 响应中的 mbrStatus
 			                response.put("mbrStatus", 0);
@@ -292,6 +315,7 @@ public class MembersServlet extends HttpServlet {
 			        errorMsgs.put("error", "用户不存在");
 			    }
 			    
+
 			    res.setContentType("application/json");
 			    res.setCharacterEncoding("UTF-8");
 			    // 设置 JSON 响应的成功标志
@@ -303,6 +327,8 @@ public class MembersServlet extends HttpServlet {
 			    // 将 JSON 响应发送回客户端
 			    out.write(new Gson().toJson(response));
 			    out.close();
+//============================================			            
+//============================================			            
 			}
 			/***********************登出*************************/
 			/***********************登出*************************/
@@ -313,6 +339,7 @@ public class MembersServlet extends HttpServlet {
 			if("logout".equals(action)) {
 				HttpSession  session = req.getSession();
 				session.removeAttribute("user");
+				session.removeAttribute("location");
 				res.sendRedirect(req.getContextPath() + "/index.jsp");
 
 

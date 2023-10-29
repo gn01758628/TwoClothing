@@ -63,8 +63,9 @@ public class BidItemBackServlet extends HttpServlet {
         bidStatusMap.put(1, "已過審");
         bidStatusMap.put(2, "得標");
         bidStatusMap.put(3, "流標");
-        bidStatusMap.put(4, "刪除");
-        bidStatusMap.put(5, "下架");
+        bidStatusMap.put(4, "上架中");
+        bidStatusMap.put(5, "刪除");
+        bidStatusMap.put(6, "被下架");
         request.setAttribute("bidStatusMap", bidStatusMap);
 
         Map<String, String[]> parameterMap = request.getParameterMap();
@@ -72,18 +73,35 @@ public class BidItemBackServlet extends HttpServlet {
         String[] bidItemIds = parameterMap.get("bidItemId");
         if (!bidItemIds[0].isEmpty()) {
             BidItem bidItem = bidItemService.getBidItemByBidItemId(Integer.parseInt(bidItemIds[0]));
-            bidItemList.add(bidItem);
-            System.out.println(bidItem);
+            if (bidItem != null) {
+                bidItemList.add(bidItem);
+            }
         } else {
+            // 複合條件查詢
+            List<BidItem> allBidItemByCompositeQuery = bidItemService.getAllBidItemByCompositeQuery(parameterMap);
+            if (allBidItemByCompositeQuery != null) {
+                bidItemList.addAll(allBidItemByCompositeQuery);
+            }
+        }
 
+        if (!bidItemList.contains(null)) {
+            // 綁定會員
+            Map<Integer, Members> membersMap = new HashMap<>();
+            // 綁定員工
+            Map<Integer, Employee> employeeMap = new HashMap<>();
+            for (BidItem bidItem : bidItemList) {
+                Members members = bidItemService.getMembersByMbrId(bidItem.getMbrId());
+
+                if (bidItem.getEmpId() != null) {
+                    Employee employee = bidItemService.getEmployeeByEmpId(bidItem.getEmpId());
+                    employeeMap.put(bidItem.getBidItemId(), employee);
+                }
+
+                membersMap.put(bidItem.getBidItemId(), members);
+            }
+            request.setAttribute("membersMap", membersMap);
+            request.setAttribute("employeeMap", employeeMap);
         }
-        // 綁定會員
-        Map<Integer,Members> membersMap = new HashMap<>();
-        for (BidItem bidItem : bidItemList) {
-            Members members = bidItemService.getMembersByMbrId(bidItem.getMbrId());
-            membersMap.put(bidItem.getBidItemId(),members);
-        }
-        request.setAttribute("membersMap", membersMap);
         request.getRequestDispatcher("/back/biditem/search").forward(request, response);
     }
 }

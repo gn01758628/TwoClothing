@@ -94,6 +94,7 @@
 </table>
 <br>
 <input type="hidden" name="action" value="update">
+<input type="hidden" name="shipId" value="${param.shipId}">
 <input type="hidden" name="mbrId" value="${param.mbrId}">
 <input type="submit" value="°e¥X­×§ï"></FORM>
 </body>

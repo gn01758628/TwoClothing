@@ -8,11 +8,7 @@ public interface GenericDAO<T> {
 
 	public Serializable insert(T entity);
 	
-	public boolean update(T entity);
-	
-	public int delete(Serializable id);
-	
-	public T getByPK(Serializable Id);
+	public T getByPrimaryKey(Serializable Id);
 	
 	public List<T> getBy(String fieldName,Serializable value);
 	
@@ -21,6 +17,10 @@ public interface GenericDAO<T> {
 	public List<T> getAllDescByPK();
 	
 	public List<T> getByQueryConditions(List<Map<String, Object>> conditionList);
+	
+	public boolean update(T entity);
+	
+	public int delete(Serializable id);
 	
 	public long getTotal();
 }

@@ -45,8 +45,9 @@
                     <option value="1">已過審</option>
                     <option value="2">得標</option>
                     <option value="3">流標</option>
-                    <option value="4">刪除</option>
-                    <option value="5">已下架</option>
+                    <option value="4">上架中</option>
+                    <option value="5">刪除</option>
+                    <option value="6">被下架</option>
                 </select>
             </div>
             <div class="col-md-3 mb-3">
@@ -81,44 +82,52 @@
 
 </div>
 
-<c:if test="${bidItemList != null}" var="re">
-    <div class="container mt-5 ">
-        <div class="row">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th class="text-center align-middle">狀態</th>
-                        <th class="text-center align-middle">商品縮圖</th>
-                        <th class="text-center align-middle">商品名稱</th>
-                        <th class="text-center align-middle">所屬會員編號</th>
-                        <th class="text-center align-middle">審核員工</th>
-                        <th class="text-center align-middle">操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
+
+<c:if test="${bidItemList != null}">
+    <c:if test="${empty bidItemList}">
+        <div class="container mt-3 text-center">
+            <h1>沒有符合條件的資料</h1>
+        </div>
+    </c:if>
+    <c:if test="${bidItemList[0] != null}">
+        <div class="container mt-5 ">
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th class="text-center align-middle">狀態</th>
+                            <th class="text-center align-middle">商品縮圖</th>
+                            <th class="text-center align-middle">商品名稱</th>
+                            <th class="text-center align-middle">所屬會員編號</th>
+                            <th class="text-center align-middle">審核員工</th>
+                            <th class="text-center align-middle">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
                         <c:forEach var="bidItem" items="${bidItemList}">
-                            <td class="text-center align-middle">${bidStatusMap[bidItem.bidStatus]}</td>
-                            <td class="text-center align-middle">
-                                <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${bidItem.bidItemId}&position=1"
-                                     alt="${bidItem.bidName}" width="100" class="img-thumbnail"></td>
-                            <td class="text-center align-middle">${bidItem.bidName}</td>
-                            <td class="text-center align-middle text-wrap">${bidItem.mbrId}<br>${membersMap[bidItem.bidItemId].email}<br>${membersMap[bidItem.bidItemId].mbrName}
-                            </td>
-                            <td class="text-center align-middle">GGG</td>
-                            <td class="text-center align-middle">
-                                <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">商品詳情</a>
-                                <br>
-                                <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">下架商品</a>
-                            </td>
+                        <tr>
+                                <td class="text-center align-middle">${bidStatusMap[bidItem.bidStatus]}</td>
+                                <td class="text-center align-middle">
+                                    <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${bidItem.bidItemId}&position=1"
+                                         alt="${bidItem.bidName}" width="100" class="img-thumbnail"></td>
+                                <td class="text-center align-middle">${bidItem.bidName}</td>
+                                <td class="text-center align-middle text-wrap">${bidItem.mbrId}<br>${membersMap[bidItem.bidItemId].email}<br>${membersMap[bidItem.bidItemId].mbrName}
+                                </td>
+                                <td class="text-center align-middle">${bidItem.empId}</td>
+                                <td class="text-center align-middle">
+                                    <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">商品詳情</a>
+                                    <br>
+                                    <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">下架商品</a>
+                                </td>
+                        </tr>
                         </c:forEach>
-                    </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
+    </c:if>
 </c:if>
 
 <!--bootstrap5 js-->
@@ -165,7 +174,7 @@
                 bidStatusValue === "" &&
                 empIdValue === ""
             ) {
-                alert("至少填写一项搜索条件");
+                alert("至少填寫一項搜尋條件");
                 event.preventDefault();
             }
 
