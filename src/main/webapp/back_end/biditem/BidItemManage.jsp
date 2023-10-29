@@ -84,7 +84,7 @@
 
 
 <c:if test="${bidItemList != null}">
-    <c:if test="${bidItemList == []}">
+    <c:if test="${empty bidItemList}">
         <div class="container mt-3 text-center">
             <h1>沒有符合條件的資料</h1>
         </div>
