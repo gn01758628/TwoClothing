@@ -21,81 +21,91 @@
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
     <!--header-->
     <link rel="stylesheet" href="/TwoClothing/css/chengHan/header.css">
-
 </head>
 <body>
 
-<header>
+<header class="fixed-top">
     <!-- 頁面進度條 -->
     <div id="scroll-progress"></div>
-    <!-- 上半部導覽列 -->
-    <nav id="nav-top" class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="/TwoClothing/images/Mainicon.png" alt="品牌Icon" id="brand-icon" title="2Clothing">
-            </a>
+    <div class="row">
+        <div class="col">
+            <nav id="nav-top" class="navbar navbar-expand-lg">
+                <div class="container">
+                    <a class="navbar-brand" href="#">
+                        <img src="/TwoClothing/images/Mainicon.png" alt="品牌Icon" id="brand-icon" title="2Clothing">
+                    </a>
 
 
-            <form action="#" method="get" id="search-bar">
-                <div class="input-group mt-2">
-                    <input type="text" class="form-control" placeholder="關鍵字搜尋" aria-label="關鍵字搜尋"
-                           aria-describedby="search-button" name="keyword">
-                    <button class="btn" type="submit" id="search-button">搜尋</button>
+                    <form action="#" method="get" id="search-bar">
+                        <div class="input-group mt-2">
+                            <input type="text" class="form-control" placeholder="關鍵字搜尋" aria-label="關鍵字搜尋"
+                                   aria-describedby="search-button" name="keyword">
+                            <button class="btn" type="submit" id="search-button">搜尋</button>
+                        </div>
+                    </form>
+
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                            aria-controls="navbarToggleExternalContent" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <i class="fa-solid fa-bars" style="color: #561729;"></i>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto mt-2 flex-row" id="linkbar">
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="#">
+                                    <i class="fa-solid fa-user">會員中心</i>
+                                </a>
+                            </li>
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="#">
+                                    <i class="fa-solid fa-shirt">商品分類</i>
+                                </a>
+                            </li>
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="#">
+                                    <i class="fa-solid fa-sack-dollar">賣東西</i>
+                                </a>
+                            </li>
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="#">
+                                    <i class="fa-solid fa-scale-balanced">競標專區</i>
+                                </a>
+                            </li>
+                            <li class="nav-item me-3">
+                                <a class="nav-link position-relative" href="#">
+                        <span id="cart_num"
+                              class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+                            99+
+                        </span>
+                                    <i class="fa-solid fa-cart-shopping">購物車</i>
+                                </a>
+                            </li>
+                            <li class="nav-item me-3">
+                                <a class="nav-link position-relative" href="#">
+                        <span id="unread_messages_num"
+                              class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+                            99+
+                        </span>
+                                    <i class="fa-solid fa-comments">即時通</i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link position-relative" href="#">
+                        <span id="unread_notices_num"
+                              class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+                            99+
+                        </span>
+                                    <i class="fa-solid fa-bell">系統通知</i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </form>
-
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarToggleExternalContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <i class="fa-solid fa-bars" style="color: #561729;"></i>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto mt-2 flex-row" id="linkbar">
-                    <li class="nav-item me-3">
-                        <a class="nav-link" href="#">
-                            <i class="fa-solid fa-user">會員中心</i>
-                        </a>
-                    </li>
-                    <li class="nav-item me-3">
-                        <a class="nav-link" href="#">
-                            <i class="fa-solid fa-sack-dollar">賣東西</i>
-                        </a>
-                    </li>
-                    <li class="nav-item me-3">
-                        <a class="nav-link" href="#">
-                            <i class="fa-solid fa-scale-balanced">競標專區</i>
-                        </a>
-                    </li>
-                    <li class="nav-item me-3">
-                        <a class="nav-link position-relative" href="#">
-                        <span id="cart_num" class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
-                            99+
-                        </span>
-                            <i class="fa-solid fa-cart-shopping">購物車</i>
-                        </a>
-                    </li>
-                    <li class="nav-item me-3">
-                        <a class="nav-link position-relative" href="#">
-                        <span id="unread_messages_num" class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
-                            99+
-                        </span>
-                            <i class="fa-solid fa-comments">即時通</i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link position-relative" href="#">
-                        <span id="unread_notices_num" class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
-                            99+
-                        </span>
-                            <i class="fa-solid fa-bell">系統通知</i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            </nav>
         </div>
-    </nav>
+    </div>
 </header>
 
 
