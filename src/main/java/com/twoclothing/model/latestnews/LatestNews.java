@@ -2,6 +2,7 @@ package com.twoclothing.model.latestnews;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Objects;
 
 import javax.persistence.*;
@@ -17,11 +18,17 @@ public class LatestNews implements Serializable {
 	@Column(name = "title")
 	private String title;
 
-	@Column(name = "content")
-	private String content;
+	@Column(name = "startdate")
+	private Timestamp startDate;
 
-	@Column(name = "published")
-	private Timestamp published; // 将 published 字段的数据类型改为 Timestamp
+	@Column(name = "enddate")
+	private Timestamp endDate;
+
+	@Column(name = "coverimage", columnDefinition = "mediumblob")
+	private byte[] coverImage;
+
+	@Column(name = "content", columnDefinition = "mediumtext")
+	private String content;
 
 	@Column(name = "empid")
 	private Integer empId;
@@ -31,17 +38,76 @@ public class LatestNews implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LatestNews(String title, String content, Timestamp published, Integer empId) {
+	public LatestNews(String title, Timestamp startDate, Timestamp endDate, byte[] coverImage, String content,
+			Integer empId) {
 		super();
 		this.title = title;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.coverImage = coverImage;
 		this.content = content;
-		this.published = published;
+		this.empId = empId;
+	}
+
+	public Integer getNewsId() {
+		return newsId;
+	}
+
+	public void setNewsId(Integer newsId) {
+		this.newsId = newsId;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Timestamp getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Timestamp startDate) {
+		this.startDate = startDate;
+	}
+
+	public Timestamp getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Timestamp endDate) {
+		this.endDate = endDate;
+	}
+
+	public byte[] getCoverImage() {
+		return coverImage;
+	}
+
+	public void setCoverImage(byte[] coverImage) {
+		this.coverImage = coverImage;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Integer getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(Integer empId) {
 		this.empId = empId;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(empId, title);
+		return Objects.hash(newsId);
 	}
 
 	@Override
@@ -53,13 +119,22 @@ public class LatestNews implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		LatestNews other = (LatestNews) obj;
-		return Objects.equals(empId, other.empId) && Objects.equals(title, other.title);
+		return Objects.equals(newsId, other.newsId);
 	}
 
 	@Override
 	public String toString() {
-		return "LatestNews [newsId=" + newsId + ", title=" + title + ", content=" + content + ", published=" + published
-				+ ", empId=" + empId + "]";
+		
+		String coverImageStr ;
+		if( coverImage == null ) {
+			coverImageStr="null";
+		}else {
+			coverImageStr = String.valueOf(coverImage.length);
+		}
+		
+		return "LatestNews [newsId=" + newsId + ", title=" + title + ", startDate=" + startDate + ", endDate=" + endDate
+				+ ", coverImage=" + coverImageStr + ", content=" + content + ", empId=" + empId + "]";
 	}
 
+	
 }

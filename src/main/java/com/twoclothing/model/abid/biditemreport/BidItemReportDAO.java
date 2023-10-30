@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.twoclothing.model.department.Department;
+import com.twoclothing.model.employee.Employee;
 
 
 
@@ -20,6 +21,6 @@ public interface BidItemReportDAO {
 
 	List<BidItemReport> getByCompositeQuery(Map<String, String> map);
     
-  
+	BidItemReport getByPrimaryKey(Integer reportId);
 
 }

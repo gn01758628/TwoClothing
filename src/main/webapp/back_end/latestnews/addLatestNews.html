@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKEditor 5 jQuery 範例</title>
+
+<!-- 引入 CKEditor 5 classic樣板 -->
+<script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+<!-- 引入 CKEditor 5 classic樣板中文語系 -->
+<script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/translations/zh.js"></script>
+	
+<!-- 引入 jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+  #title {
+    width: 50%;
+  }
+  img{
+  	max-width: 100%;
+  }
+</style>
+
+</head>
+
+<body>
+	<h1>CKEditor 5 jQuery 範例</h1>
+	
+	<div id="errorMsgs"></div>
+	
+	<form id="editorForm" action="/TwoClothing/LatestNewsServlet" method="post" enctype="multipart/form-data">
+	
+		<label for="title">標題：</label>
+		<input type="text" id="title" name="title">
+		
+		<br>
+	
+		<label for="startDate">發布時間：</label>
+		<input type="datetime-local" id="startDate" name="startDate" >
+		
+		<br>
+		
+		<label for="endDate">結束時間：</label>
+		<input type="datetime-local" id="endDate" name="endDate" >
+	
+	    <br>
+	    
+		<pre>請選擇封面圖(檔案上限0.9MB):   <span id="warningImageMessage"></span> <input type="file" id="imageUploadInput" name="coverImage">  </pre>  
+		<button id="togglePreviewButton">顯示封面預覽圖</button>
+		<div id="imagePreview" style="display:none;"></div>
+		
+		<!-- 編輯器容器 -->
+		<div id="contentSize"></div>
+		<div id="warningMessage"></div>
+		
+		<textarea id="texteditor" name="content"></textarea>
+		<!-- 提交按鈕 -->
+		<input type="text" name="action" value="add" hidden>
+		<button id="submitButton">提交</button>
+
+	</form>
+	
+	<script>
+	
+	//初始設定
+	$(document).ready(function() {
+		// 取得現在的日期和時間
+		const now = new Date();
+
+		// 格式化現在的日期和時間為 YYYY-MM-DDTHH:mm（符合datetime-local輸入的格式）
+		const formattedNow = now.toISOString().slice(0, 16);
+
+		// 設定開始日期和時間的最小值為現在的日期和時間
+		document.getElementById("startDate").min = formattedNow;
+
+		// 設定結束日期和時間的最小值為現在的日期和時間
+		document.getElementById("endDate").min = formattedNow;
+	});
+	
+	
+	
+	//上傳圖片按鈕的事件處理
+    $('#imageUploadInput').on('change', function() {
+        const maxSize = 0.9 * 1024 * 1024; // 0.9MB 的大小限制
+        const file = this.files[0];
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']; // 允許的圖片類型
+        const fileSize = this.files[0].size; // 獲取所選檔案的大小
+        
+        
+        if (!allowedTypes.includes(file.type)) {
+        	$('#warningImageMessage').text('警告：請上傳合法的圖片檔（JPEG、PNG 或 GIF）');
+            $('#warningImageMessage').css('color', 'red');
+            $(this).val(''); // 清空檔案欄位
+            $('#imagePreview').empty(); // 清空預覽圖
+            return;
+        } 
+        if (fileSize > maxSize){
+        	// 如果檔案大小超過限制，顯示警告消息並清空檔案欄位
+            $('#warningImageMessage').text('警告：檔案大小已超過限制（0.9MB）');
+            $('#warningImageMessage').css('color', 'red');
+            $(this).val(''); // 清空檔案欄位
+            $('#imagePreview').empty(); // 清空預覽圖
+            return;
+        }
+        
+     	// 如果檔案類型合法，清空警告消息
+        $('#warningImageMessage').text('');
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+            // 預覽圖片設置
+            $('#imagePreview').html(`<img src="${e.target.result}" alt="Preview">`);
+        };
+    });
+	
+ 	// 封面預覽按鈕點擊事件
+    $('#togglePreviewButton').on('click', function(event) {
+        // 阻止表單的默認提交行為
+        event.preventDefault();
+
+        // 檢查封面預覽圖的顯示狀態
+        if ($('#imagePreview').is(':visible')) {
+            // 如果可見，則隱藏它
+        	$('#imagePreview').hide();
+            $(this).text("顯示封面預覽圖"); // 使用.text()設置按鈕文本
+        } else {
+            // 如果隱藏，則顯示它
+            $('#imagePreview').show();
+            $(this).text("隱藏封面預覽圖"); // 使用.text()設置按鈕文本
+        }
+    });
+ 	
+ 	
+	
+	
+	let editor;
+    
+	// CKEditor5 生成
+	ClassicEditor
+	    .create(document.querySelector('#texteditor'), {
+	    	//UI語言設置
+	        language: 'zh',
+	        //加載 圖片上傳器
+	        extraPlugins: [MyAdapterPlugin],
+	        //設定 工具列
+	        toolbar: ["undo", "redo", "|", "heading", "|", "bold", "italic", "blockQuote", "link", "imageUpload", "|", "bulletedList", "numberedList", 'outdent', 'indent'],
+	    })
+	    .then(newEditor => {
+	    	editor = newEditor;
+	    	editor.model.document.on('change:data', () => {
+	    		const submitButton = $('#submitButton');
+	            const warningMessage = $('#warningMessage');
+
+	            editor.model.document.on('change:data', () => {
+	            	// 當編輯器內容發生變化時計算內容大小
+	                const contentLength = getByteCount(editor.getData()); // 內容的字節數，考慮中文和英文字符差異
+	                const contentSizeInMB = contentLength / (1024 * 1024); // 轉換為MB
+	                const formattedSize = contentSizeInMB.toFixed(3); // 保留三位小數
+
+	                // 顯示內容大小
+	                $('#contentSize').text(`內容大小：${formattedSize} MB`);
+
+	                // 檢查內容大小是否超過1MB
+	                if (contentSizeInMB > 1) {
+	                    // 超過1MB，顯示警告並禁用提交按鈕
+	                    warningMessage.text('警告：文本大小已超過儲存上限(1MB)');
+	                    warningMessage.css('color', 'red');
+	                    submitButton.prop('disabled', true);
+	                } else {
+	                    // 未超過1MB，清除警告並啟用提交按鈕
+	                    warningMessage.text('');
+	                    submitButton.prop('disabled', false);
+	                }
+	            });
+	            
+	        });
+	    })
+	    .catch(error => {
+	        console.error();
+	    }
+	);
+	
+	
+	// 表單送出按鈕事件處理
+	$('#submitButton').on('click', function (event) {
+	    event.preventDefault();
+
+	    // 其他表單數據
+	    const title = $('#title').val();
+	    const startDate = $('#startDate').val();
+	    const endDate = $('#endDate').val();
+	    const coverImage = $('#imageUploadInput')[0].files[0] || "";
+	    const content = editor.getData();
+
+	    // 創建一個FormData對象，用於儲存表單數據
+	    const formData = new FormData();
+	    formData.append('action', 'add');
+	    formData.append('title', title);
+	    formData.append('startDate', startDate);
+	    formData.append('endDate', endDate);
+	    formData.append('coverImage', coverImage);
+	    formData.append('content', content);
+
+	    // 使用$.ajax()发送FormData到服务器的Servlet路径（假设是/upload-form-data）
+	    $.ajax({
+	        url: '/TwoClothing/LatestNewsServlet',
+	        type: 'POST',
+	        data: formData,
+	        processData: false,
+	        contentType: false,
+	        success: function (data) {
+	            alert("新增成功"); // 输出服务器返回的消息
+	        },
+	        error: function (xhr, status, error) {
+	        	try {
+	                // 嘗試解析後端返回的JSON錯誤訊息
+	                var errorMsgs = JSON.parse(xhr.responseText);
+	                var errorMsgDiv = $('#errorMsgs'); // 要顯示錯誤訊息的HTML元素
+
+	                // 清空錯誤訊息
+	                errorMsgDiv.empty();
+
+	                // 將錯誤訊息插入到HTML元素中
+	                for (var key in errorMsgs) {
+	                    if (errorMsgs.hasOwnProperty(key)) {
+	                        var errorMsg = errorMsgs[key];
+	                        errorMsgDiv.append('<p>' + errorMsg + '</p>');
+	                    }
+	                }
+	            } catch (e) {
+	                // 如果解析JSON失敗，可以顯示一個通用的錯誤訊息
+	                console.error('Error parsing JSON response:', e);
+	                $('#errorMsgs').text('伺服器錯誤。');
+	            }
+	        }
+	    });
+	});
+	
+
+	//======================================== 以下為function ========================================
+	
+	function getByteCount(str) {
+	    let byteCount = 0;
+	    for (let i = 0; i < str.length; i++) {
+	        const charCode = str.charCodeAt(i);
+	        if (charCode <= 0x7F) {
+	            // ASCII字符，佔據1個字節
+	            byteCount += 1;
+	        } else if (charCode <= 0x7FF) {
+	            // 此範圍內的字符，如中文，佔據3個字節
+	            byteCount += 3;
+	        } else if (charCode <= 0xFFFF) {
+	            // 此範圍內的字符，佔據3個字節
+	            byteCount += 3;
+	        } else {
+	            // 其他字符，佔據4個字節（JavaScript中的UTF-16字符）
+	            byteCount += 4;
+	        }
+	    }
+	    return byteCount;
+	}
+
+	
+	class MyUploadAdapter {
+	    constructor(loader) {
+	        this.loader = loader;
+	    }
+
+	    upload() {
+	        return new Promise((resolve, reject) => {
+	            const reader = this.reader = new window.FileReader();
+	            reader.addEventListener('load', () => {
+	                const img = new Image();
+	                img.src = reader.result;
+	            	const userWidth = window.prompt('請設定圖片寬度', img.width);
+	                const userHeight = window.prompt('請設定圖片高度', img.height);
+	                let maxWidth = img.width;
+	                let maxHeight = img.height;
+
+	                
+	                if (!isNaN(userWidth) && !isNaN(userHeight)) {
+	                    maxWidth = parseInt(userWidth);
+	                    maxHeight = parseInt(userHeight);
+	                }
+	                
+	                
+	                img.onload = () => {
+	                    const canvas = document.createElement('canvas');
+	                    const ctx = canvas.getContext('2d');
+	                    let width = img.width;
+	                    let height = img.height;
+
+	                    // 調整圖片大小
+	                    width *= maxWidth / width;
+	                    
+	                    height *= maxHeight / height;
+
+	                    // 設定Canvas的寬度和高度
+	                    canvas.width = width;
+	                    canvas.height = height;
+
+	                    // 在Canvas上繪製調整後的圖片
+	                    ctx.drawImage(img, 0, 0, width, height);
+
+	                    // 將調整後的圖片轉換為Data URL
+	                    const resizedImageData = canvas.toDataURL('image/jpeg'); // 這裡使用jpeg格式，你可以根據需要更改格式
+
+	                    resolve({ default: resizedImageData });
+	                };
+	            });
+
+	            reader.addEventListener('error', err => {
+	                reject(err);
+	            });
+
+	            reader.addEventListener('abort', () => {
+	                reject();
+	            });
+
+	            // 告訴FileReader用url格式讀取文件，用於設定img.src性質
+	            this.loader.file.then(file => {
+	                reader.readAsDataURL(file);
+	            });
+	        });
+	    }
+
+	    abort() {
+	        this.reader.abort();
+	    }
+	}
+
+	
+
+	function MyAdapterPlugin(editor) {
+	    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+	        return new MyUploadAdapter(loader);
+	    };
+	}
+</script>
+</body>
+
+</html>

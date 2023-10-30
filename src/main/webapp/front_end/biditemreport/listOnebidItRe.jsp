@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.twoclothing.tonyhsieh.service.*"%>
-<%@ page import="com.twoclothing.model.employee.*"%>
+<%@ page import="com.twoclothing.model.abid.biditemreport.*"%>
 
 <%-- 此頁暫練習採用 Script 的寫法取值 --%>
 
@@ -59,29 +59,38 @@
 
 <table>
 	<tr>
+		<th>競標商品檢舉編號</th>
+		<th>競標商品編號</th>
+		<th>會員編號</th>
 		<th>員工編號</th>
-		<th>員工地址</th>
-		<th>員工EMAIL</th>
-		<th>員工電話</th>
-		<th>員工姓名</th>
-		<th>員工部門</th>
-		<th>員工狀態</th>
-		<th>照片</th>
+		<th>檢舉日期</th>
+		<th>檢舉內容</th>
+		<th>審核狀態</th>
+		<th>審核日期</th>
+		<th>審核結果</th>
+		<th>備註</th>
 	</tr>
 	<tr>
-			<td>${Employee.empId}</td>
-			<td>${Employee.address}</td>
-			<td>${Employee.email}</td>
-			<td>${Employee.phone}</td>
-			<td>${Employee.empName}</td>
-			<td>${Employee.deptId}-[${Employee.department.deptName}]</td>
+			<td>${BidItemReport.reportId}</td>
+			<td>${BidItemReport.bidItemId}-${BidItemReport.bidItem.bidName}</td>
+			<td>${BidItemReport.mbrId}-${BidItemReport.members.mbrName}</td>
+			<td>${BidItemReport.empId}</td>
+			<td>${BidItemReport.reportDate}</td>
+			<td>${BidItemReport.bidDescription}</td>
+			<td>
+				<c:choose>
+       			 <c:when test="${BidItemReport.bidStatus == 0}">${BidItemReport.bidStatus} - 待審核</c:when>
+       			 <c:when test="${BidItemReport.bidStatus == 1}">${BidItemReport.bidStatus} - 已審核</c:when>
+       			 </c:choose>
+			</td>
+			<td>${BidItemReport.auditDate}</td>
 			<td>
 				 <c:choose>
-       			 <c:when test="${Employee.empStatus == 0}">${Employee.empStatus} - 在職</c:when>
-       			 <c:when test="${Employee.empStatus == 1}">${Employee.empStatus} - 離職</c:when>
+       			 <c:when test="${BidItemReport.result == 0}">${BidItemReport.result} - 處分</c:when>
+       			 <c:when test="${BidItemReport.result == 1}">${BidItemReport.result} - 不處分</c:when>
        			 </c:choose>
-			</td> 
-			<td><img src="${pageContext.request.contextPath}/ReadIMG?empId=${Employee.empId}" width=100px height=100px></td> 
+			</td>
+			<td>${BidItemReport.note}</td>
 
 	</tr>
 </table>
