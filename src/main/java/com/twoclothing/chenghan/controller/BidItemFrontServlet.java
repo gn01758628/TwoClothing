@@ -172,11 +172,8 @@ public class BidItemFrontServlet extends HttpServlet {
         // 取的前端傳來的圖片
         Part imagePart1 = null, imagePart2 = null;
         try {
-            Collection<Part> parts = request.getParts();
-            for (Part part : parts) {
-                if ("image01".equals(part.getName())) imagePart1 = part;
-                if ("image02".equals(part.getName())) imagePart2 = part;
-            }
+            imagePart1 = request.getPart("image01");
+            imagePart2 = request.getPart("image02");
             // 判斷檔案類型是否錯誤
             boolean image01TypeInvalid = imagePart1 != null && imagePart1.getSize() > 0 && !imagePart1.getContentType().startsWith("image/");
             boolean image02TypeInvalid = imagePart2 != null && imagePart2.getSize() > 0 && !imagePart2.getContentType().startsWith("image/");
@@ -202,6 +199,7 @@ public class BidItemFrontServlet extends HttpServlet {
         // 如果錯誤訊息不為空則轉發回新增頁面
         if (!errorMessages.isEmpty()) {
             request.getRequestDispatcher("/front/biditem/add").forward(request, response);
+            return;
         }
 
         // 儲存資料
