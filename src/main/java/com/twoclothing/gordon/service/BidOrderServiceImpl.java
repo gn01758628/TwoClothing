@@ -10,6 +10,9 @@ import com.twoclothing.model.abid.bidorder.BidOrderHIbernateDAO;
 import com.twoclothing.model.members.MembersDAO;
 import com.twoclothing.model.members.MembersHibernateDAO;
 import com.twoclothing.utils.HibernateUtil;
+import com.twoclothing.model.shipsetting.ShipSettingDAO;
+import com.twoclothing.model.shipsetting.ShipSettingHibernateDAO;
+
 
 public class BidOrderServiceImpl implements BidOrderService {
 	
@@ -21,7 +24,8 @@ public class BidOrderServiceImpl implements BidOrderService {
 //    private  BidItemDAO bidItemDAO = new BidItemHibernateDAO(HibernateUtil.getSessionFactory());
 //
 //    private final MembersDAO membersDAO = new MembersHibernateDAO(HibernateUtil.getSessionFactory());
-
+    
+//    private ShipSettingDAO shipSettingDAO = new ShipSettingHibernateDAO(HibernateUtil.getSessionFactory());
     
 	@Override
 	public BidOrder addBidOrder(BidOrder bidorder) {
@@ -58,6 +62,16 @@ public class BidOrderServiceImpl implements BidOrderService {
 		return dao.getAllByOrderStatusAndBuyer(orderStatus, buyMbrId);
 		
 	}
+	
+	public BidOrder updateAll(BidOrder bidorder) {
+	    if (bidorder != null) {
+	        int result = dao.update(bidorder);
+	        if (result == 1) {
+	            return bidorder;
+	        }
+	    }
+	    return null;
+	}
 
 	@Override
 	public List<BidOrder> getAllOrderStatusAndSeller(Integer orderStatus, Integer sellMbrId) {
@@ -67,27 +81,40 @@ public class BidOrderServiceImpl implements BidOrderService {
 
 	@Override
 	public BidOrder updateBuyStarAndBuyerRatingDesc(Integer buyStar, String buyerRatingDesc) {
-		// TODO Auto-generated method stub
-		return null;
+		BidOrder bidOrder =new BidOrder();
+		
+		bidOrder.setBuyStar(buyStar);
+		bidOrder.setBuyerRatingDesc(buyerRatingDesc);
+		
+		
+		return bidOrder;
 	}
 
 
 	@Override
 	public BidOrder updateSellStarAndsellerRatingDesc(Integer sellStar, String sellerRatingDesc) {
-		// TODO Auto-generated method stub
-		return null;
+		BidOrder bidOrder =new BidOrder();
+		
+		bidOrder.setSellStar(sellStar);
+		bidOrder.setSellerRatingDesc(sellerRatingDesc);
+		
+		
+		return bidOrder;
 	}
 
 
 	@Override
 	public BidOrder updateOrderStatus(Integer orderStatus) {
-		// TODO Auto-generated method stub
-		return null;
+		BidOrder bidOrder =new BidOrder();
+		
+		bidOrder.setOrderStatus(orderStatus);
+		return bidOrder;
 	}
 
 	@Override
 	public Integer deleteBidOrder(Integer bidOrderId) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.delete(bidOrderId);
 	}
+
+
 }

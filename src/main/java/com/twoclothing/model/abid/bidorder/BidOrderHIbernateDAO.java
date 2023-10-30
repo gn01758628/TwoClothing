@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 
-@Transactional
+
 
 public class BidOrderHIbernateDAO implements BidOrderDAO {
 

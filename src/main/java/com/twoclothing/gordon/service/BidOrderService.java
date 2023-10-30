@@ -19,7 +19,9 @@ public interface BidOrderService {
 	 List<BidOrder> getAllOrderStatusAndBuyer (Integer orderStatus, Integer buyMbrId);
 	
 	 List<BidOrder> getAllOrderStatusAndSeller(Integer orderStatus, Integer sellMbrId);
-
+	 
+	 BidOrder updateAll(BidOrder bidorder);
+	 
 	 BidOrder updateBuyStarAndBuyerRatingDesc (Integer buyStar, String buyerRatingDesc);
 	 BidOrder updateSellStarAndsellerRatingDesc (Integer sellStar, String sellerRatingDesc);
 	 BidOrder updateOrderStatus (Integer orderStatus);

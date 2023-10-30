@@ -142,7 +142,6 @@ public class MembersServlet extends HttpServlet {
 			Integer sellScore  = null;
 			try { 
 			 sellScore = Integer.valueOf(req.getParameter("sellScore").trim());
-///////			 if(sellScore != null)
 			}catch (NumberFormatException e) {
 				errorMsgs.put("sellScore","賣家分數請填數字");
 			}

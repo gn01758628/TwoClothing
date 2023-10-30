@@ -72,6 +72,12 @@ input:disabled {
 				
 			</FORM>
 		</li>
+	    <li>
+			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/front_end/bidorder/myBidorder0.jsp">
+			<input type="submit" value="我的競標訂單">
+				
+			</FORM>
+		</li>
 		
 
     </ul>
