@@ -27,92 +27,142 @@
 <body>
 
 <header class="fixed-top">
-    <!-- 頁面進度條 -->
-    <div id="scroll-progress"></div>
-    <div class="row">
-        <div class="col">
-            <nav id="nav-top" class="navbar navbar-expand-lg">
-                <div class="container">
-                    <a class="navbar-brand" href="#">
-                        <img src="/TwoClothing/images/Mainicon.png" alt="品牌Icon" id="brand-icon" title="2Clothing">
-                    </a>
-
-
-                    <form action="#" method="get" id="search-bar">
-                        <div class="input-group mt-2">
-                            <input type="text" class="form-control" placeholder="關鍵字搜尋" aria-label="關鍵字搜尋"
-                                   aria-describedby="search-button" name="keyword">
-                            <button class="btn" type="submit" id="search-button">搜尋</button>
+    <div class="container">
+        <!-- 頁面進度條 -->
+        <div id="scroll-progress"></div>
+        <div class="row">
+            <div class="col">
+                <nav class="navbar navbar-expand-lg navbar-light " id="nav-top">
+                    <div class="container-fluid">
+                        <!--返回首頁-->
+                        <a class="navbar-brand" href="#">
+                            <img src="/TwoClothing/images/Mainicon.png" alt="品牌Icon" id="brand-icon"
+                                 title="2Clothing">
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" href="#">
+                                        <i class="fa-solid fa-user">會員中心</i>
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown me-3">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-solid fa-shirt">商品分類</i>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li><a class="dropdown-item" href="#">施工中...</a></li>
+                                        <li><a class="dropdown-item" href="#">施工中...</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" href="#">施工中...</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" href="#">
+                                        <i class="fa-solid fa-sack-dollar">賣東西</i>
+                                    </a>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" href="#">
+                                        <i class="fa-solid fa-scale-balanced">競標專區</i>
+                                    </a>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link position-relative" href="#">
+                                    <span id="cart_num"
+                                          class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+                                        99+
+                                    </span>
+                                        <i class="fa-solid fa-cart-shopping">購物車</i>
+                                    </a>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link position-relative" href="#">
+                                    <span id="unread_messages_num"
+                                          class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+                                        99+
+                                    </span>
+                                        <i class="fa-solid fa-comments">即時通</i>
+                                    </a>
+                                </li>
+                                <li class="nav-item me-3">
+                                    <a class="nav-link position-relative" href="#">
+                                    <span id="unread_notices_num"
+                                          class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+                                        99+
+                                    </span>
+                                        <i class="fa-solid fa-bell">系統通知</i>
+                                    </a>
+                                </li>
+                            </ul>
+                            <form class="input-group" action="#" method="get" style="width: 300px">
+                                <input class="form-control" type="search" placeholder="關鍵字搜尋" aria-label="Search"
+                                       name="keyword">
+                                <button class="btn btn-outline-success" type="submit" id="search-button">搜尋</button>
+                            </form>
                         </div>
-                    </form>
-
-
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                            aria-controls="navbarToggleExternalContent" aria-expanded="false"
-                            aria-label="Toggle navigation">
-                        <i class="fa-solid fa-bars" style="color: #561729;"></i>
-                    </button>
-
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav ms-auto mt-2 flex-row" id="linkbar">
-                            <li class="nav-item me-3">
-                                <a class="nav-link" href="#">
-                                    <i class="fa-solid fa-user">會員中心</i>
-                                </a>
-                            </li>
-                            <li class="nav-item me-3">
-                                <a class="nav-link" href="#">
-                                    <i class="fa-solid fa-shirt">商品分類</i>
-                                </a>
-                            </li>
-                            <li class="nav-item me-3">
-                                <a class="nav-link" href="#">
-                                    <i class="fa-solid fa-sack-dollar">賣東西</i>
-                                </a>
-                            </li>
-                            <li class="nav-item me-3">
-                                <a class="nav-link" href="#">
-                                    <i class="fa-solid fa-scale-balanced">競標專區</i>
-                                </a>
-                            </li>
-                            <li class="nav-item me-3">
-                                <a class="nav-link position-relative" href="#">
-                        <span id="cart_num"
-                              class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
-                            99+
-                        </span>
-                                    <i class="fa-solid fa-cart-shopping">購物車</i>
-                                </a>
-                            </li>
-                            <li class="nav-item me-3">
-                                <a class="nav-link position-relative" href="#">
-                        <span id="unread_messages_num"
-                              class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
-                            99+
-                        </span>
-                                    <i class="fa-solid fa-comments">即時通</i>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link position-relative" href="#">
-                        <span id="unread_notices_num"
-                              class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
-                            99+
-                        </span>
-                                    <i class="fa-solid fa-bell">系統通知</i>
-                                </a>
-                            </li>
-                        </ul>
                     </div>
-                </div>
-            </nav>
+                </nav>
+            </div>
         </div>
     </div>
 </header>
 
-<div class="container-fluid">
-
+<!--輪播圖-->
+<div id="carouselDiv" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselDiv" data-bs-slide-to="0" class="active"
+                aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselDiv" data-bs-slide-to="1"
+                aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselDiv" data-bs-slide-to="2"
+                aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="/TwoClothing/images/Carousel01.jpeg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="/TwoClothing/images/Carousel02.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="/TwoClothing/images/Carousel03.jpg" class="d-block w-100" alt="...">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselDiv"
+            data-bs-slide="prev">
+        <span class="" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                 class="bi bi-arrow-left-circle-fill"
+                 viewBox="0 0 16 16">
+                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+            </svg>
+        </span>
+        <span class="" style="visibility: hidden">我來占空間的,你看不到</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselDiv"
+            data-bs-slide="next">
+        <span class="" style="visibility: hidden">我來占空間的,你看不到</span>
+        <span class="" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                 class="bi bi-arrow-right-circle-fill"
+                 viewBox="0 0 16 16">
+                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+            </svg>
+        </span>
+    </button>
 </div>
+
+<div class="test-div" style="height: 1000px; background-color: #3498db;"></div>
+
 
 <!--bootstrap5-->
 <script src="/TwoClothing/js/bootstrap5/popper.min.js"></script>
