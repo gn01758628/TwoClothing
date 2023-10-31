@@ -2,7 +2,7 @@ package com.twoclothing.tonyhsieh.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -149,18 +149,22 @@ public class BidItemReportServlet extends HttpServlet {
 			Integer bidstatus = Integer.valueOf(req.getParameter("bidstatus").trim());
 			
 			
-			String dateStr = req.getParameter("auditdate");
-			Timestamp auditdate=null;
-			try {
-			    // 解析日期字符串并将其转换为Timestamp
-			    Date date = Date.valueOf(dateStr);
-			    auditdate = new Timestamp(date.getTime());
-			    // 现在，timestamp 包含了日期的Timestamp表示
-			    // 可以将它用于数据库操作或其他需要Timestamp的操作
-			} catch (IllegalArgumentException e) {
-			    // 处理日期格式错误
-			    e.printStackTrace();
-			}
+			
+			Date currentDate = new Date();
+	        Timestamp auditdate = new Timestamp(currentDate.getTime());
+			
+//			String dateStr = req.getParameter("auditdate");
+//			Timestamp auditdate=null;
+//			try {
+//			    // 解析日期字符串并将其转换为Timestamp
+//			    Date date = Date.valueOf(dateStr);
+//			    auditdate = new Timestamp(date.getTime());
+//			    // 现在，timestamp 包含了日期的Timestamp表示
+//			    // 可以将它用于数据库操作或其他需要Timestamp的操作
+//			} catch (IllegalArgumentException e) {
+//			    // 处理日期格式错误
+//			    e.printStackTrace();
+//			}
 						
 			Integer result = Integer.valueOf(req.getParameter("result").trim());
 							
@@ -189,40 +193,36 @@ public class BidItemReportServlet extends HttpServlet {
 
         if ("insert".equals(action)) { // 來自addEmp.jsp的請求  
 			
-			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
-			req.setAttribute("errorMsgs", errorMsgs);
-
-				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-
-			Integer deptid = null;
-			try {
-				deptid = Integer.valueOf(req.getParameter("deptid").trim());
-			} catch (NumberFormatException e) {
-				errorMsgs.put("deptId","部門ID請填數字");
-			}	
-			if (deptid == null) {
-				errorMsgs.put("deptId","部門ID: 請勿空白");
-			}
+			
+				/***********************1.接收請求參數 *************************/
+			Integer reportid = Integer.valueOf(req.getParameter("reportid").trim());
+			Integer biditemid = Integer.valueOf(req.getParameter("biditemid").trim());
 			
 	
-			String deptname = req.getParameter("deptname").trim();
-			if (deptname == null || deptname.trim().length() == 0) {
-				errorMsgs.put("deptname","部門名稱請勿空白");
-			}
-
-				// Send the use back to the form, if there were errors
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back_end/department/addDept.jsp");
-					failureView.forward(req, resp);
-					return;
-				}
+			Integer mbrid =Integer.valueOf(req.getParameter("mbrid").trim());
+			
+			Integer empid = null;
+			
+			
+			Date currentDate = new Date();
+	        Timestamp reportdate = new Timestamp(currentDate.getTime());
+		
+	        String biddescription = req.getParameter("description").trim();
+	        
+	        Integer bidstatus = Integer.valueOf(req.getParameter("bidstatus").trim());
+	        	        
+	        Timestamp auditdate = null;
+	        
+			Integer result = Integer.valueOf(req.getParameter("result").trim());
+			
+			String note =null;
+	        
 				
 				/***************************2.開始新增資料***************************************/
-				DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
-				departmentServiceImpl.insert(deptid, deptname);				
+			BidItemReportServiceImpl bidItemReportServiceImpl = new BidItemReportServiceImpl();
+			bidItemReportServiceImpl.addBidItemReport(reportid,biditemid, mbrid, empid, reportdate, biddescription, bidstatus, auditdate, result, note);				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "/back_end/department/listOnebidItRe.jsp";
+				String url = "/front_end/biditemreport/select_page.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 				successView.forward(req, resp);				
 		}

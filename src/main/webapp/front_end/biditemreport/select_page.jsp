@@ -10,7 +10,7 @@
 	%>
 <html>
 <head>
-<title>Emp: Home</title>
+<title>BidItemReport: Home</title>
 
 <style>
   table#table-1 {
@@ -55,7 +55,7 @@
 <%-- </c:if> --%>
 
 <ul>
-  <li><a href="${pageContext.request.contextPath}/front_end/biditemreport/BidItemReport.do?action=getAll">List</a> all BidItemReport.  <br><br></li>
+  <li><a href='listAllbidItRe.jsp'>List</a> all BidItemReport.  <br><br></li>
   
   <h3><b>複合查詢 (使用 Criteria Query)：</b></h3>
   <form action="${pageContext.request.contextPath}/front_end/biditemreport/BidItemReport.do" method="post">
@@ -85,51 +85,14 @@
 		<p><input type="submit" value="送出"></p>
 		<input type="hidden" name="action" value="getCompositeQuery_For_Display">
 </form>	
-	
-		
-<!--   <li> -->
-<!--     <FORM METHOD="post" ACTION="Employee.do" > -->
-<!--         <b>輸入員工編號 (如1,2,3,4...):</b> -->
-<%--         <input type="text" name="empId" value="${param.empId}"><font color=red>${errorMsgs.empId}</font> --%>
-<!--         <input type="hidden" name="action" value="getOne_For_Display"> -->
-<!--         <input type="submit" value="送出"> -->
-<!--     </FORM> -->
-<!--   </li> -->
 
-
-   
-<!--   <li> -->
-<!--      <FORM METHOD="post" ACTION="Employee.do" > -->
-<!--        <b>選擇員工編號:</b> -->
-<!--        <select size="1" name="empId"> -->
-<%--          <c:forEach var="employee" items="${list}" >  --%>
-<%--           <option value="${employee.empId}">${employee.empId} --%>
-<%--          </c:forEach>    --%>
-<!--        </select> -->
-<!--        <input type="hidden" name="action" value="getOne_For_Display"> -->
-<!--        <input type="submit" value="送出"> -->
-<!--     </FORM> -->
-<!--   </li> -->
-  
-<!--   <li> -->
-<!--      <FORM METHOD="post" ACTION="Employee.do" > -->
-<!--        <b>選擇員工姓名:</b> -->
-<!--        <select size="1" name="empId"> -->
-<%--          <c:forEach var="employee" items="${list}" >  --%>
-<%--           <option value="${employee.empId}">${employee.empName} --%>
-<%--          </c:forEach>    --%>
-<!--        </select> -->
-<!--        <input type="hidden" name="action" value="getOne_For_Display"> -->
-<!--        <input type="submit" value="送出"> -->
-<!--      </FORM> -->
-<!--   </li> -->
 </ul>
 
 
-<h3>員工管理</h3>
+<h3>競標商品檢舉新增</h3>
 
 <ul>
-  <li><a href='addEmp.jsp'>Add</a> a new Emp.</li>
+  <li><a href='addbidItRe.jsp'>Add</a> a new BidItemReport.</li>
 </ul>
 
 </body>

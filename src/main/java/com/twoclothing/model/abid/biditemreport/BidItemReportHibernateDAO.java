@@ -36,13 +36,44 @@ public class BidItemReportHibernateDAO implements BidItemReportDAO {
 	public List<BidItemReport> getAll() {
 		// TODO Auto-generated method stub
 		return getSession().createQuery("from BidItemReport", BidItemReport.class).list();
+//		List<BidItemReport> list = null;
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		try {
+//			session.beginTransaction();
+//			Query<BidItemReport> query = session.createQuery("from BidItemReport", BidItemReport.class);
+//			list = query.getResultList();
+//			session.getTransaction().commit();
+//		} catch (RuntimeException ex) {
+//			session.getTransaction().rollback();
+//			throw ex;
+//		}
+//		return list;
+	
+	
+	
+	
 	}
 
 	@Override
 	public int insert(BidItemReport bidItemReport) {
 		// TODO Auto-generated method stub
-		Integer reportId = (Integer) getSession().save(bidItemReport);
+//		Integer reportId = (Integer) getSession().save(bidItemReport);
+//		return reportId;
+		Integer reportId = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			reportId = (Integer) getSession().save(bidItemReport);
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
+		}
 		return reportId;
+//		
+		
+		
+		
 	}
 
 	@Override
