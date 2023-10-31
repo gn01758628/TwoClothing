@@ -129,4 +129,9 @@ public class BidItemServiceImpl implements BidItemService {
     public List<Integer> getAllSelectableTagsId() {
         return categoryTagsDAO.getTagIdsWithoutChildren();
     }
+
+    @Override
+    public boolean updateBidItemStatus(BidItem bidItem) {
+        return true;
+    }
 }

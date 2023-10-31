@@ -106,7 +106,7 @@
                         </thead>
                         <tbody>
                         <c:forEach var="bidItem" items="${bidItemList}">
-                        <tr>
+                            <tr id="">
                                 <td class="text-center align-middle">${bidStatusMap[bidItem.bidStatus]}</td>
                                 <td class="text-center align-middle">
                                     <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${bidItem.bidItemId}&position=1"
@@ -118,9 +118,12 @@
                                 <td class="text-center align-middle">
                                     <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">商品詳情</a>
                                     <br>
-                                    <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">下架商品</a>
+                                    <c:if test="${bidItem.bidStatus == 0}">
+                                        <button class="btn btn-outline-success btn-sm mt-2 mb-2">批准上架</button>
+                                        <button class="btn btn-outline-danger btn-sm mt-2 mb-2">拒絕上架</button>
+                                    </c:if>
                                 </td>
-                        </tr>
+                            </tr>
                         </c:forEach>
                         </tbody>
                     </table>

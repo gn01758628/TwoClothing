@@ -41,6 +41,7 @@ public class BidItemBackServlet extends HttpServlet {
         switch (servletPath) {
             case "/back/biditem/search" -> doSearch(request, response);
             case "/back/biditem/find" -> doFind(request, response);
+            case "/back/biditem/vent" -> doVent(request, response);
         }
     }
 
@@ -103,5 +104,13 @@ public class BidItemBackServlet extends HttpServlet {
             request.setAttribute("employeeMap", employeeMap);
         }
         request.getRequestDispatcher("/back/biditem/search").forward(request, response);
+    }
+
+    private void doVent(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String bidItemId = request.getParameter("bidItemId");
+        String result = request.getParameter("result");
+
+
     }
 }
