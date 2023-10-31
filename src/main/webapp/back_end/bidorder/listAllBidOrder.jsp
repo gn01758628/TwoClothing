@@ -80,6 +80,9 @@ BidOrderServiceImpl bidOrderServiceImpl = new BidOrderServiceImpl();
 		<th>收件人手機</th>
 		<th>備註</th>
 	</tr>
+	
+<c:choose>
+    <c:when test="${not empty list}">	
 	<%@ include file="page1.file" %> 
 	<c:forEach var="BidOrder" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">>
 		
@@ -108,16 +111,28 @@ BidOrderServiceImpl bidOrderServiceImpl = new BidOrderServiceImpl();
 			     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}">
 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
 			</td>
-<!-- 			<td> -->
-<%-- 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/members/Members.do" style="margin-bottom: 0px;"> --%>
-<!-- 			     <input type="submit" value="刪除"> -->
-<%-- 			     <input type="hidden" name="mbrId"  value="${members.mbrId}"> --%>
-<!-- 			     <input type="hidden" name="action" value="delete"></FORM> -->
-<!-- 			</td> -->
+			<td>
+			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
+			     <input type="submit" value="刪除">
+			     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}">
+			     <input type="hidden" name="action" value="delete"></FORM>
+			</td>
+			
 		</tr>
+		
 	</c:forEach>
+	<%@ include file="page2.file" %>
+	 </c:when>
+    <c:otherwise>
+        <tr>
+            <td colspan="17">無資料</td>
+        </tr>
+    </c:otherwise>
+</c:choose>
+
+
+	
 </table>
-<%@ include file="page2.file" %>
 
 </body>
 </html>

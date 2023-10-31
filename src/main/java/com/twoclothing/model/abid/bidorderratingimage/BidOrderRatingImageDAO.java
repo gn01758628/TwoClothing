@@ -3,11 +3,12 @@ package com.twoclothing.model.abid.bidorderratingimage;
 import java.util.List;
 
 public interface BidOrderRatingImageDAO {
-	void insert(BidOrderRatingImage bidOrderRatingImage);
+	
+	int insert(BidOrderRatingImage bidOrderRatingImage);
+	
+	List<BidOrderRatingImage> getAll();
 	
 	BidOrderRatingImage getByPrimaryKey(Integer imageId);
-
-	List<BidOrderRatingImage> getAll();
 
 	List<BidOrderRatingImage> getAllByBidOrderId(Integer bidOrderId);
 

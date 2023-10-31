@@ -102,7 +102,7 @@
  			<td> 
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;"> 
 			     <input type="submit" value="§R°£"> 
-			     <input type="hidden" name="bidOrderId"  value="${bidOrder.bidOrderId}"> 
+			     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}"> 
  			     <input type="hidden" name="action" value="delete"></FORM> 
 			</td> 
 	</tr>

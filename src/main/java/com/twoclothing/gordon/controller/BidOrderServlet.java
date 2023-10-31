@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.twoclothing.model.abid.bidorder.BidOrder;
 import com.twoclothing.gordon.service.BidOrderServiceImpl;
+import com.twoclothing.gordon.service.ShipSettingServiceImpl;
 @WebServlet("/bidorder/BidOrder.do")
 public class BidOrderServlet extends HttpServlet{
 	
@@ -168,7 +169,7 @@ public class BidOrderServlet extends HttpServlet{
 				successView.forward(req, res);
 				
 			}
-			/*************************** update ****************************************/
+			/*************************** 後台update ****************************************/
 			/*************************** update ****************************************/
 			/*************************** update ****************************************/
 			/*************************** update ****************************************/
@@ -311,6 +312,43 @@ public class BidOrderServlet extends HttpServlet{
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				successView.forward(req, res);
 			
+			}
+			
+			/***********************刪除*************************/
+			/***********************刪除*************************/
+			/***********************刪除*************************/
+			/***********************刪除*************************/
+			/***********************刪除*************************/
+			if ("delete".equals(action)) {
+				
+				/***************************1.接收請求參數***************************************/
+				
+				Integer bidOrderId = Integer.valueOf(req.getParameter("bidOrderId"));
+
+				
+			    /***************************2.開始刪除資料***************************************/
+				
+				bidOrderServiceImpl.deleteBidOrder(bidOrderId);
+				
+
+			    /***************************3.刪除完成,準備轉交(Send the Success view)***********/
+	//原來的		    String url = "/MemberCentre.jsp";
+	//ok		    String url = "/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId="+mbrId;
+	//ok		RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+	//ok			successView.forward(req, res);
+				
+//			    String url1 = "/bidorder/BidOrder.do?action=getAll_For_MbrId&bidOrderId="+bidOrderId;
+				
+//			    String url1 = "/back_end/bidorder/listAllBidOrder.jsp";
+//
+//				res.sendRedirect(url1);
+				
+				String url = "/back_end/bidorder/listAllBidOrder.jsp";
+				
+			
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+				successView.forward(req, res);
+				
 			}
 	}
 
