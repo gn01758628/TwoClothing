@@ -26,12 +26,12 @@ $(document).ready(function () {
         if (prevScrollPos < currentScrollPos && currentScrollPos > scrollPositionThreshold) {
             if (!isNavCollapsed) {
                 isNavCollapsed = true;
-                $("header").slideUp(300);
+                $("#nav-top").slideUp(300);
             }
         } else {
             if (isNavCollapsed) {
                 isNavCollapsed = false;
-                $("header").slideDown(300);
+                $("#nav-top").slideDown(300);
             }
         }
         prevScrollPos = currentScrollPos;
