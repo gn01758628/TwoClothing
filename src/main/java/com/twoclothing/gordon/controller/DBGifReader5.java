@@ -18,21 +18,51 @@ public class DBGifReader5 extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
 		
-	      String imgType = req.getParameter("imgType");
-	        if (imgType == null) {
-	            // 如果imgType参数未提供，默认使用"avatar"
-	            imgType = "avatar";
+			String imageid = null;
+			String imageidValue = req.getParameter("imageId");
+			if (imageidValue != null) {
+			    // 現在你可以安全地在 parameterValue 上調用 trim() 方法
+			    imageid = imageidValue.trim();
+			}
+			
+			String mbrid = null;
+			String mbridValue = req.getParameter("mbrid");
+			if (mbridValue != null) {
+			    // 現在你可以安全地在 parameterValue 上調用 trim() 方法
+			    mbrid = mbridValue.trim();
+			}
+			
+			String imgType = null;
+	        String imgTypeValue = req.getParameter("imgType");
+	        if (imgTypeValue != null) {
+	        	imgType = imgTypeValue.trim();
+	        }else {imgType = "xx";  //隨意給的
+	        	
 	        }
-
+	        
+	        System.out.println("imageid"+ imageid);
+	        System.out.println("mbrid"+mbrid);
+	        System.out.println("imgType"+imgType);
+	        ResultSet rs = null;
+	        
 		res.setContentType("image/gif");
 		ServletOutputStream out = res.getOutputStream();
 
 		try {
 			Statement stmt = con.createStatement();
-			String mbrid = req.getParameter("mbrid").trim();
-			ResultSet rs = stmt.executeQuery(
+			
+			if(mbrid != null) 
+			rs = stmt.executeQuery(
 					"SELECT " + imgType + " FROM twoclothing.members where mbrid=" + mbrid);
+			
+			if(imageid != null) 	
+				rs = stmt.executeQuery(
+						"SELECT " + imgType + " FROM twoclothing.bidorderratingimage where imageid=" + imageid);
+			
+			
 
+			
+	
 			if (rs.next()) {
 				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream(imgType));//�L����
 				byte[] buf = new byte[4 * 1024]; // 4K buffer

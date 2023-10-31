@@ -13,7 +13,7 @@ body {
     transition: width 0.1s;
 }
 
-#nav-top {
+header {
     background-color: #fff8fb;
 }
 
@@ -27,11 +27,11 @@ body {
 }
 
 
-#navbarNav a {
+#nav-top a.nav-link {
     color: #561729;
 }
 
-#navbarNav a:hover {
+#nav-top a.nav-link:hover {
     color: #00302e;
 }
 
