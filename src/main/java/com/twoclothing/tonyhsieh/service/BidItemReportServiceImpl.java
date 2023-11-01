@@ -23,12 +23,22 @@ public class BidItemReportServiceImpl implements BidItemReportService {
 		}
 
 	
+	@Override
+	public BidItemReport getByPrimaryKey(Integer reportId) {
+		// TODO Auto-generated method stub
+		return bidItemReportDAO.getByPrimaryKey(reportId);
+	}
+
+
+
+
 
 	@Override
-	public BidItemReport addBidItemReport(Integer bidItemId, Integer mbrId, Integer empId, Timestamp reportDate,
+	public BidItemReport addBidItemReport(Integer reportId,Integer bidItemId, Integer mbrId, Integer empId, Timestamp reportDate,
 			String bidDescription, Integer bidStatus, Timestamp auditDate, Integer result, String note) {
 		// TODO Auto-generated method stub
 		BidItemReport bidItemReport = new BidItemReport();
+		bidItemReport.setBidItemId(reportId);
 		 bidItemReport.setBidItemId(bidItemId);
 		 bidItemReport.setMbrId(mbrId);
 		 bidItemReport.setEmpId(empId);
@@ -58,7 +68,7 @@ public class BidItemReportServiceImpl implements BidItemReportService {
 		 bidItemReport.setAuditDate(auditDate);
 		 bidItemReport.setResult(result);
 		 bidItemReport.setNote(note);		
-		 bidItemReportDAO.insert(bidItemReport);
+		 bidItemReportDAO.update(bidItemReport);
 		 return bidItemReport;
 	}
 

@@ -5,18 +5,14 @@
 <%@ page import="com.twoclothing.model.employee.*"%>
 <%@ page import="com.twoclothing.model.department.*"%>
 
- <%
+ 
 	
-//  	DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
-//    	List<Department> list = departmentServiceImpl.getAllDepartment();
-//     pageContext.setAttribute("list",list);
-	
-	%>
+ 
 
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>員工資料修改 - update_emp_input.jsp</title>
+<title>員工資料修改 - update_bidItRe_input.jsp</title>
 
 <style>
   table#table-1 {
@@ -76,7 +72,7 @@
 
 <table id="table-1">
 	<tr><td>
-		 <h3>員工資料修改 - update_emp_input.jsp</h3>
+		 <h3>競標商品檢舉資料修改 - update_bidItRe_input.jsp</h3>
 		 <h4><a href="select_page.jsp">回首頁</a></h4>
 	</td></tr>
 </table>
@@ -93,64 +89,73 @@
 <!-- 	</ul> -->
 <%-- </c:if> --%>
 
-<FORM METHOD="post" ACTION="Employee.do" name="form1" enctype="multipart/form-data">
+<FORM METHOD="post" ACTION="BidItemReport.do" name="form1" enctype="multipart/form-data">
 <table>
     <tr>
-		<td>員工編號:<font color=red><b>*</b></font></td>
-		<td>${param.empId}</td>
+		<td>競標商品檢舉編號:<font color=red><b>*</b></font></td>
+		<td>${param.reportId}</td>
 	</tr>
 
-	<jsp:useBean id="DepartmentServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.service.DepartmentServiceImpl" />
+   <tr>
+		<td>競標商品編號:<font color=red><b>*</b></font></td>
+		<td>${param.bidItemId}</td>
+	</tr>
+	 <tr>
+		<td>檢舉會員ID:<font color=red><b>*</b></font></td>
+		<td>${param.mbrId}</td>
+	</tr>
+	
 	<tr>
-		<td>部門:<font color=red><b>*</b></font></td>
-		<td><select size="1" name="deptid">
-			<c:forEach var="department" items="${DepartmentServiceImpl.allDepartment}">
-				<option value="${department.deptId}"${(param.deptId==employee.deptId)? 'selected':'' } >${department.deptName}
-			
-			</c:forEach>
+		<td>處理員工ID:</td>
+		<td><input type="TEXT" name="empid" value="${param.empId}" size="45" required></td> 
+	</tr>
+	
+	 <tr>
+		<td>檢舉日期:<font color=red><b>*</b></font></td>
+		<td>${param.reportDate}</td>
+	</tr>
+	
+	
+	 <tr>
+		<td>檢舉內容:<font color=red><b>*</b></font></td>
+		<td>${param.description}</td>
+	</tr>
+		
+	<tr>
+		<td>審核狀態:</td>
+		<td><select size="1" name="bidstatus">
+			<option value="0">待審核</option>
+			<option value="1">已審核</option>
 		</select></td>
 	</tr>
 	
+	<tr>
+		<td>審核日期:<font color=red><b>*</b></font></td>
+		<td>${param.auditDate}</td>
+	</tr>
 
 	<tr>
-		<td>員工姓名:</td>
-		<td><input type="TEXT" name="empname" value="${param.empName}" size="45"/></td> <td>${errorMsgs.empname}</td>
-	</tr>
-	<tr>
-		<td>電話:</td>
-		<td><input type="text" name="phone" value="${param.phone}"  size="45"/></td> <td>${errorMsgs.phone}</td>
-	</tr>	
-	<tr>
-		<td>員工地址:</td>
-		<td><input type="TEXT" name="address" value="${param.address}" size="45"/></td> <td>${errorMsgs.address}</td>
-	</tr>
-	<tr>
-		<td>EMAIL:</td>
-		<td><input type="TEXT" name="email"   value="${param.email}"   size="45"/></td> <td>${errorMsgs.email}</td>
-	</tr>
-	<tr>
-		<td>密碼:</td>
-		<td><input type="TEXT" name="pswdhash"   value="${param.pswdHash}"   size="45"/></td> <td>${errorMsgs.pswdhash}</td>
-	</tr>
-	<tr>
-		<td>狀態:</td>
-		<td><select size="1" name="empstatus">
-			<option value="0">在職</option>
-			<option value="1">離職</option>
+		<td>審核結果:</td>
+		<td><select size="1" name="result">
+			<option value="0">處分</option>
+			<option value="1">不處分</option>
 		</select></td>
 	</tr>
 	<tr>
-		<td>圖片:</td>
-		<td><input class="form-control" type="file" id="image01" name="image01"  size="45"/>
-	   
-		</td>
+		<td>備註:</td>
+		<td><input type="TEXT" name="note" value="${param.note}" size="45"/></td> 
 	</tr>
+	
 	
 	
 </table>
 <br>
 <input type="hidden" name="action" value="update">
-<input type="hidden" name="empid" value="${param.empId}">
+<input type="hidden" name="reportid" value="${param.reportId}">
+<input type="hidden" name="bidItemid" value="${param.bidItemId}">
+<input type="hidden" name="mbrid" value="${param.mbrId}">
+<input type="hidden" name="reportdate" value="${param.reportDate}">
+<input type="hidden" name="description" value="${param.description}">
 <input type="submit" value="送出修改"></FORM>
 </body>
 

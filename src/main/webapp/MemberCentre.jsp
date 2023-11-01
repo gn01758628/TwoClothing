@@ -1,4 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+
+
+ <% 
+     Object account = session.getAttribute("user");                  // 從 session內取出 (key) account的值
+     if (account == null) {                                             // 如為 null, 代表此user未登入過 , 才做以下工作
+       session.setAttribute("location", request.getRequestURI());       //*工作1 : 同時記下目前位置 , 以便於login.html登入成功後 , 能夠直接導至此網頁(須配合LoginHandler.java) 
+       response.sendRedirect(request.getContextPath()+"/front_end/members/registerLogin.jsp");   //*工作2 : 請該user去登入網頁(login.html) , 進行登入 
+       return; 
+     } 
+ %>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,6 +69,12 @@ input:disabled {
 				<input type="hidden" name="mbrId" value="${user.mbrId}">
 				<input type="hidden" name="action" value="getAll_For_MbrId">
 				<input type="submit" value="會員物流設定">
+				
+			</FORM>
+		</li>
+	    <li>
+			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/front_end/bidorder/myBidorder0.jsp">
+			<input type="submit" value="我的競標訂單">
 				
 			</FORM>
 		</li>

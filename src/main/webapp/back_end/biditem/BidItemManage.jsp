@@ -45,8 +45,9 @@
                     <option value="1">已過審</option>
                     <option value="2">得標</option>
                     <option value="3">流標</option>
-                    <option value="4">刪除</option>
-                    <option value="5">已下架</option>
+                    <option value="4">上架中</option>
+                    <option value="5">刪除</option>
+                    <option value="6">被下架</option>
                 </select>
             </div>
             <div class="col-md-3 mb-3">
@@ -83,7 +84,11 @@
 
 
 <c:if test="${bidItemList != null}">
-    <h1>${bidItemList}</h1>
+    <c:if test="${empty bidItemList}">
+        <div class="container mt-3 text-center">
+            <h1>沒有符合條件的資料</h1>
+        </div>
+    </c:if>
     <c:if test="${bidItemList[0] != null}">
         <div class="container mt-5 ">
             <div class="row">
@@ -100,8 +105,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <c:forEach var="bidItem" items="${bidItemList}">
+                        <c:forEach var="bidItem" items="${bidItemList}">
+                            <tr>
                                 <td class="text-center align-middle">${bidStatusMap[bidItem.bidStatus]}</td>
                                 <td class="text-center align-middle">
                                     <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${bidItem.bidItemId}&position=1"
@@ -109,14 +114,21 @@
                                 <td class="text-center align-middle">${bidItem.bidName}</td>
                                 <td class="text-center align-middle text-wrap">${bidItem.mbrId}<br>${membersMap[bidItem.bidItemId].email}<br>${membersMap[bidItem.bidItemId].mbrName}
                                 </td>
-                                <td class="text-center align-middle">${bidItem.empId}</td>
+                                <td class="text-center align-middle">${employeeMap[bidItem.bidItemId].empName}</td>
                                 <td class="text-center align-middle">
                                     <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">商品詳情</a>
                                     <br>
-                                    <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">下架商品</a>
+                                    <c:if test="${bidItem.bidStatus == 0}">
+                                        <input type="hidden" value="${bidItem.bidName}">
+                                        <button class="btn btn-outline-success btn-sm mt-2 mb-2 btn_agree">批准上架
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm mt-2 mb-2 btn_reject">拒絕上架
+                                        </button>
+                                        <input type="hidden" value="${bidItem.bidItemId}">
+                                    </c:if>
                                 </td>
-                            </c:forEach>
-                        </tr>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                     </table>
                 </div>
@@ -131,6 +143,37 @@
 <!--jQuery-->
 <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
 
+<script>
+    $(function () {
+        // 批准上架
+        $(".btn_agree").on("click", function () {
+            let bidItemId = $(this).next().next().val();
+            let bidItemName = $(this).prev().val();
+            if (window.confirm("確定要批准上架嗎?\n" + "商品名稱：" + bidItemName)) {
+                $.post('${pageContext.request.contextPath}/back/biditem/vent', {
+                    result: "agree",
+                    id: bidItemId,
+                    message: ""
+                }, function (data) {
+                    console.log(data);
+                })
+            }
+        });
+        // 拒絕上架
+        $(".btn_reject").on("click", function () {
+            let bidItemId = $(this).next().val();
+            let bidItemName = $(this).prev().prev().val();
+            if (window.confirm("確定要拒絕上架嗎?\n" + "商品名稱：" + bidItemName)) {
+                $.post('${pageContext.request.contextPath}/back/biditem/vent', {
+                    result: "reject",
+                    id: bidItemId
+                }, function (data) {
+                    console.log(data);
+                })
+            }
+        });
+    });
+</script>
 
 <script>
     $(document).ready(function () {
@@ -169,7 +212,7 @@
                 bidStatusValue === "" &&
                 empIdValue === ""
             ) {
-                alert("至少填写一项搜索条件");
+                alert("至少填寫一項搜尋條件");
                 event.preventDefault();
             }
 

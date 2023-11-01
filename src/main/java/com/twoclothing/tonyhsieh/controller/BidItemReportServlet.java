@@ -2,6 +2,8 @@ package com.twoclothing.tonyhsieh.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,13 +18,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import com.twoclothing.model.abid.biditemreport.BidItemReport;
 import com.twoclothing.model.department.Department;
+import com.twoclothing.model.employee.Employee;
 import com.twoclothing.tonyhsieh.service.BidItemReportService;
 import com.twoclothing.tonyhsieh.service.BidItemReportServiceImpl;
 import com.twoclothing.tonyhsieh.service.DepartmentService;
 import com.twoclothing.tonyhsieh.service.DepartmentServiceImpl;
+import com.twoclothing.tonyhsieh.service.EmployeeServiceImpl;
 
 
 @WebServlet("/front_end/biditemreport/BidItemReport.do")
@@ -46,7 +51,7 @@ public class BidItemReportServlet extends HttpServlet {
 		if("getAll".equals(action)) {
 	
 				/***************************1.開始查詢資料***************************************/
-				BidItemReportServiceImpl bidItemReportServiceImpl = new BidItemReportServiceImpl();
+				BidItemReportService bidItemReportServiceImpl = new BidItemReportServiceImpl();
 				List<BidItemReport> list = bidItemReportServiceImpl.getAll();
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)***********/								
@@ -79,123 +84,151 @@ public class BidItemReportServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 			
 				/***************************1.接收請求參數****************************************/
-				Integer deptid = Integer.valueOf(req.getParameter("deptId"));
+				Integer reportid = Integer.valueOf(req.getParameter("reportId"));
 				
 				/***************************2.開始查詢資料****************************************/
-				DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
-				Department department = departmentServiceImpl.getByPrimaryKey(deptid);
-								
+				BidItemReportService bidItemReportService = new BidItemReportServiceImpl();
+				BidItemReport bidItemReport = bidItemReportService.getByPrimaryKey(reportid);
+						
+				String empid = String.valueOf(bidItemReport.getEmpId());
+
+				if(empid=="null" ) {
+					empid = "";
+				}
+		
+				
+				String note = bidItemReport.getNote();
+				if(note==null) {
+					note =" ";
+				}
+							
+			
+				
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
-				String param = "?deptId="  +department.getDeptId()+
-						       "&deptName="  +department.getDeptName();
-				String url = "update_dept_input.jsp"+param;
+				String param = "?reportId="  +bidItemReport.getReportId()+
+						       "&bidItemId="  +bidItemReport.getBidItemId()+
+						       "&mbrId="    +bidItemReport.getMbrId()+
+						       "&empId="    +empid+
+						       "&reportDate="+bidItemReport.getReportDate()+
+						       "&description="    +bidItemReport.getBidDescription()+
+						       "&bidStatus="   +bidItemReport.getBidStatus()+
+						       "&auditDate=" +bidItemReport.getAuditDate()+
+								"&result=" +bidItemReport.getResult()+
+								"&note=" +note;
+				String url = "update_bidItRe_input.jsp"+param;
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
 				successView.forward(req, resp);
 		}
-		
-		
+				
 		if ("update".equals(action)) { // 來自update_emp_input.jsp的請求
 			
 			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 		
-				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				/***************************1.接收請求參數 **********************/
 			
-				Integer deptid = null;
-				try {
-					deptid = Integer.valueOf(req.getParameter("deptid").trim());
-				} catch (NumberFormatException e) {
-					errorMsgs.put("deptId","部門ID請填數字");
-				}	
-				if (deptid == null) {
-					errorMsgs.put("deptId","部門ID: 請勿空白");
-				}
+			Integer reportid = Integer.valueOf(req.getParameter("reportid").trim());
+			
+			Integer biditemid = Integer.valueOf(req.getParameter("bidItemid").trim());
 				
+			
+			Integer mbrid =Integer.valueOf(req.getParameter("mbrid").trim());
+						
+			
 		
-				String deptname = req.getParameter("deptname").trim();
-				if (deptname == null || deptname.trim().length() == 0) {
-					errorMsgs.put("deptname","部門名稱請勿空白");
-				}
+			Integer empid = Integer.valueOf(req.getParameter("empid").trim());
+			
+			
+			
+			Timestamp reportdate = Timestamp.valueOf(req.getParameter("reportdate"));
+			
+			
+			String biddescription = req.getParameter("description").trim();
+		
+			
+			Integer bidstatus = Integer.valueOf(req.getParameter("bidstatus").trim());
+			
+			
+			
+			Date currentDate = new Date();
+	        Timestamp auditdate = new Timestamp(currentDate.getTime());
+			
+//			String dateStr = req.getParameter("auditdate");
+//			Timestamp auditdate=null;
+//			try {
+//			    // 解析日期字符串并将其转换为Timestamp
+//			    Date date = Date.valueOf(dateStr);
+//			    auditdate = new Timestamp(date.getTime());
+//			    // 现在，timestamp 包含了日期的Timestamp表示
+//			    // 可以将它用于数据库操作或其他需要Timestamp的操作
+//			} catch (IllegalArgumentException e) {
+//			    // 处理日期格式错误
+//			    e.printStackTrace();
+//			}
+						
+			Integer result = Integer.valueOf(req.getParameter("result").trim());
+							
+			String note = req.getParameter("note").trim();
 		
 		   
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back_end/department/update_dept_input.jsp");
+							.getRequestDispatcher("/front_end/biditemreport/update_bidItRe_input.jsp");
 					failureView.forward(req, resp);
 					return; //程式中斷
 				}
 				
 				/***************************2.開始修改資料*****************************************/
 						
-				DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
-				Department department = departmentServiceImpl.update(deptid, deptname);
+				BidItemReportServiceImpl bidItemReportServiceImpl = new BidItemReportServiceImpl();
+				BidItemReport bidItemReport = bidItemReportServiceImpl.update(reportid, biditemid, mbrid, empid, reportdate, biddescription, bidstatus, auditdate , result, note);
 								
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("Department", department); // 資料庫update成功後,正確的的empVO物件,存入req
-				String url = "/back_end/department/listOneDept.jsp";
+				req.setAttribute("BidItemReport", bidItemReport); // 資料庫update成功後,正確的的empVO物件,存入req
+				String url = "/front_end/biditemreport/listOnebidItRe.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				successView.forward(req, resp);
 		}
 
         if ("insert".equals(action)) { // 來自addEmp.jsp的請求  
 			
-			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
-			req.setAttribute("errorMsgs", errorMsgs);
-
-				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-
-			Integer deptid = null;
-			try {
-				deptid = Integer.valueOf(req.getParameter("deptid").trim());
-			} catch (NumberFormatException e) {
-				errorMsgs.put("deptId","部門ID請填數字");
-			}	
-			if (deptid == null) {
-				errorMsgs.put("deptId","部門ID: 請勿空白");
-			}
+			
+				/***********************1.接收請求參數 *************************/
+			Integer reportid = Integer.valueOf(req.getParameter("reportid").trim());
+			Integer biditemid = Integer.valueOf(req.getParameter("biditemid").trim());
 			
 	
-			String deptname = req.getParameter("deptname").trim();
-			if (deptname == null || deptname.trim().length() == 0) {
-				errorMsgs.put("deptname","部門名稱請勿空白");
-			}
-
-				// Send the use back to the form, if there were errors
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back_end/department/addDept.jsp");
-					failureView.forward(req, resp);
-					return;
-				}
+			Integer mbrid =Integer.valueOf(req.getParameter("mbrid").trim());
+			
+			Integer empid = null;
+			
+			
+			Date currentDate = new Date();
+	        Timestamp reportdate = new Timestamp(currentDate.getTime());
+		
+	        String biddescription = req.getParameter("description").trim();
+	        
+	        Integer bidstatus = Integer.valueOf(req.getParameter("bidstatus").trim());
+	        	        
+	        Timestamp auditdate = null;
+	        
+			Integer result = Integer.valueOf(req.getParameter("result").trim());
+			
+			String note =null;
+	        
 				
 				/***************************2.開始新增資料***************************************/
-				DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
-				departmentServiceImpl.insert(deptid, deptname);				
+			BidItemReportServiceImpl bidItemReportServiceImpl = new BidItemReportServiceImpl();
+			bidItemReportServiceImpl.addBidItemReport(reportid,biditemid, mbrid, empid, reportdate, biddescription, bidstatus, auditdate, result, note);				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "/back_end/department/listAllDept.jsp";
+				String url = "/front_end/biditemreport/select_page.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 				successView.forward(req, resp);				
 		}
 		
 		
-		if ("delete".equals(action)) { // 來自listAllEmp.jsp
-
-			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
-			req.setAttribute("errorMsgs", errorMsgs);
 	
-				/***************************1.接收請求參數***************************************/
-				Integer deptid = Integer.valueOf(req.getParameter("deptId"));
-				
-				/***************************2.開始刪除資料***************************************/
-				DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
-				departmentServiceImpl.delete(deptid);
-				
-				/***************************3.刪除完成,準備轉交(Send the Success view)***********/								
-				String url = "/back_end/department/listAllDept.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
-				successView.forward(req, resp);
-		}
 	}
 	
 

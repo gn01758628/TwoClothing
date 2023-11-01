@@ -17,6 +17,8 @@ public interface MembersDAO {
     
     Members getByEmail(String email);
 
+    List<Members>  getAllByEmail(String email);
+
     List<Members> getAllByMbrStatus(Integer mbrStatus);
 
     List<Members> getAllBySellScore(Integer sellScore);
