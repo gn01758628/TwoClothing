@@ -1,6 +1,9 @@
 package com.twoclothing.model.employee;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.Formula;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -37,6 +40,11 @@ public class Employee implements Serializable {
 	
 	@Column(name = "avatar", columnDefinition = "MEDIUMBLOB")
 	private byte[] avatar;
+	
+	@Formula("LPAD(empId, 5, '0')")
+	private String formatEmpId;
+
+	
 
 	public Employee() {
 		super();
@@ -61,6 +69,7 @@ public class Employee implements Serializable {
 
 	public void setEmpId(Integer empId) {
 		this.empId = empId;
+		this.formatEmpId = String.format("%05d", empId);
 	}
 
 	public Integer getDeptId() {
@@ -126,6 +135,14 @@ public class Employee implements Serializable {
 	public void setAvatar(byte[] avatar) {
 		this.avatar = avatar;
 	}
+	
+	public void setFormatEmpId() {
+		this.formatEmpId = String.format("%05d", empId);;
+	}
+
+	public String getFormatEmpId() {
+		return formatEmpId;
+	}
 
 	@Override
 	public int hashCode() {
@@ -155,7 +172,7 @@ public class Employee implements Serializable {
 		
 		return "Employee [empId=" + empId + ", deptId=" + deptId + ", empName=" + empName + ", phone=" + phone
 				+ ", address=" + address + ", email=" + email + ", pswdHash=" + pswdHash + ", empStatus=" + empStatus
-				+ ", avatar=" + avatarStr + "]";
+				+ ", avatar=" + avatarStr + ", formatEmpId=" +formatEmpId+ "]";
 	}
 
 	  public com.twoclothing.model.department.Department getDepartment() {
