@@ -36,4 +36,6 @@ public interface BidItemService {
 
     List<Integer> getAllSelectableTagsId();
 
+    boolean updateBidItem(BidItem bidItem);
+
 }

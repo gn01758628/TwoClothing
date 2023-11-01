@@ -5,6 +5,7 @@ import com.twoclothing.chenghan.service.BidItemServiceImpl;
 import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.employee.Employee;
 import com.twoclothing.model.members.Members;
+import com.twoclothing.utils.HibernateUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +44,7 @@ public class BidItemBackServlet extends HttpServlet {
         switch (servletPath) {
             case "/back/biditem/search" -> doSearch(request, response);
             case "/back/biditem/find" -> doFind(request, response);
+            case "/back/biditem/vent" -> doVent(request, response);
         }
     }
 
@@ -103,5 +107,55 @@ public class BidItemBackServlet extends HttpServlet {
             request.setAttribute("employeeMap", employeeMap);
         }
         request.getRequestDispatcher("/back/biditem/search").forward(request, response);
+    }
+
+    private void doVent(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // TODO 從session取得員工編號 這裡先寫死
+        Integer empid = 1;
+        String bidItemId = request.getParameter("id");
+        String message = request.getParameter("message");
+
+        // 審核通過
+        if ("agree".equals(request.getParameter("result"))) {
+            BidItem bidItem = bidItemService.getBidItemByBidItemId(Integer.parseInt(bidItemId));
+            HibernateUtil.getSessionFactory().getCurrentSession().evict(bidItem);
+            bidItem.setBidStatus(1);
+            bidItem.setEmpId(empid);
+
+            // 審核通過後設定競標商品的開始與結束時間
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            int currentYear = currentDateTime.getYear();
+            int currentMonth = currentDateTime.getMonthValue();
+            int currentDay = currentDateTime.getDayOfMonth();
+            int currentHour = currentDateTime.getHour();
+            LocalDateTime startTime, endTime;
+            if (bidItem.getStartTime() != null) {
+                // 有開始時間(有預約上架時間)
+                startTime = bidItem.getStartTime().toLocalDateTime();
+                // 判斷審核通過時是否已超過預約時間
+                if (startTime.isBefore(currentDateTime)) {
+                    startTime = LocalDateTime.of(currentYear, currentMonth, currentDay + 1, 12, 0, 0);
+                }
+            } else {
+                // 沒有開始時間(設定通過後立即上架)
+                // 判斷審核通過時是否已超過當天12點
+                if (currentHour < 12) {
+                    startTime = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 0, 0);
+                } else {
+                    startTime = LocalDateTime.of(currentYear, currentMonth, currentDay + 1, 12, 0, 0);
+                }
+            }
+            endTime = startTime.plusDays(7).plusMinutes(5);
+            bidItem.setStartTime(Timestamp.valueOf(startTime));
+            bidItem.setEndTime(Timestamp.valueOf(endTime));
+            bidItemService.updateBidItem(bidItem);
+            // 發送通知
+        }
+
+        //審核不通過
+        if ("agree".equals(request.getParameter("result"))) {
+
+        }
     }
 }

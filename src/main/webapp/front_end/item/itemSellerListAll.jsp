@@ -33,16 +33,16 @@
       </table>  
         
     	<c:if test="${pageNow > 1}">
-		<a href="${pageContext.request.contextPath}/Item/search?action=getAll&page=1">至第一頁</a>&nbsp;
+		<a href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=1">至第一頁</a>&nbsp;
 	</c:if>
 	<c:if test="${pageNow - 1 != 0}">
-		<a href="${pageContext.request.contextPath}/Item/search?action=getAll&page=${pageNow - 1}">上一頁</a>&nbsp;
+		<a href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=${pageNow - 1}">上一頁</a>&nbsp;
 	</c:if>
 	<c:if test="${pageNow + 1 <= itemPageQty}">
-		<a href="${pageContext.request.contextPath}/Item/search?action=getAll&page=${pageNow + 1}">下一頁</a>&nbsp;
+		<a href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=${pageNow + 1}">下一頁</a>&nbsp;
 	</c:if>
 	<c:if test="${pageNow != itemPageQty}">
-		<a href="${pageContext.request.contextPath}/Item/search?action=getAll&page=${itemPageQty}">至最後一頁</a>&nbsp;
+		<a href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=${itemPageQty}">至最後一頁</a>&nbsp;
 	</c:if>
 	<br>
 	

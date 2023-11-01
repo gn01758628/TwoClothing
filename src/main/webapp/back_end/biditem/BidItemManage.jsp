@@ -106,7 +106,7 @@
                         </thead>
                         <tbody>
                         <c:forEach var="bidItem" items="${bidItemList}">
-                        <tr>
+                            <tr>
                                 <td class="text-center align-middle">${bidStatusMap[bidItem.bidStatus]}</td>
                                 <td class="text-center align-middle">
                                     <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${bidItem.bidItemId}&position=1"
@@ -114,13 +114,20 @@
                                 <td class="text-center align-middle">${bidItem.bidName}</td>
                                 <td class="text-center align-middle text-wrap">${bidItem.mbrId}<br>${membersMap[bidItem.bidItemId].email}<br>${membersMap[bidItem.bidItemId].mbrName}
                                 </td>
-                                <td class="text-center align-middle">${bidItem.empId}</td>
+                                <td class="text-center align-middle">${employeeMap[bidItem.bidItemId].empName}</td>
                                 <td class="text-center align-middle">
                                     <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">商品詳情</a>
                                     <br>
-                                    <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">下架商品</a>
+                                    <c:if test="${bidItem.bidStatus == 0}">
+                                        <input type="hidden" value="${bidItem.bidName}">
+                                        <button class="btn btn-outline-success btn-sm mt-2 mb-2 btn_agree">批准上架
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm mt-2 mb-2 btn_reject">拒絕上架
+                                        </button>
+                                        <input type="hidden" value="${bidItem.bidItemId}">
+                                    </c:if>
                                 </td>
-                        </tr>
+                            </tr>
                         </c:forEach>
                         </tbody>
                     </table>
@@ -136,6 +143,37 @@
 <!--jQuery-->
 <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
 
+<script>
+    $(function () {
+        // 批准上架
+        $(".btn_agree").on("click", function () {
+            let bidItemId = $(this).next().next().val();
+            let bidItemName = $(this).prev().val();
+            if (window.confirm("確定要批准上架嗎?\n" + "商品名稱：" + bidItemName)) {
+                $.post('${pageContext.request.contextPath}/back/biditem/vent', {
+                    result: "agree",
+                    id: bidItemId,
+                    message: ""
+                }, function (data) {
+                    console.log(data);
+                })
+            }
+        });
+        // 拒絕上架
+        $(".btn_reject").on("click", function () {
+            let bidItemId = $(this).next().val();
+            let bidItemName = $(this).prev().prev().val();
+            if (window.confirm("確定要拒絕上架嗎?\n" + "商品名稱：" + bidItemName)) {
+                $.post('${pageContext.request.contextPath}/back/biditem/vent', {
+                    result: "reject",
+                    id: bidItemId
+                }, function (data) {
+                    console.log(data);
+                })
+            }
+        });
+    });
+</script>
 
 <script>
     $(document).ready(function () {

@@ -26,11 +26,14 @@ import com.twoclothing.huiwen.service.ItemServiceImpl;
 import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.aproduct.itemimage.ItemImage;
 
+import redis.clients.jedis.JedisPool;
+
 @WebServlet("/Item/*")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 2 * 1024 * 1024, maxRequestSize = 2 * 2 * 1024 * 1024)
 public class ItemServlet extends HttpServlet {
 
 	private ItemService itemService;
+	private JedisPool jedisPool;
 
 	public void init() throws ServletException {
 		itemService = new ItemServiceImpl();
@@ -48,31 +51,59 @@ public class ItemServlet extends HttpServlet {
 		res.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
 		res.setContentType("text; charset=UTF-8");
-		String choice = req.getParameter("choice");
 
 		PrintWriter out = res.getWriter();
 
+		String choice = req.getParameter("choice");
 		System.out.println("choice:" + choice);
+		String forwardPath = "";
+		if (choice != null) {
+			switch (choice) {
+			case "search":
+				System.out.println("拿到search路徑");
+				forwardPath = "/front_end/item/itemSellerSearch.jsp";
+				break;
 
-		// 新增資料
-		if ("add".equals(choice)) {
-			String url = "/front_end/item/itemSellerUpload.jsp";
-			RequestDispatcher dispatcher = req.getRequestDispatcher(url);
+			case "searchCondition":
+				System.out.println("拿到searchCondition路徑");
+				forwardPath = getCompositeItemQuery(req, res);
+				break;
+
+			case "SearchItems":
+				System.out.println("拿到SearchItems路徑");
+				forwardPath = "/front_end/item/itemSellerSearch.jsp";
+				break;
+			case "getAllList":
+				forwardPath = getAllList(req, res);
+				break;
+			case "addItem":
+				System.out.println("拿到addItem路徑");
+				forwardPath = "/front_end/item/itemSellerUpload.jsp";
+				break;
+			default:
+				forwardPath = "/front_end/item/itemMain.jsp";
+			}
+			RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
 			dispatcher.forward(req, res);
-			
+		}
+		
+		String addRoad = req.getParameter("addRoad");
+		// 新增資料
+		if ("add".equals(addRoad)) {
+
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			String itemName = req.getParameter("itemName");
-			if (itemName == null || itemName.trim().isEmpty())
+			if (itemName == null || itemName.trim().isEmpty()) {
 				errorMsgs.add("商品標題不可以空白");
-
+			}
 			String grade = req.getParameter("grade");
 			if (grade == null || grade.trim().isEmpty() || !grade.matches("^[0-5]$"))
 				errorMsgs.add("請正確選擇商品新舊程度");
 
 			String size = req.getParameter("size");
-			if (size == null || size.trim().isEmpty() || !size.matches("^[0-8]$"))
+			if (size == null || size.trim().isEmpty() || !size.matches("^[0-9]$"))
 				errorMsgs.add("請正確選擇商品品尺寸");
 
 			String detail = req.getParameter("detail");
@@ -86,15 +117,17 @@ public class ItemServlet extends HttpServlet {
 			String tagId = req.getParameter("tagId");
 			System.out.println("tagId:" + tagId);
 			List<Integer> allSelectableTagsId = itemService.getAllSelectableTagsId();
-			System.out.println("列表"+allSelectableTagsId);
+			System.out.println("列表" + allSelectableTagsId);
 			if (tagId == null || tagId.trim().isEmpty()) {
-System.out.println("類別錯1");
+				System.out.println("類別錯1");
 				errorMsgs.add("請正確選擇商品類別標籤");
-			} 
-//			else if (!allSelectableTagsId.contains(Integer.parseInt(tagId))) {
-//System.out.println("類別錯2");
-//				errorMsgs.add("您選擇的類別標籤並非是可選標籤");
-//			}
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front_end/item/itemSellerUpload.jsp");
+				failureView.forward(req, res);
+			} else if (!allSelectableTagsId.contains(Integer.parseInt(tagId))) {
+				System.out.println("類別錯2");
+				errorMsgs.add("您選擇的類別標籤並非是可選標籤");
+			}
 
 			String quantity = req.getParameter("quantity");
 			if (quantity == null) {
@@ -153,17 +186,7 @@ System.out.println("類別錯1");
 			if (image02 == null)
 				errorMsgs.add("請正確的選擇商品補充圖片");
 
-			// 如果錯誤訊系不為空則轉發回新增頁面
-			if (!errorMsgs.isEmpty()) {
-				System.out.println("不為空");
-	            req.getRequestDispatcher("/front_end/item/itemSellerUpload.jsp").forward(req, res);
-			}
 
-//			if (!errorMsgs.isEmpty()) {
-//				req.getRequestDispatcher("/front_end/item/itemSellerUpload.jsp").forward(req, res);
-//			}
-//	        List<CategoryTags> allCategoryTags = itemService.getAllCategoryTags();
-//	        req.setAttribute("categoryTags", allCategoryTags);
 			Item item = new Item();
 			item.setItemName(itemName);
 			item.setGrade(Integer.parseInt(grade));
@@ -179,6 +202,16 @@ System.out.println("類別錯1");
 			} else {
 				item.setSize(Integer.parseInt(size));
 			}
+			
+			// 如果錯誤訊系不為空則轉發回新增頁面
+			if (!errorMsgs.isEmpty()) {
+				req.setAttribute("item", item);
+				System.out.println("不為空");
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front_end/item/itemSellerUpload.jsp");
+				failureView.forward(req, res);
+				return;
+			}
 
 			int itemPK = itemService.addItem(item);
 
@@ -193,96 +226,70 @@ System.out.println("類別錯1");
 				itemImage02.setImage(image02);
 				itemService.addItemImage(itemImage02);
 			}
+			req.setAttribute("item", item);
 
-//			String url = "/Item/searchAll?choice=getAll";
-//			RequestDispatcher dispatcher = req.getRequestDispatcher(url);
-//			dispatcher.forward(req, res);
+			String url = "/front_end/item/itemSellerListCompositeQuery.jsp";
+			RequestDispatcher dispatcher1 = req.getRequestDispatcher(url);
+			dispatcher1.forward(req, res);
 		}
 
+		// 取一筆，準備修改
 		
-		//取一筆，準備修改
-		if ("getOne".equals(choice)) {
-
+		String updateRoad = req.getParameter("getOneForUpdate");
+		
+		if ("getOne".equals(updateRoad)) {
+System.out.println("updateRoad+"+updateRoad);
 			Integer itemId = Integer.valueOf(req.getParameter("itemId"));
 
 			Item item = itemService.getItemByItemId(itemId);
 
 			req.setAttribute("item", item);
 			String url = "/front_end/item/itemSellerUpdate.jsp";
-			RequestDispatcher dispatcher = req.getRequestDispatcher(url);
-			dispatcher.forward(req, res);
+			RequestDispatcher dispatcher1 = req.getRequestDispatcher(url);
+			dispatcher1.forward(req, res);
 		}
-		//修改
-		if ("update".equals(choice)) {
+		// 修改
+		String forUpdate = req.getParameter("forUpdate");
+		if ("update".equals(forUpdate)) {
 
 			Integer itemId = Integer.valueOf(req.getParameter("itemId"));
 			String itemName = req.getParameter("itemName");
 			Integer price = Integer.valueOf(req.getParameter("price"));
 			Integer size = Integer.valueOf(req.getParameter("size"));
 			Integer grade = Integer.valueOf(req.getParameter("grade"));
-			String detail =req.getParameter("detail");
+			String detail = req.getParameter("detail");
 			Integer quantity = Integer.valueOf(req.getParameter("quantity"));
-			System.out.println(itemId+"/"+ itemName+"/"+grade+"/"+size+"/"+detail+"/"+price+"/"+quantity);
+			System.out.println(
+					itemId + "/" + itemName + "/" + grade + "/" + size + "/" + detail + "/" + price + "/" + quantity);
 
-			int itemUpdate = itemService.updateItem(itemId, itemName, grade, size, detail, price, quantity) ;
-			if(itemUpdate == 1) {
+			int itemUpdate = itemService.updateItem(itemId, itemName, grade, size, detail, price, quantity);
+			if (itemUpdate == 1) {
 				System.out.println("修改成功");
 				
-			}else {
+				Item item = itemService.getItemByItemId(itemId);
+				req.setAttribute("item", item);
+
+				String url = "/front_end/item/itemSellerListCompositeQuery.jsp";
+				RequestDispatcher dispatcher = req.getRequestDispatcher(url);
+				dispatcher.forward(req, res);
+			} else {
 				System.out.println("修改失敗");
+				Item item = itemService.getItemByItemId(itemId);
+				req.setAttribute("item", item);
 
+				String url = "/front_end/item/itemSellerLUpdate.jsp";
+				RequestDispatcher dispatcher = req.getRequestDispatcher(url);
+				dispatcher.forward(req, res);
 			}
-			
-			String url = "/front_end/item/itemSellerSearch.jsp";
-
-			RequestDispatcher dispatcher2 = req.getRequestDispatcher(url);
-			dispatcher2.forward(req, res);
-
 		}
-
-//		if ("getAll".equals(choice)) {
-//			getAllItemsPage(req, res);
-//			RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/itemSellerListAll.jsp");
-//			dispatcher.forward(req, res);
-//		}
-
-		// 複合查詢
-		String choiceGet = req.getParameter("choice");
-		System.out.println("choiceGet:" + choiceGet);
-		String forwardPath = "";
-
-		switch (choiceGet) {
-		case "search":
-			System.out.println("拿到search路徑");
-			forwardPath ="/front_end/item/itemSellerSearch.jsp";
-			break;
-		
-		case "searchCondition":
-			System.out.println("拿到searchCondition路徑");
-			forwardPath = getCompositeItemQuery(req, res);
-			break;
-
-		case "SearchItems":
-			System.out.println("拿到SearchItems路徑");
-			forwardPath = "/front_end/item/itemSellerSearch.jsp";
-			break;
-
-		default:
-			forwardPath = "/front_end/item/itemSellerUpload.jsp";
-		}
-		RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
-		dispatcher.forward(req, res);
 	}
 	
-
-	// 查全部
-	private String getAllItemsPage(HttpServletRequest req, HttpServletResponse res) {
-
+	// 查全部，商品列表
+	public String getAllList(HttpServletRequest req, HttpServletResponse res) {
 		String page = req.getParameter("page");
 		System.out.println("page+" + page);
 
 		int pageNow = (page == null) ? 1 : Integer.parseInt(page);
-		System.out.println("00001");
 
 		List<Item> itemList = itemService.getAllItems(pageNow);
 
@@ -290,11 +297,11 @@ System.out.println("類別錯1");
 			int itemPageQty = itemService.getPageTotal();
 			req.setAttribute("itemPageQty", itemPageQty);
 		}
-		Collections.reverse(itemList);
+
 		req.setAttribute("itemList", itemList);
 		req.setAttribute("pageNow", pageNow);
 
-		return "/front_end/item/itemSellerListAll.jsp";
+		return "/front_end/item/itemList.jsp";
 	}
 
 	// 複合查詢
