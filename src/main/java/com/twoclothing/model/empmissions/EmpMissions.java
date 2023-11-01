@@ -2,6 +2,9 @@ package com.twoclothing.model.empmissions;
 
 
 import javax.persistence.*;
+
+import com.twoclothing.model.employee.Employee;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,7 +14,12 @@ public class EmpMissions implements Serializable {
 
     @EmbeddedId
     private CompositeDetail compositeKey;
+    
+    @ManyToOne(fetch = FetchType.LAZY) // 定义与Employee的多对一关系
+    @JoinColumn(name = "empid", insertable = false, updatable = false)
+    private Employee employee;
 
+        
     public EmpMissions() {
     }
 
@@ -81,4 +89,11 @@ public class EmpMissions implements Serializable {
             this.permissionId = permissionId;
         }
     }
+    
+	  public com.twoclothing.model.employee.Employee getEmployee() {
+		  com.twoclothing.tonyhsieh.service.EmployeeServiceImpl EmpSvcq = new com.twoclothing.tonyhsieh.service.EmployeeServiceImpl();
+		  com.twoclothing.model.employee.Employee employee = EmpSvcq.getByPrimaryKey(compositeKey.empId);
+		    return employee;
+	    }
+    
 }
