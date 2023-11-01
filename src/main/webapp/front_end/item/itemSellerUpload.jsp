@@ -11,95 +11,144 @@
 	<title>itemSellerUpload</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
-	<style>
-			/* 將整個表單置中對齊 */
-		.form_add {
-		    margin: 0 auto;
-		    width: 50%;
-		    padding: 20px;
-		    text-align: center;
-		    display:flex;
-		    flex-direction:column;
-		    justify-content: space-between;
-		    align-items: center
+		<style>
+		*{
+			box-sizing: border-box;
+		}
+		div.main_container{
+			display: flex;
+			flex-direction:row;
+
 		}
 		
-		/* 調整文字輸入框、選擇框和數量輸入框的大小 */
-		input[type="text"],
-		select,
-		input[type="number"],
-		textarea {
-		    width: 50%;
+		form.form_add div.main_container  {
+		    margin: 0 auto;
+		    width: 1000px;
+		    padding: 20px;
+		}
+
+		form.form_add div.main_container div.main_right{
+			display:flex;
+		    flex-direction:row;
+			justify-content: center;
+		    align-items: center;
+		}
+
+		form.form_add div.main_container div.main_right div.rightimg{
+			height: 100%;
+			display:flex;
+		    flex-direction:column;
+			justify-content: center;
+		    align-items: center;
+			padding: 0px 14px
+
+		}
+
+		form.form_add div.main_container div.main_right div.rightimg > div{
+			height: 100%;
+			display:flex;
+		    flex-direction:column;
+			justify-content: center;
+		    align-items: center;
+		}
+
+
+		form.form_add div.main_container div.main_right div.right_rightimg{
+			display:flex;
+		    flex-direction:column;
+			justify-content: center;
+		    align-items: center;
+			height: 100%;
+			width: 200px;
+			
+		}
+
+		form.form_add div.main_container div.main_right div.right_rightimg > div{
+			margin: 10px 0px;
+		}
+
+		form.form_add div.main_container div.main_right div.right_rightimg div{
+			border: 1px solid black;
+			height: 100%;
+			width: 100%;
+		}
+
+		form.form_add div.main_container div.main_left{
+			display:flex;
+		    flex-direction:column;
+			justify-content: space-between;
+		    align-items: center
+
+		}
+		form.form_add div.main_container div.main_left div.inner_sel{
+			display:flex;
+		    flex-direction:row;
+		}
+
+		form.form_add div.main_container div.main_left div.input_inner{
+			display:flex;
+		    flex-direction:row;
+		}
+		
+		
+		form.form_add div.main_container  div.main_left 
+		input.input_name, select.sel_tagid{
+			width: 430px;
 		    padding: 10px;
-		    margin: 10px 0;
+		    margin: 10px ;
 		    border: 1px solid #ccc;
 		    border-radius: 5px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+
+		form.form_add div.main_container  div.main_left 
+		select.sel_grade, select.sel_size, input.input_price, input.input_num{
+			width: 210px;
+		    padding: 10px;
+		    margin: 10px 5px;
+			
+		    border: 1px solid #ccc;
+		    border-radius: 5px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+		}
+
+		form.form_add div.main_container  div.main_left textarea{
+			width: 430px;
+			margin: 10px;
+			padding: 10px;
+			border: 1px solid #ccc;
+		    border-radius: 5px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 		}
 		
 		/* 調整提交按鈕的樣式 */
-		input[type="submit"] {
-		    background-color: #007bff;
+		input.input_submit {
+		    background-color: #2860f9c8;
 		    color: #fff;
 		    padding: 10px 20px;
 		    border: none;
 		    border-radius: 5px;
 		    cursor: pointer;
 		    font-weight: bold;
+			margin-left: 59.5%;
 		}
 		
 		/* 標題樣式 */
 		h1 {
 		    font-size: 24px;
-		    margin-bottom: 20px;
+			padding-left: 20.7%;
+			padding-top: 30px;
 		}
 		
-		/* 標題下的輸入欄位樣式 */
-		label {
-		    font-weight: bold;
-		    display: block;
-		    margin-top: 10px;
-		}
-		
-		/* 錯誤訊息樣式 */
-		ul {
-		    list-style: none;
-		    padding: 0;
-		}
-		
-		li {
-		    margin: 5px 0;
-		}
-		
-		/* 上傳圖片的輸入框樣式 */
 		.form-control {
-		    width: 70%;
+		    width: 80%;
 		    padding: 10px;
 		    margin: 10px 0;
 		    border: 1px solid #ccc;
 		    border-radius: 5px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 		}
-		
-		/* 調整輸入框和選擇框的外觀，以增加質感 */
-		input[type="text"],
-		select,
-		input[type="number"],
-		textarea,
-		.form-control {
-		    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-		}
-		
-		/* 選項下拉框的樣式 */
-		select {
-		    -webkit-appearance: none;
-		    -moz-appearance: none;
-		    appearance: none;
-		    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-		    background-repeat: no-repeat;
-		    background-position: right 10px center;
-		}
-			
-			
-	
 	</style>
 </head>
 <body>
@@ -114,80 +163,90 @@
 </c:if>
 
 
-<form class="form_add" method="post" action="${pageContext.request.contextPath}/TwoClothing/Item/add" enctype="multipart/form-data">
-<p>
+<form class="form_add" method="post" action="${pageContext.request.contextPath}/Item/add" enctype="multipart/form-data">
+<div class="">
 	<h1>商品上傳</h1>
-	<br>
-	<label>商品名稱</label>
-	<input type="text" name="itemName" maxlength = 20>
-	<br>
-	<label>商品新舊程度</label>
-<!-- 	<input type="text" name="grade"> -->
-	<select  name="grade">
-		<option value="" selected>請選擇商品新舊程度</option>
-		<option value="0">全新(沒使用過且包裝未拆,吊牌未剪)</option>
-		<option value="1">9成5新(沒有使用痕跡,但包裝已拆,吊牌已剪)</option>
-		<option value="2">9成新(有使用痕跡,但沒有瑕疵)</option>
-		<option value="3">8成新(有使用痕跡,少量瑕疵)</option>
-		<option value="4">5成新(有使用痕跡,明顯瑕疵)</option>
-        <option value="5">破損商品(需要修補)</option>
-	</select>
-	<br>
-	<label>尺寸</label>
-<!-- 	<input type="text" name="size"> -->
-	<select  name="size"> 
-		<option value="9" selected>如果您的商品不是以下列選項來描述尺寸，請跳過此選擇</option>
-		<option value="0">XS(含)以下</option>
-		<option value="1">S</option>
-		<option value="2">M</option>
-		<option value="3">L</option>
-		<option value="4">XL</option>
-		<option value="5">2XL</option>
-		<option value="6">3XL</option>
-		<option value="7">4XL(含)以上</option>
-	</select>
-	<br>
-	<label>類別</label>
-	<select  name="tagId"> 
-		<option value="1" selected>所有種類</option>
-		<option value="2">上衣</option>
-		<option value="3">褲子</option>
-		<option value="4">飾品</option>
-		<option value="5">短袖</option>
-		<option value="6">長袖</option>
-		<option value="7">短褲</option>
-		<option value="8">長褲</option>
-		<option value="9">男短袖</option>
-		<option value="10">女短袖</option>
-	</select>
-	<br>
-	<label>價格</label>
-	<input type="text" name="price" autocomplete="on">
-	<br>
-	<label>數量</label>
-	<input type="number" name="quantity" value="1" min="1">
-	<br>
-	<label>商品描述</label>
-	<textarea name="detail"></textarea>
-	<br>
-    <div class="">
-      <label for="image01" class="form-label">上傳商品的主圖片<span class="text-danger">*</span></label>
-      <input class="form-control" type="file" id="image01" name="image01"
-             accept="image/jpeg, image/png" required aria-describedby="image01Help">
-      <div id="image01Help" class="form-text">每個商品都必須要有主圖片</div>
-    </div>
+	<form class="form_add" method="post" action="${pageContext.request.contextPath}/TwoClothing/Item/add" enctype="multipart/form-data">
+		<div class="main_container">
+			<div class="main_left">
 
-    <div class="">
-      <label for="image02" class="form-label">上傳商品的補充圖片</label>
-      <input class="form-control" type="file" id="image02" name="image02"
-             accept="image/jpeg, image/png">
-    </div>
-		
-	
-<input type="hidden" name="action" value="insert">
-<input type="submit" value="送出新增">
-<p>
-</form>	
+				<input class="input_name" type="text" placeholder="商品名稱" name="itemName" maxlength = 20>
+
+				<select class="sel_tagid" name="tagId"> 
+					<option value="1" disabled selected>所有種類</option >
+						<optgroup value="2" label="上衣">
+							<optgroup value="5" label="&nbsp;&nbsp;&nbsp;&nbsp;短袖">
+								<option value="9">&nbsp;&nbsp;&nbsp;男短袖</option>
+								<option value="10">&nbsp;&nbsp;&nbsp;女短袖</option>
+							</optgroup>
+						<option value="6">&nbsp;&nbsp;&nbsp;&nbsp;長袖</option>
+						</optgroup>
+						
+						<optgroup value="3" label="褲子">
+							<option value="7">短褲</option>
+							<option value="8">長褲</option>
+						</optgroup >
+						<option value="4">飾品</option>
+				</select>
+
+				<div class="inner_sel">
+					<select class="sel_grade" name="grade">
+						<option value="" disabled selected>請選擇商品新舊程度</option>
+						<option value="0">全新(沒使用過且包裝未拆,吊牌未剪)</option>
+						<option value="1">9成5新(沒有使用痕跡,但包裝已拆,吊牌已剪)</option>
+						<option value="2">9成新(有使用痕跡,但沒有瑕疵)</option>
+						<option value="3">8成新(有使用痕跡,少量瑕疵)</option>
+						<option value="4">5成新(有使用痕跡,明顯瑕疵)</option>
+						<option value="5">破損商品(需要修補)</option>
+					</select>
+
+					<select class="sel_size" name="size"> 
+						<option value="" disabled selected>尺寸</option>
+						<option value="9">其他</option>
+						<option value="0">XS(含)以下</option>
+						<option value="1">S</option>
+						<option value="2">M</option>
+						<option value="3">L</option>
+						<option value="4">XL</option>
+						<option value="5">2XL</option>
+						<option value="6">3XL</option>
+						<option value="7">4XL(含)以上</option>
+					</select>
+				</div>
+				<div class="input_inner">
+					<input class="input_price" type="text" placeholder="價格" name="price" autocomplete="on">
+
+					<input class="input_num" type="number" placeholder="數量" name="quantity"  min="1">
+				</div>
+				<textarea placeholder="商品描述" name="detail"></textarea>
+
+			</div>
+			<div class="main_right">
+				<div class="rightimg">
+					<div>
+					<label for="image01" class="form-label">上傳商品的主圖片<span class="text-danger">*</span></label>
+					<div id="image01Help" class="form-text">每個商品都必須要有主圖片</div>
+					<input class="form-control" type="file" id="image01" name="image01"
+							accept="image/jpeg, image/png" required aria-describedby="image01Help">
+					</div>
+
+					<div>
+					<label for="image02" class="form-label2">上傳商品的補充圖片</label>
+					<input class="form-control" type="file" id="image02" name="image02"
+							accept="image/jpeg, image/png">
+					</div>
+				</div>
+
+				<div class="right_rightimg">
+					<div>圖片</div>
+					<div>圖片2</div>
+				</div>
+			</div>
+		</div>
+	<input type="hidden" name="addRoad" value="add">
+	<input class="input_submit" type="submit" value="送出新增">
+	</form>	
+</div>
     <a href="${pageContext.request.contextPath}/front_end/item/itemSellerSearch.jsp">查詢</a>
 
 <!--bootstrap5 js-->
