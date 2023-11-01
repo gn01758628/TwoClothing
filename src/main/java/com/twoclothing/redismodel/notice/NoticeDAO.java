@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface NoticeDAO {
 
-    void insert(Notice notice, String mbrId);
+    void insert(Notice notice, Integer mbrId);
 
-    List<Notice> getAllByMbrId(String mbrId);
+    List<Notice> getAllByMbrId(Integer mbrId);
 }

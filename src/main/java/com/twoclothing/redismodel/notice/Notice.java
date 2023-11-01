@@ -23,14 +23,6 @@ public class Notice {
     public Notice() {
     }
 
-    public Notice(String type, String head, String content, String link, String imageLink) {
-        this.type = type;
-        this.head = head;
-        this.content = content;
-        this.link = link;
-        this.imageLink = imageLink;
-    }
-
     @Override
     public String toString() {
         return "Notice{" +

@@ -47,12 +47,12 @@ public class ServletTest extends HttpServlet {
         notice.setImageLink("/ooo/ooo");
 
         NoticeDAO noticeDAO = new NoticeJedisDAO();
-        noticeDAO.insert(notice, "1");
-        noticeDAO.insert(notice, "1");
-        noticeDAO.insert(notice, "1");
-        noticeDAO.insert(notice, "1");
+        noticeDAO.insert(notice, 1);
+        noticeDAO.insert(notice, 1);
+        noticeDAO.insert(notice, 1);
+        noticeDAO.insert(notice, 1);
 
-        List<Notice> allByMbrId = noticeDAO.getAllByMbrId("1");
+        List<Notice> allByMbrId = noticeDAO.getAllByMbrId(1);
         for (Notice n : allByMbrId) {
             System.out.println(n);
         }
