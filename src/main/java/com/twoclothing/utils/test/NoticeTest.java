@@ -27,7 +27,9 @@ public class NoticeTest {
 
         // 4.再利用取得的通知ID(key)與內容(value)(String儲存JSON格式)
         NoticeDTO noticeDTO = new NoticeDTO();
+        // 可以直接利用建構子
         noticeDTO.setType("系統通知");
+        noticeDTO.setHead("測試測試");
         noticeDTO.setContent("哩西咧工三小");
         noticeDTO.setLink("/ooo/ooo/ooo");
         noticeDTO.setImageLink("/xxx/xxx/xxx");

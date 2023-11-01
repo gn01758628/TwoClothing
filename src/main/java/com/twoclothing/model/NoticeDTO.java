@@ -2,16 +2,19 @@ package com.twoclothing.model;
 
 public class NoticeDTO {
 
-    // 消息類別
+    // 通知類別
     private String type;
 
-    // 消息內容
+    // 通知標題
+    private String head;
+
+    // 通知內容
     private String content;
 
-    // 連結(點下去可以前往的地方,可以沒有)
+    // 點下去可以前往的連結(可以沒有)
     private String link;
 
-    // 圖片的Servlet連結連結(可以沒有)
+    // 圖片的Servlet連結連結(不可以沒有)
     private String imageLink;
 
     // 是否讀過訊息,預設為false
@@ -20,8 +23,9 @@ public class NoticeDTO {
     public NoticeDTO() {
     }
 
-    public NoticeDTO(String type, String content, String link, String imageLink, boolean read) {
+    public NoticeDTO(String type, String head, String content, String link, String imageLink, boolean read) {
         this.type = type;
+        this.head = head;
         this.content = content;
         this.link = link;
         this.imageLink = imageLink;
@@ -32,6 +36,7 @@ public class NoticeDTO {
     public String toString() {
         return "NoticeDTO{" +
                 "type='" + type + '\'' +
+                ", head='" + head + '\'' +
                 ", content='" + content + '\'' +
                 ", link='" + link + '\'' +
                 ", imageLink='" + imageLink + '\'' +
@@ -45,6 +50,14 @@ public class NoticeDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getHead() {
+        return head;
+    }
+
+    public void setHead(String head) {
+        this.head = head;
     }
 
     public String getContent() {
