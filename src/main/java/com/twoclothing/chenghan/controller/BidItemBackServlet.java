@@ -114,7 +114,9 @@ public class BidItemBackServlet extends HttpServlet {
         // TODO 從session取得員工編號 這裡先寫死
         Integer empid = 1;
         String bidItemId = request.getParameter("id");
+        String message = request.getParameter("message");
 
+        // 審核通過
         if ("agree".equals(request.getParameter("result"))) {
             BidItem bidItem = bidItemService.getBidItemByBidItemId(Integer.parseInt(bidItemId));
             HibernateUtil.getSessionFactory().getCurrentSession().evict(bidItem);
@@ -147,6 +149,13 @@ public class BidItemBackServlet extends HttpServlet {
             endTime = startTime.plusDays(7).plusMinutes(5);
             bidItem.setStartTime(Timestamp.valueOf(startTime));
             bidItem.setEndTime(Timestamp.valueOf(endTime));
+            bidItemService.updateBidItem(bidItem);
+            // 發送通知
+        }
+
+        //審核不通過
+        if ("agree".equals(request.getParameter("result"))) {
+
         }
     }
 }

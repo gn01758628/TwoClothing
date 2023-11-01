@@ -145,24 +145,31 @@
 
 <script>
     $(function () {
-
+        // 批准上架
         $(".btn_agree").on("click", function () {
             let bidItemId = $(this).next().next().val();
             let bidItemName = $(this).prev().val();
             if (window.confirm("確定要批准上架嗎?\n" + "商品名稱：" + bidItemName)) {
-                $.post('${pageContext.request.contextPath}/back/biditem/vent', {result:"agree",id:bidItemId}, function (data) {
+                $.post('${pageContext.request.contextPath}/back/biditem/vent', {
+                    result: "agree",
+                    id: bidItemId,
+                    message: ""
+                }, function (data) {
                     console.log(data);
                 })
             }
         });
-
+        // 拒絕上架
         $(".btn_reject").on("click", function () {
             let bidItemId = $(this).next().val();
             let bidItemName = $(this).prev().prev().val();
             if (window.confirm("確定要拒絕上架嗎?\n" + "商品名稱：" + bidItemName)) {
-
-            } else {
-
+                $.post('${pageContext.request.contextPath}/back/biditem/vent', {
+                    result: "reject",
+                    id: bidItemId
+                }, function (data) {
+                    console.log(data);
+                })
             }
         });
     });
