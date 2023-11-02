@@ -76,9 +76,15 @@ public class BidItemEndingSchedule extends HttpServlet {
                 }
             }
         };
-        Calendar cal = new GregorianCalendar(2023, Calendar.NOVEMBER, 2, 9, 46);
+
+        // 服務器啟動時的時間
+        LocalDateTime tomcatNow = LocalDateTime.now();
+        // 默認的開始時間為當天的12:05
+        LocalDateTime startTime = LocalDateTime.of(tomcatNow.getYear(), tomcatNow.getMonthValue(), tomcatNow.getDayOfMonth(), 12, 5, 0);
+        // 如果服務器啟動時已超過12:05,startTime+1天
+        if (tomcatNow.isAfter(startTime)) startTime = startTime.plusDays(1);
         // 每天中午12:05執行一次
-        timer.scheduleAtFixedRate(timerTask, cal.getTime(), 24 * 60 * 60 * 1000);
+        timer.scheduleAtFixedRate(timerTask, Timestamp.valueOf(startTime), 24 * 60 * 60 * 1000);
     }
 
     @Override
