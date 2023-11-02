@@ -16,6 +16,9 @@ public interface BidOrderService {
 	 
 	 List<BidOrder> getAllSellMbrId (Integer SellMbrId);
 	 
+	 List<BidOrder> getAllSellMbrIdAndBuyMbrId(Integer sellMbrId, Integer buyMbrId, Integer bidItemId);
+
+	 
 	 List<BidOrder> getAllOrderStatusAndBuyer (Integer orderStatus, Integer buyMbrId);
 	
 	 List<BidOrder> getAllOrderStatusAndSeller(Integer orderStatus, Integer sellMbrId);

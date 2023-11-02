@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<form action="${pageContext.request.contextPath}/back_end/members/SendEmailServlet" method="post">
+<form action="${pageContext.request.contextPath}/members/SendEmailServlet" method="post">
     <input type="hidden" name="action" value="verificationEmail"/>
     <table align="center" width="30%">
 

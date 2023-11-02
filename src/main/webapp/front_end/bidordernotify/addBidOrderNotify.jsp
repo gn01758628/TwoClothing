@@ -49,7 +49,7 @@
 <table id="table-1">
 	<tr><td>
 	 <h3>新增addBidOrderRatingImage.jsp資料 - addBidOrderRatingImage.jsp</h3>
-		 <h4><a href="<%=request.getContextPath()%>/back_end/bidorderratingimage/select_page.jsp"><img src="images/login2.png" width="100" height="102" border="0">回首頁</a></h4>
+		 <h4><a href="<%=request.getContextPath()%>/MemberCentre.jsp"><img src="images/login2.png" width="100" height="102" border="0">回首頁</a></h4>
 		</td></tr>
 </table>
 
@@ -57,7 +57,7 @@
 
 
 
-<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorderratingimage/BidOrderRatingImage.do" name="form1" enctype="multipart/form-data">
+<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidordernotify/BidOrderNotify.do" name="form1" enctype="multipart/form-data">
 <table>
 	<tr>
 		<td>會員編號:</td>
