@@ -6,9 +6,9 @@
 
 
  <%
-//  	BidItemReportServiceImpl bidItemReportServiceImpl = new BidItemReportServiceImpl();
-//    	List<BidItemReport> list = bidItemReportServiceImpl.getAll();
-//     pageContext.setAttribute("list",list);
+ 	BidItemReportServiceImpl bidItemReportServiceImpl = new BidItemReportServiceImpl();
+   	List<BidItemReport> list = bidItemReportServiceImpl.getAll();
+    pageContext.setAttribute("list",list);
 	%>
 
 <html>
@@ -76,8 +76,8 @@
 		<th>³Æµù</th>
 		
 	</tr>
-<%-- 	<%@ include file="page1.file" %>  --%>
-	<c:forEach var="biditemreport" items="${list}"  >
+	<%@ include file="page1.file" %> 
+	<c:forEach var="biditemreport" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>" >
 		
 		<tr>
 			<td>${biditemreport.reportId}</td>
@@ -112,7 +112,7 @@
 		</tr>
 	</c:forEach>
 </table>
-<%-- <%@ include file="page2.file" %> --%>
+<%@ include file="page2.file" %>
 
 </body>
 </html>

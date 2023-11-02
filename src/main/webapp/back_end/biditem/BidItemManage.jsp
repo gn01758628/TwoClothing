@@ -106,24 +106,62 @@
                         </thead>
                         <tbody>
                         <c:forEach var="bidItem" items="${bidItemList}">
-                        <tr>
-                                <td class="text-center align-middle">${bidStatusMap[bidItem.bidStatus]}</td>
+                            <tr>
+                                <td class="text-center align-middle td-bidStatus">${bidStatusMap[bidItem.bidStatus]}</td>
                                 <td class="text-center align-middle">
                                     <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${bidItem.bidItemId}&position=1"
                                          alt="${bidItem.bidName}" width="100" class="img-thumbnail"></td>
                                 <td class="text-center align-middle">${bidItem.bidName}</td>
                                 <td class="text-center align-middle text-wrap">${bidItem.mbrId}<br>${membersMap[bidItem.bidItemId].email}<br>${membersMap[bidItem.bidItemId].mbrName}
                                 </td>
-                                <td class="text-center align-middle">${bidItem.empId}</td>
+                                <td class="text-center align-middle td-empName">${employeeMap[bidItem.bidItemId].empName}</td>
                                 <td class="text-center align-middle">
                                     <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">商品詳情</a>
                                     <br>
-                                    <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">下架商品</a>
+                                    <c:if test="${bidItem.bidStatus == 0}">
+                                        <input type="hidden" value="${bidItem.bidName}">
+                                        <button class="btn btn-outline-success btn-sm mt-2 mb-2 btn_agree">批准上架
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm mt-2 mb-2 btn_reject"
+                                                data-bs-toggle="modal" data-bs-target="#rejectReasons">拒絕上架
+                                        </button>
+                                        <input type="hidden" value="${bidItem.bidItemId}">
+                                    </c:if>
                                 </td>
-                        </tr>
+                            </tr>
                         </c:forEach>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="rejectReasons" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">簡單明瞭地解釋為何拒絕上架</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="was-validated">
+                            <div class="mb-3">
+                                <label for="rejectReasons_text" class="form-label"></label>
+                                <textarea class="form-control is-invalid" id="rejectReasons_text"
+                                          placeholder="提供拒絕上架的理由，以幫助用戶明白我們的決定。"
+                                          required maxlength="50"></textarea>
+                                <div class="invalid-feedback" style="display: none">
+                                    請注意，必須提供拒絕上架的理由才能繼續操作
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_reject_cancel">
+                            取消
+                        </button>
+                        <button type="submit" class="btn btn-danger" id="btn_reject_sure">拒絕上架</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -136,6 +174,73 @@
 <!--jQuery-->
 <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
 
+<script>
+    $(function () {
+        const textarea_rejectReasons = $("#rejectReasons_text");
+        // 批准上架
+        $(".btn_agree").on("click", function () {
+            let bidItemId = $(this).next().next().val();
+            let bidItemName = $(this).prev().val();
+            const td_empName = $(this).closest("tr").find(".td-empName");
+            const td_bidStatus = $(this).closest("tr").find(".td-bidStatus");
+            const btn_agree = $(this);
+            const btn_reject = $(this).next();
+            if (window.confirm("確定要批准上架嗎?\n" + "商品名稱：" + bidItemName)) {
+                // jQuery Ajax Post request
+                $.post('${pageContext.request.contextPath}/back/biditem/vent', {
+                    result: "agree",
+                    id: bidItemId,
+                    message: ""
+                }, function (data) {
+                    td_empName.text(data);
+                    td_bidStatus.text("已過審");
+                    btn_agree.remove();
+                    btn_reject.remove();
+                })
+            }
+        });
+        // 拒絕上架
+        $(".btn_reject").on("click", function () {
+            let bidItemId = $(this).next().val();
+            let bidItemName = $(this).prev().prev().val();
+            const td_empName = $(this).closest("tr").find(".td-empName");
+            const td_bidStatus = $(this).closest("tr").find(".td-bidStatus");
+            const btn_reject = $(this);
+            const btn_agree = $(this).prev();
+            const btn_reject_sure = $("#btn_reject_sure");
+            //取消上次綁定的事件
+            btn_reject_sure.off();
+            // 模態框的確認按鈕
+            btn_reject_sure.on("click", function () {
+                if (textarea_rejectReasons.val() !== "") {
+                    if (window.confirm("確定要拒絕上架嗎?\n" + "商品名稱：" + bidItemName)) {
+                        // jQuery Ajax Post request
+                        $.post('${pageContext.request.contextPath}/back/biditem/vent', {
+                            result: "reject",
+                            id: bidItemId,
+                            message: textarea_rejectReasons.val()
+                        }, function (data) {
+                            td_empName.text(data);
+                            td_bidStatus.text("被下架");
+                            btn_agree.remove();
+                            btn_reject.remove();
+                            $("#btn_reject_cancel").click();
+                        })
+                    } else {
+                        $("#btn_reject_cancel").click();
+                    }
+                } else {
+                    $(".invalid-feedback").slideDown(400);
+                }
+            })
+            // 模態框的取消按鈕
+            $("#btn_reject_cancel").on("click", function () {
+                $(".invalid-feedback").hide();
+                textarea_rejectReasons.val("");
+            })
+        });
+    });
+</script>
 
 <script>
     $(document).ready(function () {

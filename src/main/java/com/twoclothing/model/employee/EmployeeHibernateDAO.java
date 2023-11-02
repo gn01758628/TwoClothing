@@ -26,6 +26,20 @@ public class EmployeeHibernateDAO implements EmployeeDAO{
 	public Employee getByPrimaryKey(Integer empId) {
 		// TODO Auto-generated method stub
 		return getSession().get(Employee.class, empId);
+
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		try {
+//			session.beginTransaction();
+//			getSession().get(Employee.class, empId);
+//			session.getTransaction().commit();
+//		} catch (RuntimeException ex) {
+//			session.getTransaction().rollback();
+//			throw ex;
+//		}
+//		return getSession().get(Employee.class, empId);
+		
+		
+		
 		}
 
 	@Override

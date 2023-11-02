@@ -8,6 +8,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -56,11 +57,32 @@ public class BidItemHibernateDAO implements BidItemDAO {
     }
 
     @Override
+    public List<BidItem> getAllByBidStatus(Integer bidStatus) {
+        return getSession().createQuery("from BidItem where bidStatus = :bidStatus", BidItem.class)
+                .setParameter("bidStatus", bidStatus)
+                .list();
+    }
+
+    @Override
     public List<BidItem> getAllLegalByMbrId(Integer mbrId) {
         return getSession().createQuery("from BidItem where bidStatus not in (:statuses1,:statuses2) and mbrId = :mbrId order by bidItemId", BidItem.class)
                 .setParameter("statuses1", 5)
                 .setParameter("statuses2", 6)
                 .setParameter("mbrId", mbrId)
+                .list();
+    }
+
+    @Override
+    public List<BidItem> getAllActiveBidItemsByEndTime(Timestamp time) {
+        return getSession().createQuery("from BidItem where bidStatus = 4 and endTime < :time",BidItem.class)
+                .setParameter("time",time)
+                .list();
+    }
+
+    @Override
+    public List<BidItem> getAllPassBidItemsByStartTime(Timestamp time) {
+        return getSession().createQuery("from BidItem where bidStatus = 1 and startTime < :time",BidItem.class)
+                .setParameter("time",time)
                 .list();
     }
 

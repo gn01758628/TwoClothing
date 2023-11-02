@@ -97,7 +97,11 @@ public class GenericTestServlet extends HttpServlet {
 		list4 = gs.getBy(Employee.class, "deptId", 2);
 		for (Employee enetity : list4) {
 			System.out.println(enetity);
+			System.out.println(enetity.getFormatEmpId());
 		}
+		
+		
+		
 		//新增判斷是否關聯到資料庫 如果沒有就在console印出XXX類別沒有關聯資料庫不予受理
 		GenericDAO dao1 = DAOSelector.getDAO(String.class);
 		

@@ -5,6 +5,7 @@ import com.twoclothing.model.abid.biditemimage.BidItemImage;
 import com.twoclothing.model.categorytags.CategoryTags;
 import com.twoclothing.model.employee.Employee;
 import com.twoclothing.model.members.Members;
+import com.twoclothing.redismodel.notice.Notice;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,8 @@ public interface BidItemService {
 
     void addBidItemImage(BidItemImage bidItemImage);
 
+    void addVentNotices(Notice notice, Integer mbrId);
+
     BidItem getBidItemByBidItemId(Integer bidItemId);
 
     Members getMembersByMbrId(Integer mbrId);
@@ -28,12 +31,14 @@ public interface BidItemService {
 
     List<BidItem> getAllLegalBidItemByMbrid(Integer mbrId);
 
-    List<BidItem> getAllBidItemByCompositeQuery(Map<String,String[]> compositeQuery);
+    List<BidItem> getAllBidItemByCompositeQuery(Map<String, String[]> compositeQuery);
 
     List<CategoryTags> getAllCategoryTags();
 
     List<Employee> getAllEmployee();
 
     List<Integer> getAllSelectableTagsId();
+
+    boolean updateBidItem(BidItem bidItem);
 
 }

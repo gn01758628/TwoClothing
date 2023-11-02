@@ -2,13 +2,13 @@ package com.twoclothing.listener;
 
 import com.twoclothing.utils.HibernateUtil;
 import com.twoclothing.utils.JedisPoolUtil;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-
-// 利用Annotation來註冊
 @WebListener
 public class InitToolListener implements ServletContextListener {
 
@@ -19,18 +19,19 @@ public class InitToolListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         HibernateUtil.getSessionFactory();
-        System.out.println("Build SessionFactory");
-        JedisPoolUtil.getJedisPool();
-        System.out.println("Create JedisPool");
-        System.currentTimeMillis();
+        JedisPool jedisPool = JedisPoolUtil.getJedisPool();
+        // 檢查並初始化noticeId
+        Jedis jedis = jedisPool.getResource();
+        jedis.select(15);
+        if (!jedis.exists("noticeId")) {
+            jedis.set("noticeId", "0");
+        }
     }
 
     // 當webapp關閉時關閉資源
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         HibernateUtil.shutdown();
-        System.out.println("Shutdown SessionFactory");
         JedisPoolUtil.shutdown();
-        System.out.println("Shutdown JedisPool");
     }
 }
