@@ -1,5 +1,6 @@
 package com.twoclothing.model.abid.biditem;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -18,10 +19,22 @@ public interface BidItemDAO {
 
     List<BidItem> getAllByMbrId(Integer mbrId);
 
+    List<BidItem> getAllByBidStatus(Integer bidStatus);
+
     /**
      * @return 狀態不是5或6的全部商品
      */
     List<BidItem> getAllLegalByMbrId(Integer mbrId);
+
+    /**
+     * @return 上架中且在指定時間之前結束
+     */
+    List<BidItem> getAllActiveBidItemsByEndTime(Timestamp time);
+
+    /**
+     * @return 已過審且在指定時間之前開始
+     */
+    List<BidItem> getAllPassBidItemsByStartTime(Timestamp time);
 
     List<BidItem> getAllByCompositeQuery(Map<String, String[]> compositeQuery);
 
