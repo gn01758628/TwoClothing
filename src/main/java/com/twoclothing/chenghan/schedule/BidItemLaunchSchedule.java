@@ -70,7 +70,7 @@ public class BidItemLaunchSchedule extends HttpServlet {
         };
         Calendar cal = new GregorianCalendar(2023, Calendar.NOVEMBER, 2, 11, 59);
         // 每天中午11:59執行一次
-        timer.schedule(timerTask, cal.getTime(), 24 * 60 * 60 * 1000);
+        timer.scheduleAtFixedRate(timerTask, cal.getTime(), 24 * 60 * 60 * 1000);
     }
 
     @Override

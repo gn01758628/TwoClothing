@@ -78,7 +78,7 @@ public class BidItemEndingSchedule extends HttpServlet {
         };
         Calendar cal = new GregorianCalendar(2023, Calendar.NOVEMBER, 2, 9, 46);
         // 每天中午12:05執行一次
-        timer.schedule(timerTask, cal.getTime(), 24 * 60 * 60 * 1000);
+        timer.scheduleAtFixedRate(timerTask, cal.getTime(), 24 * 60 * 60 * 1000);
     }
 
     @Override
