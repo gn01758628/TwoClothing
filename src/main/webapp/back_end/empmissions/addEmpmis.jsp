@@ -68,10 +68,15 @@
 <FORM METHOD="post" ACTION="EmpMissions.do" name="form1" enctype="multipart/form-data">
 <table>
 	
-
+	<jsp:useBean id="EmployeeServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.service.EmployeeServiceImpl" />
 	<tr>
-		<td>員工ID:</td>
-		<td><input type="TEXT" name="empid" value="${param.empId}" size="45"/></td>
+		<td>員工:</td>
+		<td><select size="1" name="empid">
+			<c:forEach var="employee" items="${EmployeeServiceImpl.all}">
+				<option value="${employee.empId}"${(param.empId==employee.empId)? 'selected':'' } >${employee.empName}
+			
+			</c:forEach>
+		</select></td>
 	</tr>
 	
 	<tr>

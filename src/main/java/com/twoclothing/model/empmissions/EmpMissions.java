@@ -15,11 +15,7 @@ public class EmpMissions implements Serializable {
     @EmbeddedId
     private CompositeDetail compositeKey;
     
-    @ManyToOne(fetch = FetchType.LAZY) // 定义与Employee的多对一关系
-    @JoinColumn(name = "empid", insertable = false, updatable = false)
-    private Employee employee;
-
-        
+         
     public EmpMissions() {
     }
 
