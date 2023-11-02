@@ -15,18 +15,17 @@ import com.twoclothing.model.employee.EmployeeHibernateDAO;
 import com.twoclothing.model.members.Members;
 import com.twoclothing.model.members.MembersDAO;
 import com.twoclothing.model.members.MembersHibernateDAO;
+import com.twoclothing.redismodel.notice.Notice;
+import com.twoclothing.redismodel.notice.NoticeDAO;
+import com.twoclothing.redismodel.notice.NoticeJedisDAO;
 import com.twoclothing.utils.HibernateUtil;
-import com.twoclothing.utils.JedisPoolUtil;
 import org.hibernate.SessionFactory;
-import redis.clients.jedis.JedisPool;
 
 import java.util.*;
 
 public class BidItemServiceImpl implements BidItemService {
 
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-
-    private final JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 
     private final BidItemDAO bidItemDAO = new BidItemHibernateDAO(sessionFactory);
 
@@ -37,6 +36,8 @@ public class BidItemServiceImpl implements BidItemService {
     private final EmployeeDAO employeeDAO = new EmployeeHibernateDAO(sessionFactory);
 
     private final MembersDAO membersDAO = new MembersHibernateDAO(sessionFactory);
+
+    private final NoticeDAO noticeDAO = new NoticeJedisDAO();
 
     public BidItemServiceImpl() {
     }
@@ -49,6 +50,11 @@ public class BidItemServiceImpl implements BidItemService {
     @Override
     public void addBidItemImage(BidItemImage bidItemImage) {
         bidItemImageDAO.insert(bidItemImage);
+    }
+
+    @Override
+    public void addVentNotices(Notice notice, Integer mbrId) {
+        noticeDAO.insert(notice, mbrId);
     }
 
     @Override
@@ -136,6 +142,6 @@ public class BidItemServiceImpl implements BidItemService {
 
     @Override
     public boolean updateBidItem(BidItem bidItem) {
-        return true;
+        return bidItemDAO.update(bidItem);
     }
 }

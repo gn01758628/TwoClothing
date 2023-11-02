@@ -194,10 +194,10 @@ public class MembersServlet extends HttpServlet {
 		    String email = req.getParameter("email");
 		    String pswdHash = req.getParameter("pswdHash");
 		    String userInputCode = req.getParameter("VerificationCode");
-//===============================圖片
+//===============================圖片的資料
 		    HttpSession session = req.getSession();
 		    String sessionCode = (String) session.getAttribute("randStr");
-//===============================圖片
+//===============================圖片的資料
 		    MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 		    Members members = membersServiceImpl.getByEmail(email);
 

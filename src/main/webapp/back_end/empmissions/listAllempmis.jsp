@@ -7,9 +7,9 @@
 
 
  <%
-//  	EmpMissionsServiceImpl empMissionsServiceImpl = new EmpMissionsServiceImpl();
-//    	List<EmpMissions> list = empMissionsServiceImpl.getAll();
-//     pageContext.setAttribute("list",list);
+ 	EmpMissionsServiceImpl empMissionsServiceImpl = new EmpMissionsServiceImpl();
+   	List<EmpMissions> list = empMissionsServiceImpl.getAll();
+    pageContext.setAttribute("list",list);
 	%>
 
 <html>

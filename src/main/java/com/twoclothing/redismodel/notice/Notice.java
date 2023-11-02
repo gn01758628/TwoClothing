@@ -1,6 +1,6 @@
-package com.twoclothing.model;
+package com.twoclothing.redismodel.notice;
 
-public class NoticeDTO {
+public class Notice {
 
     // 通知類別
     private String type;
@@ -11,7 +11,7 @@ public class NoticeDTO {
     // 通知內容
     private String content;
 
-    // 點下去可以前往的連結(可以沒有)
+    // 點下去可以前往的連結(不可以沒有)
     private String link;
 
     // 圖片的Servlet連結連結(不可以沒有)
@@ -20,21 +20,12 @@ public class NoticeDTO {
     // 是否讀過訊息,預設為false
     private boolean read = false;
 
-    public NoticeDTO() {
-    }
-
-    public NoticeDTO(String type, String head, String content, String link, String imageLink, boolean read) {
-        this.type = type;
-        this.head = head;
-        this.content = content;
-        this.link = link;
-        this.imageLink = imageLink;
-        this.read = read;
+    public Notice() {
     }
 
     @Override
     public String toString() {
-        return "NoticeDTO{" +
+        return "Notice{" +
                 "type='" + type + '\'' +
                 ", head='" + head + '\'' +
                 ", content='" + content + '\'' +

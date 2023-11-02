@@ -55,6 +55,12 @@ public class BidOrderServiceImpl implements BidOrderService {
 		return dao.getAllBySellMbrId(SellMbrId); 
 			 
 		}
+	
+	
+	@Override
+	public List<BidOrder> getAllSellMbrIdAndBuyMbrId(Integer sellMbrId, Integer buyMbrId, Integer bidItemId) {
+		return dao.getAllBySellMbrIdAndBuyMbrId(sellMbrId, buyMbrId, bidItemId);
+	}
 		
 	@Override
 	public List<BidOrder> getAllOrderStatusAndBuyer(Integer orderStatus, Integer buyMbrId) {
@@ -72,6 +78,8 @@ public class BidOrderServiceImpl implements BidOrderService {
 	    }
 	    return null;
 	}
+	
+	
 
 	@Override
 	public List<BidOrder> getAllOrderStatusAndSeller(Integer orderStatus, Integer sellMbrId) {
@@ -115,6 +123,8 @@ public class BidOrderServiceImpl implements BidOrderService {
 	public Integer deleteBidOrder(Integer bidOrderId) {
 		return dao.delete(bidOrderId);
 	}
+
+
 
 
 }

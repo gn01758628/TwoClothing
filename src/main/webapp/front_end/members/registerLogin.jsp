@@ -180,7 +180,7 @@ input {
 						name="comfirm_password" placeholder="確認密碼" required> <span
 						id="comfirm_passwordError" style="color: red;"></span> 
 <!-- 	圖片驗證	===================				 -->
-					 <input id=VerificationCode type="VerificationCode" name="VerificationCode" size=10 placeholder=驗證碼>
+					 <input id="VerificationCode" type="text" name="VerificationCode" size=10 placeholder=驗證碼>
 					 <span id="VerificationCodeError" style="color: red;"></span>
 					 <%--點選圖片可進行驗證碼重新整理--%>
 					 <img name="imgValidate" id=imgValidate src = "imgValidate.jsp" onclick="refresh()" >
@@ -213,40 +213,73 @@ input {
 		const emailError = document.getElementById('emailError');
 		const pswdHashError = document.getElementById('pswdHashError');
 		
+		form.addEventListener('submit', function(event) {
+		    let isValid = true;
 
+		    // 电子邮件字段验证
+		    const emailPattern = /^[a-zA-Z0-9_!#$%&'\\*+/=?{|}~^.-]+@[a-zA-Z0-9.-]+$/;
+		    if (!emailPattern.test(emailInput.value)) {
+		        emailError.textContent = '电子邮件地址格式不正确';
+		        isValid = false;
+		    } else {
+		        emailError.textContent = ''; // 清空错误消息
+		    }
+
+		    // 密码字段验证（包括密码复杂度）
+		    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+		    if (!passwordPattern.test(pswdHashInput.value)) {
+		        pswdHashError.textContent = '密码必须包含至少一个小写字母、一个大写字母和一个数字';
+		        isValid = false;
+		    } else {
+		        pswdHashError.textContent = ''; // 清空错误消息
+		    }
+
+		    // 获取验证码的值并验证
+		    verificationCode = document.getElementById("VerificationCode").value;
+		    if (!verificationCode) {
+		        // 用户没有输入验证码
+		        document.getElementById("VerificationCodeError").textContent = "请输入验证码";
+		        isValid = false;
+		    }
+
+		    // 如果 isValid 为 false，则阻止表单提交
+		    if (!isValid) {
+		        event.preventDefault();
+		    }
+		});
 		
-				form.addEventListener('submit',function(event) {
+// 				form.addEventListener('submit',function(event) {
 						
-							let isValid = true;
+// 							let isValid = true;
 
-							// 电子邮件字段验证
-							const emailPattern = /^[a-zA-Z0-9_!#$%&'\\*+/=?{|}~^.-]+@[a-zA-Z0-9.-]+$/;
-							if (!emailPattern.test(emailInput.value)) {
-								emailError.textContent = '电子邮件地址格式不正确';
-								isValid = false;
-							} else {
-								emailError.textContent = ''; // 清空错误消息
-							}
+// 							// 电子邮件字段验证
+// 							const emailPattern = /^[a-zA-Z0-9_!#$%&'\\*+/=?{|}~^.-]+@[a-zA-Z0-9.-]+$/;
+// 							if (!emailPattern.test(emailInput.value)) {
+// 								emailError.textContent = '电子邮件地址格式不正确';
+// 								isValid = false;
+// 							} else {
+// 								emailError.textContent = ''; // 清空错误消息
+// 							}
 
-							// 密码字段验证（包括密码复杂度）
-							const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-							if (!passwordPattern.test(pswdHashInput.value)) {
-								pswdHashError.textContent = '密码必须包含至少一个小写字母、一个大写字母和一个数字';
-								isValid = false;
-							} else {
-								pswdHashError.textContent = ''; // 清空错误消息
-							}
-							if (!verificationCode) {
-						        // 用户没有输入验证码
-						        document.getElementById("VerificationCodeError").textContent = "请输入验证码";
-						        event.preventDefault(); // 阻止表单提交
-						    }
+// 							// 密码字段验证（包括密码复杂度）
+// 							const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+// 							if (!passwordPattern.test(pswdHashInput.value)) {
+// 								pswdHashError.textContent = '密码必须包含至少一个小写字母、一个大写字母和一个数字';
+// 								isValid = false;
+// 							} else {
+// 								pswdHashError.textContent = ''; // 清空错误消息
+// 							}
+// 							if (!verificationCode) {
+// 						        // 用户没有输入验证码
+// 						        document.getElementById("VerificationCodeError").textContent = "请输入验证码";
+// 						        event.preventDefault(); // 阻止表单提交
+// 						    }
 
-							// 如果 isValid 为 false，则阻止表单提交
-							if (!isValid) {
-								event.preventDefault();
-							}
-						});
+// 							// 如果 isValid 为 false，则阻止表单提交
+// 							if (!isValid) {
+// 								event.preventDefault();
+// 							}
+// 						});
 //===============================================登入註冊切換===============================================
 
 		function show_hide() {

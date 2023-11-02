@@ -156,8 +156,7 @@ public class EmpMissionsServlet extends HttpServlet {
 			}
 			
 			
-				/***************************2.開始新增資料***************************************/
-					
+						
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/back_end/empmissions/select_page.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp

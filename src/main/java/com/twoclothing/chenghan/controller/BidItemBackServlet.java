@@ -5,6 +5,7 @@ import com.twoclothing.chenghan.service.BidItemServiceImpl;
 import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.employee.Employee;
 import com.twoclothing.model.members.Members;
+import com.twoclothing.redismodel.notice.Notice;
 import com.twoclothing.utils.HibernateUtil;
 
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -115,11 +117,12 @@ public class BidItemBackServlet extends HttpServlet {
         Integer empid = 1;
         String bidItemId = request.getParameter("id");
         String message = request.getParameter("message");
+        Employee employee = bidItemService.getEmployeeByEmpId(empid);
+        BidItem bidItem = bidItemService.getBidItemByBidItemId(Integer.parseInt(bidItemId));
+        HibernateUtil.getSessionFactory().getCurrentSession().evict(bidItem);
 
         // 審核通過
         if ("agree".equals(request.getParameter("result"))) {
-            BidItem bidItem = bidItemService.getBidItemByBidItemId(Integer.parseInt(bidItemId));
-            HibernateUtil.getSessionFactory().getCurrentSession().evict(bidItem);
             bidItem.setBidStatus(1);
             bidItem.setEmpId(empid);
 
@@ -150,12 +153,38 @@ public class BidItemBackServlet extends HttpServlet {
             bidItem.setStartTime(Timestamp.valueOf(startTime));
             bidItem.setEndTime(Timestamp.valueOf(endTime));
             bidItemService.updateBidItem(bidItem);
+
             // 發送通知
+            Notice notice = new Notice();
+            notice.setType("競標審核");
+            notice.setHead("您的競標案審核已通過");
+            notice.setContent("您的競標申請已通過，將在" + bidItem.getStartTime() + "開始上架");
+            // TODO 設置點擊前往的連結
+            notice.setLink("");
+            notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
+            bidItemService.addVentNotices(notice,bidItem.getMbrId());
+
         }
 
         //審核不通過
-        if ("agree".equals(request.getParameter("result"))) {
-
+        if ("reject".equals(request.getParameter("result"))) {
+            bidItem.setBidStatus(6);
+            bidItem.setEmpId(empid);
+            bidItemService.updateBidItem(bidItem);
+            // 發送通知
+            Notice notice = new Notice();
+            notice.setType("競標審核");
+            notice.setHead("對不起，您的競標案審核因某些原因無法通過");
+            notice.setContent(message);
+            // TODO 設置點擊前往的連結
+            notice.setLink("");
+            notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
+            bidItemService.addVentNotices(notice,bidItem.getMbrId());
         }
+
+        //回傳處理的員工
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.print(employee.getEmpName());
     }
 }
