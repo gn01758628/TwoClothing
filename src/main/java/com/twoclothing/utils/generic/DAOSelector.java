@@ -17,7 +17,7 @@ public class DAOSelector {
 		// 私有建構子，防止外部實例化
 	}
 
-	public static DAOSelector getInstance() {
+	private static DAOSelector getInstance() {
 		return instance;
 
 	}
