@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>員工登入畫面</title>
+	
+		
+	<!-- 引入 jQuery -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<!-- 引入 jQuery 表單驗證 -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+	
+	
+	<link rel="stylesheet" href="/TwoClothing/css/chijung/empLogin1.css">
+	<link rel="stylesheet" href="/TwoClothing/css/chijung/empLogin2.css">
+
+</head>
+
+<body>
+
+	<div class="login-box">
+       	<h2>員工登入</h2>
+        <form id="myForm">
+          <div class="user-box">
+            <input type="text" id="empId" name="empId">
+            <label>員工編號</label>
+          </div>
+          <div class="user-box">
+            <input type="password" id="password" name="password">
+            <label>密碼</label>
+          </div>
+          <div id="errorMsgs"></div>
+          <a href="#" id="submitButton">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            LOGIN
+          </a>
+          <input type="text" name="action" value="login" hidden>
+        </form>
+     </div>
+
+	<script src="/TwoClothing/js/chijung/empLogin2.js"></script>
+	<script>
+	$(document).ready(function() {
+	    // 當超連結被點擊時
+	    $('#submitButton').click(function(e) {
+	        // 取消超連結的默認行為，避免跳轉
+	        e.preventDefault();
+	        
+	        // 手動觸發表單的提交
+	        $('#myForm').submit();
+	    });
+	    
+	    
+	    $('#myForm').submit(function(e) {
+	        // 阻止表單的預設提交行為
+	        e.preventDefault();
+	        console.log("AAAAAA");
+	        // 獲取表單數據
+	        var formData = $(this).serialize();
+	        
+	        // 發送 AJAX 請求
+	        $.ajax({
+	            type: 'POST', // 或 'GET'，取決於你的需求
+	            url: '/TwoClothing/Employeee.do', // 請求的URL
+	            data: formData, // 要發送的數據
+	            success: function(data) {
+	            	// 從JSON資料中取得物件和URL
+	                const url = data.url;
+	                const emp = data.emp;
+	                
+	                // 將物件存入Session Storage
+	                sessionStorage.setItem('emp', JSON.stringify(emp));
+	                
+	                // 跳轉到指定URL
+	                window.location.href = url;
+	            },
+	            error: function(xhr, status, error) {
+	            	try {
+		                // 嘗試解析後端返回的JSON錯誤訊息
+		                var errorMsgs = JSON.parse(xhr.responseText);
+		                var errorMsgDiv = $('#errorMsgs'); // 要顯示錯誤訊息的HTML元素
+
+		                // 清空錯誤訊息
+		                errorMsgDiv.empty();
+
+		                // 將錯誤訊息插入到HTML元素中
+		                for (var key in errorMsgs) {
+		                    if (errorMsgs.hasOwnProperty(key)) {
+		                        var errorMsg = errorMsgs[key];
+		                        errorMsgDiv.append('<p style="color: blue;">' + errorMsg + '</p>');
+		                    }
+		                }
+		            } catch (e) {
+		                // 如果解析JSON失敗，可以顯示一個通用的錯誤訊息
+		                console.error('Error parsing JSON response:', e);
+		                $('#errorMsgs').text('伺服器錯誤。');
+		            }
+	            }
+	        });
+	    });
+	 
+		 // 在輸入後及提交時驗證表單欄位是否格式正確
+//         $("#myForm").validate({
+//             rules: {
+//             	empId: {
+//                     required: true
+//                 },
+//                 password: {
+//                     required: true
+//                 }
+//             },
+//             messages: {
+//             	empId: {
+//                     required: "員工編號為必填"
+//                 },
+//                 password: {
+//                     required: "密碼為必填"
+//                 }
+//             },
+//             errorClass: "error-message", // 自定義錯誤訊息的 CSS 類別
+//             errorElement: "div", // 自定義錯誤訊息的 HTML 元素
+//             errorPlacement: function(error, element) {
+//                 // 將錯誤訊息插入到輸入欄位後面
+//                 error.insertBefore(element).css("color","blue");
+//             }
+//         });
+	});
+	</script>
+</body>
+
+</html>

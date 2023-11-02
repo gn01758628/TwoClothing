@@ -30,6 +30,7 @@ public class ItemHibernateDAO implements ItemDAO {
 	
 	@Override
 	public int insert(Item item) {
+		System.out.println("111111"+item);
 		return (Integer) getSession().save(item);	
 	}
 	
@@ -173,7 +174,7 @@ public class ItemHibernateDAO implements ItemDAO {
 		
 		int first = (page - 1) * ITEM_PAGE_MAX_RESULT;
 
-		return getSession().createQuery("from Item", Item.class)
+		return getSession().createQuery("from Item order by itemId desc", Item.class)
 				.setFirstResult(first)
 				.setMaxResults(ITEM_PAGE_MAX_RESULT)
 				.list();
