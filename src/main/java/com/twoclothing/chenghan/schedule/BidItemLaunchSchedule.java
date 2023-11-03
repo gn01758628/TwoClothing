@@ -48,17 +48,17 @@ public class BidItemLaunchSchedule extends HttpServlet {
 
                     // 迴圈更改商品狀態,並發送通知
                     for (BidItem bidItem : bidItemList) {
-                            bidItem.setBidStatus(4);
-                            // 發出競標商品上架通知
-                            Notice notice = new Notice();
-                            notice.setType("競標商品");
-                            notice.setHead("競標商品已上架");
-                            notice.setContent("您的競標商品：" + bidItem.getBidName() + " 已經上架了");
-                            // TODO 設置點擊連結
-                            notice.setLink("/xxx/ooo");
-                            notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItem.getBidItemId() + "&position=1");
-                            NoticeDAO noticeDAO = new NoticeJedisDAO();
-                            noticeDAO.insert(notice,bidItem.getMbrId());
+                        bidItem.setBidStatus(4);
+                        // 發出競標商品上架通知
+                        Notice notice = new Notice();
+                        notice.setType("競標商品");
+                        notice.setHead("競標商品已上架");
+                        notice.setContent("您的競標商品：" + bidItem.getBidName() + " 已經上架了");
+                        // TODO 設置點擊連結
+                        notice.setLink("/xxx/ooo");
+                        notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItem.getBidItemId() + "&position=1");
+                        NoticeDAO noticeDAO = new NoticeJedisDAO();
+                        noticeDAO.insert(notice, bidItem.getMbrId());
                     }
                     // 不主動調用update(),利用Persistent狀態達成批次更新
                     currentSession.getTransaction().commit();
@@ -68,9 +68,15 @@ public class BidItemLaunchSchedule extends HttpServlet {
                 }
             }
         };
-        Calendar cal = new GregorianCalendar(2023, Calendar.NOVEMBER, 2, 11, 59);
+
+        // 服務器啟動時的時間
+        LocalDateTime tomcatNow = LocalDateTime.now();
+        // 默認的開始時間為當天的11:59
+        LocalDateTime startTime = LocalDateTime.of(tomcatNow.getYear(), tomcatNow.getMonthValue(), tomcatNow.getDayOfMonth(), 11, 59, 0);
+        // 如果服務器啟動時已超過11:59,startTime+1天
+        if (tomcatNow.isAfter(startTime)) startTime = startTime.plusDays(1);
         // 每天中午11:59執行一次
-        timer.schedule(timerTask, cal.getTime(), 24 * 60 * 60 * 1000);
+        timer.scheduleAtFixedRate(timerTask, Timestamp.valueOf(startTime), 24 * 60 * 60 * 1000);
     }
 
     @Override

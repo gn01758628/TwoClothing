@@ -125,20 +125,48 @@ ul{
 
 <script>
 $(document).ready(function() {
-	// 從sessionStorage中取出JSON字串
-	let empDataString = sessionStorage.getItem('emp');
-
-	// 將JSON字串轉換為JSON物件
-	let empData = JSON.parse(empDataString);
-
-	// 現在empData是一個JSON物件，你可以像這樣訪問它的屬性：
-	let empId = empData.formatEmpId;
-	let empName = empData.empName;
-	// 其他屬性...
-	$('#formatEmpId').text(empId);
-	$('#empName').text(empName);
 	
+	$.ajax({
+        url: '/TwoClothing/EmployeeCenter.do', // 替換為後端API的實際URL
+        type: 'POST', // 請求的類型為POST
+        dataType: 'json',
+        data: {
+            action: 'center'
+        }, // 直接傳遞參數
+        success: function(emp) {
+            $('#formatEmpId').text(emp.formatEmpId);
+            $('#empName').text(emp.empName);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            alert("帳號已登出,請重新登入");
+            window.location.href = xhr.responseText; 
+        }
+    });
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//     // 登出
+//     $.ajax({
+//         url: '/TwoClothing/EmployeeCenter.do', // 替換為後端API的實際URL
+//         type: 'POST', // 請求的類型為POST
+//         data: {
+//             action: 'logout'
+//         }, // 直接傳遞參數
+//         success: function(url) {
+//             // 請求成功的處理邏輯
+//         	window.location.href = url;
+//         }
+//     });
 });
+
 </script>
 
 
