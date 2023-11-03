@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKEditor 5 jQuery 範例</title>
+<!-- 引入 jQuery -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+
+body {
+	margin: 0;
+  padding: 0;
+  min-height: 100vh;
+	font-family: 'Muli', sans-serif;
+  background: linear-gradient(to right, #c9ffbf, #ffafbd);
+}
+
+.menu {
+	font-weight: 100;
+	background: #efefef;
+	width: 190px;
+	height: 100%;
+	padding-left: 50px;
+	position: fixed;
+	z-index: 100;
+	box-shadow: -3px 0px 5px 0px rgba(0, 0, 0, 0.2);
+	left: -170px;
+	transition: all 0.3s;
+	color: #222;
+}
+
+
+
+.menu:hover, .menu:focus {
+	transform: translateX(170px);
+	animation-timing-function: 1s ease-in;
+}
+
+.menu .personal{
+  position:relative;
+  border: 1px solid red;
+  top:-20px;
+  left:-50px;
+  width:240px;
+  height:80px;
+}
+
+.menu .title {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%) rotate(90deg);
+	right: 10px;
+	font-weight: 800;
+	font-size: 15px;
+}
+
+.menu .nav {
+  height:600px;
+  top: 100px; 
+	font-weight: 100;
+  z-index: 1;
+  overflow-y: auto;
+}
+
+.menu .nav::-webkit-scrollbar {
+    width: 8px; /* 設置Webkit（Chrome，Safari等）瀏覽器的滾動條寬度 */
+}
+.menu .nav::-webkit-scrollbar-thumb {
+    background-color: #888; /* 設置滾動條滑塊顏色 */
+    border-radius: 4px; /* 滑塊的圓角 */
+}
+
+.menu .nav::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* 滑塊在hover時的顏色 */
+}
+
+ul{
+   padding-inline-start: 0px;
+}
+
+.menu .nav li {
+	padding-bottom: 30px;
+	list-style-type: none;
+}
+
+.menu .nav li a {
+	display: block;
+	text-decoration: none;
+	color: inherit;
+	transition: all 0.3s;
+}
+
+.menu .nav li a:hover {
+	color: #aaa;
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+	<div class="menu">
+    <div class="title">MENU</div>
+  <img scr="#">
+  <div class="personal">
+    <p>員工編號:<span id="formatEmpId"></span></p>
+    <p>員工姓名:<span id="empName"></span></p>
+  </div>
+    <ul class="nav">
+      <li><a href="#">Work</a></li>
+      <li><a href="#">Resources</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Work</a></li>
+      <li><a href="#">Resources</a></li>
+    </ul>
+</div>
+
+
+<script>
+$(document).ready(function() {
+	
+	$.ajax({
+        url: '/TwoClothing/EmployeeCenter.do', // 替換為後端API的實際URL
+        type: 'POST', // 請求的類型為POST
+        dataType: 'json',
+        data: {
+            action: 'center'
+        }, // 直接傳遞參數
+        success: function(emp) {
+            $('#formatEmpId').text(emp.formatEmpId);
+            $('#empName').text(emp.empName);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            alert("帳號已登出,請重新登入");
+            window.location.href = xhr.responseText; 
+        }
+    });
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//     // 登出
+//     $.ajax({
+//         url: '/TwoClothing/EmployeeCenter.do', // 替換為後端API的實際URL
+//         type: 'POST', // 請求的類型為POST
+//         data: {
+//             action: 'logout'
+//         }, // 直接傳遞參數
+//         success: function(url) {
+//             // 請求成功的處理邏輯
+//         	window.location.href = url;
+//         }
+//     });
+});
+
+</script>
+
+
+
+
+
+</body>
+
+</html>
