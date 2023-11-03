@@ -27,7 +27,7 @@ public interface BidItemService {
 
     Employee getEmployeeByEmpId(Integer empId);
 
-    List<BidItem> getAllBidItemByMbrid(Integer mbrId);
+    CategoryTags getCategoryTagsByTagId(Integer tagId);
 
     List<BidItem> getAllLegalBidItemByMbrid(Integer mbrId);
 

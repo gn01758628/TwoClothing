@@ -280,30 +280,15 @@ public class BidItemFrontServlet extends HttpServlet {
             throws ServletException, IOException {
         String bidItemId = request.getParameter("bidItemId");
         BidItem bidItem = bidItemService.getBidItemByBidItemId(Integer.parseInt(bidItemId));
-        List<CategoryTags> categoryTags = bidItemService.getAllCategoryTags();
-        Map<Integer, String> tagMap = new HashMap<>();
-        for (CategoryTags tags : categoryTags) {
-            tagMap.put(tags.getTagId(),tags.getCategoryName());
-        }
-        Map<Integer, String> gradeMap = new HashMap<>();
-        gradeMap.put(0, "全新");
-        gradeMap.put(1, "9成5新");
-        gradeMap.put(2, "9成新");
-        gradeMap.put(3, "8成新");
-        gradeMap.put(4, "5成新");
-        Map<Integer, String> sizeMap = new HashMap<>();
-        sizeMap.put(0, "XS(含以下)");
-        sizeMap.put(1, "S");
-        sizeMap.put(2, "M");
-        sizeMap.put(3, "L");
-        sizeMap.put(4, "XL");
-        sizeMap.put(5, "2XL");
-        sizeMap.put(6, "3XL");
-        sizeMap.put(7, "4XL(含以下)");
-        request.setAttribute("tagMap", tagMap);
+        String categoryName = bidItemService.getCategoryTagsByTagId(bidItem.getTagId()).getCategoryName();
+        String grade = NumberMapping.gradeMap.get(bidItem.getGrade());
+        String size = NumberMapping.sizeMap.get(bidItem.getSize());
+        String bidStatus = NumberMapping.bidStatusMap.get(bidItem.getBidStatus());
         request.setAttribute("bidItem", bidItem);
-        request.setAttribute("sizeMap", sizeMap);
-        request.setAttribute("gradeMap", gradeMap);
+        request.setAttribute("categoryName", categoryName);
+        request.setAttribute("grade", grade);
+        request.setAttribute("size", size);
+        request.setAttribute("bidStatus", bidStatus);
         request.getRequestDispatcher("/front_end/biditem/BidItemDetail.jsp").forward(request, response);
 
     }

@@ -73,8 +73,8 @@ public class BidItemServiceImpl implements BidItemService {
     }
 
     @Override
-    public List<BidItem> getAllBidItemByMbrid(Integer mbrId) {
-        return bidItemDAO.getAllByMbrId(mbrId);
+    public CategoryTags getCategoryTagsByTagId(Integer tagId) {
+        return categoryTagsDAO.getByPrimaryKey(tagId);
     }
 
     @Override

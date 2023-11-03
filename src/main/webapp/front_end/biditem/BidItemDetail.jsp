@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>賣家競標商品清單</title>
+    <title>競標商品清單</title>
     <!--bootstrap5 css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
     <!-- google fonts -->
@@ -24,6 +24,10 @@
 </head>
 <body>
 
+<div class="container text-center">
+    <h1>${bidStatus}</h1>
+</div>
+
 <div class="container">
     <div class="row mt-5">
         <div class="col-md-6">
@@ -32,32 +36,36 @@
         </div>
         <div class="col-md-6">
             <ul class="list-group">
-                <li class="list-group-item">${bidItem.bidItemId}</li>
-                <li class="list-group-item">${bidItem.bidName}</li>
-                <li class="list-group-item">${gradeMap[bidItem.grade]}</li>
-                <li class="list-group-item">${sizeMap[bidItem.size]}</li>
-                <li class="list-group-item">${bidItem.detail}</li>
-                <li class="list-group-item">${tagMap[bidItem.tagId]}</li>
-                <li class="list-group-item">${bidItem.mbrId}</li>
-                <li class="list-group-item">$${bidItem.startPrice}</li>
+                <li class="list-group-item">商品編號：${bidItem.bidItemId}</li>
+                <li class="list-group-item">商品名稱：${bidItem.bidName}</li>
+                <li class="list-group-item">商品新舊程度：${grade}</li>
+                <li class="list-group-item">商品尺寸：${size}</li>
+                <li class="list-group-item">商品詳述：${bidItem.detail}</li>
+                <li class="list-group-item">商品類別：${categoryName}</li>
+                <li class="list-group-item">所屬會員：${bidItem.mbrId}</li>
+                <li class="list-group-item">起標價格：$${bidItem.startPrice}</li>
                 <c:if test="${not empty bidItem.reservePrice}">
-                    <li class="list-group-item">$${bidItem.reservePrice}</li>
+                    <li class="list-group-item">底標價格：$${bidItem.reservePrice}</li>
                 </c:if>
                 <c:if test="${not empty bidItem.directPrice}">
-                    <li class="list-group-item">$${bidItem.directPrice}</li>
+                    <li class="list-group-item">直購價：$${bidItem.directPrice}</li>
                 </c:if>
                 <c:if test="${not empty bidItem.startTime}">
-                    <li class="list-group-item">${bidItem.startTime}</li>
+                    <li class="list-group-item">競標開始時間：${bidItem.startTime}</li>
                 </c:if>
                 <c:if test="${not empty bidItem.endTime}">
-                    <li class="list-group-item">${bidItem.endTime}</li>
+                    <li class="list-group-item">競標結束時間：${bidItem.endTime}</li>
                 </c:if>
                 <c:if test="${not empty bidItem.empId}">
-                    <li class="list-group-item">${bidItem.empId}</li>
+                    <li class="list-group-item">審核員工：${bidItem.empId}</li>
                 </c:if>
             </ul>
         </div>
     </div>
+</div>
+
+<div class="container mt-5 mb-5">
+
 </div>
 
 
@@ -68,31 +76,8 @@
 <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
 
 <script>
-    $(document).ready(function () {
-        // 設置結束時間
-        const endTime = new Date('2023-10-31T12:00:00').getTime();
 
-        const timerElement = $('#timer');
 
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const timeRemaining = endTime - now;
-
-            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-            timerElement.text(`${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`);
-
-            if (timeRemaining <= 0) {
-                timerElement.text('已结束');
-            }
-        }
-
-        // 更新倒计时
-        setInterval(updateCountdown, 1000);
-    });
 </script>
 </body>
 </html>
