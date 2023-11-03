@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -200,14 +201,14 @@ System.out.println(mbrId);
 			
 
 		    /***************************3.刪除完成,準備轉交(Send the Success view)***********/
-//原來的		    String url = "/MemberCentre.jsp";
-//ok		    String url = "/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId="+mbrId;
-//ok		RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
-//ok			successView.forward(req, res);
 			
-		    String url1 = "/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId="+mbrId;
-
-			res.sendRedirect(url1);
+		    String url = "/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId="+mbrId;
+		RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
+			
+//		    String url1 ="/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId="+mbrId;
+//
+//			res.sendRedirect(url1);
 			
 		}
 		

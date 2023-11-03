@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*"%>
 
-<%@ include file="bidorderBanner.jsp" %> 
+<%@ include file="buyBidorderBanner.jsp" %> 
 
 
 <!DOCTYPE html>
@@ -91,7 +91,7 @@
 		<td>${BidOrder.receiveName}</td>
 		<td>${BidOrder.receivePhone}</td>
 		<td>${BidOrder.remarks}</td>
-			
+<!-- 			
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
 			     <input type="submit" value="修改">
@@ -104,7 +104,7 @@
 			     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}">
 			     <input type="hidden" name="action" value="delete"></FORM>
 			</td>
-			
+ -->			
 		</tr>
 		
 	</c:forEach>

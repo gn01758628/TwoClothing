@@ -84,7 +84,6 @@ input:disabled {
 			<input type="hidden" name="sellMbrId" value="${user.mbrId}">
 			<input type="hidden" name="action" value="sellBidOrder">
 			<input type="submit" value="賣家競標訂單">
-				
 			</FORM>
 		</li>
 		

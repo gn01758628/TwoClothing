@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java"%>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -53,7 +53,7 @@ h5:hover {
 	margin: 50px;
 	padding: 10px;
 	width: 230px;
-	height: 300px;
+	height: 450px;
 	background-color: white;
 	border-radius: 5px;
 	border-top: 10px solid #df5334;
@@ -90,7 +90,7 @@ h5:hover {
 
 #container2 {
 	visibility: hidden; /*剛開始消失*/
-	height: 350px;
+	height: 450px;
 }
 
 #copyright {
@@ -139,10 +139,11 @@ input {
 <!-- ============================登入================================================ -->
 				<form action="${pageContext.request.contextPath}/members/Members.do" class="login-form">
 					<input type="text" id="email2" name="email2" placeholder="email"
-						required>
+						required><span id="loginEemailError" style="color: red;"></span>
 					<div class="tab"></div>
 					<input type="text" id="pswdHash2" name="pswdHash2" placeholder="密碼"
-						required>
+						required><span id="loginPpswdHashError"
+						style="color: red;"></span>
 					<div class="tab"></div>
 					<input type="submit" name="action" value="login" class="submit">
 				</form>
@@ -168,12 +169,12 @@ input {
 
 					<!-- 电子邮件输入字段 -->
 					<input type="email" id="email" name="email" placeholder="email"
-						required> <span id="emailError" style="color: red;"></span>
+						required> <span id="registerEmailError" style="color: red;"></span>
 
 					<!-- 密码输入字段 -->
 					<input type="password" id="pswdHash" name="pswdHash"
-						placeholder="密碼" required> <span id="pswdHashError"
-						style="color: red;"></span>
+						placeholder="密碼" required> <span id="registerPpswdHashError"
+						style="color: red;"></span>											
 
 					<!-- 确认密码输入字段 -->
 					<input type="password" id="comfirm_password"
@@ -208,10 +209,11 @@ input {
 		const form = document.getElementById('registrationForm');
 		const emailInput = document.getElementById('email');
 		const pswdHashInput = document.getElementById('pswdHash');
+		const comfirm_passwordInput = document.getElementById('comfirm_password');
 	    var verificationCode = document.getElementById("VerificationCode").value;
 		const comfirmPasswordInput = document.getElementById('comfirm_password');
-		const emailError = document.getElementById('emailError');
-		const pswdHashError = document.getElementById('pswdHashError');
+		const emailError = document.getElementById('registerEmailError');
+		const pswdHashError = document.getElementById('registerPpswdHashError');
 		
 		form.addEventListener('submit', function(event) {
 		    let isValid = true;
@@ -233,6 +235,13 @@ input {
 		    } else {
 		        pswdHashError.textContent = ''; // 清空错误消息
 		    }
+		    
+		    if (pswdHashInput.value !== comfirm_passwordInput.value) {
+		        comfirm_passwordError.textContent = '两次输入的密码不匹配';
+		        isValid = false;
+		    } else {
+		        comfirm_passwordError.textContent = ''; // 清空错误消息
+		    }
 
 		    // 获取验证码的值并验证
 		    verificationCode = document.getElementById("VerificationCode").value;
@@ -248,38 +257,7 @@ input {
 		    }
 		});
 		
-// 				form.addEventListener('submit',function(event) {
-						
-// 							let isValid = true;
 
-// 							// 电子邮件字段验证
-// 							const emailPattern = /^[a-zA-Z0-9_!#$%&'\\*+/=?{|}~^.-]+@[a-zA-Z0-9.-]+$/;
-// 							if (!emailPattern.test(emailInput.value)) {
-// 								emailError.textContent = '电子邮件地址格式不正确';
-// 								isValid = false;
-// 							} else {
-// 								emailError.textContent = ''; // 清空错误消息
-// 							}
-
-// 							// 密码字段验证（包括密码复杂度）
-// 							const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-// 							if (!passwordPattern.test(pswdHashInput.value)) {
-// 								pswdHashError.textContent = '密码必须包含至少一个小写字母、一个大写字母和一个数字';
-// 								isValid = false;
-// 							} else {
-// 								pswdHashError.textContent = ''; // 清空错误消息
-// 							}
-// 							if (!verificationCode) {
-// 						        // 用户没有输入验证码
-// 						        document.getElementById("VerificationCodeError").textContent = "请输入验证码";
-// 						        event.preventDefault(); // 阻止表单提交
-// 						    }
-
-// 							// 如果 isValid 为 false，则阻止表单提交
-// 							if (!isValid) {
-// 								event.preventDefault();
-// 							}
-// 						});
 //===============================================登入註冊切換===============================================
 
 		function show_hide() {
@@ -321,7 +299,6 @@ input {
 
 			$.ajax({
 				type : "POST",
-//		 		url : "/TwoClothing/back_end/members/Members.do",
 				url : contextPath + "/members/Members.do",
 				data : loginData,
 				dataType : "json",
@@ -341,8 +318,9 @@ input {
 									
 					}
 					}else{
-// 							alert("帳號密碼錯誤" + response.errors.error);
-							alert("帳號密碼錯誤");
+							alert("錯誤:" + response.errors.error);
+// 							alert("帳號密碼錯誤");
+							$("#loginPpswdHashError").text(response.errors.error);////
 						}
 					
 				},
@@ -374,11 +352,9 @@ form.addEventListener('submit', function(event) {
 
     $.ajax({
     	type : "POST",
-// 		url : "/TwoClothing/back_end/members/Members.do",
 		url : contextPath +"/members/Members.do",
         data: registerData,
-        dataType: "json",
-        
+        dataType:"json",
         success: function(response) {
             try {
                 if (response.success) {
@@ -391,14 +367,16 @@ form.addEventListener('submit', function(event) {
                     if (response.errors) {
                     	
                         if (response.errors.email) {
+                         	var errorMessage = response.errors.email;
+                         	$("#registerEmailError").text(response.errors.email);////
                             // 使用 alert 显示错误消息
- //                             alert("错误：" + response.errors.email);
-                           alert("错误：用戶已存在" );
-            
-                            
+//                             alert("错误：" + response.errors.email);
+                        
+
                         }
                         if(response.errors.sessionCode){
-                        	 alert("错误：驗證碼錯誤" );
+ //                       	 alert("错误：" + response.errors.sessionCode);
+                        	 $("#VerificationCodeError").text(response.errors.sessionCode);
                         }
                         // 如果有其他错误字段，可以类似处理
                     }

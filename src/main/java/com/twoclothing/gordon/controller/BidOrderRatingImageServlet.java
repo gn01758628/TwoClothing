@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import com.twoclothing.gordon.service.*;
-import com.twoclothing.model.*;
 @MultipartConfig
 @WebServlet("/bidorderratingimage/BidOrderRatingImage.do")
 public class BidOrderRatingImageServlet extends HttpServlet{

@@ -69,6 +69,13 @@ public class BidOrderServiceImpl implements BidOrderService {
 		
 	}
 	
+	@Override
+	public List<BidOrder> getAllOrderStatusAndSeller(Integer orderStatus, Integer sellMbrId) {
+		
+		return dao.getAllByOrderStatusAndSeller(orderStatus, sellMbrId);
+		
+	}
+	
 	public BidOrder updateAll(BidOrder bidorder) {
 	    if (bidorder != null) {
 	        int result = dao.update(bidorder);
@@ -81,11 +88,6 @@ public class BidOrderServiceImpl implements BidOrderService {
 	
 	
 
-	@Override
-	public List<BidOrder> getAllOrderStatusAndSeller(Integer orderStatus, Integer sellMbrId) {
-		return dao.getAllByOrderStatusAndSeller(orderStatus, sellMbrId);
-		
-	}
 
 	@Override
 	public BidOrder updateBuyStarAndBuyerRatingDesc(Integer buyStar, String buyerRatingDesc) {
