@@ -1,21 +1,22 @@
 package com.twoclothing.model.aproduct.itemreport;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ItemReportDAO {
-	void insert(ItemReport itemReport);
+	int insert(ItemReport itemReport);
 
 	ItemReport getByPrimaryKey(Integer reportId);
 
-	List<ItemReport> getAll();
+	List<ItemReport> getAll(int currentPage);
 
-	List<ItemReport> getAllByItemId(Integer itemId);
+	List<ItemReport> getAllByMbrId(Integer mbrId, int currentPage);
 
-	List<ItemReport> getAllByEmpId(Integer empId);
+	long getTotal(Integer mbrId);
 
-	List<ItemReport> getAllByRStatus(Integer rStatus);
+	List<ItemReport> getByCompositeQuery(Map<String, String> map, int currentPage);
+	
+	int getMapTotal(Map<String, String> map);
 
-	List<ItemReport> getAllByResult(Integer result);
-
-	void update(ItemReport itemReport);
+	int update(ItemReport itemReport);
 }

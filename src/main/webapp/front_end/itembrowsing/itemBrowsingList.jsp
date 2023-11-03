@@ -1,4 +1,3 @@
-<%@ page import="org.hibernate.internal.build.AllowSysOut"%>
 <%@ page import="com.twoclothing.model.aproduct.itembrowsing.*"%>
 <%@ page import="com.twoclothing.chi.controller.*"%>
 <%@ page import="com.twoclothing.chi.service.*"%>
@@ -18,7 +17,7 @@
 	<a href="${pageContext.request.contextPath}/itembrowsing?action=getAllByMbrId&mbrId=${mbrId}">查詢所有商品瀏覽</a>
 
 	<form method="post" action="${pageContext.request.contextPath}/itembrowsing">
-		<h3>商品追蹤新增</h3>
+		<h3>商品瀏覽新增</h3>
 		<h4>到時應刪除，變同移除作法 > 帶商品及會員編號，轉回商品頁，放一顆愛心按鈕放在商品頁，已追蹤成紅色，反之無色</h4>
 		<label>商品編號</label>
 		<input type="text" name="itemId" maxlength=20>
@@ -70,10 +69,6 @@
 			</tr>
 		</c:forEach>
 	</table>
-
-	<%
-	System.out.println(request.getAttribute("action") + "———————————————————————————————————");
-	%>
 
 	<c:if test="${currentPage > 1}">
 		<a href="${pageContext.request.contextPath}/itembrowsing?action=getAllByMbrId&page=1&mbrId=${mbrId}">至第一頁</a>&nbsp;

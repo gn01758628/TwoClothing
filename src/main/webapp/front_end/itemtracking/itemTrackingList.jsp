@@ -1,4 +1,3 @@
-<%@ page import="org.hibernate.internal.build.AllowSysOut"%>
 <%@ page import="com.twoclothing.model.aproduct.itemtracking.*"%>
 <%@ page import="com.twoclothing.chi.controller.*"%>
 <%@ page import="com.twoclothing.chi.service.*"%>
@@ -71,10 +70,6 @@
 			</tr>
 		</c:forEach>
 	</table>
-
-	<%
-	System.out.println(request.getAttribute("action") + "———————————————————————————————————");
-	%>
 
 	<c:if test="${currentPage > 1}">
 		<a href="${pageContext.request.contextPath}/itemtrackinglist?action=getAllByMbrId&page=1&mbrId=${mbrId}">至第一頁</a>&nbsp;
