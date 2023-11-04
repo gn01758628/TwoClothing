@@ -40,7 +40,6 @@
         <mapping class="com.twoclothing.model.abid.bidordernotify.BidOrderNotify"/>
         <mapping class="com.twoclothing.model.abid.bidorderratingimage.BidOrderRatingImage"/>
         <mapping class="com.twoclothing.model.abid.bidorderreport.BidOrderReport"/>
-        <mapping class="com.twoclothing.model.abid.bidrecord.BidRecord"/>
         <mapping class="com.twoclothing.model.blacklist.BlackList"/>
         <mapping class="com.twoclothing.model.aproduct.cartdetail.CartDetail"/>
         <mapping class="com.twoclothing.model.categorytags.CategoryTags"/>

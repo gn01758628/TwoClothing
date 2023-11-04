@@ -5,8 +5,10 @@ import com.twoclothing.model.abid.biditemimage.BidItemImage;
 import com.twoclothing.model.categorytags.CategoryTags;
 import com.twoclothing.model.employee.Employee;
 import com.twoclothing.model.members.Members;
+import com.twoclothing.redismodel.bidrecord.BidRecord;
 import com.twoclothing.redismodel.notice.Notice;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +22,8 @@ public interface BidItemService {
     void addBidItemImage(BidItemImage bidItemImage);
 
     void addVentNotices(Notice notice, Integer mbrId);
+
+    void addBidRecord(BidRecord bidRecord, Integer bidItemId, LocalDateTime endTime);
 
     BidItem getBidItemByBidItemId(Integer bidItemId);
 
@@ -38,6 +42,8 @@ public interface BidItemService {
     List<Employee> getAllEmployee();
 
     List<Integer> getAllSelectableTagsId();
+
+    List<BidRecord> getAllBidRecordByBidItemId(Integer bidItemId);
 
     boolean updateBidItem(BidItem bidItem);
 
