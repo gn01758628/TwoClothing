@@ -1,4 +1,4 @@
-package com.twoclothing.utils.test;
+package com.twoclothing.utils.fakedata;
 
 import com.twoclothing.model.abid.biditemimage.BidItemImage;
 import com.twoclothing.model.abid.biditemimage.BidItemImageDAO;

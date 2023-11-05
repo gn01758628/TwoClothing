@@ -14,11 +14,16 @@ import com.twoclothing.model.aproduct.item.ItemHibernateDAO;
 import com.twoclothing.model.aproduct.itemimage.ItemImage;
 import com.twoclothing.model.aproduct.itemimage.ItemImageDAO;
 import com.twoclothing.model.aproduct.itemimage.ItemImageHibernateDAO;
+import com.twoclothing.model.aproduct.itemtracking.ItemTracking;
 import com.twoclothing.model.categorytags.CategoryTags;
 import com.twoclothing.model.categorytags.CategoryTagsDAO;
 import com.twoclothing.model.categorytags.CategoryTagsHibernateDAO;
+import com.twoclothing.model.coupon.Coupon;
+import com.twoclothing.model.coupon.CouponDAO;
+import com.twoclothing.model.memberscoupon.MembersCoupon;
+import com.twoclothing.model.memberscoupon.MembersCoupon.MembersCouponCompositeDetail;
 import com.twoclothing.utils.HibernateUtil;
-
+import com.twoclothing.utils.generic.*;
 
 public class ItemServiceImpl implements ItemService{
 	
@@ -28,10 +33,16 @@ public class ItemServiceImpl implements ItemService{
     
     private ItemImageDAO itemImageDAO ;
 
+    private GenericDAO couponDAO;
+    
+    private GenericDAO MemCouponDAO;
+    
 	public ItemServiceImpl() {
 		dao = new ItemHibernateDAO(HibernateUtil.getSessionFactory());
 		categoryTagsDAO = new CategoryTagsHibernateDAO(HibernateUtil.getSessionFactory());
 		itemImageDAO = new ItemImageHibernateDAO(HibernateUtil.getSessionFactory());
+		MemCouponDAO = DAOSelector.getDAO(MembersCoupon.class);
+		couponDAO = DAOSelector.getDAO(Coupon.class);
 	}
 	
 	@Override
@@ -156,6 +167,28 @@ System.out.println("::"+categoryTagsDAO.getTagIdsWithoutChildren());
 		
 	}
 
+	@Override
+	public Integer getMbrPointByMbrId(Integer mbrId) {
+		return dao.getPointByMbrId(mbrId);
+	}
+	
+	@Override
+	public List<MembersCoupon> getMemCouponByMbrId(String mbrId, Integer value) {
+		return MemCouponDAO.getBy("mbrId", value);
+	}
+
+	@Override
+	public Coupon getCouponByPK(Integer cpnId) {
+		return (Coupon)couponDAO.getByPrimaryKey(cpnId);
+	}
+
+	@Override
+	public List<Coupon> getAllCoupon() {
+		return couponDAO.getAll();
+	
+	}
 
 
 }
+//MembersCoupon.MembersCouponCompositeDetail compositeKey = new MembersCoupon.MembersCouponCompositeDetail(mbrId, cpnId);
+//return (MembersCoupon)MemCouponDAO.getByPrimaryKey(compositeKey);

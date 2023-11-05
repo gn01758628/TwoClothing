@@ -1,10 +1,12 @@
 package com.twoclothing.chenghan.controller;
 
+import com.twoclothing.chenghan.NumberMapping;
 import com.twoclothing.chenghan.service.BidItemService;
 import com.twoclothing.chenghan.service.BidItemServiceImpl;
 import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.abid.biditemimage.BidItemImage;
 import com.twoclothing.model.categorytags.CategoryTags;
+import com.twoclothing.utils.FormatUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -30,9 +32,9 @@ import java.util.*;
 //  超過maxFileSize或maxRequestSize都會拋出IllegalStateException
 
 
-@WebServlet("/front/biditem/*")
+@WebServlet("/front/biditem/personal/*")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 2 * 1024 * 1024, maxRequestSize = 2 * 2 * 1024 * 1024)
-public class BidItemFrontServlet extends HttpServlet {
+public class BidItemFrontPersonalServlet extends HttpServlet {
 
     // 一個Servlet物件對應一個Service物件
     private BidItemService bidItemService;
@@ -46,17 +48,12 @@ public class BidItemFrontServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        /*
-        TODO 判定是否是會員,不是會員的不應該進入此servlet
-        */
-
-        // 獲取servlet path
-        String servletPath = request.getServletPath() + request.getPathInfo();
-        switch (servletPath) {
-            case "/front/biditem/add" -> doAdd(request, response);
-            case "/front/biditem/save" -> doSave(request, response);
-            case "/front/biditem/list" -> doList(request, response);
-            case "/front/biditem/detail" -> doDetail(request, response);
+        // 獲取pathInfo
+        String pathInfo = request.getPathInfo();
+        switch (pathInfo) {
+            case "/add" -> doAdd(request, response);
+            case "/save" -> doSave(request, response);
+            case "/list" -> doList(request, response);
         }
     }
 
@@ -134,10 +131,11 @@ public class BidItemFrontServlet extends HttpServlet {
                     errorMessages.add("立即結標價必須是有效的正整数，且大於0");
                 } else {
                     int startPriceValue = Integer.parseInt(startPrice);
-                    int reserverPriceValue = Integer.parseInt(reserverPrice);
                     int directPriceValue = Integer.parseInt(directPrice);
-                    if (reserverPriceValue != 0) {
+                    if (!reserverPrice.isEmpty()) {
+                        int reserverPriceValue = Integer.parseInt(reserverPrice);
                         if (directPriceValue < reserverPriceValue) errorMessages.add("立即結標價必須大於拍賣底價");
+                        return;
                     } else {
                         if (directPriceValue < startPriceValue) errorMessages.add("立即結標價必須大於起標價格");
                     }
@@ -255,7 +253,7 @@ public class BidItemFrontServlet extends HttpServlet {
             bidItemService.addBidItemImage(bidItemImage02);
         }
 
-        response.sendRedirect(request.getContextPath() + "/front/biditem/list");
+        response.sendRedirect(request.getContextPath() + "/front/biditem/personal/list");
     }
 
     private void doList(HttpServletRequest request, HttpServletResponse response)
@@ -264,32 +262,18 @@ public class BidItemFrontServlet extends HttpServlet {
         // TODO 會員編號先寫死,之後要從session取
         Integer mbrId = 1;
 
-        List<BidItem> allLegalBidItemByMbrid = bidItemService.getAllLegalBidItemByMbrid(mbrId);
-        request.setAttribute("allLegalBidItemByMbrid", allLegalBidItemByMbrid);
-        Map<Integer, String> statusMap = new HashMap<>();
-        statusMap.put(0, "待審核");
-        statusMap.put(1, "已過審");
-        statusMap.put(2, "得標");
-        statusMap.put(3, "流標");
-        statusMap.put(4, "上架中");
-        request.setAttribute("statusMap", statusMap);
+        List<BidItem> bidItemList = bidItemService.getAllLegalBidItemByMbrid(mbrId);
+        Map<Integer, String[]> timeMap = new HashMap<>();
+        // 格式化時間
+        for (BidItem bidItem : bidItemList) {
+            String[] arr = {FormatUtil.timestampNoSecond(bidItem.getStartTime()), FormatUtil.timestampNoSecond(bidItem.getEndTime())};
+            timeMap.put(bidItem.getBidItemId(),arr);
+        }
+        Map<Integer, String> bidStatusMap = NumberMapping.bidStatusMap;
+        request.setAttribute("bidItemList", bidItemList);
+        request.setAttribute("bidStatusMap", bidStatusMap);
+        request.setAttribute("timeMap", timeMap);
         request.getRequestDispatcher("/front_end/biditem/BidItemPersonalList.jsp").forward(request, response);
     }
 
-    private void doDetail(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String bidItemId = request.getParameter("bidItemId");
-        BidItem bidItem = bidItemService.getBidItemByBidItemId(Integer.parseInt(bidItemId));
-        String categoryName = bidItemService.getCategoryTagsByTagId(bidItem.getTagId()).getCategoryName();
-        String grade = NumberMapping.gradeMap.get(bidItem.getGrade());
-        String size = NumberMapping.sizeMap.get(bidItem.getSize());
-        String bidStatus = NumberMapping.bidStatusMap.get(bidItem.getBidStatus());
-        request.setAttribute("bidItem", bidItem);
-        request.setAttribute("categoryName", categoryName);
-        request.setAttribute("grade", grade);
-        request.setAttribute("size", size);
-        request.setAttribute("bidStatus", bidStatus);
-        request.getRequestDispatcher("/front_end/biditem/BidItemDetail.jsp").forward(request, response);
-
-    }
 }

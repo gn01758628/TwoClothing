@@ -15,12 +15,16 @@ import com.twoclothing.model.employee.EmployeeHibernateDAO;
 import com.twoclothing.model.members.Members;
 import com.twoclothing.model.members.MembersDAO;
 import com.twoclothing.model.members.MembersHibernateDAO;
+import com.twoclothing.redismodel.bidrecord.BidRecord;
+import com.twoclothing.redismodel.bidrecord.BidRecordDAO;
+import com.twoclothing.redismodel.bidrecord.BidRecordJedisDAO;
 import com.twoclothing.redismodel.notice.Notice;
 import com.twoclothing.redismodel.notice.NoticeDAO;
 import com.twoclothing.redismodel.notice.NoticeJedisDAO;
 import com.twoclothing.utils.HibernateUtil;
 import org.hibernate.SessionFactory;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class BidItemServiceImpl implements BidItemService {
@@ -39,6 +43,8 @@ public class BidItemServiceImpl implements BidItemService {
 
     private final NoticeDAO noticeDAO = new NoticeJedisDAO();
 
+    private final BidRecordDAO bidRecordDAO = new BidRecordJedisDAO();
+
     public BidItemServiceImpl() {
     }
 
@@ -53,8 +59,13 @@ public class BidItemServiceImpl implements BidItemService {
     }
 
     @Override
-    public void addVentNotices(Notice notice, Integer mbrId) {
+    public void addNotice(Notice notice, Integer mbrId) {
         noticeDAO.insert(notice, mbrId);
+    }
+
+    @Override
+    public void addBidRecord(BidRecord bidRecord, Integer bidItemId, LocalDateTime endTime) {
+        bidRecordDAO.insert(bidRecord, bidItemId, endTime);
     }
 
     @Override
@@ -138,6 +149,21 @@ public class BidItemServiceImpl implements BidItemService {
     @Override
     public List<Integer> getAllSelectableTagsId() {
         return categoryTagsDAO.getTagIdsWithoutChildren();
+    }
+
+    @Override
+    public List<BidRecord> getAllBidRecordByBidItemId(Integer bidItemId) {
+        return bidRecordDAO.getAll(bidItemId);
+    }
+
+    @Override
+    public Set<Integer> getAllMbrIdInBidRecord(Integer bidItemId) {
+        return bidRecordDAO.getAllMbrIdByKey(bidItemId);
+    }
+
+    @Override
+    public BidRecord getBidRecordByIndex(Integer bidItemId, int index) {
+        return bidRecordDAO.getIndexRecordByKey(bidItemId, index);
     }
 
     @Override

@@ -43,7 +43,7 @@
                     <option value="" selected>選擇狀態</option>
                     <option value="0">待審核</option>
                     <option value="1">已過審</option>
-                    <option value="2">得標</option>
+                    <option value="2">結標</option>
                     <option value="3">流標</option>
                     <option value="4">上架中</option>
                     <option value="5">刪除</option>

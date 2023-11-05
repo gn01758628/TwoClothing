@@ -184,4 +184,9 @@ public class ItemHibernateDAO implements ItemDAO {
 	public long getTotal() {
 		return getSession().createQuery("select count(*) from Item", Long.class).uniqueResult();
 	}
+
+	@Override
+	public Integer getPointByMbrId(Integer mbrId) {
+		return (Integer) getSession().createQuery("SELECT m.mbrPoint FROM Members m WHERE m.mbrId = :mbrId").setParameter("mbrId", mbrId).uniqueResult();
+	}
 }

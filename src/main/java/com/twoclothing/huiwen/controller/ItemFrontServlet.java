@@ -40,26 +40,13 @@ public class ItemFrontServlet extends HttpServlet{
 		//商品列表 到 商品詳情頁
 		System.out.println(req.getParameter("goto"));
 		String goTo = req.getParameter("goto");
-			int itemId = Integer.valueOf(goTo);
-			Item item = itemService.getItemByItemId(itemId);
-			
-			req.setAttribute("item", item);
-			RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/itemDetail.jsp");
-			dispatcher.forward(req, res);			
+		int itemId = Integer.valueOf(goTo);
+		Item item = itemService.getItemByItemId(itemId);
+		
+		req.setAttribute("item", item);
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/itemDetail.jsp");
+		dispatcher.forward(req, res);			
 
-		
-		
-		//商品詳情到購物車
-		
-//		String gotoCart = req.getParameter("goToCart");
-//		System.out.println(gotoCart);
-//		String itemName = req.getParameter("itemName");
-//		System.out.println(itemName);
-//
-//		String size = req.getParameter("size");
-//		String quantity = req.getParameter("quantity");
-//		String price = req.getParameter("price");
-//		int itemIdCart = Integer.valueOf(gotoCart);
 
 	}
 			
