@@ -7,9 +7,7 @@ import redis.clients.jedis.JedisPool;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class BidRecordJedisDAO implements BidRecordDAO {
 
@@ -51,5 +49,24 @@ public class BidRecordJedisDAO implements BidRecordDAO {
         Collections.sort(bidRecordList);
         jedis.close();
         return bidRecordList;
+    }
+
+    @Override
+    public BidRecord getIndexRecordByKey(Integer bidItemId, int index) {
+        List<BidRecord> recordList = getAll(bidItemId);
+        if (index >= 0 && index < recordList.size()) {
+            return recordList.get(index);
+        }
+        return null;
+    }
+
+    @Override
+    public Set<Integer> getAllMbrIdByKey(Integer bidItemId) {
+        Set<Integer> mbrIdSet = new HashSet<>();
+        List<BidRecord> recordList = getAll(bidItemId);
+        for (BidRecord record : recordList) {
+            mbrIdSet.add(record.getMbrId());
+        }
+        return mbrIdSet;
     }
 }
