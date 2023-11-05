@@ -6,17 +6,17 @@ import com.twoclothing.model.empmissions.EmpMissions.CompositeDetail;
 
 public interface EmpMissionsDAO {
 
-	void insert(EmpMissions EmpMissions);
+	int insert(EmpMissions empMissions);
 
 	List<EmpMissions> getAll();
 
-	EmpMissions getByCompositeKey(CompositeDetail compositeKey);
+	EmpMissions getByCompositeKey(Integer empId, Integer permissionId);
 
 	List<EmpMissions> getAllByEmpId(Integer empId);
 
 	List<EmpMissions> getAllByPermissionId(Integer permissionId);
 
-	void update(EmpMissions EmpMissions);
+	int update(EmpMissions empMissions);
 
-	void delete(Integer empId, Integer permissionId);
+	int delete(Integer empId, Integer permissionId);
 }

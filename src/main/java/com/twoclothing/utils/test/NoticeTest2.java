@@ -19,6 +19,7 @@ public class NoticeTest2 {
         for (String s : noticeIds) {
             System.out.println("ID = " + s + "：" + jedis.get(s));
         }
+
         // 可以根據特定的通知ID進行操作
         // 設置過期時間,改變已讀狀態..
 

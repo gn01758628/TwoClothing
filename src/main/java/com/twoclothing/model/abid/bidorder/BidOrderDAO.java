@@ -16,6 +16,9 @@ public interface BidOrderDAO {
 	// 賣家
 	List<BidOrder> getAllBySellMbrId(Integer sellMbrId);
 	
+	List<BidOrder> getAllBySellMbrIdAndBuyMbrId(Integer sellMbrId, Integer buyMbrId ,Integer bidItemId);
+	
+	
 	List<BidOrder> getAllByOrderStatusAndBuyer(Integer orderStatus, Integer buyMbrId);
 	    // 買家查詢的實現
 

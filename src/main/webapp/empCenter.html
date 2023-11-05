@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>員工中心</title>
+	<!-- 引入 jQuery -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
+	<link rel="stylesheet" href="/TwoClothing/css/chijung/empCenter.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+	<style>
+		.sidebar header > .personal {
+		  display: inline-block;
+		}
+		.profile-image{
+			border-radius:50%;
+			border: 1rem solid #fff;
+		}
+		
+		
+	</style>
+</head>
+
+<body>
+  <aside class="sidebar">
+      <header>
+         	<img src="" class="profile-image">
+         <div class="personal">
+		    <p>員工編號:<span id="formatEmpId"></span></p>
+		    <p>員工姓名:<span id="empName"></span></p>
+		 </div>
+		 <button>登出</button>
+      </header>
+    <nav class="sidebar-nav">
+ 
+      <ul>
+        <li>
+          <a href="#"><i class="icon ion-ios-color-filter-outline"></i> <span>Shop</span></a>
+          <ul class="nav-flyout">
+            <li>
+              <a href="#"><i class="ion-ios-color-filter-outline"></i>Derps</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-clock-outline"></i>Times</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-android-star-outline"></i>Hates</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-heart-broken"></i>Beat</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#"><i class="ion-ios-settings"></i> <span class="">Controls</span></a>
+          <ul class="nav-flyout">
+            <li>
+              <a href="#"><i class="ion-ios-alarm-outline"></i>Watch</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-camera-outline"></i>Creeper</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-chatboxes-outline"></i>Hate</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-cog-outline"></i>Grinder</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#"><i class="ion-ios-briefcase-outline"></i> <span class="">Folio</span></a>
+          <ul class="nav-flyout">
+            <li>
+              <a href="#"><i class="ion-ios-flame-outline"></i>Burn</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-lightbulb-outline"></i>Bulbs</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-location-outline"></i>Where You</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-locked-outline"></i>On Lock</a>
+            </li>
+             <li>
+              <a href="#"><i class="ion-ios-navigate-outline"></i>Ghostface</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#"><i class="ion-ios-analytics-outline"></i> <span class="">Graphicals</span></a>
+          <ul class="nav-flyout">
+            <li>
+              <a href="#"><i class="ion-ios-timer-outline"></i>Timers</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-arrow-graph-down-left"></i>You Lose</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-partlysunny-outline"></i>Stormy</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-timer-outline"></i>Lookie Look</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-game-controller-a-outline"></i>Dork Mfer</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#"><i class="ion-ios-paper-outline"></i> <span class="">Papers</span></a>
+          <ul class="nav-flyout">
+            <li>
+              <a href="#"><i class="ion-ios-filing-outline"></i>File Cab</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-information-outline"></i>Infos</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-paperplane-outline"></i>Planes</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-android-star-outline"></i>Shop</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#"><i class="ion-ios-navigate-outline"></i> <span class="">Ass Finder</span></a>
+          <ul class="nav-flyout">
+            <li>
+              <a href="#"><i class="ion-ios-flame-outline"></i>Burn</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-lightbulb-outline"></i>Bulbs</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-location-outline"></i>Where You</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-locked-outline"></i>On Lock</a>
+            </li>
+             <li>
+              <a href="#"><i class="ion-ios-navigate-outline"></i>Ghostface</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#"><i class="ion-ios-medical-outline"></i> <span class="">Cocaine</span></a>
+        </li>
+        
+        
+      </ul>
+    </nav>
+  </aside>
+
+
+
+<script>
+$(document).ready(function() {
+	
+	$.ajax({
+        url: '/TwoClothing/EmployeeCenter.do', // 替換為後端API的實際URL
+        type: 'POST', // 請求的類型為POST
+        dataType: 'json',
+        data: {
+            action: 'center'
+        }, // 直接傳遞參數
+        success: function(emp) {
+            $('#formatEmpId').text(emp.formatEmpId);
+            $('#empName').text(emp.empName);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            alert("帳號已登出,請重新登入");
+            window.location.href = xhr.responseText; 
+        }
+    });
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//     // 登出
+//     $.ajax({
+//         url: '/TwoClothing/EmployeeCenter.do', // 替換為後端API的實際URL
+//         type: 'POST', // 請求的類型為POST
+//         data: {
+//             action: 'logout'
+//         }, // 直接傳遞參數
+//         success: function(url) {
+//             // 請求成功的處理邏輯
+//         	window.location.href = url;
+//         }
+//     });
+});
+
+</script>
+
+
+
+
+
+</body>
+
+</html>

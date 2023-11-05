@@ -73,9 +73,17 @@ input:disabled {
 			</FORM>
 		</li>
 	    <li>
-			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/front_end/bidorder/myBidorder0.jsp">
-			<input type="submit" value="我的競標訂單">
-				
+			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
+			<input type="hidden" name="buyMbrId" value="${user.mbrId}">
+			<input type="hidden" name="action" value="buyBidOrder">
+			<input type="submit" value="買家競標訂單">
+			</FORM>
+		</li>
+	    <li>
+			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
+			<input type="hidden" name="sellMbrId" value="${user.mbrId}">
+			<input type="hidden" name="action" value="sellBidOrder">
+			<input type="submit" value="賣家競標訂單">
 			</FORM>
 		</li>
 		

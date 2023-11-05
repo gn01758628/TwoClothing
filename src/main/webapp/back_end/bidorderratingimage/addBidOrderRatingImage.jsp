@@ -57,7 +57,7 @@
 
 
 
-<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorderratingimage/BidOrderRatingImage.do" name="form1">
+<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorderratingimage/BidOrderRatingImage.do" name="form1" enctype="multipart/form-data">
 <table>
 	<tr>
 		<td>會員編號:</td>
@@ -85,7 +85,7 @@
 
 <br>
 <input type="hidden" name="action" value="insert">
-<input type="hidden" name="mbrId" value="${user.mbrId}">
+<input type="hidden" name="bidOrderId" value="${param.bidOrderId}">
 <input type="submit" value="送出新增"></FORM>
 </body>
 

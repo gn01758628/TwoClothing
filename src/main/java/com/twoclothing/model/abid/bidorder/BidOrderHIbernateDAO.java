@@ -56,6 +56,17 @@ public class BidOrderHIbernateDAO implements BidOrderDAO {
 				.setParameter("sellMbrId", sellMbrId).list();
 
 	}
+	
+	@Override
+	public List<BidOrder> getAllBySellMbrIdAndBuyMbrId(Integer sellMbrId, Integer buyMbrId, Integer bidItemId) {
+		return getSession().createQuery("FROM BidOrder WHERE sellMbrId = :sellMbrId AND buyMbrId = :buyMbrId AND bidItemId = :bidItemId", BidOrder.class)
+                .setParameter("sellMbrId", sellMbrId)
+                .setParameter("buyMbrId", buyMbrId)
+                .setParameter("bidItemId", bidItemId)
+                .list();
+	}
+	
+	
 
 	@Override
 	public List<BidOrder> getAllByOrderStatusAndBuyer(Integer orderStatus, Integer buyMbrId) {
@@ -99,4 +110,6 @@ public class BidOrderHIbernateDAO implements BidOrderDAO {
 	
 	
 	}
+
+	
 }

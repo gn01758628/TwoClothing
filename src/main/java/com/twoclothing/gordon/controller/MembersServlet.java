@@ -181,7 +181,8 @@ public class MembersServlet extends HttpServlet {
 		
 		if ("register".equals(action)) {
 		 
-		    
+			res.setContentType("application/json; charset=UTF-8");
+			res.setCharacterEncoding("UTF-8");
 		    Map<String, Object> response = new HashMap<>();
 		    Map<String, String> errors = new HashMap<>();
 		    PrintWriter out = res.getWriter();
@@ -194,10 +195,11 @@ public class MembersServlet extends HttpServlet {
 		    String email = req.getParameter("email");
 		    String pswdHash = req.getParameter("pswdHash");
 		    String userInputCode = req.getParameter("VerificationCode");
-//===============================圖片
+
+//===============================圖片的資料
 		    HttpSession session = req.getSession();
 		    String sessionCode = (String) session.getAttribute("randStr");
-//===============================圖片
+//===============================圖片的資料
 		    MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 		    Members members = membersServiceImpl.getByEmail(email);
 
@@ -224,15 +226,15 @@ public class MembersServlet extends HttpServlet {
 //圖像驗證		       
 		    } else {
 		       
-		        errors.put("email", "用户已存在");
+		        errors.put("email", "email重複");
 		    		      
 		    }
 		    response.put("errors", errors);
 		    
 		    response.put("success", success);
 		    // 设置JSON响应的Content-Type
-		    res.setContentType("application/json: charset=UTF-8");
-		    res.setCharacterEncoding("UTF-8");
+		    
+		   
 		    
 		    for (Map.Entry<String, Object> entry : response.entrySet()) {
 		        String key = entry.getKey();
@@ -240,12 +242,14 @@ public class MembersServlet extends HttpServlet {
 		        
 		        System.out.println(key + ": " + value);
 		    }
-		    String outResponse= gson.toJson(response);
+//		    String outResponse= gson.toJson(response);
 		    // 将JSON响应发送回客户端
-//		    out.write(new Gson().toJson(response));
-		    out.println(outResponse);
+		    out.write(new Gson().toJson(response));
+//		    out.println(outResponse);
 //		    out.write(outResponse);
+
 		    out.close();
+		    
 		}
 	
 			
@@ -267,6 +271,8 @@ public class MembersServlet extends HttpServlet {
 //			    String contextPath = req.getContextPath();
 
 			    // 创建 JSON 响应
+			    res.setContentType("application/json");
+			    res.setCharacterEncoding("UTF-8");
 			    Map<String, Object> response = new HashMap<>();
 			    PrintWriter out = res.getWriter();
 			    
@@ -314,9 +320,8 @@ public class MembersServlet extends HttpServlet {
 			        errorMsgs.put("error", "用户不存在");
 			    }
 			    
-
-			    res.setContentType("application/json");
-			    res.setCharacterEncoding("UTF-8");
+			   
+			  
 			    // 设置 JSON 响应的成功标志
 			    response.put("success", success);
 

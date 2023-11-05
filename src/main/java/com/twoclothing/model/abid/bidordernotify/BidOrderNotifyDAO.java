@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface BidOrderNotifyDAO {
 
-	void insert(BidOrderNotify bidOrderNotif);
+	int insert(BidOrderNotify bidOrderNotif);
 
 	BidOrderNotify getByPrimaryKey(Integer notifyId);
 

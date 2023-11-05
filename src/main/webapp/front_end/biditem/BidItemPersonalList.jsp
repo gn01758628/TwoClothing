@@ -35,7 +35,7 @@
             </form>
         </div>
         <div class="col-md-6 text-end">
-            <a href="${pageContext.request.contextPath}/front/biditem/add" class="btn btn-outline-success">新增商品</a>
+            <a href="${pageContext.request.contextPath}/front/biditem/personal/add" class="btn btn-outline-success">新增商品</a>
         </div>
     </div>
     <div class="row">
@@ -52,17 +52,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="bidItem" items="${allLegalBidItemByMbrid}">
+                <c:forEach var="bidItem" items="${bidItemList}">
                     <tr>
-                        <td class="text-center align-middle">${statusMap[bidItem.bidStatus]}</td>
+                        <td class="text-center align-middle">${bidStatusMap[bidItem.bidStatus]}</td>
                         <td class="text-center align-middle"><img
                                 src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${bidItem.bidItemId}&position=1"
                                 alt="${bidItem.bidName}" width="100"></td>
                         <td class="text-center align-middle">${bidItem.bidName}</td>
                         <td class="text-center align-middle">$${bidItem.startPrice}</td>
-                        <td class="text-center align-middle">${bidItem.startTime}<br>${bidItem.endTime}</td>
+                        <td class="text-center align-middle">${timeMap[bidItem.bidItemId][0]}<br>${timeMap[bidItem.bidItemId][1]}</td>
                         <td class="text-center align-middle">
-                            <a href="${pageContext.request.contextPath}/front/biditem/detail?bidItemId=${bidItem.bidItemId}" class="btn btn-outline-primary btn-sm mt-2 mb-2">商品詳情</a>
+                            <a href="${pageContext.request.contextPath}/front/biditem/anyone/detail?bidItemId=${bidItem.bidItemId}" class="btn btn-outline-primary btn-sm mt-2 mb-2">商品詳情</a>
                             <br>
                             <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">按鈕2</a>
                         </td>
