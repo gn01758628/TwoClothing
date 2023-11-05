@@ -11,7 +11,7 @@
 <html>
 <head>
 <title>Emp: Home</title>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
   table#table-1 {
 	width: 450px;
@@ -36,6 +36,8 @@
 </head>
 <body bgcolor='white'>
 
+<aside class="sidebar"></aside>
+<main>
 <table id="table-1">
    <tr><td><h3>Emp: Home</h3><h4>( MVC )</h4></td></tr>
 </table>
@@ -102,6 +104,10 @@
 <ul>
   <li><a href='addEmp.jsp'>Add</a> a new Emp.</li>
 </ul>
+</main>
 
+<script>
+	$(".sidebar").load("/TwoClothing/empCenterA.html");
+</script>
 </body>
 </html>
