@@ -48,6 +48,7 @@
 </head>
 <body>
 <table>
+不成立
 	<tr>
 		<th>競標商品訂單編號</th>
 		<th>競標商品編號</th>
