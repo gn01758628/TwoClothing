@@ -318,10 +318,11 @@ input {
 				data : loginData,
 				dataType : "json",
 				success : function(response) {
-					
+
 					if (response.success) {
-						
+
 						if (response.mbrStatus === 0) {
+
 //							alert("請至信箱驗證");
 							window.location.href = contextPath +  "/front_end/members/verificationEmail.jsp";
 						}else{
