@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*"%>
 
-<%@ include file="buyBidorderBanner.jsp" %> 
+<%@ include file="sellBidorderBanner.jsp" %> 
 
 
 <!DOCTYPE html>
@@ -48,6 +48,7 @@
 </head>
 <body>
 <table>
+賣家待出貨
 	<tr>
 		<th>競標商品訂單編號</th>
 		<th>競標商品編號</th>
@@ -92,16 +93,7 @@
 		<td>${BidOrder.receivePhone}</td>
 		<td>${BidOrder.remarks}</td>
  			
-			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="結帳">
-			     <input type="hidden" name="amount" value="${BidOrder.amount}">
-			     <input type="hidden" name="bidOrderId" value="${BidOrder.bidOrderId}">
-			     <input type="hidden" name="sellMbrId" value="${BidOrder.sellMbrId}">
-			     <input type="hidden" name="bidItemId" value="${BidOrder.bidItemId}">
-			     <input type="hidden" name="buyMbrId" value="${user.mbrId}">
-			     <input type="hidden" name="action"	value="pay_And_Address"></FORM>
-			</td>
+
 <!--			
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
