@@ -21,9 +21,9 @@
         <!-- 使用MySQL的方言 -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <!-- 設定控制台是否顯示MySQL指令 -->
-        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.show_sql">false</property>
         <!-- 是否格式化顯示的指令,方便閱讀 -->
-        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.format_sql">false</property>
         <!-- 控制Hibernate在啟動時對資料庫架構進行的操作 -->
         <!-- validate：讓Hibernate驗證永續類別與資料庫對映是否正確 -->
         <property name="hibernate.hbm2ddl.auto">validate</property>
@@ -40,7 +40,6 @@
         <mapping class="com.twoclothing.model.abid.bidordernotify.BidOrderNotify"/>
         <mapping class="com.twoclothing.model.abid.bidorderratingimage.BidOrderRatingImage"/>
         <mapping class="com.twoclothing.model.abid.bidorderreport.BidOrderReport"/>
-        <mapping class="com.twoclothing.model.abid.bidrecord.BidRecord"/>
         <mapping class="com.twoclothing.model.blacklist.BlackList"/>
         <mapping class="com.twoclothing.model.aproduct.cartdetail.CartDetail"/>
         <mapping class="com.twoclothing.model.categorytags.CategoryTags"/>

@@ -46,8 +46,14 @@
 	<script src="/TwoClothing/js/chijung/empLogin2.js"></script>
 	<script>
 	$(document).ready(function() {
-		$('#empId').value=null;
-		$('#password').value=null;
+		
+		$('#empId, #password').keypress(function(event){
+	        if(event.which === 13){ // 13代表"Enter"鍵的鍵碼
+	            // 使用者按下"Enter"，觸發登入按鈕的點擊事件
+	            $('#submitButton').click();
+	        }
+	    });
+		
 	    // 當超連結被點擊時
 	    $('#submitButton').click(function(e) {
 	        // 取消超連結的默認行為，避免跳轉

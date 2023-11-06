@@ -59,7 +59,7 @@ public class ItemBrowsingServlet extends HttpServlet {
 	private String getAllByMbrId(HttpServletRequest req, HttpServletResponse res) {
 //		String mbrIdString = req.getParameter("mbrId");
 //		int mbrId = Integer.parseInt(mbrIdString);
-		int mbrId = 103;
+		int mbrId = 1; // 測試用，到時這行可刪
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 

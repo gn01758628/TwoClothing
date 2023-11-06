@@ -42,7 +42,7 @@ public class ItemImageReader extends HttpServlet {
      */
     private void readBidItemImage(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("image/jpeg");
+        response.setContentType("image/gif");
         ServletOutputStream outputStream = response.getOutputStream();
         try {
             // bidItemId
@@ -68,7 +68,7 @@ public class ItemImageReader extends HttpServlet {
 
     private void readItemImage(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("image/jpeg");
+        response.setContentType("image/gif");
         ServletOutputStream outputStream = response.getOutputStream();
         try {
             int id = Integer.parseInt(request.getParameter("id"));

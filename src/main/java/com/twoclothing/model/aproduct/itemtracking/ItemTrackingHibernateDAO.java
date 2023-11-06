@@ -62,7 +62,7 @@ public class ItemTrackingHibernateDAO implements ItemTrackingDAO {
 	@Override
 	public List<ItemTracking> getAllByMbrId(Integer mbrId, int currentPage) {
 		int first = (currentPage - 1) * 10;
-		return getSession().createQuery("from ItemTracking where mbrId = :mbrId", ItemTracking.class)
+		return getSession().createQuery("from ItemTracking where mbrId = :mbrId order by trackingTime desc", ItemTracking.class)
 				.setFirstResult(first).setMaxResults(10).setParameter("mbrId", mbrId).list();
 	}
 

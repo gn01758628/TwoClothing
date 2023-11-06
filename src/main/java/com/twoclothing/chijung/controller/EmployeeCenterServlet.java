@@ -141,6 +141,9 @@ public class EmployeeCenterServlet extends HttpServlet {
 			 return;
 		} 
 		res.setContentType("application/json; charset=UTF-8");
+		System.out.println(emp);
+		System.out.println(emp.getAvatar());
+		
 	    PrintWriter out = res.getWriter();
 		String empData = new Gson().toJson(emp);
         out.print(empData);

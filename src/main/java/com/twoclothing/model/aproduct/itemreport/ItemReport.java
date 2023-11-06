@@ -51,6 +51,7 @@ public class ItemReport implements Serializable {
 
 	public ItemReport(Integer reportId, Integer itemId, Integer mbrId, Integer empId, Timestamp reportDate,
 			String description, Integer rStatus, Timestamp auditDate, Integer result, String note) {
+		super();
 		this.reportId = reportId;
 		this.itemId = itemId;
 		this.mbrId = mbrId;
@@ -65,7 +66,7 @@ public class ItemReport implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ItemReport [reportId=" + reportId + ", itemId=" + itemId + ", mbrID=" + mbrId + ", empId=" + empId
+		return "ItemReport [reportId=" + reportId + ", itemId=" + itemId + ", mbrId=" + mbrId + ", empId=" + empId
 				+ ", reportDate=" + reportDate + ", description=" + description + ", rStatus=" + rStatus
 				+ ", auditDate=" + auditDate + ", result=" + result + ", note=" + note + "]";
 	}
@@ -139,11 +140,11 @@ public class ItemReport implements Serializable {
 		this.description = description;
 	}
 
-	public Integer getRStatus() {
+	public Integer getrStatus() {
 		return rStatus;
 	}
 
-	public void setRStatus(Integer rStatus) {
+	public void setrStatus(Integer rStatus) {
 		this.rStatus = rStatus;
 	}
 
