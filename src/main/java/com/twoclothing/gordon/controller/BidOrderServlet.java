@@ -1,13 +1,8 @@
 package com.twoclothing.gordon.controller;
 
 import java.io.IOException;
-import java.util.Date;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,12 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.twoclothing.gordon.service.BidOrderServiceImpl;
+import com.twoclothing.gordon.service.MembersServiceImpl;
+import com.twoclothing.gordon.service.ShipSettingServiceImpl;
+import com.twoclothing.huiwen.service.BalanceHistoryServiceImpl;
 import com.twoclothing.model.abid.bidorder.BidOrder;
+import com.twoclothing.model.balancehistory.BalanceHistory;
 import com.twoclothing.model.members.Members;
 import com.twoclothing.model.shipsetting.ShipSetting;
-import com.twoclothing.gordon.service.BidOrderServiceImpl;
-import com.twoclothing.gordon.service.ShipSettingServiceImpl;
-import com.twoclothing.gordon.service.MembersServiceImpl;
 
 @WebServlet("/bidorder/BidOrder.do")
 public class BidOrderServlet extends HttpServlet {
@@ -42,6 +39,7 @@ public class BidOrderServlet extends HttpServlet {
 		BidOrderServiceImpl bidOrderServiceImpl = new BidOrderServiceImpl();
 		MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 		ShipSettingServiceImpl shipSettingServiceImpl = new ShipSettingServiceImpl();
+		BalanceHistoryServiceImpl balanceHistoryServiceImpl = new BalanceHistoryServiceImpl();
 		/*********************** 新增訂單 *************************/
 		/*********************** 新增訂單 *************************/
 		/*********************** 新增訂單 *************************/
@@ -485,12 +483,7 @@ public class BidOrderServlet extends HttpServlet {
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
 			HttpSession session = req.getSession();
 			session.setAttribute("shipSetting", shipSetting);
-			
-//			req.setAttribute("amount", amount);
-//			req.setAttribute("bidOrderId", bidOrderId);
-//			req.setAttribute("sellMbrId", sellMbrId);
-//			req.setAttribute("bidItemId", bidItemId);
-//			req.setAttribute("shipSetting", shipSetting);
+
 			
 			
 
@@ -557,17 +550,7 @@ public class BidOrderServlet extends HttpServlet {
 			Integer orderStatus = 1;
 			
 
-//			String balanceParam = req.getParameter("balance").trim();
-//			Integer balance = null;
-//
-//			if (payType.equals(2)) {
-//				
-//					try {
-//						balance = Integer.valueOf(balanceParam);
-//					} catch (NumberFormatException e) {
-//						errorMsgs.put("balance", "請勿空白");
-//					}
-//			}
+
 		
 			String receiveAddress = req.getParameter("receiveAddress");
 			if (receiveAddress != null && !receiveAddress.trim().isEmpty()) {
@@ -609,6 +592,7 @@ public class BidOrderServlet extends HttpServlet {
 	
 	
 			if(payType.equals(2)) {
+///////////買家////////////////////////////////////////////				
 				Members members = membersServiceImpl.getByPrimaryKey(buyMbrId);
 				Integer balance = members.getBalance();
 				if(balance>amount) {
@@ -620,6 +604,33 @@ public class BidOrderServlet extends HttpServlet {
 				membersServiceImpl.updateMembers(members);
 				HttpSession session = req.getSession();
 				session.setAttribute("user", members);
+////////放入會員錢包異動紀錄	
+				
+				BalanceHistory balanceHistory = new  BalanceHistory();
+				balanceHistory.setBidOrderId(bidOrderId);
+				balanceHistory.setMbrId(buyMbrId);
+				Date currentDate = new Date();
+				Timestamp changeDate = new Timestamp(currentDate.getTime());
+				balanceHistory.setChangeDate(changeDate);
+				balanceHistory.setChangeValue(-amount);
+				balanceHistoryServiceImpl.addBH(balanceHistory);
+				
+///////////買家////////////////////////////////////////////
+///////////賣家////////////////////////////////////////////
+				members = membersServiceImpl.getByPrimaryKey(sellMbrId);
+				balance = members.getBalance();
+				balance= balance+amount;
+				members.setBalance(balance);
+				membersServiceImpl.updateMembers(members);
+////////放入會員錢包異動紀錄				
+				balanceHistory = new  BalanceHistory();
+				balanceHistory.setBidOrderId(bidOrderId);
+				balanceHistory.setMbrId(sellMbrId);
+				balanceHistory.setChangeDate(changeDate);
+				balanceHistory.setChangeValue(amount);
+				balanceHistoryServiceImpl.addBH(balanceHistory);
+///////////賣家////////////////////////////////////////////
+
 				}else {
 					errorMsgs.put("balance", "餘額不足");
 				}

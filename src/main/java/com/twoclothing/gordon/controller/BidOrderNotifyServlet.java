@@ -198,7 +198,11 @@ public class BidOrderNotifyServlet extends HttpServlet {
 			notice.setImageLink("/images/Mainicon.jpg");
 			noticeJedisDAO.insert(notice, sellMbrId);
 /////////////////////////////////////redis測試////////////////////	
+			/***************************去會員中心***************************************/
 
+			String url = "/MemberCentre.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
 		}
 		
 	}

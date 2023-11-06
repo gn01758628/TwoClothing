@@ -8,6 +8,10 @@
 
 </head>
 <body>
+<form action="${pageContext.request.contextPath}/members/Members.do" method="post">
+		        <input type="hidden" name="action" value="logout">
+		        <button type="submit">登出</button>
+</form>
 
 <form action="${pageContext.request.contextPath}/members/SendEmailServlet" method="post">
     <input type="hidden" name="action" value="verificationEmail"/>
@@ -21,7 +25,7 @@
             <td align="center" >
             <button id="action" name="action" value ="verificationEmail" type="submit">驗證</button> </td>
       
-            <td><button id="cancel_id" type="button">取消</button> </td>
+<!--            <td><button id="cancel_id" type="button">取消</button> </td> -->
         </tr>
     </table>
 </form>
@@ -29,12 +33,12 @@
 
 <script>
 //获取取消按钮元素
-var cancelButton = document.getElementById("cancel_id");
+//var cancelButton = document.getElementById("cancel_id");
 
 // 添加点击事件处理程序
-cancelButton.addEventListener("click", function() {
-    window.location.href = "/TwoClothing/index.jsp"; // 返回首页的 URL
-});
+//cancelButton.addEventListener("click", function() {
+//    window.location.href = "/TwoClothing/index.jsp"; // 返回首页的 URL
+//});
 </script>
 </body>
 </html>

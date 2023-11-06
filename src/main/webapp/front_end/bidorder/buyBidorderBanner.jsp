@@ -11,6 +11,8 @@
 	
 	<a href='${pageContext.request.contextPath}/MemberCentre.jsp'>會員中心</a>
 	
+	<a href='${pageContext.request.contextPath}/back_end/bidorder/testBidorder.jsp'>測試新增訂單</a>
+	
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
 	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
 	<input type="hidden" name="action" value="buyBidOrder">
