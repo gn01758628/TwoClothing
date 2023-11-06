@@ -64,6 +64,9 @@ public class EmployeeCenterServlet extends HttpServlet {
 				logout(req,res);
 				break;
 				
+			case "check":
+				check(req,res);
+				break;
 		}
 	
 	}
@@ -163,5 +166,17 @@ public class EmployeeCenterServlet extends HttpServlet {
         PrintWriter out = res.getWriter();
         out.print(url);
         out.flush();
+	}
+	
+	private void check(HttpServletRequest req, HttpServletResponse res) throws IOException{
+		HttpSession  session = req.getSession();
+		Employee emp = (Employee)session.getAttribute("emp");               
+		if (emp == null) {                                      
+			String url = req.getContextPath() + "/back_end/employee/empLogin.html";
+			 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			 res.setContentType("text/plain");
+			 res.getWriter().write(url);
+			 return;
+		}
 	}
 }

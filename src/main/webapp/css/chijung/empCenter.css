@@ -12,18 +12,24 @@ body {
   -moz-osx-font-smoothing: grayscale; /* 使字體在Firefox中呈現平滑邊緣 */
   text-rendering: optimizeLegibility; /* 優化字體顯示以提高可讀性 */
   background: linear-gradient(to right, #c9ffbf, #ffafbd); /* 設定背景顏色 */
-  height:100%;
-  min-height:100vh;
+  height:100vh;
   margin:0;
 }
 
-
+#content {
+    
+      width: calc(100% - 272px);
+      margin-left:272px;
+      height: 100%;
+      border: none; /* 可以去掉 iframe 的邊框 */
+      display:block;
+}
 
 
 
 /* Sidebar樣式 */
 .sidebar {
-  position: relative; /* 相對於最近的定位父元素 */
+  position: fixed; /* 相對於最近的定位父元素 */
   width: 17em; /* 設定寬度 */
   height: 100vh; /* 設定高度為視窗的100% */
   top: 0; /* 與父元素上方對齊 */
@@ -43,11 +49,6 @@ body {
   transition: all 0.6s ease; /* 定義所有屬性的過渡效果為0.6秒（應用於:hover狀態），使用緩動函數 */
 }
 
-.sidebar header a:link,
-.sidebar header a:visited {
-    color: inherit; 
-}
-
 .sidebar header {
   background-color: #09f;
   width: 100%;
@@ -59,6 +60,7 @@ body {
   display: block;
   margin: 10px;
   margin-left: auto;
+  cursor:pointer;
 }
 
 .sidebar header .profile-image {

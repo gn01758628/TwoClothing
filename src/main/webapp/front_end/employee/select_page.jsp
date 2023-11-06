@@ -36,7 +36,6 @@
 </head>
 <body bgcolor='white'>
 
-<aside class="sidebar"></aside>
 <main>
 <table id="table-1">
    <tr><td><h3>Emp: Home</h3><h4>( MVC )</h4></td></tr>
@@ -106,8 +105,5 @@
 </ul>
 </main>
 
-<script>
-	$(".sidebar").load("/TwoClothing/empCenterA.html");
-</script>
 </body>
 </html>
