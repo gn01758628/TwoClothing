@@ -2,6 +2,8 @@ package com.twoclothing.gordon.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -285,6 +287,15 @@ public class MembersServlet extends HttpServlet {
 
 			    MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 			    Members members = membersServiceImpl.getByEmail(email);
+//////////////////////////////////////////////////////////////////////////////////登入時間			    
+			    Date currentDate = new Date();
+				Timestamp loginDate = new Timestamp(currentDate.getTime());
+				
+				members.setLastLogin(loginDate);
+				
+				membersServiceImpl.updateMembers(members);
+//////////////////////////////////////////////////////////////////////////////////登入時間			    
+		    
 
 			    // 设置 JSON 响应的成功标志
 			    boolean success = false;
@@ -294,8 +305,21 @@ public class MembersServlet extends HttpServlet {
 			        
 			        if (storedPswdHash.equals(pswdHash)) {
 			        	
-			            session.setAttribute("user", members);
-			            success = true;
+			            
+			            //TODO
+			            if (members.getMbrStatus() == 0) {
+			                
+			                
+			                response.put("mbrStatus", 0);
+			            }
+			            	session.setAttribute("user", members);
+			            	session.setAttribute("mbrId", members.getMbrId());
+			            	session.setAttribute("mbrStatus", members.getMbrStatus());
+			                success = true;
+			            
+			            
+			            //TODO
+
 /////////////////			            
 			           	if (location != null) {			    		
 						    
@@ -306,11 +330,11 @@ public class MembersServlet extends HttpServlet {
 
 				    	}
 /////////////////			           	
-			            if (members.getMbrStatus() == 0) {
-			                // 设置 JSON 响应中的 mbrStatus
-			                response.put("mbrStatus", 0);
-			                
-			            }
+//			            if (members.getMbrStatus() == 0) {
+//			                // 设置 JSON 响应中的 mbrStatus
+//			                response.put("mbrStatus", 0);
+//			                
+//			            }
 			        } else {
 			            // 密码不匹配，显示错误消息
 			            errorMsgs.put("error", "密码不正确");
@@ -342,8 +366,11 @@ public class MembersServlet extends HttpServlet {
 			
 			if("logout".equals(action)) {
 				HttpSession  session = req.getSession();
+
 				session.removeAttribute("user");
 				session.removeAttribute("location");
+				session.removeAttribute("mbrId");
+				session.removeAttribute("mbrStatus");
 				res.sendRedirect(req.getContextPath() + "/index.jsp");
 
 

@@ -141,7 +141,7 @@ input {
 
 </head>
 <body>
-	<a href='${pageContext.request.contextPath}/index.jsp'>回首頁</a>
+<%-- 	<a href='${pageContext.request.contextPath}/index.jsp'>回首頁</a> --%>
 
 
 	<div class="system_name">
@@ -322,9 +322,8 @@ input {
 					if (response.success) {
 						
 						if (response.mbrStatus === 0) {
-							
+//							alert("請至信箱驗證");
 							window.location.href = contextPath +  "/front_end/members/verificationEmail.jsp";
-// 							window.location.href = "verificationEmail.jsp";
 						}else{
 							if(response.location !== null && response.location !== undefined){
 								window.location.href = response.location ;
