@@ -212,7 +212,11 @@ public class MembersServlet extends HttpServlet {
 		        membersServiceImpl.addMembers(email, pswdHash);
 
 		        /***************************3.修改完成,準備轉交(Send the Success view)*************/
-		        String url = "/front_end/members/registerLogin.jsp";
+		        
+//		        String url = "/front_end/members/registerLogin.jsp";
+//		        RequestDispatcher successView = req.getRequestDispatcher(url);
+//		        successView.forward(req, res);
+		        String url = "/members/SendEmailServlet?action=verificationEmail&email="+email;
 		        RequestDispatcher successView = req.getRequestDispatcher(url);
 		        successView.forward(req, res);
 
@@ -223,7 +227,6 @@ public class MembersServlet extends HttpServlet {
 				        errors.put("sessionCode", "驗證碼錯誤");
 				        		      
 				    }
-//圖像驗證		       
 		    } else {
 		       
 		        errors.put("email", "email重複");
@@ -232,21 +235,18 @@ public class MembersServlet extends HttpServlet {
 		    response.put("errors", errors);
 		    
 		    response.put("success", success);
-		    // 设置JSON响应的Content-Type
 		    
 		   
 		    
-		    for (Map.Entry<String, Object> entry : response.entrySet()) {
-		        String key = entry.getKey();
-		        Object value = entry.getValue();
-		        
-		        System.out.println(key + ": " + value);
-		    }
-//		    String outResponse= gson.toJson(response);
+//		    for (Map.Entry<String, Object> entry : response.entrySet()) {
+//		        String key = entry.getKey();
+//		        Object value = entry.getValue();
+//		        
+//		        System.out.println(key + ": " + value);
+//		    }
 		    // 将JSON响应发送回客户端
 		    out.write(new Gson().toJson(response));
-//		    out.println(outResponse);
-//		    out.write(outResponse);
+
 
 		    out.close();
 		    

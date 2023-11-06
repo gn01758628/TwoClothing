@@ -9,6 +9,8 @@
 <body>
 	<a href='${pageContext.request.contextPath}/index.jsp'>回首頁</a>
 	
+	<a href='${pageContext.request.contextPath}/MemberCentre.jsp'>會員中心</a>
+	
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
 	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
 	<input type="hidden" name="action" value="buyBidOrder">
@@ -17,9 +19,22 @@
 	
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
 	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
-	<input type="hidden" name="action" value="confirmPayment">
-	<input type="submit" value="買家待付款">
+	<input type="hidden" name="action" value="get_Pay_And_Address">
+	<input type="submit" value="待付款">
 	</FORM>
+	
+	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
+	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
+	<input type="hidden" name="action" value="waitingToShip">
+	<input type="submit" value="待出貨">
+	</FORM>
+	
+	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
+	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
+	<input type="hidden" name="action" value="pendingDelivery">
+	<input type="submit" value="待收貨">
+	</FORM>
+	
 <!--	
   	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
 	<input type="hidden" name="sellMbrId" value="${user.mbrId}">

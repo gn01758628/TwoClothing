@@ -113,6 +113,9 @@
         <tr>
             <td colspan="17">無資料</td>
         </tr>
+            <div>
+            <img src="/noOrder.png" alt="No Order" />
+        	</div>
     </c:otherwise>
 </c:choose>
 
