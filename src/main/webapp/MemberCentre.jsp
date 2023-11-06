@@ -1,5 +1,6 @@
+<%@page import="org.hibernate.internal.build.AllowSysOut"%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-
+<%@ page import="com.twoclothing.model.members.*"%>
 
  <% 
      Object account = session.getAttribute("user");                  // 從 session內取出 (key) account的值
@@ -8,6 +9,13 @@
        response.sendRedirect(request.getContextPath()+"/front_end/members/registerLogin.jsp");   //*工作2 : 請該user去登入網頁(login.html) , 進行登入 
        return; 
      } 
+     
+    Object mbrStatus = session.getAttribute("mbrStatus");  
+    if ( mbrStatus.toString().equals("0")) {                                            
+        response.sendRedirect(request.getContextPath()+"/front_end/members/verificationEmail.jsp");  
+        return; 
+      } 
+    System.out.println("mbrStatus="+mbrStatus);
  %>  
 <!DOCTYPE html>
 <html>

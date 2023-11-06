@@ -22,6 +22,7 @@
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
     <!--我的css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/addBid.css">
+    <base>
 </head>
 
 <body style="background-color:#fff8fb">

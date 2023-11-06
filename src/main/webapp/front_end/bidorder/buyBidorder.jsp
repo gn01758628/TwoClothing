@@ -48,6 +48,7 @@
 </head>
 <body>
 <table>
+買家競標訂單
 	<tr>
 		<th>競標商品訂單編號</th>
 		<th>競標商品編號</th>
@@ -114,6 +115,7 @@
             <td colspan="17">無資料</td>
         </tr>
             <div>
+            <img src="/images/noOrder.png" alt="No Order" />
             <img src="/noOrder.png" alt="No Order" />
         	</div>
     </c:otherwise>

@@ -1,13 +1,8 @@
 package com.twoclothing.gordon.controller;
 
 import java.io.IOException;
-import java.util.Date;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,12 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.twoclothing.gordon.service.BidOrderServiceImpl;
+import com.twoclothing.gordon.service.MembersServiceImpl;
+import com.twoclothing.gordon.service.ShipSettingServiceImpl;
+import com.twoclothing.huiwen.service.BalanceHistoryServiceImpl;
 import com.twoclothing.model.abid.bidorder.BidOrder;
+import com.twoclothing.model.balancehistory.BalanceHistory;
 import com.twoclothing.model.members.Members;
 import com.twoclothing.model.shipsetting.ShipSetting;
-import com.twoclothing.gordon.service.BidOrderServiceImpl;
-import com.twoclothing.gordon.service.ShipSettingServiceImpl;
-import com.twoclothing.gordon.service.MembersServiceImpl;
 
 @WebServlet("/bidorder/BidOrder.do")
 public class BidOrderServlet extends HttpServlet {
@@ -42,6 +39,7 @@ public class BidOrderServlet extends HttpServlet {
 		BidOrderServiceImpl bidOrderServiceImpl = new BidOrderServiceImpl();
 		MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 		ShipSettingServiceImpl shipSettingServiceImpl = new ShipSettingServiceImpl();
+		BalanceHistoryServiceImpl balanceHistoryServiceImpl = new BalanceHistoryServiceImpl();
 		/*********************** 新增訂單 *************************/
 		/*********************** 新增訂單 *************************/
 		/*********************** 新增訂單 *************************/
@@ -418,24 +416,18 @@ public class BidOrderServlet extends HttpServlet {
 		/*********************** 查買家競標待付款 *************************/
 		/*********************** 查買家競標待付款 *************************/
 		/*********************** 查買家競標待付款 *************************/
-		if ("get_Pay_And_Address".equals(action)) {
+		if ("buyBidOrder0".equals(action)) {
 			/*************************** 1.接收請求參數 ***************************************/
 
 			Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
 			Integer OrderStatus = 0;
 			/*************************** 2.開始查詢資料 ****************************************/
 
-			List<BidOrder> bidOrderList = bidOrderServiceImpl.getAllBuyMbrId(buyMbrId);
-//				BidOrder firstBidOrder = bidOrder.get(0);
-//				firstBidOrder.getOrderStatus();
-//				for (BidOrder bidOrder : bidOrderList) {
-//					bidOrder.getOrderStatus();
-//				}
 			List<BidOrder> bidOrder = bidOrderServiceImpl.getAllOrderStatusAndBuyer(OrderStatus, buyMbrId);
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
 			req.setAttribute("BidOrder", bidOrder);
-			String url = "/front_end/bidorder/confirmPayment.jsp";
+			String url = "/front_end/bidorder/buyBidorder0.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 			successView.forward(req, res);
 
@@ -485,12 +477,7 @@ public class BidOrderServlet extends HttpServlet {
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
 			HttpSession session = req.getSession();
 			session.setAttribute("shipSetting", shipSetting);
-			
-//			req.setAttribute("amount", amount);
-//			req.setAttribute("bidOrderId", bidOrderId);
-//			req.setAttribute("sellMbrId", sellMbrId);
-//			req.setAttribute("bidItemId", bidItemId);
-//			req.setAttribute("shipSetting", shipSetting);
+
 			
 			
 
@@ -518,7 +505,6 @@ public class BidOrderServlet extends HttpServlet {
 			Integer bidOrderId = Integer.valueOf(req.getParameter("bidOrderId"));
 			Integer sellMbrId = Integer.valueOf(req.getParameter("sellMbrId"));
 			Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
-			Integer bidItemId = Integer.valueOf(req.getParameter("bidItemId"));
 			
 
 			
@@ -557,17 +543,7 @@ public class BidOrderServlet extends HttpServlet {
 			Integer orderStatus = 1;
 			
 
-//			String balanceParam = req.getParameter("balance").trim();
-//			Integer balance = null;
-//
-//			if (payType.equals(2)) {
-//				
-//					try {
-//						balance = Integer.valueOf(balanceParam);
-//					} catch (NumberFormatException e) {
-//						errorMsgs.put("balance", "請勿空白");
-//					}
-//			}
+
 		
 			String receiveAddress = req.getParameter("receiveAddress");
 			if (receiveAddress != null && !receiveAddress.trim().isEmpty()) {
@@ -609,6 +585,7 @@ public class BidOrderServlet extends HttpServlet {
 	
 	
 			if(payType.equals(2)) {
+///////////買家////////////////////////////////////////////				
 				Members members = membersServiceImpl.getByPrimaryKey(buyMbrId);
 				Integer balance = members.getBalance();
 				if(balance>amount) {
@@ -620,6 +597,33 @@ public class BidOrderServlet extends HttpServlet {
 				membersServiceImpl.updateMembers(members);
 				HttpSession session = req.getSession();
 				session.setAttribute("user", members);
+////////放入會員錢包異動紀錄	
+				
+				BalanceHistory balanceHistory = new  BalanceHistory();
+				balanceHistory.setBidOrderId(bidOrderId);
+				balanceHistory.setMbrId(buyMbrId);
+				Date currentDate = new Date();
+				Timestamp changeDate = new Timestamp(currentDate.getTime());
+				balanceHistory.setChangeDate(changeDate);
+				balanceHistory.setChangeValue(-amount);
+				balanceHistoryServiceImpl.addBH(balanceHistory);
+				
+///////////買家////////////////////////////////////////////
+///////////賣家////////////////////////////////////////////
+				members = membersServiceImpl.getByPrimaryKey(sellMbrId);
+				balance = members.getBalance();
+				balance= balance+amount;
+				members.setBalance(balance);
+				membersServiceImpl.updateMembers(members);
+////////放入會員錢包異動紀錄				
+				balanceHistory = new  BalanceHistory();
+				balanceHistory.setBidOrderId(bidOrderId);
+				balanceHistory.setMbrId(sellMbrId);
+				balanceHistory.setChangeDate(changeDate);
+				balanceHistory.setChangeValue(amount);
+				balanceHistoryServiceImpl.addBH(balanceHistory);
+///////////賣家////////////////////////////////////////////
+
 				}else {
 					errorMsgs.put("balance", "餘額不足");
 				}
@@ -654,7 +658,7 @@ public class BidOrderServlet extends HttpServlet {
 		/*********************** 買家競標待出貨查詢***************************/
 		/*********************** 買家競標待出貨查詢***************************/
 		
-		if ("waitingToShip".equals(action)) {
+		if ("buyBidOrder1".equals(action)) {
 			/*************************** 1.接收請求參數 ***************************************/
 			
 			Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
@@ -665,7 +669,7 @@ public class BidOrderServlet extends HttpServlet {
 			
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
 			req.setAttribute("BidOrder", bidOrder);
-			String url = "/front_end/bidorder/waitingToShip.jsp";
+			String url = "/front_end/bidorder/buyBidorder1.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 			successView.forward(req, res);
 			
@@ -678,7 +682,7 @@ public class BidOrderServlet extends HttpServlet {
 		/*********************** 買家競標待收貨查詢***************************/
 		/*********************** 買家競標待收貨查詢***************************/
 		
-		if ("pendingDelivery".equals(action)) {
+		if ("buyBidOrder2".equals(action)) {
 			/*************************** 1.接收請求參數 ***************************************/
 
 			Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
@@ -689,7 +693,7 @@ public class BidOrderServlet extends HttpServlet {
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
 			req.setAttribute("BidOrder", bidOrder);
-			String url = "/front_end/bidorder/pendingDelivery.jsp";
+			String url = "/front_end/bidorder/buyBidorder2.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 			successView.forward(req, res);
 			
@@ -697,7 +701,53 @@ public class BidOrderServlet extends HttpServlet {
 		}
 		
 		
+		/*********************** 買家競標交易完成查詢***************************/
+		/*********************** 買家競標交易完成查詢***************************/
+		/*********************** 買家競標交易完成查詢***************************/
+		/*********************** 買家競標交易完成查詢***************************/
+		/*********************** 買家競標交易完成查詢***************************/
 		
+		if ("buyBidOrder3".equals(action)) {
+			/*************************** 1.接收請求參數 ***************************************/
+			
+			Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
+			Integer OrderStatus = 3;
+			/*************************** 2.開始查詢資料 ****************************************/
+			
+			List<BidOrder> bidOrder = bidOrderServiceImpl.getAllOrderStatusAndBuyer(OrderStatus, buyMbrId);
+			
+			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+			req.setAttribute("BidOrder", bidOrder);
+			String url = "/front_end/bidorder/buyBidorder3.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
+			
+			
+		}
+		
+		/*********************** 買家競標交易不成立查詢***************************/
+		/*********************** 買家競標交易不成立查詢***************************/
+		/*********************** 買家競標交易不成立查詢***************************/
+		/*********************** 買家競標交易不成立查詢***************************/
+		/*********************** 買家競標交易不成立查詢***************************/
+		
+		if ("buyBidOrder4".equals(action)) {
+			/*************************** 1.接收請求參數 ***************************************/
+			
+			Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
+			Integer OrderStatus = 3;
+			/*************************** 2.開始查詢資料 ****************************************/
+			
+			List<BidOrder> bidOrder = bidOrderServiceImpl.getAllOrderStatusAndBuyer(OrderStatus, buyMbrId);
+			
+			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+			req.setAttribute("BidOrder", bidOrder);
+			String url = "/front_end/bidorder/buyBidorder4.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
+			
+			
+		}
 		
 		
 		
@@ -731,6 +781,124 @@ public class BidOrderServlet extends HttpServlet {
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 			successView.forward(req, res);
 
+			
+		}
+		/*********************** 賣家查買家待付款 *************************/
+		/*********************** 賣家查買家待付款 *************************/
+		/*********************** 賣家查買家待付款 *************************/
+		/*********************** 賣家查買家待付款 *************************/
+		/*********************** 賣家查買家待付款 *************************/
+
+		if ("sellBidOrder0".equals(action)) {
+			/*************************** 1.接收請求參數 ***************************************/
+			
+			Integer sellMbrId = Integer.valueOf(req.getParameter("sellMbrId"));
+			Integer OrderStatus = 0;
+			/*************************** 2.開始查詢資料 ****************************************/
+			
+			List<BidOrder> bidOrder = bidOrderServiceImpl.getAllOrderStatusAndSeller(OrderStatus, sellMbrId);
+			
+			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+			req.setAttribute("BidOrder", bidOrder);
+			String url = "/front_end/bidorder/sellBidorder0.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
+			
+			
+		}
+		/*********************** 賣家待出貨 *************************/
+		/*********************** 賣家待出貨 *************************/
+		/*********************** 賣家待出貨 *************************/
+		/*********************** 賣家待出貨 *************************/
+		/*********************** 賣家待出貨 *************************/
+		
+		if ("sellBidOrder1".equals(action)) {
+			/*************************** 1.接收請求參數 ***************************************/
+			
+			Integer sellMbrId = Integer.valueOf(req.getParameter("sellMbrId"));
+			Integer OrderStatus = 1;
+			/*************************** 2.開始查詢資料 ****************************************/
+			
+			List<BidOrder> bidOrder = bidOrderServiceImpl.getAllOrderStatusAndSeller(OrderStatus, sellMbrId);
+			
+			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+			req.setAttribute("BidOrder", bidOrder);
+			String url = "/front_end/bidorder/sellBidorder1.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
+			
+			
+		}
+		
+		/*********************** 賣家等買家收貨 *************************/
+		/*********************** 賣家等買家收貨 *************************/
+		/*********************** 賣家等買家收貨 *************************/
+		/*********************** 賣家等買家收貨 *************************/
+		/*********************** 賣家等買家收貨 *************************/
+		/*********************** 賣家等買家收貨 *************************/
+		
+		if ("sellBidOrder2".equals(action)) {
+			/*************************** 1.接收請求參數 ***************************************/
+			
+			Integer sellMbrId = Integer.valueOf(req.getParameter("sellMbrId"));
+			Integer OrderStatus = 2;
+			/*************************** 2.開始查詢資料 ****************************************/
+			
+			List<BidOrder> bidOrder = bidOrderServiceImpl.getAllOrderStatusAndSeller(OrderStatus, sellMbrId);
+			
+			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+			req.setAttribute("BidOrder", bidOrder);
+			String url = "/front_end/bidorder/sellBidorder2.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
+			
+			
+		}
+		/*********************** 賣家競標訂單已完成 *************************/
+		/*********************** 賣家競標訂單已完成 *************************/
+		/*********************** 賣家競標訂單已完成 *************************/
+		/*********************** 賣家競標訂單已完成 *************************/
+		/*********************** 賣家競標訂單已完成 *************************/
+		
+		if ("sellBidOrder3".equals(action)) {
+			/*************************** 1.接收請求參數 ***************************************/
+			
+			Integer sellMbrId = Integer.valueOf(req.getParameter("sellMbrId"));
+			Integer OrderStatus = 3;
+			/*************************** 2.開始查詢資料 ****************************************/
+			
+			List<BidOrder> bidOrder = bidOrderServiceImpl.getAllOrderStatusAndSeller(OrderStatus, sellMbrId);
+			
+			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+			req.setAttribute("BidOrder", bidOrder);
+			String url = "/front_end/bidorder/sellBidorder3.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
+			
+			
+		}
+		
+		/*********************** 賣家競標訂單不成立 *************************/
+		/*********************** 賣家競標訂單不成立 *************************/
+		/*********************** 賣家競標訂單不成立 *************************/
+		/*********************** 賣家競標訂單不成立 *************************/
+		/*********************** 賣家競標訂單不成立 *************************/
+		
+		if ("sellBidOrder4".equals(action)) {
+			/*************************** 1.接收請求參數 ***************************************/
+			
+			Integer sellMbrId = Integer.valueOf(req.getParameter("sellMbrId"));
+			Integer OrderStatus = 4;
+			/*************************** 2.開始查詢資料 ****************************************/
+			
+			List<BidOrder> bidOrder = bidOrderServiceImpl.getAllOrderStatusAndSeller(OrderStatus, sellMbrId);
+			
+			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+			req.setAttribute("BidOrder", bidOrder);
+			String url = "/front_end/bidorder/sellBidorder4.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
+			
 			
 		}
 

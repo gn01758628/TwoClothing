@@ -60,6 +60,9 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
         request.setAttribute("size", size);
         request.setAttribute("bidStatus", bidStatus);
 
+        // 競標商品瀏覽紀錄
+
+
         // 競標商品出價資訊
         List<BidRecord> bidRecordList = bidItemService.getAllBidRecordByBidItemId(Integer.parseInt(bidItemId));
         // 綁定出價會員
@@ -108,7 +111,7 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
             // 添加出價紀錄
             String now = FormatUtil.timestampDateTime(new Timestamp(System.currentTimeMillis()));
             BidRecord bidRecord = new BidRecord(mbrId, FormatUtil.numberThousandsSeparators(bidAmount), now);
-            bidItemService.addBidRecord(bidRecord, Integer.parseInt(bidItemId), bidItem.getEndTime().toLocalDateTime());
+            bidItemService.addBidRecord(bidRecord, Integer.parseInt(bidItemId), endTime);
             // 發送通知給其他所有參與競標的會員(只需要給上一個)
             BidRecord previousbidRecord = bidItemService.getBidRecordByIndex(Integer.parseInt(bidItemId), 1);
             if (previousbidRecord != null) {
@@ -119,7 +122,7 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
                 notice.setContent("您投標的商品：" + bidItem.getBidName() + "，出價價格已被超越");
                 notice.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItemId);
                 notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
-                bidItemService.addNotice(notice,previousMbrId);
+                bidItemService.addNotice(notice, previousMbrId);
             }
             out.print("1");
             return;
@@ -131,7 +134,7 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
             // 添加出價紀錄
             String now = FormatUtil.timestampDateTime(new Timestamp(System.currentTimeMillis()));
             BidRecord bidRecord = new BidRecord(mbrId, FormatUtil.numberThousandsSeparators(bidAmount), now);
-            bidItemService.addBidRecord(bidRecord, Integer.parseInt(bidItemId), bidItem.getEndTime().toLocalDateTime());
+            bidItemService.addBidRecord(bidRecord, Integer.parseInt(bidItemId), endTime);
             // 發送通知給其他所有參與競標的會員
             Set<Integer> mbrIdSet = bidItemService.getAllMbrIdInBidRecord(Integer.parseInt(bidItemId));
             Notice notice = new Notice();
@@ -145,6 +148,7 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
                     bidItemService.addNotice(notice, id);
                 }
             }
+
             // TODO 跑訂單
 
             out.print("2");

@@ -295,6 +295,7 @@
         // 立即結標按鈕
         $("#bidDirectBtn").on("click", function () {
             bidType.text("立即結標");
+            bidAmountInp.val(directPrice);
             bidAmount2.text(formatToMoney(Number(directPrice)));
         })
 
@@ -309,10 +310,12 @@
                 bidType: bidType.text()
             }, function (data) {
                 if (data === "1") {
+                    console.log("123");
                     alert("您已成功出價，將刷新頁面，以便您觀察最新出價狀況");
                     location.reload();
                 }
                 if (data === "2") {
+                    console.log("456");
                     alert("恭喜！您已成功以直購價提前結標。請瀏覽您的訂單並繼續後續流程。");
                     location.reload();
                     // TODO 結標頁面更新

@@ -24,38 +24,38 @@
 <div class="form-container">
 	
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
-	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
-	<input type="hidden" name="action" value="buyBidOrder">
-	<input type="submit" value="買家競標訂單">
+	<input type="hidden" name="sellMbrId" value="${user.mbrId}">
+	<input type="hidden" name="action" value="sellBidOrder">
+	<input type="submit" value="賣家競標訂單">
 	</FORM>
 	
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
-	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
-	<input type="hidden" name="action" value="buyBidOrder0">
-	<input type="submit" value="待付款">
+	<input type="hidden" name="sellMbrId" value="${user.mbrId}">
+	<input type="hidden" name="action" value="sellBidOrder0">
+	<input type="submit" value="待買家付款">
 	</FORM>
 	
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
-	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
-	<input type="hidden" name="action" value="buyBidOrder1">
+	<input type="hidden" name="sellMbrId" value="${user.mbrId}">
+	<input type="hidden" name="action" value="sellBidOrder1">
 	<input type="submit" value="待出貨">
 	</FORM>
 	
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
-	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
-	<input type="hidden" name="action" value="buyBidOrder2">
-	<input type="submit" value="待收貨">
+	<input type="hidden" name="sellMbrId" value="${user.mbrId}">
+	<input type="hidden" name="action" value="sellBidOrder2">
+	<input type="submit" value="待買家收貨">
 	</FORM>
 	
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
-	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
-	<input type="hidden" name="action" value="buyBidOrder3">
+	<input type="hidden" name="sellMbrId" value="${user.mbrId}">
+	<input type="hidden" name="action" value="sellBidOrder3">
 	<input type="submit" value="交易完成">
 	</FORM>
 	
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
-	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
-	<input type="hidden" name="action" value="buyBidOrder4">
+	<input type="hidden" name="sellMbrId" value="${user.mbrId}">
+	<input type="hidden" name="action" value="sellBidOrder4">
 	<input type="submit" value="不成立">
 	</FORM>
 </div>
