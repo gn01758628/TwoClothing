@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="">
-<title>ItemReport</title>
+<title>ItemReportList</title>
 </head>
 <body>
 	<h1>商品檢舉清單</h1>
@@ -45,7 +45,21 @@
 				<td>${rStatusMap[itemReport.rStatus]}</td>
 				<td>${itemReport.auditDate}</td>
 				<td>${resultMap[itemReport.result]}</td>
-				<td>${note}</td>
+				<td>${itemReport.note}</td>
+				<td>
+					<form method="post" action="${pageContext.request.contextPath}/back/itemreport">
+						<c:choose>
+							<c:when test="${itemReport.rStatus == 1}">
+								<button class="btn_one" type="submit" style="display: none;">查看</button>
+							</c:when>
+							<c:otherwise>
+								<button class="btn_update" type="submit">審核</button>
+							</c:otherwise>
+						</c:choose>
+						<input type="hidden" name="reportId" value="${itemReport.reportId}">
+						<input type="hidden" name="action" value="getOne">
+					</form>
+				</td>
 			</tr>
 		</c:forEach>
 	</table>

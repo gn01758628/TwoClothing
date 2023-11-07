@@ -1,5 +1,6 @@
 package com.twoclothing.chi.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -16,13 +17,9 @@ public interface ItemReportService {
 
 	List<ItemReport> getAll(int currentPage);
 
-//	List<ItemReport> getAllByEmpId(Integer empId);
-//
-//	List<ItemReport> getAllByRStatus(Integer rStatus);
-//
-//	List<ItemReport> getAllByResult(Integer result);
-
 	List<ItemReport> getByCompositeQuery(Map<String, String[]> map, int currentPage);
 	
 	int getCompositeQueryPageTotal(Map<String, String[]> map);
+	
+	ItemReport updateItemReport(Integer reportId, Integer empId, Integer rStatus, Timestamp auditdate, Integer result, String note);
 }
