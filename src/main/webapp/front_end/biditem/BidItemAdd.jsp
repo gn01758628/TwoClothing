@@ -22,6 +22,7 @@
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
     <!--我的css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/addBid.css">
+    <base>
 </head>
 
 <body style="background-color:#fff8fb">
@@ -53,7 +54,7 @@
 <div class="container">
     <div class="row justify-content-center my-5">
         <div class="col-12">
-            <form action="${pageContext.request.contextPath}/front/biditem/save" method="post"
+            <form action="${pageContext.request.contextPath}/front/biditem/personal/save" method="post"
                   enctype="multipart/form-data">
 
                 <div class="mb-4 border p-4 rounded-3" style="background-color:white">

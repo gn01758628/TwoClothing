@@ -9,6 +9,8 @@ import com.twoclothing.model.abid.biditemimage.BidItemImage;
 import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.aproduct.itemimage.ItemImage;
 import com.twoclothing.model.categorytags.CategoryTags;
+import com.twoclothing.model.coupon.Coupon;
+import com.twoclothing.model.memberscoupon.MembersCoupon;
 
 public interface ItemService {
 	
@@ -35,5 +37,16 @@ public interface ItemService {
 	List<CategoryTags> getAllCategoryTags();
 	
     void addItemImage(ItemImage itemImage);
+    
+    Integer getMbrPointByMbrId(Integer mbrId);
 
+//    public MembersCoupon getMemCouponByPK(Integer mbrId, Integer cpnId);
+    
+    public Coupon getCouponByPK(Integer cpnId);
+    
+    List<Coupon> getAllCoupon();
+    
+    public List<MembersCoupon> getMemCouponByMbrId(String mbrId, Integer value);
+    
+    
 }

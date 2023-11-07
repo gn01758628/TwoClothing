@@ -1,0 +1,237 @@
+
+<html lang="zh-hant">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
+	<link rel="stylesheet" href="/TwoClothing/css/chijung/empCenter.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+
+  <aside class="sidebar">
+	<header>
+         <img src="" id="profile-image" class="profile-image" style="display: none;" >
+         
+         <div class="personal">
+		    <p>員工編號:<span id="formatEmpId"></span></p>
+		    <p>員工姓名:<span id="empName"></span></p>
+		 </div>
+		 
+        <div class="profile-btn">
+          <button id="profile-edit"><a href="front_end/employee/select_page.jsp">修改資料</a></button>
+          <button id="logout">登出</button>
+        </div>
+		 
+	</header>
+	
+    <nav class="sidebar-nav">
+      <ul>
+        <li>
+          <a href="#"><i class="icon ion-ios-color-filter-outline"></i> <span>Shop</span></a>
+          
+          <ul class="nav-flyout">
+          
+            <li>
+              <a href="#"><i class="ion-ios-color-filter-outline"></i>Derps</a>
+            </li>
+            
+            <li>
+              <a href="#"><i class="ion-ios-clock-outline"></i>Times</a>
+            </li>
+            
+            <li>
+              <a href="#"><i class="ion-android-star-outline"></i>Hates</a>
+            </li>
+            
+            <li>
+              <a href="#"><i class="ion-heart-broken"></i>Beat</a>
+            </li>
+            
+          </ul>
+        </li>
+        
+        <li>
+          <a href="#"><i class="ion-ios-settings"></i> <span class="">Controls</span></a>
+          
+          <ul class="nav-flyout">
+            <li>
+              <a href="#"><i class="ion-ios-alarm-outline"></i>Watch</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-camera-outline"></i>Creeper</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-chatboxes-outline"></i>Hate</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-cog-outline"></i>Grinder</a>
+            </li>
+            
+          </ul>
+        </li>
+        
+        <li>
+          <a href="#"><i class="ion-ios-briefcase-outline"></i> <span class="">Folio</span></a>
+          
+          <ul class="nav-flyout">
+            <li>
+              <a href="#"><i class="ion-ios-flame-outline"></i>Burn</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-lightbulb-outline"></i>Bulbs</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-location-outline"></i>Where You</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-locked-outline"></i>On Lock</a>
+            </li>
+             <li>
+              <a href="#"><i class="ion-ios-navigate-outline"></i>Ghostface</a>
+            </li>
+          </ul>
+          
+        </li>
+        
+        <li>
+          <a href="#"><i class="ion-ios-analytics-outline"></i> <span class="">Graphicals</span></a>
+          
+          <ul class="nav-flyout">
+            <li>
+              <a href="#"><i class="ion-ios-timer-outline"></i>Timers</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-arrow-graph-down-left"></i>You Lose</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-partlysunny-outline"></i>Stormy</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-timer-outline"></i>Lookie Look</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-game-controller-a-outline"></i>Dork Mfer</a>
+            </li>
+          </ul>
+          
+        </li>
+        
+        <li>
+          <a href="#"><i class="ion-ios-paper-outline"></i> <span class="">Papers</span></a>
+          
+          <ul class="nav-flyout">
+            <li>
+              <a href="#"><i class="ion-ios-filing-outline"></i>File Cab</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-information-outline"></i>Infos</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-paperplane-outline"></i>Planes</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-android-star-outline"></i>Shop</a>
+            </li>
+          </ul>
+          
+        </li>
+        
+        <li>
+          <a href="#"><i class="ion-ios-navigate-outline"></i> <span class="">Ass Finder</span></a>
+          
+          <ul class="nav-flyout">
+            <li>
+              <a href="#"><i class="ion-ios-flame-outline"></i>Burn</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-lightbulb-outline"></i>Bulbs</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-location-outline"></i>Where You</a>
+            </li>
+            <li>
+              <a href="#"><i class="ion-ios-locked-outline"></i>On Lock</a>
+            </li>
+             <li>
+              <a href="#"><i class="ion-ios-navigate-outline"></i>Ghostface</a>
+            </li>
+          </ul>
+          
+        </li>
+        
+        <li>
+          <a href="#"><i class="ion-ios-medical-outline"></i> <span class="">Cocaine</span></a>
+        </li>
+        
+      </ul>
+      
+    </nav>
+  </aside>
+
+  <div id="content" style="margin-left:272px;"></div>
+
+<script >
+$(document).ready(function() {
+	
+	$.ajax({
+        url: '/TwoClothing/EmployeeCenter.do', // 替換為後端API的實際URL
+        type: 'POST', // 請求的類型為POST
+        dataType: 'json',
+        data: {
+            action: 'center'
+        }, // 直接傳遞參數
+        success: function(emp) {
+            $('#formatEmpId').text(emp.formatEmpId);
+            $('#empName').text(emp.empName);
+            let imageUrl = URL.createObjectURL(new Blob([new Uint8Array(emp.avatar)], { type: 'image/gif' }));
+            let image = new Image();
+            image.src = imageUrl;
+            image.onload = function() {
+                // 圖片載入成功，可以在這裡執行相應的操作
+                $('#profile-image').attr('src', imageUrl);
+                $('#profile-image').css('display', 'block');
+            };
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            alert("帳號已登出,請重新登入");
+            window.location.href = xhr.responseText; 
+        }
+    });
+	
+	$('.sidebar a').click(function(event) {
+        // 阻止默認的超鏈結行為
+        event.preventDefault();
+        
+        // 獲取被點擊的 a 標籤的 href 屬性的值
+        var hrefValue = $(this).attr('href');
+        
+        // 使用 .load() 方法將連結的內容加載到指定的 <div> 元素中
+        $('#content').load(hrefValue, function(response, status, xhr) {
+            if (status === "error") {
+                // 載入失敗時的處理邏輯
+                console.log('載入失敗：' + xhr.status + ' ' + xhr.statusText);
+            }
+        });
+    });
+	
+	
+	$('#logout').click(function() {
+		$.ajax({
+	        url: '/TwoClothing/EmployeeCenter.do', // 替換為後端API的實際URL
+	        type: 'POST', // 請求的類型為POST
+	        data: {
+	            action: 'logout'
+	        }, // 直接傳遞參數
+	        success: function(url) {
+	            // 請求成功的處理邏輯
+	        	window.location.href = url;
+	        }
+	    });
+    });
+	
+});
+
+</script>
+
+
+
+</html>

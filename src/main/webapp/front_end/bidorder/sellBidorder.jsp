@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*"%>
 
-<%@ include file="buyBidorderBanner.jsp" %> 
+<%@ include file="sellBidorderBanner.jsp" %> 
 
 
 <!DOCTYPE html>
@@ -48,6 +48,7 @@
 </head>
 <body>
 <table>
+賣家競標訂單
 	<tr>
 		<th>競標商品訂單編號</th>
 		<th>競標商品編號</th>
