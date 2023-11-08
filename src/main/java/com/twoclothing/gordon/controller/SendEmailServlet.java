@@ -49,11 +49,7 @@ public class SendEmailServlet extends HttpServlet {
     		
     		MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
     		Members members = membersServiceImpl.getByEmail(to);
-///////////////////驗證碼存SQL Members 的mbrName/////////////////////
-//    		membersServiceImpl.updateMembers(members);
-//    		members.setMbrName(activeCode);
-///////////////////驗證碼存名字/////////////////////
-/////////////////////////////////////redis測試////////////////////	
+
     		
     		Map<String,String> verification =  new HashMap<>();
     		
@@ -68,14 +64,13 @@ public class SendEmailServlet extends HttpServlet {
 
 			    String email =  String.valueOf(to);
 
-			// 存储数据
+			// 存储数據
 			jedis.set(email, verificationValue);
 			
 			jedis.close();
     		
 /////////////////////////////////////redis測試////////////////////	
 
- //   		String messageText =  "註冊成功，請點擊<a href='http://64.190.63.111/back_end/members/SendEmailServlet?active=active&activeCode="
     		String messageText =  "註冊成功，請點擊<a href='http://192.168.0.32/TwoClothing/members/SendEmailServlet?action=action&activeCode="
     	            +activeCode+"&email="+to;
     	           
@@ -98,24 +93,21 @@ public class SendEmailServlet extends HttpServlet {
     		String getActiveCode = req.getParameter("activeCode");
     		String email = req.getParameter("email");
 
-///////////////////驗證碼取SQL Members 的mbrName/////////////////////
     		MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
     		Members members = membersServiceImpl.getByEmail(email);
-//    		activeCode = members.getMbrName();
-///////////////////驗證碼取SQL Members 的mbrName/////////////////////
 /////////////////////////////////////redis測試////////////////////	
     		Jedis jedis = new Jedis("localhost", 6379);
-    		jedis.select(0); // 选择数据库1，确保和之前存储数据的数据库匹配
+    		jedis.select(0); 
 
-    		String emailRdis = email; // 这里放入之前存储的email的值
+    		String emailRdis = email; 
 
-    		String verificationValue = jedis.get(emailRdis); // 从Redis中检索值
+    		String verificationValue = jedis.get(emailRdis); 
     		if (verificationValue != null) {
-    		    // 如果找到了对应的值
+    		   
     		    Gson gson = new Gson();
     		    Map<String, String> verification = gson.fromJson(verificationValue, new TypeToken<Map<String, String>>() {}.getType());
 
-    		    // 获取值
+    		    
     		    activeCode = verification.get("activeCode");
 
     		    // 在这里使用activeCode
@@ -124,8 +116,8 @@ public class SendEmailServlet extends HttpServlet {
     		    System.out.println(activeCode);
     		    jedis.close();
     		} else {
-    		    // 未找到对应的值
-    		    System.out.println("未找到对应的值");
+    		   
+    		    System.out.println("未找到對應的值");
     		}
     		
     		

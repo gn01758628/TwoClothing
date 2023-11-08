@@ -93,15 +93,28 @@
 		<td>${BidOrder.receivePhone}</td>
 		<td>${BidOrder.remarks}</td>
  			
-
-<!--			
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="刪除">
-			     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}">
-			     <input type="hidden" name="action" value="delete"></FORM>
+			     <input type="submit" value="待出貨">
+			     <input type="hidden" name="amount" value="${BidOrder.amount}">
+			     <input type="hidden" name="bidOrderId" value="${BidOrder.bidOrderId}">
+			     <input type="hidden" name="sellMbrId" value="${BidOrder.sellMbrId}">
+			     <input type="hidden" name="bidItemId" value="${BidOrder.bidItemId}">
+			     <input type="hidden" name="buyMbrId" value="${BidOrder.buyMbrId}">
+			     <input type="hidden" name="action"	value="shipped"></FORM>
 			</td>
- -->			
+			<td>
+			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
+			     <input type="submit" value="取消交易">
+			     <input type="hidden" name="amount" value="${BidOrder.amount}">
+			     <input type="hidden" name="bidOrderId" value="${BidOrder.bidOrderId}">
+			     <input type="hidden" name="sellMbrId" value="${BidOrder.sellMbrId}">
+			     <input type="hidden" name="bidItemId" value="${BidOrder.bidItemId}">
+			     <input type="hidden" name="buyMbrId" value="${BidOrder.buyMbrId}">
+			     <input type="hidden" name="action"	value="sell_Cancel_Order"></FORM>
+			</td>
+
+
 		</tr>
 		
 	</c:forEach>
