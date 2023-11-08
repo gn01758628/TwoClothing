@@ -1,4 +1,4 @@
-package com.twoclothing.model.aproduct.itemreport;
+package com.twoclothing.model.aproduct.orderreport;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -14,10 +14,10 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-public class ItemReportHibernateDAO implements ItemReportDAO {
+public class OrderReportHibernateDAO implements OrderReportDAO {
 	private SessionFactory factory;
 
-	public ItemReportHibernateDAO(SessionFactory factory) {
+	public OrderReportHibernateDAO(SessionFactory factory) {
 		this.factory = factory;
 	}
 
@@ -26,41 +26,41 @@ public class ItemReportHibernateDAO implements ItemReportDAO {
 	}
 
 	@Override
-	public void insert(ItemReport itemReport) {
-		getSession().save(itemReport);
+	public void insert(OrderReport orderReport) {
+		getSession().save(orderReport);
 	}
 
 	@Override
-	public ItemReport getByPrimaryKey(Integer reportId) {
-		return getSession().get(ItemReport.class, reportId);
+	public OrderReport getByPrimaryKey(Integer reportId) {
+		return getSession().get(OrderReport.class, reportId);
 	}
 
 	@Override
-	public List<ItemReport> getAll(int currentPage) {
+	public List<OrderReport> getAll(int currentPage) {
 		int first = (currentPage - 1) * 10;
-		return getSession().createQuery("from ItemReport", ItemReport.class).setFirstResult(first).setMaxResults(10)
+		return getSession().createQuery("from OrderReport", OrderReport.class).setFirstResult(first).setMaxResults(10)
 				.list();
 	}
 
 	@Override
-	public List<ItemReport> getAllByMbrId(Integer mbrId, int currentPage) {
+	public List<OrderReport> getAllByMbrId(Integer mbrId, int currentPage) {
 		int first = (currentPage - 1) * 10;
-		return getSession().createQuery("from ItemReport where mbrId = :mbrId", ItemReport.class).setFirstResult(first)
-				.setMaxResults(10).setParameter("mbrId", mbrId).list();
+		return getSession().createQuery("from OrderReport where mbrId = :mbrId", OrderReport.class)
+				.setFirstResult(first).setMaxResults(10).setParameter("mbrId", mbrId).list();
 	}
 
 	@Override
 	public long getTotal(Integer mbrId) {
 		if (mbrId != -1) {
-			return getSession().createQuery("select count(*) from ItemReport where mbrId = :mbrId", Long.class)
+			return getSession().createQuery("select count(*) from OrderReport where mbrId = :mbrId", Long.class)
 					.setParameter("mbrId", mbrId).uniqueResult();
 		} else {
-			return getSession().createQuery("select count(*) from ItemReport", Long.class).uniqueResult();
+			return getSession().createQuery("select count(*) from OrderReport", Long.class).uniqueResult();
 		}
 	}
 
 	@Override
-	public List<ItemReport> getByCompositeQuery(Map<String, String> map, int currentPage) {
+	public List<OrderReport> getByCompositeQuery(Map<String, String> map, int currentPage) {
 		int first = (currentPage - 1) * 10;
 
 		if (map.size() == 0) {
@@ -68,17 +68,14 @@ public class ItemReportHibernateDAO implements ItemReportDAO {
 		}
 
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
-		CriteriaQuery<ItemReport> criteria = builder.createQuery(ItemReport.class);
-		Root<ItemReport> root = criteria.from(ItemReport.class);
+		CriteriaQuery<OrderReport> criteria = builder.createQuery(OrderReport.class);
+		Root<OrderReport> root = criteria.from(OrderReport.class);
 
 		List<Predicate> predicates = new ArrayList<>();
 
 		for (Map.Entry<String, String> row : map.entrySet()) {
-			if ("itemId".equals(row.getKey())) {
-				predicates.add(builder.equal(root.get("itemId"), new BigDecimal(row.getValue())));
-			}
-			if ("mbrId".equals(row.getKey())) {
-				predicates.add(builder.equal(root.get("mbrId"), new BigDecimal(row.getValue())));
+			if ("orderId".equals(row.getKey())) {
+				predicates.add(builder.equal(root.get("orderId"), new BigDecimal(row.getValue())));
 			}
 			if ("empId".equals(row.getKey())) {
 				predicates.add(builder.equal(root.get("empId"), new BigDecimal(row.getValue())));
@@ -94,24 +91,22 @@ public class ItemReportHibernateDAO implements ItemReportDAO {
 
 		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
 		criteria.orderBy(builder.asc(root.get("reportId")));
-		TypedQuery<ItemReport> query = getSession().createQuery(criteria);
+		TypedQuery<OrderReport> query = getSession().createQuery(criteria);
 
 		return query.setFirstResult(first).setMaxResults(10).getResultList();
 	}
 
+	@Override
 	public int getMapTotal(Map<String, String> map) {
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
-		CriteriaQuery<ItemReport> criteria = builder.createQuery(ItemReport.class);
-		Root<ItemReport> root = criteria.from(ItemReport.class);
+		CriteriaQuery<OrderReport> criteria = builder.createQuery(OrderReport.class);
+		Root<OrderReport> root = criteria.from(OrderReport.class);
 
 		List<Predicate> predicates = new ArrayList<>();
 
 		for (Map.Entry<String, String> row : map.entrySet()) {
-			if ("itemId".equals(row.getKey())) {
-				predicates.add(builder.equal(root.get("itemId"), new BigDecimal(row.getValue())));
-			}
-			if ("mbrId".equals(row.getKey())) {
-				predicates.add(builder.equal(root.get("mbrId"), new BigDecimal(row.getValue())));
+			if ("orderId".equals(row.getKey())) {
+				predicates.add(builder.equal(root.get("orderId"), new BigDecimal(row.getValue())));
 			}
 			if ("empId".equals(row.getKey())) {
 				predicates.add(builder.equal(root.get("empId"), new BigDecimal(row.getValue())));
@@ -127,9 +122,9 @@ public class ItemReportHibernateDAO implements ItemReportDAO {
 
 		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
 		criteria.orderBy(builder.asc(root.get("reportId")));
-		TypedQuery<ItemReport> query = getSession().createQuery(criteria);
+		TypedQuery<OrderReport> query = getSession().createQuery(criteria);
 
-		List<ItemReport> resultList = query.getResultList();
+		List<OrderReport> resultList = query.getResultList();
 
 		int total = resultList.size();
 		int pageSize = 10;
@@ -139,7 +134,7 @@ public class ItemReportHibernateDAO implements ItemReportDAO {
 	}
 
 	@Override
-	public void update(ItemReport itemReport) {
-		getSession().update(itemReport);
+	public void update(OrderReport orderReport) {
+		getSession().update(orderReport);
 	}
 }

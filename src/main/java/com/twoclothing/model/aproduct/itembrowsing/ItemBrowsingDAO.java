@@ -1,10 +1,9 @@
 package com.twoclothing.model.aproduct.itembrowsing;
 
-import java.io.Serializable;
 import java.util.List;
 
 public interface ItemBrowsingDAO {
-	Serializable insert(ItemBrowsing itemBrowsing);
+	void insert(ItemBrowsing itemBrowsing);
 
 	List<ItemBrowsing> getAllByMbrId(Integer mbrId, int currentPage);
 
@@ -12,5 +11,5 @@ public interface ItemBrowsingDAO {
 	
 	ItemBrowsing getByCompositeKey(Integer itemId, Integer mbrId);
 
-	boolean update(ItemBrowsing itemBrowsing);
+	void update(ItemBrowsing itemBrowsing);
 }

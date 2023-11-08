@@ -1,6 +1,5 @@
 package com.twoclothing.model.aproduct.itembrowsing;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -18,14 +17,15 @@ public class ItemBrowsingHibernateDAO implements ItemBrowsingDAO {
 	}
 
 	@Override
-	public Serializable insert(ItemBrowsing itemBrowsing) {
-		return (Serializable) getSession().save(itemBrowsing);
+	public void insert(ItemBrowsing itemBrowsing) {
+		getSession().save(itemBrowsing);
 	}
 
 	@Override
 	public List<ItemBrowsing> getAllByMbrId(Integer mbrId, int currentPage) {
 		int first = (currentPage - 1) * 10;
-		return getSession().createQuery("from ItemBrowsing where mbrId = :mbrId order by browsingTime desc", ItemBrowsing.class)
+		return getSession()
+				.createQuery("from ItemBrowsing where mbrId = :mbrId order by browsingTime desc", ItemBrowsing.class)
 				.setFirstResult(first).setMaxResults(10).setParameter("mbrId", mbrId).list();
 	}
 
@@ -42,12 +42,7 @@ public class ItemBrowsingHibernateDAO implements ItemBrowsingDAO {
 	}
 
 	@Override
-	public boolean update(ItemBrowsing itemBrowsing) {
-		try {
-			getSession().update(itemBrowsing);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+	public void update(ItemBrowsing itemBrowsing) {
+		getSession().update(itemBrowsing);
 	}
 }

@@ -1,13 +1,13 @@
 package com.twoclothing.chi.service;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
 import com.twoclothing.model.aproduct.itemreport.ItemReport;
+import com.twoclothing.redismodel.notice.Notice;
 
 public interface ItemReportService {
-	ItemReport addItemReport(ItemReport itemReport);
+	void addItemReport(ItemReport itemReport);
 
 	List<ItemReport> getAllByMbrId(Integer mbrId, int currentPage);
 
@@ -21,5 +21,7 @@ public interface ItemReportService {
 	
 	int getCompositeQueryPageTotal(Map<String, String[]> map);
 	
-	ItemReport updateItemReport(Integer reportId, Integer empId, Integer rStatus, Timestamp auditdate, Integer result, String note);
+	void updateItemReport(ItemReport itemReport);
+	
+	void addNotice(Notice notice, Integer mbrId);
 }
