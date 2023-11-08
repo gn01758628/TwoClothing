@@ -1,6 +1,5 @@
 package com.twoclothing.chi.service;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,19 +8,23 @@ import java.util.Set;
 import com.twoclothing.model.aproduct.itemreport.ItemReport;
 import com.twoclothing.model.aproduct.itemreport.ItemReportDAO;
 import com.twoclothing.model.aproduct.itemreport.ItemReportHibernateDAO;
+import com.twoclothing.redismodel.notice.Notice;
+import com.twoclothing.redismodel.notice.NoticeDAO;
+import com.twoclothing.redismodel.notice.NoticeJedisDAO;
 import com.twoclothing.utils.HibernateUtil;
 
 public class ItemReportServiceImpl implements ItemReportService {
 	private ItemReportDAO dao;
+
+	private NoticeDAO noticeDAO = new NoticeJedisDAO();
 
 	public ItemReportServiceImpl() {
 		dao = new ItemReportHibernateDAO(HibernateUtil.getSessionFactory());
 	}
 
 	@Override
-	public ItemReport addItemReport(ItemReport itemReport) {
+	public void addItemReport(ItemReport itemReport) {
 		dao.insert(itemReport);
-		return itemReport;
 	}
 
 	@Override
@@ -93,17 +96,12 @@ public class ItemReportServiceImpl implements ItemReportService {
 	}
 
 	@Override
-	public ItemReport updateItemReport(Integer reportId, Integer empId, Integer rStatus, Timestamp auditdate,
-			Integer result, String note) {
-		ItemReport itemReport = dao.getByPrimaryKey(reportId);
-		if (itemReport != null) {
-			itemReport.setEmpId(empId);
-			itemReport.setrStatus(rStatus);
-			itemReport.setAuditDate(auditdate);
-			itemReport.setResult(result);
-			itemReport.setNote(note);
-			dao.update(itemReport);
-		}
-		return itemReport;
+	public void updateItemReport(ItemReport itemReport) {
+		dao.update(itemReport);
+	}
+
+	@Override
+	public void addNotice(Notice notice, Integer mbrId) {
+		noticeDAO.insert(notice, mbrId);
 	}
 }

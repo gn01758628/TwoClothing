@@ -1,6 +1,5 @@
 package com.twoclothing.chi.service;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import com.twoclothing.model.aproduct.itembrowsing.ItemBrowsing;
@@ -16,9 +15,8 @@ public class ItemBrowsingServiceImpl implements ItemBrowsingService {
 	}
 
 	@Override
-	public ItemBrowsing addItemBrowsing(ItemBrowsing itemBrowsing) {
+	public void addItemBrowsing(ItemBrowsing itemBrowsing) {
 		dao.insert(itemBrowsing);
-		return itemBrowsing;
 	}
 
 	@Override
@@ -40,12 +38,7 @@ public class ItemBrowsingServiceImpl implements ItemBrowsingService {
 	}
 
 	@Override
-	public ItemBrowsing updateItemBrowsing(Integer itemId, Integer mbrId, Timestamp browsingTime) {
-		ItemBrowsing itemBrowsing = dao.getByCompositeKey(itemId, mbrId);
-		if (itemBrowsing != null) {
-			itemBrowsing.setBrowsingTime(browsingTime);
-			dao.update(itemBrowsing);
-		}
-		return itemBrowsing;
+	public void updateItemBrowsing(ItemBrowsing itemBrowsing) {
+		dao.update(itemBrowsing);
 	}
 }

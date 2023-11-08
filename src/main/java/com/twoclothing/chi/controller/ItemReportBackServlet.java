@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.twoclothing.chi.service.ItemReportService;
 import com.twoclothing.chi.service.ItemReportServiceImpl;
 import com.twoclothing.model.aproduct.itemreport.ItemReport;
+import com.twoclothing.redismodel.notice.Notice;
 
 @WebServlet("/back/itemreport")
 public class ItemReportBackServlet extends HttpServlet {
@@ -83,7 +84,7 @@ public class ItemReportBackServlet extends HttpServlet {
 		Map<Integer, String> resultMap = new HashMap<>();
 		resultMap.put(0, "處分");
 		resultMap.put(1, "不處分");
-		
+
 		req.setAttribute("itemReportList", itemReportList);
 		req.setAttribute("currentPage", currentPage);
 		req.setAttribute("rStatusMap", rStatusMap);
@@ -134,43 +135,61 @@ public class ItemReportBackServlet extends HttpServlet {
 
 	private String getItemReport(HttpServletRequest req, HttpServletResponse res) {
 		Integer reportId = Integer.parseInt(req.getParameter("reportId"));
-		
 		ItemReport itemReport = itemReportService.getByPrimaryKey(reportId);
-		
+
 		Map<Integer, String> rStatusMap = new HashMap<>();
 		rStatusMap.put(0, "待審核");
 		rStatusMap.put(1, "已審核");
-		
+
 		req.setAttribute("itemReport", itemReport);
 		req.setAttribute("rStatusMap", rStatusMap);
-		
+
 		return "/back_end/itemreport/itemReportManageUpdate.jsp";
 	}
 
 	private String updateItemReport(HttpServletRequest req, HttpServletResponse res) {
-		String reportIdString = req.getParameter("reportId");
-		int reportId = Integer.parseInt(reportIdString);
-//		String empIdString = req.getParameter("empId");
-//		int empId = Integer.parseInt(empIdString);
+		Integer reportId = Integer.parseInt(req.getParameter("reportId"));
+		ItemReport itemReport = itemReportService.getByPrimaryKey(reportId);
+		
+//		int empId = Integer.parseInt(req.getParameter("empId"));
 		int empId = 1; // 測試用，到時這行可刪
-		int rStatus = 1;
-		Timestamp auditdate = new Timestamp(System.currentTimeMillis());
-		String resultString = req.getParameter("result");
-		int result = Integer.parseInt(resultString);
+		int result = Integer.parseInt(req.getParameter("result"));
 		String note = req.getParameter("note");
 
 		List<String> errorMsgs = new LinkedList<String>();
 
 		if (result == -1) {
 			errorMsgs.add("請進行處分");
+		} else {
+			itemReport.setEmpId(empId);
+			itemReport.setrStatus(1);
+			Timestamp auditdate = new Timestamp(System.currentTimeMillis());
+			itemReport.setAuditDate(auditdate);
+			itemReport.setResult(result);
+			itemReport.setNote(note);
+
+			itemReportService.updateItemReport(itemReport);
+
+			Notice notice = new Notice();
+			notice.setType("檢舉審核結果");
+			notice.setHead("請確認商品檢舉審核結果");
+
+			if (result == 0) {
+				notice.setContent("商品檢舉審核為「處分」結果，請至「我的檢舉」查看。");
+				notice.setImageLink("/images/report0.png");
+			} else if (result == 1) {
+				notice.setContent("商品檢舉審核為「不處分」結果，請至「我的檢舉」查看。");
+				notice.setImageLink("/images/report1.png");
+			}
+
+			notice.setLink("/front/itemreport?action=getAllByMbrId&mbrId=${mbrId}"); // 到時加上連結至(會員前台)我的檢舉
+			itemReportService.addNotice(notice, itemReport.getMbrId());
 		}
 
 		if (!errorMsgs.isEmpty()) {
 			req.setAttribute("errorMsgs", errorMsgs);
 			return "/back/itemreport?action=getOne";
 		}
-
-		req.setAttribute("itemReport", itemReportService.updateItemReport(reportId, empId, rStatus, auditdate, result, note));
 
 		return "/back/itemreport?action=getAll";
 	}

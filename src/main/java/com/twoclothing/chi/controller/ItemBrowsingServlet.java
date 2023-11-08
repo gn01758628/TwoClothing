@@ -57,8 +57,7 @@ public class ItemBrowsingServlet extends HttpServlet {
 	}
 
 	private String getAllByMbrId(HttpServletRequest req, HttpServletResponse res) {
-//		String mbrIdString = req.getParameter("mbrId");
-//		int mbrId = Integer.parseInt(mbrIdString);
+//		int mbrId = Integer.parseInt(req.getParameter("mbrId"));
 		int mbrId = 1; // 測試用，到時這行可刪
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
@@ -75,30 +74,26 @@ public class ItemBrowsingServlet extends HttpServlet {
 	}
 
 	private String addItemBrowsing(HttpServletRequest req, HttpServletResponse res) {
-		String itemIdString = req.getParameter("itemId");
-		int itemId = Integer.parseInt(itemIdString);
-		String mbrIdString = req.getParameter("mbrId");
-		int mbrId = Integer.parseInt(mbrIdString);
+		int itemId = Integer.parseInt(req.getParameter("itemId"));
+		int mbrId = Integer.parseInt(req.getParameter("mbrId"));
 		
 		ItemBrowsing itemBrowsing = new ItemBrowsing();
 		itemBrowsing.setCompositeKey(new ItemBrowsing.CompositeDetail(itemId, mbrId));
-		Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-		itemBrowsing.setBrowsingTime(currentTime);
+		itemBrowsing.setBrowsingTime(new Timestamp(System.currentTimeMillis()));
 		
-		req.setAttribute("itemBrowsing", itemBrowsingService.addItemBrowsing(itemBrowsing));
+		itemBrowsingService.addItemBrowsing(itemBrowsing);
 
 		return "/itembrowsing?action=getAllByMbrId";
 	}
 	
 	private String updateItemBrowsing(HttpServletRequest req, HttpServletResponse res) {
-		String itemIdString = req.getParameter("itemId");
-		int itemId = Integer.parseInt(itemIdString);
-		String mbrIdString = req.getParameter("mbrId");
-		int mbrId = Integer.parseInt(mbrIdString);
+		int itemId = Integer.parseInt(req.getParameter("itemId"));
+		int mbrId = Integer.parseInt(req.getParameter("mbrId"));
+		ItemBrowsing itemBrowsing = itemBrowsingService.getByPrimaryKey(itemId, mbrId);
 		
-		Timestamp browsingTime = new Timestamp(System.currentTimeMillis());
+		itemBrowsing.setBrowsingTime(new Timestamp(System.currentTimeMillis()));
 		
-		req.setAttribute("itemBrowsing", itemBrowsingService.updateItemBrowsing(itemId, mbrId, browsingTime));
+		itemBrowsingService.updateItemBrowsing(itemBrowsing);
 
 		return "/itembrowsing?action=getAllByMbrId";
 	}
