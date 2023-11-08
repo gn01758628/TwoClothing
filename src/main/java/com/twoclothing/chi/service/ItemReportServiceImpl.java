@@ -1,5 +1,6 @@
 package com.twoclothing.chi.service;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,21 +46,6 @@ public class ItemReportServiceImpl implements ItemReportService {
 		return dao.getAll(currentPage);
 	}
 
-//	@Override
-//	public List<ItemReport> getAllByEmpId(Integer empId) {
-//		return dao.getAllByEmpId(empId);
-//	}
-//
-//	@Override
-//	public List<ItemReport> getAllByRStatus(Integer rStatus) {
-//		return dao.getAllByRStatus(rStatus);
-//	}
-//
-//	@Override
-//	public List<ItemReport> getAllByResult(Integer result) {
-//		return dao.getAllByResult(result);
-//	}
-
 	@Override
 	public List<ItemReport> getByCompositeQuery(Map<String, String[]> map, int currentPage) {
 		Map<String, String> query = new HashMap<>();
@@ -104,5 +90,20 @@ public class ItemReportServiceImpl implements ItemReportService {
 		System.out.println(query);
 
 		return dao.getMapTotal(query);
+	}
+
+	@Override
+	public ItemReport updateItemReport(Integer reportId, Integer empId, Integer rStatus, Timestamp auditdate,
+			Integer result, String note) {
+		ItemReport itemReport = dao.getByPrimaryKey(reportId);
+		if (itemReport != null) {
+			itemReport.setEmpId(empId);
+			itemReport.setrStatus(rStatus);
+			itemReport.setAuditDate(auditdate);
+			itemReport.setResult(result);
+			itemReport.setNote(note);
+			dao.update(itemReport);
+		}
+		return itemReport;
 	}
 }

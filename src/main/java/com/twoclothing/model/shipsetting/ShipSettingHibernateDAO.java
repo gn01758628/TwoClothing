@@ -61,30 +61,30 @@ public class ShipSettingHibernateDAO implements ShipSettingDAO{
 	}
 	@Transactional
 	@Override
-//	public List<ShipSetting> getAllByMbrId(Integer mbrId) {
-//		return getSession().createQuery("from ShipSetting where mbrId = :mbrId", ShipSetting.class)
-//				.setParameter("mbrId", mbrId).list();
-//	}
-	
 	public List<ShipSetting> getAllByMbrId(Integer mbrId) {
-	    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-	    Transaction transaction = null;
-	    List<ShipSetting> shipSetting = null;
-	    
-	    try {
-	        transaction = session.beginTransaction();
-	        shipSetting =  session.createQuery("from ShipSetting where mbrId = :mbrId", ShipSetting.class)
-	                .setParameter("mbrId", mbrId)
-	                .list();
-	        transaction.commit();
-	    } catch (RuntimeException ex) {
-	        if (transaction != null) {
-	            transaction.rollback();
-	        }
-	        throw ex;
-	    }
-	    return  shipSetting;
+		return getSession().createQuery("from ShipSetting where mbrId = :mbrId", ShipSetting.class)
+				.setParameter("mbrId", mbrId).list();
 	}
+	
+//	public List<ShipSetting> getAllByMbrId(Integer mbrId) {
+//	    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//	    Transaction transaction = null;
+//	    List<ShipSetting> shipSetting = null;
+//	    
+//	    try {
+//	        transaction = session.beginTransaction();
+//	        shipSetting =  session.createQuery("from ShipSetting where mbrId = :mbrId", ShipSetting.class)
+//	                .setParameter("mbrId", mbrId)
+//	                .list();
+//	        transaction.commit();
+//	    } catch (RuntimeException ex) {
+//	        if (transaction != null) {
+//	            transaction.rollback();
+//	        }
+//	        throw ex;
+//	    }
+//	    return  shipSetting;
+//	}
 	@Transactional
 	@Override
 	public int update(ShipSetting shipSetting) {

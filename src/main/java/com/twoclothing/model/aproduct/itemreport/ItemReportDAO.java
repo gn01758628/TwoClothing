@@ -18,5 +18,5 @@ public interface ItemReportDAO {
 	
 	int getMapTotal(Map<String, String> map);
 
-	int update(ItemReport itemReport);
+	boolean update(ItemReport itemReport);
 }

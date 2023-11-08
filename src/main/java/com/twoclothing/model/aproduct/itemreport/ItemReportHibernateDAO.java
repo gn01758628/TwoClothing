@@ -139,7 +139,12 @@ public class ItemReportHibernateDAO implements ItemReportDAO {
 	}
 
 	@Override
-	public int update(ItemReport itemReport) {
-		return 1;
+	public boolean update(ItemReport itemReport) {
+		try {
+			getSession().update(itemReport);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }
