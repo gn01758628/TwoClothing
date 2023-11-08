@@ -2,9 +2,10 @@ package com.twoclothing.redismodel.bidrecord;
 
 import com.twoclothing.utils.FormatUtil;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class BidRecord implements Comparable<BidRecord> {
+public class BidRecord implements Comparable<BidRecord>, Serializable {
 
     private Integer mbrId;
 

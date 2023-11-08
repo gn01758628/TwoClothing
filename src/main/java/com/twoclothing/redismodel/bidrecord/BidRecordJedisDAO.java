@@ -15,40 +15,46 @@ public class BidRecordJedisDAO implements BidRecordDAO {
 
     private final Gson gson = new Gson();
 
+    private static final int REDIS_NUMBER = 14;
+
     private static final String BIDITEM_PREFIX = "bidItemId:";
 
     private static final String MBR_PREFIX = "mbrId:";
 
+    private static final String MBR_SUFFIX = ":bidding";
+
     @Override
     public void insert(BidRecord bidRecord, Integer bidItemId, LocalDateTime endTime) {
-        Jedis jedis = jedisPool.getResource();
-        jedis.select(14);
-        String bidRecordJson = gson.toJson(bidRecord);
-        if (!jedis.exists(BIDITEM_PREFIX + bidItemId)) {
-            jedis.lpush(BIDITEM_PREFIX + bidItemId, bidRecordJson);
-            LocalDateTime now = LocalDateTime.now();
-            // 出價紀錄保留到競標結束D+7
-            Duration duration = Duration.between(now, endTime.plusDays(7));
-            jedis.expire(BIDITEM_PREFIX + bidItemId, (int) duration.getSeconds());
-        } else {
-            jedis.lpush(BIDITEM_PREFIX + bidItemId, bidRecordJson);
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(REDIS_NUMBER);
+            String bidRecordJson = gson.toJson(bidRecord);
+            String key = BIDITEM_PREFIX + bidItemId;
+            if (!jedis.exists(key)) {
+                jedis.lpush(key, bidRecordJson);
+                LocalDateTime now = LocalDateTime.now();
+                // 出價紀錄保留到競標結束D+7
+                Duration duration = Duration.between(now, endTime.plusDays(7));
+                jedis.expire(key, (int) duration.getSeconds());
+            } else {
+                jedis.lpush(key, bidRecordJson);
+            }
+            jedis.sadd(MBR_PREFIX + bidRecord.getMbrId() + MBR_SUFFIX, String.valueOf(bidItemId));
         }
-        jedis.sadd(MBR_PREFIX + bidRecord.getMbrId(), String.valueOf(bidItemId));
-        jedis.close();
     }
 
     @Override
     public List<BidRecord> getAll(Integer bidItemId) {
-        Jedis jedis = jedisPool.getResource();
-        jedis.select(14);
-        List<BidRecord> bidRecordList = new ArrayList<>();
-        List<String> jsonList = jedis.lrange(BIDITEM_PREFIX + bidItemId, 0, -1);
-        for (String json : jsonList) {
-            bidRecordList.add(gson.fromJson(json, BidRecord.class));
+        try (Jedis jedis = jedisPool.getResource()) {
+
+            jedis.select(REDIS_NUMBER);
+            List<BidRecord> bidRecordList = new ArrayList<>();
+            List<String> jsonList = jedis.lrange(BIDITEM_PREFIX + bidItemId, 0, -1);
+            for (String json : jsonList) {
+                bidRecordList.add(gson.fromJson(json, BidRecord.class));
+            }
+            Collections.sort(bidRecordList);
+            return bidRecordList;
         }
-        Collections.sort(bidRecordList);
-        jedis.close();
-        return bidRecordList;
     }
 
     @Override

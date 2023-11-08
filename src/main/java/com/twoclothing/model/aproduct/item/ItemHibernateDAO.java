@@ -187,6 +187,11 @@ public class ItemHibernateDAO implements ItemDAO {
 
 	@Override
 	public Integer getPointByMbrId(Integer mbrId) {
-		return (Integer) getSession().createQuery("SELECT m.mbrPoint FROM Members m WHERE m.mbrId = :mbrId").setParameter("mbrId", mbrId).uniqueResult();
+		return (Integer) getSession().createQuery("select m.mbrPoint from Members m where m.mbrId = :mbrId").setParameter("mbrId", mbrId).uniqueResult();
+	}
+
+	@Override
+	public Integer getMbrIdById(Integer itemId) {
+		return (Integer)getSession().createQuery("select mbrId from Item where itemId = :itemId").setParameter("itemId", itemId).uniqueResult();
 	}
 }

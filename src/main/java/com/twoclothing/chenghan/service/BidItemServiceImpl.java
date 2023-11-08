@@ -15,6 +15,9 @@ import com.twoclothing.model.employee.EmployeeHibernateDAO;
 import com.twoclothing.model.members.Members;
 import com.twoclothing.model.members.MembersDAO;
 import com.twoclothing.model.members.MembersHibernateDAO;
+import com.twoclothing.redismodel.bidItemViewHistory.BidItemViewHistory;
+import com.twoclothing.redismodel.bidItemViewHistory.BidItemViewHistoryDAO;
+import com.twoclothing.redismodel.bidItemViewHistory.BidItemViewHistoryJedisDAO;
 import com.twoclothing.redismodel.bidrecord.BidRecord;
 import com.twoclothing.redismodel.bidrecord.BidRecordDAO;
 import com.twoclothing.redismodel.bidrecord.BidRecordJedisDAO;
@@ -45,6 +48,8 @@ public class BidItemServiceImpl implements BidItemService {
 
     private final BidRecordDAO bidRecordDAO = new BidRecordJedisDAO();
 
+    private final BidItemViewHistoryDAO bidItemViewHistoryDAO = new BidItemViewHistoryJedisDAO();
+
     public BidItemServiceImpl() {
     }
 
@@ -66,6 +71,11 @@ public class BidItemServiceImpl implements BidItemService {
     @Override
     public void addBidRecord(BidRecord bidRecord, Integer bidItemId, LocalDateTime endTime) {
         bidRecordDAO.insert(bidRecord, bidItemId, endTime);
+    }
+
+    @Override
+    public void addBidItemViewHistory(BidItemViewHistory bidItemViewHistory) {
+        bidItemViewHistoryDAO.insert(bidItemViewHistory);
     }
 
     @Override

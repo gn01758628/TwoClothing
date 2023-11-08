@@ -169,6 +169,9 @@
 						case "7":
 							$(this).text("4XL含以上");
 						break;
+						case "":
+							$(this).text("其他");
+						break;
 					}
 				})
 			})

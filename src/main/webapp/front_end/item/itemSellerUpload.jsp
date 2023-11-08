@@ -163,10 +163,10 @@
 </c:if>
 
 
-<form class="form_add" method="post" action="${pageContext.request.contextPath}/Item/add" enctype="multipart/form-data">
+<%-- <form class="form_add" method="post" action="${pageContext.request.contextPath}/Item/add" enctype="multipart/form-data"> --%>
 <div class="">
 	<h1>商品上傳</h1>
-	<form class="form_add" method="post" action="${pageContext.request.contextPath}/TwoClothing/Item/add" enctype="multipart/form-data">
+	<form class="form_add" method="post" action="${pageContext.request.contextPath}/Item/add" enctype="multipart/form-data">
 		<div class="main_container">
 			<div class="main_left">
 
@@ -202,7 +202,7 @@
 
 					<select class="sel_size" name="size"> 
 						<option value="" disabled selected>尺寸</option>
-						<option value="9">其他</option>
+						<option value="">其他</option>
 						<option value="0">XS(含)以下</option>
 						<option value="1">S</option>
 						<option value="2">M</option>
@@ -227,7 +227,7 @@
 					<label for="image01" class="form-label">上傳商品的主圖片<span class="text-danger">*</span></label>
 					<div id="image01Help" class="form-text">每個商品都必須要有主圖片</div>
 					<input class="form-control" type="file" id="image01" name="image01"
-							accept="image/jpeg, image/png" required aria-describedby="image01Help">
+							accept="image/jpeg, image/png"  aria-describedby="image01Help">
 					</div>
 
 					<div>
