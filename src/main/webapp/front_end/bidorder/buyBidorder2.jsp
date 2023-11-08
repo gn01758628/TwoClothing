@@ -94,14 +94,20 @@
 		<td>${BidOrder.remarks}</td>
  			
 
-<!--			
+			
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="刪除">
+			     <input type="submit" value="待收貨">
+ 		     
+			     <input type="hidden" name="amount"  value="${BidOrder.amount}">
+			     <input type="hidden" name="sellMbrId"  value="${BidOrder.sellMbrId}">
+			     <input type="hidden" name="buyMbrId"  value="${BidOrder.buyMbrId}">
 			     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}">
-			     <input type="hidden" name="action" value="delete"></FORM>
+			     
+<!-- 			      <input type="hidden" name="data" value="${BidOrder.amount},${BidOrder.sellMbrId},${BidOrder.buyMbrId},${BidOrder.bidOrderId}"-->	>
+			     <input type="hidden" name="action" value="buyer_auction_receipt"></FORM>
 			</td>
- -->			
+			
 		</tr>
 		
 	</c:forEach>

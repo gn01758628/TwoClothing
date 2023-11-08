@@ -29,9 +29,8 @@ public class MembersServlet extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
-
-        // pk查詢
-        if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
+        //pk查詢
+        if ("getOne_For_Display".equals(action)) { 
 
             Map<String, String> errorMsgs = new LinkedHashMap<>();
             req.setAttribute("errorMsgs", errorMsgs);
@@ -41,7 +40,6 @@ public class MembersServlet extends HttpServlet {
             if (str == null || (str.trim()).isEmpty()) {
                 errorMsgs.put("mbrId", "請輸入會員編號");
             }
-            // Send the use back to the form, if there were errors
             if (!errorMsgs.isEmpty()) {
                 RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/select_page.jsp");
                 failureView.forward(req, res);
@@ -67,16 +65,15 @@ public class MembersServlet extends HttpServlet {
             if (members == null) {
                 errorMsgs.put("mbrId", "查無資料");
             }
-            // Send the use back to the form, if there were errors
             if (!errorMsgs.isEmpty()) {
                 RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/select_page.jsp");
                 failureView.forward(req, res);
                 return;// 程式中斷
             }
             // 3.查詢完成,準備轉交(Send the Success view)
-            req.setAttribute("Members", members); // 資料庫取出的empVO物件,存入req
+            req.setAttribute("Members", members); 
             String url = "/back_end/members/listOneMembers.jsp";
-            RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+            RequestDispatcher successView = req.getRequestDispatcher(url); 
             successView.forward(req, res);
 
         }
@@ -144,7 +141,7 @@ public class MembersServlet extends HttpServlet {
             Members members = membersServiceImpl.updateMembers(mbrId, sellScore, buyScore);
 
             // 3.修改完成,準備轉交(Send the Success view)
-            req.setAttribute("Members", members); // 資料庫update成功後,正確的的empVO物件,存入req
+            req.setAttribute("Members", members); // 資料庫update成功後
             String url = "/back_end/members/listOneMembers.jsp";
             RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
             successView.forward(req, res);
@@ -192,7 +189,7 @@ public class MembersServlet extends HttpServlet {
             response.put("errors", errors);
             response.put("success", success);
 
-            // 将JSON响应发送回客户端
+            // 将JSON送回客户端
             out.write(new Gson().toJson(response));
             out.close();
         }
@@ -206,7 +203,6 @@ public class MembersServlet extends HttpServlet {
             String email = req.getParameter("email2");
             String pswdHash = req.getParameter("pswdHash2");
 
-            // 创建 JSON 响应
             res.setContentType("application/json");
             res.setCharacterEncoding("UTF-8");
             Map<String, Object> response = new HashMap<>();
@@ -220,14 +216,12 @@ public class MembersServlet extends HttpServlet {
             Members members = membersServiceImpl.getByEmail(email);
 
 
-            // 未找到用户记录，显示错误消息
             if (members == null) {
                 errorMsgs.put("error", "帳號密碼不正確");
                 sendResponse(res, response, errorMsgs, false);
                 return;
             }
 
-            // 密码不匹配，显示错误消息
             if (!members.getPswdHash().equals(pswdHash)) {
                 errorMsgs.put("error", "帳號密碼不正確");
                 sendResponse(res, response, errorMsgs, false);
@@ -258,7 +252,6 @@ public class MembersServlet extends HttpServlet {
             members.setLastLogin(loginDate);
             membersServiceImpl.updateMembers(members);
 
-            // 发送成功响应
             sendResponse(res, response, errorMsgs, true);
         }
 
@@ -275,11 +268,11 @@ public class MembersServlet extends HttpServlet {
 
     private void sendResponse(HttpServletResponse res, Map<String, Object> response, Map<String, String> errorMsgs, boolean success)
             throws IOException {
-        // 设置 JSON 响应的成功标志
+    	
         response.put("success", success);
-        // 构建错误消息的 JSON 响应
+        
         response.put("errors", errorMsgs);
-        // 将 JSON 响应发送回客户端
+        
         PrintWriter out = res.getWriter();
         out.write(new Gson().toJson(response));
         out.close();

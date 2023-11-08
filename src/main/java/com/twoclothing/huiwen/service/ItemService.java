@@ -11,6 +11,7 @@ import com.twoclothing.model.aproduct.itemimage.ItemImage;
 import com.twoclothing.model.categorytags.CategoryTags;
 import com.twoclothing.model.coupon.Coupon;
 import com.twoclothing.model.memberscoupon.MembersCoupon;
+import com.twoclothing.model.shipsetting.ShipSetting;
 
 public interface ItemService {
 	
@@ -48,5 +49,7 @@ public interface ItemService {
     
     public List<MembersCoupon> getMemCouponByMbrId(String mbrId, Integer value);
     
+    List<ShipSetting> getSettingByMbrId(Integer mbrId);
     
+    Integer getMbrIdByItemId(Integer itemId);
 }
