@@ -6,8 +6,6 @@ import org.hibernate.SessionFactory;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 
 //利用Annotation來註冊()

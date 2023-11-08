@@ -90,7 +90,7 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         // TODO 從session取的會員ID 這裡先寫死
-        Integer mbrId = 2;
+        Integer mbrId = 3;
         String bidItemId = request.getParameter("bidItemId");
         BidItem bidItem = bidItemService.getBidItemByBidItemId(Integer.parseInt(bidItemId));
         LocalDateTime endTime = bidItem.getEndTime().toLocalDateTime();
@@ -165,11 +165,11 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
 
             // 發送通知給賣家
             Notice notice2 = new Notice();
-            notice.setType("競標商品");
-            notice.setHead("您的競標商品已結標");
-            notice.setContent("恭喜！您的競標商品：" + bidItem.getBidName() + "，已結標。請瀏覽您的訂單並繼續後續流程。");
-            notice.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItemId);
-            notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
+            notice2.setType("競標商品");
+            notice2.setHead("您的競標商品已結標");
+            notice2.setContent("恭喜！您的競標商品：" + bidItem.getBidName() + "，已結標。請瀏覽您的訂單並繼續後續流程。");
+            notice2.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItemId);
+            notice2.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
             bidItemService.addNotice(notice2, bidItemMbrId);
 
             // TODO 跑訂單
