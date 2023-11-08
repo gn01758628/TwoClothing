@@ -125,6 +125,8 @@ public class MembersHibernateDAO implements MembersDAO {
 			return -1;
 		}
 	}
+	
+
 
 	@Override
 	public int delete(Integer mbrId) {
@@ -138,6 +140,7 @@ public class MembersHibernateDAO implements MembersDAO {
 			return -1;
 		}
 	}
+
 
 
 }

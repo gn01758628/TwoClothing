@@ -11,6 +11,7 @@ import com.twoclothing.redismodel.notice.Notice;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface BidItemService {
 
@@ -21,7 +22,7 @@ public interface BidItemService {
 
     void addBidItemImage(BidItemImage bidItemImage);
 
-    void addVentNotices(Notice notice, Integer mbrId);
+    void addNotice(Notice notice, Integer mbrId);
 
     void addBidRecord(BidRecord bidRecord, Integer bidItemId, LocalDateTime endTime);
 
@@ -44,6 +45,10 @@ public interface BidItemService {
     List<Integer> getAllSelectableTagsId();
 
     List<BidRecord> getAllBidRecordByBidItemId(Integer bidItemId);
+
+    Set<Integer> getAllMbrIdInBidRecord(Integer bidItemId);
+
+    BidRecord getBidRecordByIndex(Integer bidItemId, int index);
 
     boolean updateBidItem(BidItem bidItem);
 

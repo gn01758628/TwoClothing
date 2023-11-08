@@ -24,6 +24,8 @@ public class BidItemLaunchSchedule extends HttpServlet {
 
     private final BidItemDAO bidItemDAO = new BidItemHibernateDAO(sessionFactory);
 
+    private final NoticeDAO noticeDAO = new NoticeJedisDAO();
+
     private Timer timer;
 
     @Override
@@ -45,7 +47,7 @@ public class BidItemLaunchSchedule extends HttpServlet {
 
                     // 列出所有已過審且開始時間小於指定時間的競標商品
                     List<BidItem> bidItemList = bidItemDAO.getAllPassBidItemsByStartTime(customTimestamp);
-
+                    if (bidItemList == null || bidItemList.isEmpty()) return;
                     // 迴圈更改商品狀態,並發送通知
                     for (BidItem bidItem : bidItemList) {
                         bidItem.setBidStatus(4);
@@ -57,7 +59,6 @@ public class BidItemLaunchSchedule extends HttpServlet {
                         // TODO 設置點擊連結
                         notice.setLink("/xxx/ooo");
                         notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItem.getBidItemId() + "&position=1");
-                        NoticeDAO noticeDAO = new NoticeJedisDAO();
                         noticeDAO.insert(notice, bidItem.getMbrId());
                     }
                     // 不主動調用update(),利用Persistent狀態達成批次更新

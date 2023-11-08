@@ -61,7 +61,7 @@ public class SendEmailServlet extends HttpServlet {
     		
     		Jedis jedis = new Jedis("localhost", 6379);
 			
-			jedis.select(1);
+			jedis.select(0);
 			
 			Gson gson = new Gson();
 			    String verificationValue = gson.toJson(verification);
@@ -105,7 +105,7 @@ public class SendEmailServlet extends HttpServlet {
 ///////////////////驗證碼取SQL Members 的mbrName/////////////////////
 /////////////////////////////////////redis測試////////////////////	
     		Jedis jedis = new Jedis("localhost", 6379);
-    		jedis.select(1); // 选择数据库1，确保和之前存储数据的数据库匹配
+    		jedis.select(0); // 选择数据库1，确保和之前存储数据的数据库匹配
 
     		String emailRdis = email; // 这里放入之前存储的email的值
 

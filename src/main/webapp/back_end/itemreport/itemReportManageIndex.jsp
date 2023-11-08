@@ -9,7 +9,7 @@
 <title>ItemReportManageIndex</title>
 </head>
 <body>
-	<h1>一般商品後台檢舉管理系統測試</h1>
+	<h1>一般商品後台檢舉管理</h1>
 	<a href="${pageContext.request.contextPath}/back/itemreport?action=getAll">查詢所有商品檢舉</a>
 	<br>
 	<br>

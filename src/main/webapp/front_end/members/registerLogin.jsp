@@ -122,11 +122,26 @@ input {
 .form__input:invalid+.icon::after {
 	content: '😳';
 }
+.register-form:valid {
+	border-color: forestgreen;
+}
+
+.register-form:valid+.icon::after {
+	content: '😃';
+}
+
+.register-form:invalid {
+	border-color: firebrick;
+}
+
+.register-form:invalid+.icon::after {
+	content: '😳';
+}
 </style>
 
 </head>
 <body>
-	<a href='${pageContext.request.contextPath}/index.jsp'>回首頁</a>
+<%-- 	<a href='${pageContext.request.contextPath}/index.jsp'>回首頁</a> --%>
 
 
 	<div class="system_name">
@@ -138,11 +153,11 @@ input {
 				<h3>登入 Login</h3>
 <!-- ============================登入================================================ -->
 				<form action="${pageContext.request.contextPath}/members/Members.do" class="login-form">
-					<input type="text" id="email2" name="email2" placeholder="email"
-						required><span id="loginEemailError" style="color: red;"></span>
+					<input type="text" id="email2" name="email2" placeholder="email" 
+						required ><span id="loginEemailError" style="color: red;"></span>
 					<div class="tab"></div>
 					<input type="text" id="pswdHash2" name="pswdHash2" placeholder="密碼"
-						required><span id="loginPpswdHashError"
+						required ><span id="loginPpswdHashError"
 						style="color: red;"></span>
 					<div class="tab"></div>
 					<input type="submit" name="action" value="login" class="submit">
@@ -303,13 +318,13 @@ input {
 				data : loginData,
 				dataType : "json",
 				success : function(response) {
-					
+
 					if (response.success) {
-						
+
 						if (response.mbrStatus === 0) {
-							
+
+//							alert("請至信箱驗證");
 							window.location.href = contextPath +  "/front_end/members/verificationEmail.jsp";
-// 							window.location.href = "verificationEmail.jsp";
 						}else{
 							if(response.location !== null && response.location !== undefined){
 								window.location.href = response.location ;

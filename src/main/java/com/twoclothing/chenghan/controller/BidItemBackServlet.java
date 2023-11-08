@@ -1,5 +1,6 @@
 package com.twoclothing.chenghan.controller;
 
+import com.twoclothing.chenghan.NumberMapping;
 import com.twoclothing.chenghan.service.BidItemService;
 import com.twoclothing.chenghan.service.BidItemServiceImpl;
 import com.twoclothing.model.abid.biditem.BidItem;
@@ -64,14 +65,7 @@ public class BidItemBackServlet extends HttpServlet {
         List<BidItem> bidItemList = new ArrayList<>();
         request.setAttribute("bidItemList", bidItemList);
         // 綁定狀態
-        Map<Integer, String> bidStatusMap = new HashMap<>();
-        bidStatusMap.put(0, "待審核");
-        bidStatusMap.put(1, "已過審");
-        bidStatusMap.put(2, "得標");
-        bidStatusMap.put(3, "流標");
-        bidStatusMap.put(4, "上架中");
-        bidStatusMap.put(5, "刪除");
-        bidStatusMap.put(6, "被下架");
+        Map<Integer, String> bidStatusMap = NumberMapping.bidStatusMap;
         request.setAttribute("bidStatusMap", bidStatusMap);
 
         Map<String, String[]> parameterMap = request.getParameterMap();
@@ -162,7 +156,7 @@ public class BidItemBackServlet extends HttpServlet {
             // TODO 設置點擊前往的連結
             notice.setLink("");
             notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
-            bidItemService.addVentNotices(notice,bidItem.getMbrId());
+            bidItemService.addNotice(notice,bidItem.getMbrId());
 
         }
 
@@ -179,7 +173,7 @@ public class BidItemBackServlet extends HttpServlet {
             // TODO 設置點擊前往的連結
             notice.setLink("");
             notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
-            bidItemService.addVentNotices(notice,bidItem.getMbrId());
+            bidItemService.addNotice(notice,bidItem.getMbrId());
         }
 
         //回傳處理的員工

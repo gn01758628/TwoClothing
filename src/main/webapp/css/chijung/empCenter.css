@@ -1,5 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600); /* 引入Google Fonts中的字體 */
 
+
+
 body {
   font-family: "Lato", sans-serif; /* 設定字體 */
   font-size: 100%; /* 設定字體大小為父元素的100% */
@@ -10,25 +12,24 @@ body {
   -moz-osx-font-smoothing: grayscale; /* 使字體在Firefox中呈現平滑邊緣 */
   text-rendering: optimizeLegibility; /* 優化字體顯示以提高可讀性 */
   background: linear-gradient(to right, #c9ffbf, #ffafbd); /* 設定背景顏色 */
-  height:100%;
-  min-height:100vh;
+  height:100vh;
   margin:0;
 }
 
-a {
-  text-decoration: none; /* 移除超連結的下劃線 */
-  transition: all 0.6s ease; /* 定義所有屬性的過渡效果為0.6秒，使用緩動函數 */
-}
-
-a:hover {
-  transition: all 0.6s ease; /* 定義所有屬性的過渡效果為0.6秒（應用於:hover狀態），使用緩動函數 */
+#content {
+    
+      width: calc(100% - 272px);
+      margin-left:272px;
+      height: 100%;
+      border: none; /* 可以去掉 iframe 的邊框 */
+      display:block;
 }
 
 
 
 /* Sidebar樣式 */
 .sidebar {
-  position: absolute; /* 相對於最近的定位父元素 */
+  position: fixed; /* 相對於最近的定位父元素 */
   width: 17em; /* 設定寬度 */
   height: 100vh; /* 設定高度為視窗的100% */
   top: 0; /* 與父元素上方對齊 */
@@ -39,12 +40,47 @@ a:hover {
   backface-visibility: hidden; /* 在3D空間中隱藏背面 */
 }
 
+.sidebar a {
+  text-decoration: none; /* 移除超連結的下劃線 */
+  transition: all 0.6s ease; /* 定義所有屬性的過渡效果為0.6秒，使用緩動函數 */
+}
+
+.sidebar a:hover {
+  transition: all 0.6s ease; /* 定義所有屬性的過渡效果為0.6秒（應用於:hover狀態），使用緩動函數 */
+}
+
 .sidebar header {
   background-color: #09f;
   width: 100%;
-  display: block;
-  padding: 0.75em 1em;
+  display: flex;
+  align-items: center;
 }
+
+.sidebar header .profile-btn button {
+  display: block;
+  margin: 10px;
+  margin-left: auto;
+  cursor:pointer;
+}
+
+.sidebar header .profile-image {
+  --size: 56px;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  border: 2px solid #fff;
+  object-fit: cover;
+}
+
+.sidebar header .personal {
+  flex: 1; /* 將剩餘的空間給personal */
+  padding-left:5px; /* 可以根據需要添加內邊距 */
+}
+
+.sidebar header .personal p {
+  margin: 11px 0;
+}
+
 
 /* Sidebar內部導航樣式 */
 .sidebar-nav {

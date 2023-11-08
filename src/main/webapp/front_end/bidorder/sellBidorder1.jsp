@@ -48,7 +48,7 @@
 </head>
 <body>
 <table>
-賣家競標訂單
+賣家待出貨
 	<tr>
 		<th>競標商品訂單編號</th>
 		<th>競標商品編號</th>
@@ -92,13 +92,9 @@
 		<td>${BidOrder.receiveName}</td>
 		<td>${BidOrder.receivePhone}</td>
 		<td>${BidOrder.remarks}</td>
-<!-- 			
-			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="修改">
-			     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}">
-			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
-			</td>
+ 			
+
+<!--			
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
 			     <input type="submit" value="刪除">

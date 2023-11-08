@@ -71,8 +71,17 @@ public class MembersServiceImpl implements MembersService{
 
 	@Override
 	public Members updateMembers(Members members) {
-		// TODO Auto-generated method stub
-		return null;
+	    int updateResult = dao.update(members);
+	    
+	    if (updateResult == 1) {
+	        // 更新成功
+	        return members;
+	    } else {
+	        // 更新失败，可以记录日志或者抛出异常
+	        // 这里只是示例，你可以根据实际需求来处理
+	        System.err.println("更新失败，会员ID: " + members.getMbrId());
+	        return null;
+	    }
 	}
 
 

@@ -7,6 +7,11 @@
 </head>
 <body>
     <h2>建立競標訂單</h2>
+    
+    	<a href='${pageContext.request.contextPath}/index.jsp'>回首頁</a>
+	
+	<a href='${pageContext.request.contextPath}/MemberCentre.jsp'>會員中心</a>
+	
     <form action="<%=request.getContextPath()%>/bidorder/BidOrder.do" method="post">
         <label for="bidItemId">競標項目ID：</label>
         <input type="text" name="bidItemId" required>

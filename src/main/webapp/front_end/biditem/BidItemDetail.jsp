@@ -29,7 +29,7 @@
             padding: 0px !important;
         }
 
-        #bidHelp {
+        #bidHelp, #wrongMsg {
             margin-top: 10px;
             margin-bottom: 5px;
             padding: 0px !important;
@@ -39,6 +39,11 @@
         .align-vertical {
             display: flex;
             align-items: center;
+        }
+
+        .table-no-border td,
+        .table-no-border th {
+            border: none;
         }
     </style>
 </head>
@@ -98,9 +103,9 @@
 </div>
 
 <!--出價框-->
-<div class="container mt-5" style="background-color:#fff8fb;">
+<div class="container mt-5 p-3" style="background-color:#fff8fb;">
     <div class="row justify-content-end">
-        <div class="col-12 mt-3">
+        <div class="col-12">
             <div class="row gx-2 justify-content-end">
                 <div class="col-auto">
                     <div class="input-group">
@@ -111,6 +116,9 @@
                 </div>
 
                 <div class="col-auto">
+                    <button type="button" style="display: none" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                            id="fakeBtn">立即結標
+                    </button>
                     <button type="button" class="btn btn-warning rounded-pill" id="bidBtn">我要出價</button>
                 </div>
             </div>
@@ -119,25 +127,74 @@
         <div class="col-12" id="bidHelper">
             <div class="row justify-content-end">
                 <div class="col-auto">
-                    <div id="bidHelp">
-                        不要亂來阿
+                    <div id="bidHelp" style="display: none;">
+                        最低出價金額$<span id="minRequest"></span>，全站競標出價增額皆為5%
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-12" id="bidBtn_hr">
-            <hr>
+        <div class="col-12" id="wrongHelper">
+            <div class="row justify-content-end">
+                <div class="col-auto">
+                    <div id="wrongMsg" class="h6" style="color: red; display: none"></div>
+                </div>
+            </div>
         </div>
 
-        <div class="col-12 mb-3">
-            <div class="row justify-content-end">
-                <div class="col-auto align-vertical">
-                    <span>直購價：</span>
+        <c:if test="${not empty bidItem.directPrice}">
+            <div class="col-12" id="bidBtn_hr">
+                <hr>
+            </div>
+            <div class="col-12">
+                <div class="row justify-content-end">
+                    <div class="col-auto align-vertical">
+                        <span>直購價：<span class="h3" id="directPriceHelp" style="color: red"></span></span>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop" id="bidDirectBtn">立即結標
+                        </button>
+                    </div>
                 </div>
-                <div class="col-auto">
-                    <button type="button" class="btn btn-danger rounded-pill" id="bidDirectBtn">立即結標</button>
+            </div>
+        </c:if>
+    </div>
+</div>
+
+<!-- 確認出價模態框 -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">出價確認</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>是否確定出價？出價成功後將無法取消。</p>
+                <div class="table-responsive">
+                    <table class="table table-hover table-no-border">
+                        <tbody>
+                        <tr>
+                            <th scope="row" class="w-25">下標帳號</th>
+                            <td>直接從session取帳號名稱</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="w-25">出價方式</th>
+                            <td id="bidType"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="w-25">出價金額</th>
+                            <td id="bidAmount2"></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="commitBid">確定出價</button>
             </div>
         </div>
     </div>
@@ -174,38 +231,126 @@
 <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
 
 <script>
+    // 數字轉 $xxx,xxx,xxx
+    function formatToMoney(number) {
+        const formatter = new Intl.NumberFormat('zh-TW', {
+            maximumFractionDigits: 0,
+        });
+        return '$' + formatter.format(number);
+    }
 
     $(document).ready(function () {
+        // 取得價格資訊
+        let startPrice = $("#startPrice").text();
+        let reservePrice = $("#reservePrice").text();
+        let directPrice = $("#directPrice").text();
+        let currentBid = Number($("#currentBid").text().replace(/[\$,]/g, ''));
+        // 計算最低出價金額
+        let minRequestAmount = currentBid == 0 ? Math.round(Number(startPrice) * 1.05) : Math.round(currentBid * 1.05);
+        $("#minRequest").text(minRequestAmount);
+        // 直購金額格式化
+        const directPriceHelp = $("#directPriceHelp").text(formatToMoney(directPrice));
+        // 商品編號&要操作的節點
+        let bidItemId = $("#bidItemId").text();
         const bidAmountInp = $("#bidAmountInp");
-        const bidItemId = $("#bidItemId");
-        const startPrice = $("#startPrice").text();
-        const reservePrice = $("#reservePrice").text();
-        const directPrice = $("#directPrice").text();
+        const bidHelp = $("#bidHelp");
+        const wrongMsg = $("#wrongMsg");
+        const fakeBtn = $("#fakeBtn");
+        const bidType = $("#bidType");
+        const bidAmount2 = $("#bidAmount2");
 
         // 出價框獲得焦點
         bidAmountInp.on("focus", function () {
-            console.log(startPrice);
-            console.log(reservePrice);
-            console.log(directPrice);
+            bidHelp.slideDown(300);
         })
-        // 出價請求
-        $("#bidBtn").on("click", function (e) {
-            if (bidAmountInp.val() <= 0) {
-                console.log("數字有問題,等等處理");
-            } else {
-                // 金額正確,發送請求
-                console.log("發送請求");
-                $.post('${pageContext.request.contextPath}/front/biditem/anyone/bid', {
-                    bidItemId: bidItemId.text(),
-                    bidAmount: bidAmountInp.val()
-                }, function (data) {
-                    // 请求成功时执行的回调函数
-                    console.log(data);
-                })
-            }
+        // 出價框失去焦點
+        bidAmountInp.on("blur", function () {
+            bidHelp.slideUp(300);
         })
 
+        // 我要出價按鈕
+        $("#bidBtn").on("click", function (e) {
+            // 判斷輸入的金額
+            if (bidAmountInp.val() < minRequestAmount) {
+                wrongMsg.text("出價不能小於最低出價" + formatToMoney(minRequestAmount));
+                wrongMsg.slideDown(300);
+                return;
+            }
+            // 有直購價
+            if (Number(directPrice) !== 0) {
+                if (Number(bidAmountInp.val()) >= Number(directPrice)) {
+                    bidAmountInp.val(directPrice);
+                    bidType.text("立即結標");
+                    bidAmount2.text(formatToMoney(Number(bidAmountInp.val())));
+                    fakeBtn.click();
+                    return;
+                }
+            }
+            // 無直購價
+            bidType.text("直接出價");
+            bidAmount2.text(formatToMoney(Number(bidAmountInp.val())));
+            fakeBtn.click();
+        })
+
+        // 立即結標按鈕
+        $("#bidDirectBtn").on("click", function () {
+            bidType.text("立即結標");
+            bidAmountInp.val(directPrice);
+            bidAmount2.text(formatToMoney(Number(directPrice)));
+        })
+
+        // 確認出價按鈕
+        $("#commitBid").on("click", function () {
+            // 金額正確,發送請求
+            console.log("發送請求");
+            $.post('${pageContext.request.contextPath}/front/biditem/anyone/bid', {
+                bidItemId: bidItemId,
+                bidAmount: bidAmountInp.val(),
+                currentBid: currentBid,
+                bidType: bidType.text()
+            }, function (data) {
+                if (data === "1") {
+                    console.log("123");
+                    alert("您已成功出價，將刷新頁面，以便您觀察最新出價狀況");
+                    location.reload();
+                }
+                if (data === "2") {
+                    console.log("456");
+                    alert("恭喜！您已成功以直購價提前結標。請瀏覽您的訂單並繼續後續流程。");
+                    location.reload();
+                    // TODO 結標頁面更新
+                }
+            })
+        })
+
+
+        // 價格框按鍵反應
+        $('#bidAmountInp').keydown(function (e) {
+            // 輸入框為空時不能輸入0
+            if ((e.keyCode == 48 || e.keyCode == 96) && $(this).val().length === 0) {
+                e.preventDefault();
+                return;
+            }
+            // 允許數字鍵、退格键、Enter键
+            if (!(
+                // 數字鍵
+                (e.keyCode >= 48 && e.keyCode <= 57) ||
+                // 鍵盤數字區的按鍵
+                (e.keyCode >= 96 && e.keyCode <= 105) ||
+                // 退格鍵
+                e.keyCode == 8 ||
+                // Enter
+                e.keyCode == 13 ||
+                // home、end、左右箭頭
+                (e.keyCode >= 35 && e.keyCode <= 39)
+            )) e.preventDefault();
+
+            if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) wrongMsg.slideUp(300);
+
+            if (e.keyCode == 13) $("#bidBtn").click();
+        });
     });
+
 
 </script>
 </body>

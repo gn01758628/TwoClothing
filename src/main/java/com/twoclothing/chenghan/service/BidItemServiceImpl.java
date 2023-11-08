@@ -59,7 +59,7 @@ public class BidItemServiceImpl implements BidItemService {
     }
 
     @Override
-    public void addVentNotices(Notice notice, Integer mbrId) {
+    public void addNotice(Notice notice, Integer mbrId) {
         noticeDAO.insert(notice, mbrId);
     }
 
@@ -154,6 +154,16 @@ public class BidItemServiceImpl implements BidItemService {
     @Override
     public List<BidRecord> getAllBidRecordByBidItemId(Integer bidItemId) {
         return bidRecordDAO.getAll(bidItemId);
+    }
+
+    @Override
+    public Set<Integer> getAllMbrIdInBidRecord(Integer bidItemId) {
+        return bidRecordDAO.getAllMbrIdByKey(bidItemId);
+    }
+
+    @Override
+    public BidRecord getBidRecordByIndex(Integer bidItemId, int index) {
+        return bidRecordDAO.getIndexRecordByKey(bidItemId, index);
     }
 
     @Override

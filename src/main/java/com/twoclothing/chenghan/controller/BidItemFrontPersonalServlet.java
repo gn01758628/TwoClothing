@@ -1,5 +1,6 @@
 package com.twoclothing.chenghan.controller;
 
+import com.twoclothing.chenghan.NumberMapping;
 import com.twoclothing.chenghan.service.BidItemService;
 import com.twoclothing.chenghan.service.BidItemServiceImpl;
 import com.twoclothing.model.abid.biditem.BidItem;
@@ -130,10 +131,11 @@ public class BidItemFrontPersonalServlet extends HttpServlet {
                     errorMessages.add("立即結標價必須是有效的正整数，且大於0");
                 } else {
                     int startPriceValue = Integer.parseInt(startPrice);
-                    int reserverPriceValue = Integer.parseInt(reserverPrice);
                     int directPriceValue = Integer.parseInt(directPrice);
-                    if (reserverPriceValue != 0) {
+                    if (!reserverPrice.isEmpty()) {
+                        int reserverPriceValue = Integer.parseInt(reserverPrice);
                         if (directPriceValue < reserverPriceValue) errorMessages.add("立即結標價必須大於拍賣底價");
+                        return;
                     } else {
                         if (directPriceValue < startPriceValue) errorMessages.add("立即結標價必須大於起標價格");
                     }

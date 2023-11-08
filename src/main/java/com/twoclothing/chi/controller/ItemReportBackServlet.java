@@ -1,6 +1,7 @@
 package com.twoclothing.chi.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,9 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.twoclothing.chi.service.ItemReportService;
 import com.twoclothing.chi.service.ItemReportServiceImpl;
 import com.twoclothing.model.aproduct.itemreport.ItemReport;
-import com.twoclothing.model.employee.Employee;
-import com.twoclothing.tonyhsieh.service.EmployeeService;
-import com.twoclothing.tonyhsieh.service.EmployeeServiceImpl;
 
 @WebServlet("/back/itemreport")
 public class ItemReportBackServlet extends HttpServlet {
@@ -54,6 +52,12 @@ public class ItemReportBackServlet extends HttpServlet {
 			req.getParameter("result");
 			url = getCompositeQuery(req, res);
 			break;
+		case "getOne":
+			url = getItemReport(req, res);
+			break;
+		case "update":
+			url = updateItemReport(req, res);
+			break;
 		default:
 			url = "/back_end/itemreport/itemReportManageIndex.jsp";
 		}
@@ -79,18 +83,11 @@ public class ItemReportBackServlet extends HttpServlet {
 		Map<Integer, String> resultMap = new HashMap<>();
 		resultMap.put(0, "處分");
 		resultMap.put(1, "不處分");
-
-		ItemReport itemReport = new ItemReport();
-		String note = itemReport.getNote();
-		if (note == null) {
-			note = "";
-		}
-
+		
 		req.setAttribute("itemReportList", itemReportList);
 		req.setAttribute("currentPage", currentPage);
 		req.setAttribute("rStatusMap", rStatusMap);
 		req.setAttribute("resultMap", resultMap);
-		req.setAttribute("note", note);
 
 		return "/back_end/itemreport/itemReportManageList.jsp";
 
@@ -116,8 +113,6 @@ public class ItemReportBackServlet extends HttpServlet {
 			int itemReportPageQty = itemReportService.getCompositeQueryPageTotal(map);
 			req.getSession().setAttribute("itemReportPageQty", itemReportPageQty);
 
-//			getSelectInfo(req, res);
-
 			Map<Integer, String> rStatusMap = new HashMap<>();
 			rStatusMap.put(0, "待審核");
 			rStatusMap.put(1, "已審核");
@@ -126,27 +121,57 @@ public class ItemReportBackServlet extends HttpServlet {
 			resultMap.put(0, "處分");
 			resultMap.put(1, "不處分");
 
-			ItemReport itemReport = new ItemReport();
-			String note = itemReport.getNote();
-			if (note == null) {
-				note = "";
-			}
-
 			req.setAttribute("itemReportList", itemReportList);
 			req.setAttribute("currentPage", currentPage);
 			req.setAttribute("rStatusMap", rStatusMap);
 			req.setAttribute("resultMap", resultMap);
-			req.setAttribute("note", note);
 		} else {
 			System.out.println("map.sizes() == 0");
 		}
-		
+
 		return "/back_end/itemreport/itemReportManageList.jsp";
 	}
 
-//	private void getSelectInfo(HttpServletRequest req, HttpServletResponse res) {
-//		EmployeeService employeeService = new EmployeeServiceImpl();
-//		List<Employee> allEmployee = employeeService.getAll();
-//		req.setAttribute("empId", allEmployee);
-//	}
+	private String getItemReport(HttpServletRequest req, HttpServletResponse res) {
+		Integer reportId = Integer.parseInt(req.getParameter("reportId"));
+		
+		ItemReport itemReport = itemReportService.getByPrimaryKey(reportId);
+		
+		Map<Integer, String> rStatusMap = new HashMap<>();
+		rStatusMap.put(0, "待審核");
+		rStatusMap.put(1, "已審核");
+		
+		req.setAttribute("itemReport", itemReport);
+		req.setAttribute("rStatusMap", rStatusMap);
+		
+		return "/back_end/itemreport/itemReportManageUpdate.jsp";
+	}
+
+	private String updateItemReport(HttpServletRequest req, HttpServletResponse res) {
+		String reportIdString = req.getParameter("reportId");
+		int reportId = Integer.parseInt(reportIdString);
+//		String empIdString = req.getParameter("empId");
+//		int empId = Integer.parseInt(empIdString);
+		int empId = 1; // 測試用，到時這行可刪
+		int rStatus = 1;
+		Timestamp auditdate = new Timestamp(System.currentTimeMillis());
+		String resultString = req.getParameter("result");
+		int result = Integer.parseInt(resultString);
+		String note = req.getParameter("note");
+
+		List<String> errorMsgs = new LinkedList<String>();
+
+		if (result == -1) {
+			errorMsgs.add("請進行處分");
+		}
+
+		if (!errorMsgs.isEmpty()) {
+			req.setAttribute("errorMsgs", errorMsgs);
+			return "/back/itemreport?action=getOne";
+		}
+
+		req.setAttribute("itemReport", itemReportService.updateItemReport(reportId, empId, rStatus, auditdate, result, note));
+
+		return "/back/itemreport?action=getAll";
+	}
 }

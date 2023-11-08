@@ -1,4 +1,4 @@
-package com.twoclothing.chenghan.controller;
+package com.twoclothing.chenghan;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +13,7 @@ public class NumberMapping {
         bidStatusMap = new HashMap<>();
         bidStatusMap.put(0, "待審核");
         bidStatusMap.put(1, "已過審");
-        bidStatusMap.put(2, "得標");
+        bidStatusMap.put(2, "結標");
         bidStatusMap.put(3, "流標");
         bidStatusMap.put(4, "上架中");
         bidStatusMap.put(5, "刪除");

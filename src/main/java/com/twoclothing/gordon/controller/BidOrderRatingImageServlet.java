@@ -3,6 +3,7 @@ package com.twoclothing.gordon.controller;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -44,6 +45,10 @@ public class BidOrderRatingImageServlet extends HttpServlet{
 		
 			/*************************** 2.開始查詢資料 *****************************************/
 	        bidOrderRatingImageServiceImpl.addBidOrderRatingImage(bidOrderId, image);
+	        
+	    	String url = "/back_end/bidorderratingimage/listAllBidOrderRatingImage.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
 			
 			
 		}
