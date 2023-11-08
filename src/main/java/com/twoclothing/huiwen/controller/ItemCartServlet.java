@@ -20,6 +20,7 @@ import com.twoclothing.huiwen.service.ItemServiceImpl;
 import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.coupon.Coupon;
 import com.twoclothing.model.memberscoupon.MembersCoupon;
+import com.twoclothing.model.shipsetting.ShipSetting;
 import com.twoclothing.utils.JedisPoolUtil;
 
 import redis.clients.jedis.Jedis;
@@ -82,10 +83,10 @@ public class ItemCartServlet extends HttpServlet {
 			System.out.println("itemList:" + itemList);
 
 			req.setAttribute("item", itemList);
-
 			jedis.close();
-		}
 
+		}
+		//查看購物車
 		if ("cart".equals(req.getParameter("goto"))) {
 			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 			Jedis jedis = jedisPool.getResource();
@@ -101,7 +102,8 @@ public class ItemCartServlet extends HttpServlet {
 			
 			//抓商品的數量
 			List<String> quantities = new ArrayList<>();
-
+			
+			//抓出存在Redis的商品顯示在會員購物車
 			for (String itemId : itemIds) {
 				String quantity = jedis.hget(mbrIdStr, itemId);
 				quantities.add(quantity);
@@ -109,7 +111,9 @@ public class ItemCartServlet extends HttpServlet {
 				itemList.add(item);
 			}
 			
-			//會員擁有的點數
+			jedis.close();
+			
+			//取得會員擁有的點數
 			Integer mbrId = Integer.valueOf(mbrIdStr);
 			Integer mbrPoint = itemService.getMbrPointByMbrId(mbrId);
 			
@@ -124,6 +128,7 @@ public class ItemCartServlet extends HttpServlet {
 					elementsToRemove.add(membersCoupon);
 				}
 			}
+			//獲得所有狀態為0的優惠券
 			membersCouponList.removeAll(elementsToRemove);
 
 			System.out.println("尚未使用的會員優惠券"+membersCouponList);
@@ -139,9 +144,6 @@ public class ItemCartServlet extends HttpServlet {
 				}
 			}
 			
-			//取得優惠券的折扣類型
-			
-	
 			System.out.println("couponList:"+couponList);
 //			System.out.println("MembersCouponList:"+membersCouponList);
 //			System.out.println("mbrPoint"+mbrPoint);
@@ -158,9 +160,10 @@ public class ItemCartServlet extends HttpServlet {
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/cartDetail.jsp");
 			dispatcher.forward(req, res);
 			return;
+			
 		}
 		
-		//使用者刪除購物某商品(Redis刪除)
+		//使用者刪除購物車某商品(Redis刪除)
 		if ("delCart".equals(req.getParameter("delCart"))) {
 			String itemId = req.getParameter("itemId");
 			String mbrId = req.getParameter("mbrId");
@@ -169,7 +172,143 @@ public class ItemCartServlet extends HttpServlet {
 			Jedis jedis = jedisPool.getResource();
 			jedis.select(13);
 			jedis.hdel(mbrId, itemId);
+			jedis.close();
 		}
+		
+		//使用者在購物車修改數量(Redis修改)
+		if("updateCart".equals(req.getParameter("updateCart"))) {
+			String itemId = req.getParameter("itemId");
+			String quantity = req.getParameter("quantity");
+			String mbrId = req.getParameter("mbrId");
+			
+			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
+			Jedis jedis = jedisPool.getResource();
+			jedis.select(13);
+			jedis.hset(mbrId, itemId, quantity);
+			jedis.close();
+
+		}
+		
+		//準備結帳
+		if ("toPay".equals(req.getParameter("toPay"))) {
+			System.out.println("準備結帳");
+			
+			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
+			Jedis jedis = jedisPool.getResource();
+			jedis.select(13);
+			
+			//之後從session取mbrId
+			String mbrId = "2";
+			
+			//取得有選取的itemId查對應Item
+			//購買數量從Redis取
+			List<Item> itemList = new ArrayList<>();
+			List<String> quantities = new ArrayList<>();
+			String[] itemIdCheckValues = req.getParameterValues("itemIdCheck");
+			if (itemIdCheckValues != null) {
+			    for (String itemId : itemIdCheckValues) {
+			        System.out.println("Selected itemId: " + itemId);
+			        
+					quantities.add(jedis.hget(mbrId, itemId));
+					
+					Item item = itemService.getItemByItemId(Integer.valueOf(itemId));
+					System.out.println(item);
+					itemList.add(item);
+			    }
+			}
+			
+			jedis.close();
+			
+			//取得會員物流資訊
+			List<ShipSetting> shipSettingList = itemService.getSettingByMbrId(Integer.valueOf(mbrId));
+			ShipSetting shipSetting = shipSettingList.get(0);
+			System.out.println(shipSetting);
+			
+			//取得折扣金額
+			Integer cartCount = Integer.valueOf(req.getParameter("cartCount"));
+			
+//			//取得付款方式
+//			String payment = req.getParameter("payMethod");
+//			System.out.println(payment);
+			
+			req.setAttribute("itemList", itemList);
+			req.setAttribute("quantities", quantities);
+			req.setAttribute("shipSetting", shipSetting);
+			req.setAttribute("cartCount", cartCount);
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/cartToOrder.jsp");
+			dispatcher.forward(req, res);
+			return;
+		}
+		
+		//送去產生訂單
+        String requestURI = req.getRequestURI();
+        
+        if (requestURI.endsWith("/toOrder")) {
+        	//處理商品id存成陣列
+            String itemIdStr = req.getParameter("itemId");
+            String[] parts = itemIdStr.split(",");
+            
+            //準備陣列存商品id、會員id
+            List<Integer> itemIdArr = new ArrayList<>();
+            List<Integer> mbrIdArr = new ArrayList<>();
+            for (String part:parts) {
+                Integer itemId = Integer.parseInt(part);
+                itemIdArr.add(itemId);
+                
+                //用商品id取得該會員id
+                Integer mbr = itemService.getMbrIdByItemId(itemId);
+                mbrIdArr.add(mbr);
+                
+            }	
+            System.out.println(itemIdArr);
+            System.out.println(mbrIdArr);
+            
+            //處理數量存成陣列
+            String quantityStr = req.getParameter("quantity");
+            String[] parts2 = quantityStr.split(",");
+            
+            List<Integer> quantityArr = new ArrayList<>();
+            for (String part:parts2) {
+            	Integer quantity = Integer.parseInt(part);
+            	quantityArr.add(quantity);
+            	
+            }
+            System.out.println(quantityArr);
+            Integer payment = Integer.valueOf(req.getParameter("payment"));
+
+            
+            String receiveName = req.getParameter("receiveName");
+            String receivePhone = req.getParameter("receivePhone");
+            String receiveAddress = req.getParameter("receiveAddress");
+            
+            
+            //處理比例折扣存成陣列
+            String eachCountStr = req.getParameter("eachCount");
+            String[] parts3 = eachCountStr.split(",");
+            
+            List<Integer> countArr = new ArrayList<>();
+            for (String part:parts3) {
+            	Integer eachCount = Integer.parseInt(part);
+            	countArr.add(eachCount);
+            	
+            }
+            System.out.println(countArr);
+            
+            //未折扣金額
+            Integer mytotal = Integer.valueOf(req.getParameter("mytotal"));
+            
+            //折扣總額
+            Integer count = Integer.valueOf(req.getParameter("count"));
+            
+            //折扣後金額
+            Integer totalPay = Integer.valueOf(req.getParameter("totalPay"));
+
+            
+     
+        }
+        
+		
+		
 		
 	}
 }

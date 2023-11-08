@@ -31,4 +31,6 @@ public interface ItemDAO {
 	 public int getResultTotal(Map<String, String> map);
 	
 	 Integer getPointByMbrId(Integer mbrId);
+	 
+	 Integer getMbrIdById(Integer itemId);
 }
