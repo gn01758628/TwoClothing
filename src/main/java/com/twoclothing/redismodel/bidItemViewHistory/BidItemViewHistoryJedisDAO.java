@@ -16,6 +16,8 @@ public class BidItemViewHistoryJedisDAO implements BidItemViewHistoryDAO {
 
     private static final String MBR_PREFIX = "mbrId:";
 
+    private static final String MBR_SUFFIX = ":bidItemView";
+
     private static final String BIDITEM_PREFIX = "bidItemId:";
 
     // 瀏覽紀錄存活7天(7 * 24 * 60 * 60秒)
@@ -32,7 +34,7 @@ public class BidItemViewHistoryJedisDAO implements BidItemViewHistoryDAO {
 
             // 儲存
             long timestamp = history.getTimestamp();
-            String key = MBR_PREFIX + history.getMbrId();
+            String key = MBR_PREFIX + history.getMbrId() + MBR_SUFFIX;
             String value = BIDITEM_PREFIX + history.getBidItemId();
             jedis.zadd(key, (double) timestamp, value);
             jedis.expire(key, TTL);
@@ -50,7 +52,7 @@ public class BidItemViewHistoryJedisDAO implements BidItemViewHistoryDAO {
         List<Integer> bidItemIdList = new ArrayList<>();
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.select(REDIS_NUMBER);
-            Set<String> bidItemIdSet = jedis.zrange(MBR_PREFIX + mbrId, 0, -1);
+            Set<String> bidItemIdSet = jedis.zrevrange(MBR_PREFIX + mbrId + MBR_SUFFIX, 0, -1);
             if (bidItemIdSet != null) {
                 for (String id : bidItemIdSet) {
                     bidItemIdList.add(Integer.valueOf(id.replace(BIDITEM_PREFIX, "")));

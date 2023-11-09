@@ -32,7 +32,7 @@
 
 <script>
     // servlet的註冊地址
-    let myPoint = "/front/chatRoomWS/${mbrId}"
+    let myPoint = "/front/chatRoomWS/${mbrId}/${targetId}"
     // 返回主機名+端口號
     let host = window.location.host;
     // 返回部分URL(端口號之後的全部路徑)

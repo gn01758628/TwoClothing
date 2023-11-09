@@ -76,7 +76,7 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
         // 競標商品瀏覽紀錄
         // 判斷是否為本人
         // TODO 會員從session拿
-        Integer mbrid = 3;
+        Integer mbrid = 2;
         if (!mbrid.equals(bidItem.getMbrId())) {
             BidItemViewHistory history = new BidItemViewHistory(mbrid, bidItemId, System.currentTimeMillis());
             bidItemService.addBidItemViewHistory(history);

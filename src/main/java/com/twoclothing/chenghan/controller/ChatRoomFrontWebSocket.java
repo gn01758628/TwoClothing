@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 // ServerEndpoint的路徑註冊,可以使用{}來代表一個動態的路徑參數
 // 等同Servlet的前置路徑對應註冊
 // {}內的變數,可以利用@PathParam("mbrId")來取得,但只能用在方法參數上
-@ServerEndpoint("/front/chatRoomWS/{mbrId}")
+@ServerEndpoint("/front/chatRoomWS/{mbrId}/{targetId}")
 public class ChatRoomFrontWebSocket {
 
     // websocket.Session
@@ -22,8 +22,9 @@ public class ChatRoomFrontWebSocket {
 
     // 客戶端與服務器端建立連結時
     @OnOpen
-    public void onOpen(@PathParam("mbrId") Integer mbrId, Session userSession) {
+    public void onOpen(@PathParam("mbrId") Integer mbrId, @PathParam("targetId") Integer targetId, Session userSession) {
         System.out.println("Hello!!會員：" + mbrId + "號");
+        System.out.println("你現在正要跟" + targetId + "號聊天");
     }
 
     // 服務器接收到客戶端的訊息時

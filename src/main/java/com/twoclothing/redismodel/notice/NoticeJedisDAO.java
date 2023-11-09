@@ -22,8 +22,8 @@ public class NoticeJedisDAO implements NoticeDAO {
 
     private static final String MBR_SUFFIX = ":notice";
 
-    // 通知存活30天(2592000秒)
-    private final int TTL = 2_592_000;
+    // 通知存活30天
+    private final int TTL = 60 * 60 * 24 * 30;
 
 
     @Override
