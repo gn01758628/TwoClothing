@@ -1,6 +1,5 @@
 package com.twoclothing.redismodel.bidItemViewHistory;
 
-import com.google.gson.Gson;
 import com.twoclothing.utils.JedisPoolUtil;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -12,8 +11,6 @@ import java.util.Set;
 public class BidItemViewHistoryJedisDAO implements BidItemViewHistoryDAO {
 
     private final JedisPool jedisPool = JedisPoolUtil.getJedisPool();
-
-    private final Gson gson = new Gson();
 
     private static final int REDIS_NUMBER = 12;
 
