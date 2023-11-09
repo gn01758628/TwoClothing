@@ -18,6 +18,8 @@ public class ItemBrowsingJedisDAO implements ItemBrowsingDAO {
 
 	private static final String ITEM_PREFIX = "itemId:";
 
+	private static final String MBR_SUFFIX = ":itemView";
+
 	private final int TTL = 30 * 24 * 60 * 60;
 
 	private final int MAX_VIEW = 100;
@@ -28,7 +30,7 @@ public class ItemBrowsingJedisDAO implements ItemBrowsingDAO {
 			jedis.select(REDIS_NUMBER);
 
 			long browsingTime = itemBrowsing.getBrowsingTime();
-			String key = MBR_PREFIX + itemBrowsing.getMbrId();
+			String key = MBR_PREFIX + itemBrowsing.getMbrId() + MBR_SUFFIX;
 			String value = ITEM_PREFIX + itemBrowsing.getItemId();
 			jedis.zadd(key, (double) browsingTime, value);
 			jedis.expire(key, TTL);
@@ -43,10 +45,10 @@ public class ItemBrowsingJedisDAO implements ItemBrowsingDAO {
 	@Override
 	public List<Integer> getAllItemIdByMbrId(Integer mbrId) {
 		List<Integer> itemIdList = new ArrayList<>();
-		
+
 		try (Jedis jedis = jedisPool.getResource()) {
 			jedis.select(REDIS_NUMBER);
-			Set<String> itemIdSet = jedis.zrange(MBR_PREFIX + mbrId, 0, -1);
+			Set<String> itemIdSet = jedis.zrevrange(MBR_PREFIX + mbrId + MBR_SUFFIX, 0, -1);
 			if (itemIdSet != null) {
 				for (String id : itemIdSet) {
 					itemIdList.add(Integer.valueOf(id.replace(ITEM_PREFIX, "")));

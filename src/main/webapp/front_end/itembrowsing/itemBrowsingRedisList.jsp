@@ -34,21 +34,19 @@
 		<tr>
 			<th>商品圖片</th>
 			<th>商品編號</th>
-			<th>會員編號</th>
+			<th>商品名稱</th>
+			<th>商品價格</th>
 		</tr>
-		<c:forEach var="itemBrowsing" items="${itemBrowsingList}">
+		<c:forEach var="item" items="${itemBrowsingList}">
 			<tr>
-				<td><img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${itemBrowsing.compositeKey.itemId}&position=1" class="img"></td>
-				<td>${itemBrowsing.itemId}</td>
-				<td>${itemBrowsing.mbrId}</td>
 				<td>
-					<form method="post" action="${pageContext.request.contextPath}/itembrowsing.redis">
-						<button class="btn_update" type="submit">模擬再看一次</button>
-						<input type="hidden" name="itemId" value="${itemBrowsing.compositeKey.itemId}">
-						<input type="hidden" name="mbrId" value="${itemBrowsing.compositeKey.mbrId}">
-						<input type="hidden" name="action" value="update">
-					</form>
+					<a href="${pageContext.request.contextPath}/Itemfront/itemlist?goto=${item.itemId}">
+						<img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" class="img">
+					</a>
 				</td>
+				<td>${item.itemId}</td>
+				<td>${item.itemName}</td>
+				<td>${item.price}</td>
 			</tr>
 		</c:forEach>
 	</table>
