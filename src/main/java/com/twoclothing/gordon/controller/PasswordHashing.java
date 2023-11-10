@@ -28,7 +28,7 @@ public class PasswordHashing {
     }
 
     public static void main(String[] args) {
-        String password = "1";
+        String password = "hash10";
         String hashedPassword = hashPassword(password);
         System.out.println("Original Password: " + password);
         System.out.println("Hashed Password: " + hashedPassword);
