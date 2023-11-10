@@ -30,7 +30,6 @@ public class ItemHibernateDAO implements ItemDAO {
 	
 	@Override
 	public int insert(Item item) {
-		System.out.println("111111"+item);
 		return (Integer) getSession().save(item);	
 	}
 	

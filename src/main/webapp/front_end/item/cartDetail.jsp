@@ -415,6 +415,7 @@ label.Coupon input.coupon_radio:disabled+span {
         
         if(distypeVal){
         	total *= (1-(disValue/100));
+        	total = Math.round(total);
         } else {
         	total -= disValue;
         }
