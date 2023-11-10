@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ItemReportDAO {
-	int insert(ItemReport itemReport);
+	void insert(ItemReport itemReport);
 
 	ItemReport getByPrimaryKey(Integer reportId);
 
@@ -18,5 +18,5 @@ public interface ItemReportDAO {
 	
 	int getMapTotal(Map<String, String> map);
 
-	boolean update(ItemReport itemReport);
+	void update(ItemReport itemReport);
 }

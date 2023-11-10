@@ -24,7 +24,7 @@ public class Item implements Serializable{
 	@Column(name = "grade", columnDefinition = "TINYINT" , nullable = false)
 	private Integer grade;
 	
-	@Column(name = "size", columnDefinition = "TINYINT" , nullable = false)
+	@Column(name = "size", columnDefinition = "TINYINT")
 	private Integer size;
 	
 	@Column(name = "detail")

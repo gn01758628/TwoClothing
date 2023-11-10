@@ -33,7 +33,6 @@
         <!-- 類別映射 -->
         <mapping class="com.twoclothing.model.balancehistory.BalanceHistory"/>
         <mapping class="com.twoclothing.model.abid.biditem.BidItem"/>
-        <mapping class="com.twoclothing.model.abid.biditembrowsing.BidItemBrowsing"/>
         <mapping class="com.twoclothing.model.abid.biditemimage.BidItemImage"/>
         <mapping class="com.twoclothing.model.abid.biditemreport.BidItemReport"/>
         <mapping class="com.twoclothing.model.abid.bidorder.BidOrder"/>

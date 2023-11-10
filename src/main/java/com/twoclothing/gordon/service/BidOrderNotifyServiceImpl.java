@@ -46,7 +46,7 @@ public class BidOrderNotifyServiceImpl  implements BidOrderNotifyService{
 	public List<BidOrderNotify> getByMbrId(Integer mbrId) {
 		List<BidOrderNotify> bidOrderNotify = dao.getAllByMbrId(mbrId);
 	    if (bidOrderNotify != null ) {
-	        return bidOrderNotify; // 返回列表中的第一个对象
+	        return bidOrderNotify; 
 	    }
 	    return null;
 	}
@@ -55,7 +55,7 @@ public class BidOrderNotifyServiceImpl  implements BidOrderNotifyService{
 	public List<BidOrderNotify> getByBidOrderId(Integer bidOrderId) {
 		List<BidOrderNotify> bidOrderNotify = dao.getAllByBidOrderId(bidOrderId);
 	    if (bidOrderNotify != null ) {
-	        return bidOrderNotify; // 返回列表中的第一个对象
+	        return bidOrderNotify; 
 	    }
 	    return null;
 	} 

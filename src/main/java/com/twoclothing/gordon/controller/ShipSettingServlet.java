@@ -125,9 +125,9 @@ System.out.println(mbrId);
 			ShipSettingServiceImpl shipSettingServiceImpl = new ShipSettingServiceImpl();
 			ShipSetting shipSetting = shipSettingServiceImpl.updateShipSetting(shipId, mbrId, receiveName, receivePhone, receiveAddress);
 /***************************3.修改完成,準備轉交(Send the Success view)*************/
-			req.setAttribute("ShipSetting", shipSetting); // 資料庫update成功後,正確的的empVO物件,存入req
+			req.setAttribute("ShipSetting", shipSetting); 
 			String url = "/front_end/shipsetting/listOneShipSetting.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+			RequestDispatcher successView = req.getRequestDispatcher(url); 
 			successView.forward(req, res);
 		
 		
@@ -174,11 +174,9 @@ System.out.println(mbrId);
 			
 	        
 		    /***************************3.修改完成,準備轉交(Send the Success view)*************/
-//		    req.setAttribute("ShipSetting", shipSetting);
 		    String url = "/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId="+mbrId;
 
-//		    String url = "/MemberCentre.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			RequestDispatcher successView = req.getRequestDispatcher(url); 
 			successView.forward(req, res);
 		}
 		/***********************刪除*************************/
@@ -203,7 +201,7 @@ System.out.println(mbrId);
 		    /***************************3.刪除完成,準備轉交(Send the Success view)***********/
 			
 		    String url = "/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId="+mbrId;
-		RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+		    RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 			successView.forward(req, res);
 			
 //		    String url1 ="/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId="+mbrId;

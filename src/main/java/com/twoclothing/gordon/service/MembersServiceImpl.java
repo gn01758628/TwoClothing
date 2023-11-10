@@ -48,9 +48,9 @@ public class MembersServiceImpl implements MembersService{
 	public Members getByEmail(String email) {
 		Members members = dao.getByEmail(email);
 	    if (members != null ) {
-	        return members; // 返回列表中的第一个对象
+	        return members; 
 	    }
-	    return null; // 或者返回 null，如果没有匹配的对象
+	    return null; 
 	}
 
 	@Override
@@ -77,9 +77,8 @@ public class MembersServiceImpl implements MembersService{
 	        // 更新成功
 	        return members;
 	    } else {
-	        // 更新失败，可以记录日志或者抛出异常
-	        // 这里只是示例，你可以根据实际需求来处理
-	        System.err.println("更新失败，会员ID: " + members.getMbrId());
+	       
+	        
 	        return null;
 	    }
 	}

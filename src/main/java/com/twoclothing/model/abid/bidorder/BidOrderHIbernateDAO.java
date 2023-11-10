@@ -35,7 +35,7 @@ public class BidOrderHIbernateDAO implements BidOrderDAO {
 		return getSession().createQuery("from BidOrder", BidOrder.class).list();
 		
 	}
-
+	@Transactional
 	@Override
 	public BidOrder getByPrimaryKey(Integer bidOrderId) {
 		return getSession().get(BidOrder.class, bidOrderId);

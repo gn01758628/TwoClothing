@@ -63,12 +63,14 @@
 			
 		}
 
-		form.form_add div.main_container div.main_right div.right_rightimg > div{
-			margin: 10px 0px;
-		}
-
 		form.form_add div.main_container div.main_right div.right_rightimg div{
 			border: 1px solid black;
+			height: 100%;
+			width: 100%;
+			margin: 10px 0px;
+		}
+		
+		form.form_add div.main_container div.main_right div.right_rightimg div img{
 			height: 100%;
 			width: 100%;
 		}
@@ -149,6 +151,7 @@
 		    border-radius: 5px;
 			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 		}
+		
 	</style>
 </head>
 <body>
@@ -163,10 +166,10 @@
 </c:if>
 
 
-<form class="form_add" method="post" action="${pageContext.request.contextPath}/Item/add" enctype="multipart/form-data">
+<%-- <form class="form_add" method="post" action="${pageContext.request.contextPath}/Item/add" enctype="multipart/form-data"> --%>
 <div class="">
 	<h1>商品上傳</h1>
-	<form class="form_add" method="post" action="${pageContext.request.contextPath}/TwoClothing/Item/add" enctype="multipart/form-data">
+	<form class="form_add" method="post" action="${pageContext.request.contextPath}/Item/add" enctype="multipart/form-data">
 		<div class="main_container">
 			<div class="main_left">
 
@@ -202,7 +205,7 @@
 
 					<select class="sel_size" name="size"> 
 						<option value="" disabled selected>尺寸</option>
-						<option value="9">其他</option>
+						<option value="8">其他</option>
 						<option value="0">XS(含)以下</option>
 						<option value="1">S</option>
 						<option value="2">M</option>
@@ -227,7 +230,7 @@
 					<label for="image01" class="form-label">上傳商品的主圖片<span class="text-danger">*</span></label>
 					<div id="image01Help" class="form-text">每個商品都必須要有主圖片</div>
 					<input class="form-control" type="file" id="image01" name="image01"
-							accept="image/jpeg, image/png" required aria-describedby="image01Help">
+							accept="image/jpeg, image/png"  aria-describedby="image01Help">
 					</div>
 
 					<div>
@@ -238,8 +241,13 @@
 				</div>
 
 				<div class="right_rightimg">
-					<div>圖片</div>
-					<div>圖片2</div>
+					<div>
+						<img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="Product Image">
+					</div>
+					<div>
+						<img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=2" alt="Product Image">
+						
+					</div>
 				</div>
 			</div>
 		</div>

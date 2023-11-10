@@ -4,51 +4,21 @@
 <%@ page import="java.util.*"%>
 
 <%@ include file="sellBidorderBanner.jsp" %> 
-
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css"/>
+<style type="text/css">
 
-<style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
 </style>
-
-<style>
-  table {
-	width: 600px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
-  }
-  table, th, td {
-    border: 1px solid #CCCCFF;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  }
-</style>
-
 </head>
 <body>
-<table>
-賣家待出貨
+<h1 style="color: red;">賣家待出貨</h1>
+    <table id="myTable">
+        <thead>
+
 	<tr>
 		<th>競標商品訂單編號</th>
 		<th>競標商品編號</th>
@@ -67,8 +37,10 @@
 		<th>收件人姓名</th>
 		<th>收件人手機</th>
 		<th>備註</th>
+		<th>待出貨</th>
+		<th>取消交易</th>
 	</tr>
-	
+	  <thead>
 <c:choose>
     <c:when test="${not empty BidOrder}">	
     
@@ -93,28 +65,56 @@
 		<td>${BidOrder.receivePhone}</td>
 		<td>${BidOrder.remarks}</td>
  			
-
-<!--			
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="刪除">
-			     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}">
-			     <input type="hidden" name="action" value="delete"></FORM>
+			     <input type="submit" value="待出貨">
+			     <input type="hidden" name="amount" value="${BidOrder.amount}">
+			     <input type="hidden" name="bidOrderId" value="${BidOrder.bidOrderId}">
+			     <input type="hidden" name="sellMbrId" value="${BidOrder.sellMbrId}">
+			     <input type="hidden" name="bidItemId" value="${BidOrder.bidItemId}">
+			     <input type="hidden" name="buyMbrId" value="${BidOrder.buyMbrId}">
+			     <input type="hidden" name="action"	value="shipped"></FORM>
 			</td>
- -->			
+			<td>
+			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
+			     <input type="submit" value="取消交易">
+			     <input type="hidden" name="amount" value="${BidOrder.amount}">
+			     <input type="hidden" name="bidOrderId" value="${BidOrder.bidOrderId}">
+			     <input type="hidden" name="sellMbrId" value="${BidOrder.sellMbrId}">
+			     <input type="hidden" name="bidItemId" value="${BidOrder.bidItemId}">
+			     <input type="hidden" name="buyMbrId" value="${BidOrder.buyMbrId}">
+			     <input type="hidden" name="action"	value="sell_Cancel_Order"></FORM>
+			</td>
+
+
 		</tr>
 		
 	</c:forEach>
 	 </c:when>
-    <c:otherwise>
-        <tr>
-            <td colspan="17">無資料</td>
-        </tr>
-    </c:otherwise>
+
 </c:choose>
 
-
-	
-</table>
+  </table>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+        	$('#myTable').DataTable( {
+        		
+        		columnDefs: [
+        		    {
+        		        targets: -1,
+        		        className: 'dt-body-right'
+        		    }
+        		  ]
+        	
+        	
+        		
+        		
+        		 
+        		} );
+            
+        });
+    </script>
 </body>
 </html>

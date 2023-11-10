@@ -22,6 +22,9 @@ import com.twoclothing.model.coupon.Coupon;
 import com.twoclothing.model.coupon.CouponDAO;
 import com.twoclothing.model.memberscoupon.MembersCoupon;
 import com.twoclothing.model.memberscoupon.MembersCoupon.MembersCouponCompositeDetail;
+import com.twoclothing.model.shipsetting.ShipSetting;
+import com.twoclothing.model.shipsetting.ShipSettingDAO;
+import com.twoclothing.model.shipsetting.ShipSettingHibernateDAO;
 import com.twoclothing.utils.HibernateUtil;
 import com.twoclothing.utils.generic.*;
 
@@ -37,12 +40,15 @@ public class ItemServiceImpl implements ItemService{
     
     private GenericDAO MemCouponDAO;
     
+    private ShipSettingDAO shipSettingDAO;
+    
 	public ItemServiceImpl() {
 		dao = new ItemHibernateDAO(HibernateUtil.getSessionFactory());
 		categoryTagsDAO = new CategoryTagsHibernateDAO(HibernateUtil.getSessionFactory());
 		itemImageDAO = new ItemImageHibernateDAO(HibernateUtil.getSessionFactory());
 		MemCouponDAO = DAOSelector.getDAO(MembersCoupon.class);
 		couponDAO = DAOSelector.getDAO(Coupon.class);
+		shipSettingDAO = new ShipSettingHibernateDAO(HibernateUtil.getSessionFactory());
 	}
 	
 	@Override
@@ -76,17 +82,12 @@ public class ItemServiceImpl implements ItemService{
 
 	@Override
 	public Item getItemByItemId(Integer itemId) {
-		Item item1 = dao.getByPrimaryKey(itemId);
-		System.out.println("item1:"+item1);
-		
-		return item1;
+		return dao.getByPrimaryKey(itemId);
 	}
 
 	@Override
 	public List<Item> getAllItems(int page) {
 		List<Item> list = dao.getAll(page);
-		System.out.println("2222"+list);
-
 		return list;
 	}
 	@Override
@@ -113,7 +114,6 @@ public class ItemServiceImpl implements ItemService{
 			// 若是value為空即代表沒有查詢條件，做個去除動作
 			String value = row.getValue()[0];
 
-//			System.out.println("keyValue:"+key+":"+value);
 			
 			if ( value == null || value.isEmpty()) {
 				continue;
@@ -151,7 +151,6 @@ public class ItemServiceImpl implements ItemService{
 	
     @Override
     public List<CategoryTags> getAllCategoryTags() {
-    	System.out.println("!!!!"+categoryTagsDAO.getAll());
         return categoryTagsDAO.getAll();
     }
 	
@@ -188,7 +187,13 @@ System.out.println("::"+categoryTagsDAO.getTagIdsWithoutChildren());
 	
 	}
 
+	@Override
+	public List<ShipSetting> getSettingByMbrId(Integer mbrId) {
+		return shipSettingDAO.getAllByMbrId(mbrId);
+	}
 
+	@Override
+	public Integer getMbrIdByItemId(Integer itemId) {
+		return dao.getMbrIdById(itemId);
+	}
 }
-//MembersCoupon.MembersCouponCompositeDetail compositeKey = new MembersCoupon.MembersCouponCompositeDetail(mbrId, cpnId);
-//return (MembersCoupon)MemCouponDAO.getByPrimaryKey(compositeKey);

@@ -3,7 +3,7 @@ package com.twoclothing.gordon.controller;
 import com.google.gson.Gson;
 import com.twoclothing.gordon.service.MembersServiceImpl;
 import com.twoclothing.model.members.Members;
-
+import javax.servlet.http.Cookie;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,9 +29,8 @@ public class MembersServlet extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
-
-        // pk查詢
-        if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
+        //pk查詢
+        if ("getOne_For_Display".equals(action)) { 
 
             Map<String, String> errorMsgs = new LinkedHashMap<>();
             req.setAttribute("errorMsgs", errorMsgs);
@@ -41,7 +40,6 @@ public class MembersServlet extends HttpServlet {
             if (str == null || (str.trim()).isEmpty()) {
                 errorMsgs.put("mbrId", "請輸入會員編號");
             }
-            // Send the use back to the form, if there were errors
             if (!errorMsgs.isEmpty()) {
                 RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/select_page.jsp");
                 failureView.forward(req, res);
@@ -67,16 +65,15 @@ public class MembersServlet extends HttpServlet {
             if (members == null) {
                 errorMsgs.put("mbrId", "查無資料");
             }
-            // Send the use back to the form, if there were errors
             if (!errorMsgs.isEmpty()) {
                 RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/select_page.jsp");
                 failureView.forward(req, res);
                 return;// 程式中斷
             }
             // 3.查詢完成,準備轉交(Send the Success view)
-            req.setAttribute("Members", members); // 資料庫取出的empVO物件,存入req
+            req.setAttribute("Members", members); 
             String url = "/back_end/members/listOneMembers.jsp";
-            RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+            RequestDispatcher successView = req.getRequestDispatcher(url); 
             successView.forward(req, res);
 
         }
@@ -144,7 +141,7 @@ public class MembersServlet extends HttpServlet {
             Members members = membersServiceImpl.updateMembers(mbrId, sellScore, buyScore);
 
             // 3.修改完成,準備轉交(Send the Success view)
-            req.setAttribute("Members", members); // 資料庫update成功後,正確的的empVO物件,存入req
+            req.setAttribute("Members", members); // 資料庫update成功後
             String url = "/back_end/members/listOneMembers.jsp";
             RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
             successView.forward(req, res);
@@ -161,7 +158,8 @@ public class MembersServlet extends HttpServlet {
 
             // 1.接收請求參數 - 輸入格式的錯誤處理
             String email = req.getParameter("email");
-            String pswdHash = req.getParameter("pswdHash");
+//            String pswdHash = req.getParameter("pswdHash");
+String pswdHash = PasswordHashing.hashPassword(req.getParameter("pswdHash")); //加密
             String userInputCode = req.getParameter("VerificationCode");
 
             // 驗證碼圖片的資料
@@ -179,9 +177,9 @@ public class MembersServlet extends HttpServlet {
                     membersServiceImpl.addMembers(email, pswdHash);
 
                     // 3.修改完成,準備轉交(Send the Success view)
-                    String url = "/members/SendEmailServlet?action=verificationEmail&email=" + email;
-                    RequestDispatcher successView = req.getRequestDispatcher(url);
-                    successView.forward(req, res);
+//                    String url = "/members/SendEmailServlet?action=verificationEmail&email=" + email;
+//                    RequestDispatcher successView = req.getRequestDispatcher(url);
+//                    successView.forward(req, res);
                     success = true;
                 } else {
                     errors.put("sessionCode", "驗證碼錯誤");
@@ -192,7 +190,7 @@ public class MembersServlet extends HttpServlet {
             response.put("errors", errors);
             response.put("success", success);
 
-            // 将JSON响应发送回客户端
+            // 将JSON送回客户端
             out.write(new Gson().toJson(response));
             out.close();
         }
@@ -201,12 +199,14 @@ public class MembersServlet extends HttpServlet {
         if ("login".equals(action)) {
             Map<String, String> errorMsgs = new LinkedHashMap<>();
             req.setAttribute("errorMsgs", errorMsgs);
+            
+            //記住我
+            boolean rememberMeCheckboxIsChecked = req.getParameter("rememberMe") != null;
 
             // 接收请求参数
             String email = req.getParameter("email2");
-            String pswdHash = req.getParameter("pswdHash2");
-
-            // 创建 JSON 响应
+ //           String pswdHash = req.getParameter("pswdHash2");
+String pswdHash = PasswordHashing.hashPassword(req.getParameter("pswdHash2"));  //加密
             res.setContentType("application/json");
             res.setCharacterEncoding("UTF-8");
             Map<String, Object> response = new HashMap<>();
@@ -220,14 +220,12 @@ public class MembersServlet extends HttpServlet {
             Members members = membersServiceImpl.getByEmail(email);
 
 
-            // 未找到用户记录，显示错误消息
             if (members == null) {
                 errorMsgs.put("error", "帳號密碼不正確");
                 sendResponse(res, response, errorMsgs, false);
                 return;
             }
 
-            // 密码不匹配，显示错误消息
             if (!members.getPswdHash().equals(pswdHash)) {
                 errorMsgs.put("error", "帳號密碼不正確");
                 sendResponse(res, response, errorMsgs, false);
@@ -258,8 +256,19 @@ public class MembersServlet extends HttpServlet {
             members.setLastLogin(loginDate);
             membersServiceImpl.updateMembers(members);
 
-            // 发送成功响应
             sendResponse(res, response, errorMsgs, true);
+ //TODO           
+        	// 在登入成功後處理記住我功能
+            if (rememberMeCheckboxIsChecked) {
+                // 設定長期有效的 cookie，例如過期時間設為一個月
+                Cookie rememberMeCookie = new Cookie("rememberMe", "true");
+                rememberMeCookie.setMaxAge(30 * 24 * 60 * 60); // 一個月的秒數
+                res.addCookie(rememberMeCookie);
+            }
+            
+            response.put("rememberMe", rememberMeCheckboxIsChecked);
+//TODO 
+
         }
 
         //登出
@@ -271,15 +280,63 @@ public class MembersServlet extends HttpServlet {
             session.removeAttribute("mbrStatus");
             res.sendRedirect(req.getContextPath() + "/index.jsp");
         }
+        // 會員的個人資訊
+        if ("memberProfile".equals(action)) {
+        	
+        	Integer mbrId = Integer.valueOf(req.getParameter("mbrId"));
+        	
+        	MembersServiceImpl mbrServiceHibernate = new MembersServiceImpl();
+            Members members = mbrServiceHibernate.getByPrimaryKey(mbrId);
+
+        	//查詢完成 準備轉交
+        	req.setAttribute("Members", members); 
+            String url = "/front_end/members/memberProfile.jsp";
+            RequestDispatcher successView = req.getRequestDispatcher(url); 
+            successView.forward(req, res);
+        
+        
+        }
+        
+        // 會員錢包
+        if ("walletAndPoints".equals(action)) {
+        	
+        	Integer mbrId = Integer.valueOf(req.getParameter("mbrId"));
+        	
+        	MembersServiceImpl mbrServiceHibernate = new MembersServiceImpl();
+        	Members members = mbrServiceHibernate.getByPrimaryKey(mbrId);
+        	
+        	//查詢完成 準備轉交
+        	req.setAttribute("Members", members); 
+        	String url = "/front_end/members/walletAndPoints.jsp";
+        	RequestDispatcher successView = req.getRequestDispatcher(url); 
+        	successView.forward(req, res);
+        	
+        	
+        }
+        if ("userRating".equals(action)) {
+        	
+        	Integer mbrId = Integer.valueOf(req.getParameter("mbrId"));
+        	
+        	MembersServiceImpl mbrServiceHibernate = new MembersServiceImpl();
+        	Members members = mbrServiceHibernate.getByPrimaryKey(mbrId);
+        	
+        	//查詢完成 準備轉交
+        	req.setAttribute("Members", members); 
+        	String url = "/front_end/members/userRating.jsp";
+        	RequestDispatcher successView = req.getRequestDispatcher(url); 
+        	successView.forward(req, res);
+        	
+        	
+        }
     }
 
     private void sendResponse(HttpServletResponse res, Map<String, Object> response, Map<String, String> errorMsgs, boolean success)
             throws IOException {
-        // 设置 JSON 响应的成功标志
+    	
         response.put("success", success);
-        // 构建错误消息的 JSON 响应
+        
         response.put("errors", errorMsgs);
-        // 将 JSON 响应发送回客户端
+        
         PrintWriter out = res.getWriter();
         out.write(new Gson().toJson(response));
         out.close();

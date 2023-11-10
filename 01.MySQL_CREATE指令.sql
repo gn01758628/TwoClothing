@@ -14,7 +14,7 @@ CREATE TABLE members
     mbrid      INT AUTO_INCREMENT NOT NULL,
     mbrname      VARCHAR(20),
     email      VARCHAR(64) NOT NULL UNIQUE,
-    pswdhash   VARCHAR(60) NOT NULL,
+    pswdhash   VARCHAR(200) NOT NULL,
     mbrstatus  TINYINT     NOT NULL DEFAULT 0,
     avatar     MEDIUMBLOB,
     shopimg01  MEDIUMBLOB,
@@ -34,16 +34,16 @@ CREATE TABLE members
 -- 表格：會員 插入假資料
 INSERT INTO members (mbrname, email, pswdhash, mbrstatus, sellscore, buyscore)
 VALUES
-('Michael', 'email1@example.com', 'hash1', 0, 10, 4),
-('Mike', 'email2@example.com', 'hash2', 1, 4, 10),
-('Devil', 'email4@example.com', 'hash3', 1, 10, 4),
-('Angel', 'email5@example.com', 'hash4', 0, 10, 10),
-('Water', 'email6@example.com', 'hash5', 0, 3, 10),
-('Fire', 'email7@example.com', 'hash6', 1, 10, 2),
-('Sky', 'email8@example.com', 'hash7', 0, 1, 10),
-('Apple', 'email9@example.com', 'hash8', 0, 10, 3),
-('Banana', 'email10@example.com', 'hash9', 1, 2, 10),
-('John', 'email11@example.com', 'hash10', 0, 1, 7);
+('Michael', 'email1@example.com', 'af316ecb91a8ee7ae99210702b2d4758f30cdde3bf61e3d8e787d74681f90a6e', 0, 10, 4),
+('Mike', 'email2@example.com', 'e7bf382f6e5915b3f88619b866223ebf1d51c4c5321cccde2e9ff700a3259086', 1, 4, 10),
+('Devil', 'email4@example.com', '42caa4abb7b60f8f914e5bfb8e6511d7d9bd9817de719b74251755d97fe97bf1', 1, 10, 4),
+('Angel', 'email5@example.com', '1c27099b3b84b13d0e3fbd299ba93ae7853ec1d0d3a4e5daa89e68b7ad59d7cb', 0, 10, 10),
+('Water', 'email6@example.com', '7da450ab64a26820e56dd73cd346950d656e60a20dba00bd4be9ced75ba7cdef', 0, 3, 10),
+('Fire', 'email7@example.com', 'f1a378f474d1b799d77111258db6989a9a1e1a8cdfe047ca64a78dc2a7e6a6f2', 1, 10, 2),
+('Sky', 'email8@example.com', '840963230e9a00f8062884ead549f7786fdaac65f832d0f50f3559bb25eb44c4', 0, 1, 10),
+('Apple', 'email9@example.com', 'd6f693d2eb42c624e596b7c4a08a54632e9674db5820b9bf21968e94203443e2', 0, 10, 3),
+('Banana', 'email10@example.com', '8b497a90fdfd0deb9a3c254f73e2a40e6b59cfab39b5372d8995d01041a8c892', 1, 2, 10),
+('John', 'email11@example.com', '9d1bb9a72cd7b11f6753e82f9fdf379bb1beb4c4fa4773f571bdbe0e23cde569', 0, 1, 7);
 
 -- 表格：會員 檢查
 -- SELECT * FROM Members;
@@ -135,15 +135,15 @@ CREATE TABLE coupon
 
 -- 表格：優惠卷 插入假資料
 INSERT INTO coupon (cpnname, tagid, empid, createdate, expiredate, distype, disvalue, minamount)
-VALUES ('優惠卷1', 1, 1, '2023-10-01', '2023-11-01', 0, 100, 500),
-       ('優惠卷2', 2, 2, '2023-10-02', '2023-11-02', 1, 20, 0),
-       ('優惠卷3', 3, 3, '2023-10-03', NULL, 0, 50, 1000),
+VALUES ('優惠卷1', 1, 1, '2023-10-01', '2024-11-01', 0, 100, 500),
+       ('優惠卷2', 2, 2, '2023-10-02', '2024-11-02', 1, 20, 0),
+       ('優惠卷3', 3, 3, '2023-10-03', NULL, 0, 50, 550),
        ('優惠卷4', 4, 4, '2023-10-04', '2023-11-04', 1, 10, 0),
        ('優惠卷5', 5, 5, '2023-10-05', NULL, 0, 30, 200),
        ('優惠卷6', 6, 6, '2023-10-06', NULL, 0, 25, 300),
-       ('優惠卷7', 7, 7, '2023-10-07', '2023-11-07', 0, 80, 800),
+       ('優惠卷7', 7, 7, '2023-10-07', '2024-11-07', 0, 80, 200),
        ('優惠卷8', 8, 8, '2023-10-08', '2023-11-08', 1, 15, 0),
-       ('優惠卷9', 9, 9, '2023-10-09', NULL, 0, 40, 1500),
+       ('優惠卷9', 9, 9, '2023-10-09', NULL, 0, 40, 350),
        ('優惠卷10', 10, 10, '2023-10-10', NULL, 0, 35, 400);
 
 -- 表格：優惠卷 檢查
@@ -172,14 +172,14 @@ CREATE TABLE memberscoupon
 INSERT INTO memberscoupon (mbrid, cpnid, usedate, cpnstatus)
 VALUES (1, 1, '2023-10-02', 1),
        (2, 2, NULL, 0),
-       (3, 3, '2023-10-03', 2),
-       (4, 4, '2023-10-04', 1),
-       (5, 5, NULL, 0),
-       (6, 6, '2023-10-07', 1),
-       (7, 7, NULL, 1),
-       (8, 8, '2023-10-09', 0),
-       (9, 9, NULL, 2),
-       (10, 10, NULL, 2);
+       (1, 3, NULL, 2),
+       (1, 4, '2023-10-04', 1),
+       (2, 5, NULL, 0),
+       (2, 6, '2023-10-07', 1),
+       (3, 7, NULL, 1),
+       (3, 8, '2023-10-09', 0),
+       (2, 9, NULL, 2),
+       (1, 10, NULL, 2);
 
 -- 表格：會員優惠卷 檢查
 -- SELECT * FROM memberscoupon;
@@ -631,14 +631,14 @@ CREATE TABLE item (
 INSERT INTO item (itemname, grade, size, detail, tagid, mbrid, price, itemstatus, quantity) VALUES
 ('Product 1', 0, 0, 'Description for Product 1', 1, 1, 100, 0, 10),
 ('Product 2', 1, 1, 'Description for Product 2', 2, 2, 150, 0, 15),
-('Product 3', 2, 2, 'Description for Product 3', 1, 3, 75, 0, 20),
-('Product 4', 3, 3, 'Description for Product 4', 3, 4, 120, 0, 12),
-('Product 5', 1, 4, 'Description for Product 5', 2, 5, 90, 0, 8),
-('Product 6', 2, 5, 'Description for Product 6', 3, 6, 200, 0, 5),
-('Product 7', 2, 6, 'Description for Product 7', 1, 7, 80, 0, 18),
-('Product 8', 3, 7, 'Description for Product 8', 2, 8, 130, 0, 14),
-('Product 9', 3, 8, 'Description for Product 9', 1, 9, 110, 0, 11),
-('Product 10', 1, 2, 'Description for Product 10', 3, 10, 160, 0, 7);
+('Product 3', 2, 2, 'Description for Product 3', 1, 2, 75, 0, 20),
+('Product 4', 3, 3, 'Description for Product 4', 3, 1, 120, 0, 12),
+('Product 5', 1, 4, 'Description for Product 5', 2, 3, 90, 0, 8),
+('Product 6', 2, 5, 'Description for Product 6', 3, 3, 200, 0, 5),
+('Product 7', 2, 6, 'Description for Product 7', 1, 1, 80, 0, 18),
+('Product 8', 3, 7, 'Description for Product 8', 2, 4, 130, 0, 14),
+('Product 9', 3, 1, 'Description for Product 9', 1, 5, 110, 0, 11),
+('Product 10', 1, 2, 'Description for Product 10', 3, 6, 160, 0, 7);
 
 -- 表格：一般商品 檢查
 -- SELECT * FROM item;
@@ -1229,40 +1229,6 @@ VALUES (1, 1, '2023-10-01 09:00:00', '通知標題1', '通知内容1'),
 -- ALTER TABLE bidordernotify
 -- ADD CONSTRAINT fk_bidordernotify_mbrid FOREIGN KEY (mbrid) REFERENCES Members(mbrid),
 -- ADD CONSTRAINT fk_bidordernotify_bidorderid FOREIGN KEY (bidorderid) REFERENCES bidorder(bidorderid);
--- ================================================================================================================================ --
--- 表格：競標商品瀏覽紀錄 刪除
-DROP TABLE IF EXISTS biditembrowsing;
-
--- 表格：競標商品瀏覽紀錄 創建
-CREATE TABLE biditembrowsing
-(
-    mbrid        INT      NOT NULL,
-    biditemid    INT      NOT NULL,
-    browsingtime DATETIME NOT NULL,
-    PRIMARY KEY (mbrid, biditemid)
-);
-
--- 表格：競標商品瀏覽紀錄 插入假資料
-INSERT INTO biditembrowsing (mbrid, biditemid, browsingtime)
-VALUES (101, 1, '2023-10-01 09:00:00'),
-       (102, 2, '2023-09-28 15:30:00'),
-       (103, 3, '2023-09-25 14:00:00'),
-       (104, 4, '2023-09-20 18:00:00'),
-       (105, 5, '2023-09-15 10:00:00'),
-       (106, 6, '2023-09-10 11:45:00'),
-       (107, 7, '2023-09-05 12:30:00'),
-       (108, 8, '2023-09-01 13:15:00'),
-       (109, 9, '2023-08-28 14:20:00'),
-       (110, 10, '2023-08-25 16:00:00');
-
--- 表格：競標商品瀏覽紀錄 檢查
--- SELECT * FROM biditembrowsing;
--- DESCRIBE biditembrowsing;
-
--- 表格：競標商品瀏覽紀錄 添加FK
--- ALTER TABLE biditembrowsing
--- ADD CONSTRAINT fk_biditembrowsing_mbrid FOREIGN KEY (mbrid) REFERENCES Members(mbrid),
--- ADD CONSTRAINT fk_biditembrowsing_biditemid FOREIGN KEY (biditemid) REFERENCES biditem(biditemid);
 -- ================================================================================================================================ --
 -- 表格：競標商品檢舉 刪除
 DROP TABLE IF EXISTS biditemreport;
