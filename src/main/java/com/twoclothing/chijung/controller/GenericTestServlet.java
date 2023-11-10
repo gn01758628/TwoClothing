@@ -1,8 +1,11 @@
 package com.twoclothing.chijung.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.twoclothing.model.employee.Employee;
+import com.twoclothing.model.permissions.Permissions;
+import com.twoclothing.utils.generic.DAOSelector;
+import com.twoclothing.utils.generic.GenericDAO;
+import com.twoclothing.utils.generic.GenericService;
+import com.twoclothing.utils.generic.QueryCondition;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -10,14 +13,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.twoclothing.model.abid.biditem.BidItem;
-import com.twoclothing.model.abid.biditembrowsing.BidItemBrowsing;
-import com.twoclothing.model.abid.biditembrowsing.BidItemBrowsing.CompositeDrtail;
-import com.twoclothing.model.employee.Employee;
-import com.twoclothing.model.permissions.Permissions;
-import com.twoclothing.utils.HibernateUtil;
-import com.twoclothing.utils.generic.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 // @MultipartConfig
 //  fileSizeThreshold = 檔案小於這個值,檔案寫入內存,提高效率

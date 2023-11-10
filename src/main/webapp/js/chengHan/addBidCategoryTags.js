@@ -10,7 +10,7 @@ $(document).ready(function () {
 
     // 資料結構categoryData改在html裡宣告
 
-    // 根據選項的ID,或的完整的路徑
+    // 根據選項的ID,獲得完整的路徑
     function getFullCategoryName(categoryId, data) {
         const category = data.find((item) => item.id === categoryId);
         if (category.parentId !== 1) {

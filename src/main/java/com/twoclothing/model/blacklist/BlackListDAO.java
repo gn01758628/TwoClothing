@@ -3,15 +3,21 @@ package com.twoclothing.model.blacklist;
 import java.util.List;
 
 public interface BlackListDAO {
-    void insert(BlackList blackList);
+	void insert(BlackList blackList);
 
-    BlackList getByCompositeKey(Integer mbrId, Integer blackId);
+	BlackList getByCompositeKey(Integer mbrId, Integer blackId);
 
-    List<BlackList> getAll();
+//    List<BlackList> getAll();
 
-    List<BlackList> getAllByMbrId(Integer mbrId);
+//    List<BlackList> getAllByMbrId(Integer mbrId);
 
-    List<BlackList> getAllByBlackId(Integer blackId);
+	List<BlackList> getAllByMbrId(Integer mbrId, int currentPage);
 
-    void delete(Integer mbrId, Integer blackId);
+	long getTotal(Integer mbrId);
+
+//    List<BlackList> getAllByBlackId(Integer blackId);
+
+//    void delete(Integer mbrId, Integer blackId);
+
+	void delete(BlackList blackList);
 }

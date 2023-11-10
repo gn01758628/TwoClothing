@@ -53,7 +53,7 @@ public class BidItemFrontPersonalServlet extends HttpServlet {
         switch (pathInfo) {
             case "/add" -> doAdd(request, response);
             case "/save" -> doSave(request, response);
-            case "/list" -> doList(request, response);
+            case "/list.check" -> doList(request, response);
         }
     }
 

@@ -5,6 +5,7 @@ import com.twoclothing.chenghan.service.BidItemService;
 import com.twoclothing.chenghan.service.BidItemServiceImpl;
 import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.members.Members;
+import com.twoclothing.redismodel.bidItemViewHistory.BidItemViewHistory;
 import com.twoclothing.redismodel.bidrecord.BidRecord;
 import com.twoclothing.redismodel.notice.Notice;
 import com.twoclothing.utils.FormatUtil;
@@ -45,9 +46,10 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
 
     private void doDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         // 競標商品基本資料
-        String bidItemId = request.getParameter("bidItemId");
-        BidItem bidItem = bidItemService.getBidItemByBidItemId(Integer.parseInt(bidItemId));
+        Integer bidItemId = Integer.parseInt(request.getParameter("bidItemId"));
+        BidItem bidItem = bidItemService.getBidItemByBidItemId(bidItemId);
         String categoryName = bidItemService.getCategoryTagsByTagId(bidItem.getTagId()).getCategoryName();
         String grade = NumberMapping.gradeMap.get(bidItem.getGrade());
         String size = NumberMapping.sizeMap.get(bidItem.getSize());
@@ -59,12 +61,8 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
         request.setAttribute("grade", grade);
         request.setAttribute("size", size);
         request.setAttribute("bidStatus", bidStatus);
-
-        // 競標商品瀏覽紀錄
-
-
         // 競標商品出價資訊
-        List<BidRecord> bidRecordList = bidItemService.getAllBidRecordByBidItemId(Integer.parseInt(bidItemId));
+        List<BidRecord> bidRecordList = bidItemService.getAllBidRecordByBidItemId(bidItemId);
         // 綁定出價會員
         Map<Integer, String> mbrMap = new HashMap<>();
         for (BidRecord record : bidRecordList) {
@@ -74,6 +72,16 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
         }
         request.setAttribute("mbrMap", mbrMap);
         request.setAttribute("bidRecordList", bidRecordList);
+
+        // 競標商品瀏覽紀錄
+        // 判斷是否為本人
+        // TODO 會員從session拿
+        Integer mbrid = 2;
+        if (!mbrid.equals(bidItem.getMbrId())) {
+            BidItemViewHistory history = new BidItemViewHistory(mbrid, bidItemId, System.currentTimeMillis());
+            bidItemService.addBidItemViewHistory(history);
+        }
+
         request.getRequestDispatcher("/front_end/biditem/BidItemDetail.jsp").forward(request, response);
     }
 
@@ -82,27 +90,33 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         // TODO 從session取的會員ID 這裡先寫死
-        Integer mbrId = 2;
+        Integer mbrId = 3;
         String bidItemId = request.getParameter("bidItemId");
         BidItem bidItem = bidItemService.getBidItemByBidItemId(Integer.parseInt(bidItemId));
         LocalDateTime endTime = bidItem.getEndTime().toLocalDateTime();
         String bidAmount = request.getParameter("bidAmount");
         String currentBid = request.getParameter("currentBid");
         String bidType = request.getParameter("bidType");
+        Integer bidItemMbrId = bidItem.getMbrId();
+        // 判斷是不是本人
+        if (bidItemMbrId.equals(mbrId)) {
+            out.print("0");
+            return;
+        }
         // 判斷金額是否正確
         if (bidAmount == null || bidAmount.trim().isEmpty()) {
-            out.print("0");
+            out.print("1");
             return;
         }
         if (!"0".equals(currentBid)) {
             if (Integer.parseInt(bidAmount) <= Integer.parseInt(currentBid)) {
-                out.print("0");
+                out.print("1");
                 return;
             }
         }
         if (bidItem.getDirectPrice() != null) {
             if (Integer.parseInt(bidAmount) > bidItem.getDirectPrice()) {
-                out.print("0");
+                out.print("1");
                 return;
             }
         }
@@ -124,7 +138,7 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
                 notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
                 bidItemService.addNotice(notice, previousMbrId);
             }
-            out.print("1");
+            out.print("2");
             return;
         }
 
@@ -149,9 +163,18 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
                 }
             }
 
+            // 發送通知給賣家
+            Notice notice2 = new Notice();
+            notice2.setType("競標商品");
+            notice2.setHead("您的競標商品已結標");
+            notice2.setContent("恭喜！您的競標商品：" + bidItem.getBidName() + "，已結標。請瀏覽您的訂單並繼續後續流程。");
+            notice2.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItemId);
+            notice2.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
+            bidItemService.addNotice(notice2, bidItemMbrId);
+
             // TODO 跑訂單
 
-            out.print("2");
+            out.print("3");
         }
     }
 }

@@ -51,7 +51,6 @@ public class BidOrderNotifyServlet extends HttpServlet {
 			Timestamp notifyDate = null;
 			Integer bidOrderId = null;
 
-			// 现在您可以在这里使用 bidOrder 对象来访问之前存储的数据
 			if (bidOrderInput != null) {
 				bidItemId = bidOrderInput.getBidItemId();
 				buyMbrId = bidOrderInput.getBuyMbrId();
@@ -64,10 +63,8 @@ public class BidOrderNotifyServlet extends HttpServlet {
 
 				if (!bidOrder.isEmpty()) {
 					BidOrder firstBidOrder = bidOrder.get(0);
-					// 获取第一条记录的各个字段值
 					bidOrderId = firstBidOrder.getBidOrderId();
 
-					// 其他字段也可以类似地获取
 				}
 				String Type = "競標訂單通知";
 				String title = "訂單已成立";
@@ -80,7 +77,7 @@ public class BidOrderNotifyServlet extends HttpServlet {
 				bidOrderNotifyServiceImpl.addBidOrderNotify(sellMbrId, bidOrderId, notifyDate, title, sellContent);
 		/////////////////////////////////////redis測試////////////////////	
 				
-				String buyUrl = "/bidorder/BidOrder.do?action=get_Pay_And_Address&buyMbrId="+buyMbrId;
+				String buyUrl = "/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId="+buyMbrId;
 				
 				NoticeJedisDAO noticeJedisDAO = new NoticeJedisDAO();
 				Notice notice = new Notice();
@@ -91,58 +88,20 @@ public class BidOrderNotifyServlet extends HttpServlet {
 				notice.setImageLink("/images/Mainicon.jpg");
 				noticeJedisDAO.insert(notice, buyMbrId);
 				
-				String sellurl = "/bidorder/BidOrder.do?action=get_Pay_And_Address&sellMbrId="+sellMbrId;
+				String sellurl = "/bidorder/BidOrder.do?action=buyBidOrder0&sellMbrId="+sellMbrId;
 				notice.setType(Type);
 				notice.setHead(title);
 				notice.setContent(sellContent);
 				notice.setLink(sellurl);
 				notice.setImageLink("/images/Mainicon.jpg");
 				noticeJedisDAO.insert(notice, sellMbrId);
-//				BidOrderNotify sellBidOrderNotify = new BidOrderNotify();
-//				BidOrderNotify buyBidOrderNotify = new BidOrderNotify();
-//				
-//				sellBidOrderNotify.setMbrId(sellMbrId);
-//				sellBidOrderNotify.setBidOrderId(bidOrderId);
-//				sellBidOrderNotify.setNotifyDate(notifyDate);
-//				sellBidOrderNotify.setTitle(title);
-//				sellBidOrderNotify.setContent(sellContent);
-//				
-//				buyBidOrderNotify.setMbrId(buyMbrId);
-//				buyBidOrderNotify.setBidOrderId(bidOrderId);
-//				buyBidOrderNotify.setNotifyDate(notifyDate);
-//				buyBidOrderNotify.setTitle(title);
-//				buyBidOrderNotify.setContent(buyContent);
-//				
-//				
-//				Jedis jedis = new Jedis("localhost", 6379);
-//				
-//				jedis.select(0);
-//				
-//				Gson gson = new Gson();
-//				    String sellValue = gson.toJson(sellBidOrderNotify);
-//				    String buyValue = gson.toJson(buyBidOrderNotify);
-//
-//				    String buyKey =  String.valueOf(buyMbrId);
-//				    String sellKey =  String.valueOf(sellMbrId);
-//
-//				// 存储数据
-//				jedis.set(buyKey, sellValue);
-//				
-//
-//				
-//				// 存储数据
-//				jedis.set(sellKey, buyValue);
-//				
-//				
-//				jedis.close();
-		
-				
+
 /////////////////////////////////////redis測試////////////////////	
 			
 			}
-			/***************************去會員中心***************************************/
+			/***************************賣家待付款***************************************/
 
-			String url = "/MemberCentre.jsp";
+			String url = "/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId="+buyMbrId;
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 			successView.forward(req, res);
 			
@@ -182,7 +141,7 @@ public class BidOrderNotifyServlet extends HttpServlet {
 			NoticeJedisDAO noticeJedisDAO = new NoticeJedisDAO();
 			Notice notice = new Notice();
 			
-			String buyUrl = "/bidorder/BidOrder.do?action=get_Pay_And_Address&buyMbrId="+buyMbrId;
+			String buyUrl = "/bidorder/BidOrder.do?action=buyBidOrder1&buyMbrId="+buyMbrId;
 			notice.setType(type);
 			notice.setHead(title);
 			notice.setContent(buyContent);
@@ -190,7 +149,7 @@ public class BidOrderNotifyServlet extends HttpServlet {
 			notice.setImageLink("/images/Mainicon.jpg");
 			noticeJedisDAO.insert(notice, buyMbrId);
 			
-			String sellUrl = "/bidorder/BidOrder.do?action=get_Pay_And_Address&sellMbrId="+sellMbrId;
+			String sellUrl = "/bidorder/BidOrder.do?action=buyBidOrder1&sellMbrId="+sellMbrId;
 			notice.setType(type);
 			notice.setHead(title);
 			notice.setContent(sellContent);
@@ -198,12 +157,240 @@ public class BidOrderNotifyServlet extends HttpServlet {
 			notice.setImageLink("/images/Mainicon.jpg");
 			noticeJedisDAO.insert(notice, sellMbrId);
 /////////////////////////////////////redis測試////////////////////	
-			/***************************去會員中心***************************************/
+			/***************************去待出貨***************************************/
 
-			String url = "/MemberCentre.jsp";
+			String url = "/bidorder/BidOrder.do?action=buyBidOrder1&buyMbrId="+buyMbrId;
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 			successView.forward(req, res);
 		}
+		
+		/***********************買家收貨完成訂單  *************************/
+		/***********************買家收貨完成訂單  *************************/
+		/***********************買家收貨完成訂單  *************************/
+		/***********************買家收貨完成訂單  *************************/
+		/***********************買家收貨完成訂單  *************************/
+	
+		
+		
+		if ("buyer_auction_receipt".equals(action)) {
+		
+		Integer bidOrderId = Integer.valueOf(req.getParameter("bidOrderId"));
+		Integer sellMbrId = Integer.valueOf(req.getParameter("sellMbrId"));
+		Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
+		String type = "競標訂單通知";
+		String title = "競標訂單完成";
+		String sellContent = "競標訂單完成";
+		String buyContent = "競標訂單完成已取得款項";
+			
+		Timestamp notifyDate = null;
+		notifyDate = new Timestamp(currentDate.getTime());
+		
+		//買家
+		bidOrderNotifyServiceImpl.addBidOrderNotify(buyMbrId, bidOrderId, notifyDate, title, buyContent);
+		//賣家
+		bidOrderNotifyServiceImpl.addBidOrderNotify(sellMbrId, bidOrderId, notifyDate, title, sellContent);
+		
+		
+		
+		/////////////////////////////////////redis測試////////////////////	
+		
+		NoticeJedisDAO noticeJedisDAO = new NoticeJedisDAO();
+		Notice notice = new Notice();
+		
+		String buyUrl = "/bidorder/BidOrder.do?action=buyBidOrder3&buyMbrId="+buyMbrId;
+		notice.setType(type);
+		notice.setHead(title);
+		notice.setContent(buyContent);
+		notice.setLink(buyUrl);
+		notice.setImageLink("/images/Mainicon.jpg");
+		noticeJedisDAO.insert(notice, buyMbrId);
+		
+		String sellUrl = "/bidorder/BidOrder.do?action=sellBidOrder3&sellMbrId="+sellMbrId;
+		notice.setType(type);
+		notice.setHead(title);
+		notice.setContent(sellContent);
+		notice.setLink(sellUrl);
+		notice.setImageLink("/images/Mainicon.jpg");
+		noticeJedisDAO.insert(notice, sellMbrId);
+		/////////////////////////////////////redis測試////////////////////	
+		/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+
+		
+		String url = "/bidorder/BidOrder.do?action=buyBidOrder3&buyMbrId="+buyMbrId;
+		RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+		successView.forward(req, res);
+		}
+		
+		/***********************買家取消交易  *************************/
+		/***********************買家取消交易  *************************/
+		/***********************買家取消交易  *************************/
+		/***********************買家取消交易  *************************/
+		/***********************買家取消交易  *************************/
+		
+		
+		
+		if ("buy_Cancel_Order".equals(action)) {
+			
+			Integer bidOrderId = Integer.valueOf(req.getParameter("bidOrderId"));
+			Integer sellMbrId = Integer.valueOf(req.getParameter("sellMbrId"));
+			Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
+			String type = "競標訂單通知";
+			String title = "買家取消訂單";
+			String sellContent = "買家取消訂單";
+			String buyContent = "買家取消訂單";
+System.out.println("沒錢取消訂單1");
+			Timestamp notifyDate = null;
+			notifyDate = new Timestamp(currentDate.getTime());
+			
+			//買家
+			bidOrderNotifyServiceImpl.addBidOrderNotify(buyMbrId, bidOrderId, notifyDate, title, buyContent);
+			//賣家
+			bidOrderNotifyServiceImpl.addBidOrderNotify(sellMbrId, bidOrderId, notifyDate, title, sellContent);
+			
+			/////////////////////////////////////redis測試////////////////////	
+						
+			NoticeJedisDAO noticeJedisDAO = new NoticeJedisDAO();
+			Notice notice = new Notice();
+			
+			String buyUrl = "/bidorder/BidOrder.do?action=buyBidOrder4&buyMbrId="+buyMbrId;
+			notice.setType(type);
+			notice.setHead(title);
+			notice.setContent(buyContent);
+			notice.setLink(buyUrl);
+			notice.setImageLink("/images/Mainicon.jpg");
+			noticeJedisDAO.insert(notice, buyMbrId);
+			
+			String sellUrl = "/bidorder/BidOrder.do?action=sellBidOrder4&sellMbrId="+sellMbrId;
+			notice.setType(type);
+			notice.setHead(title);
+			notice.setContent(sellContent);
+			notice.setLink(sellUrl);
+			notice.setImageLink("/images/Mainicon.jpg");
+			noticeJedisDAO.insert(notice, sellMbrId);
+			/////////////////////////////////////redis測試////////////////////	
+			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+			
+			
+			String url = "/bidorder/BidOrder.do?action=buyBidOrder4&buyMbrId="+buyMbrId;
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
+						
+			
+		}
+		
+		/***********************買家出貨 *************************/
+		/***********************買家出貨 *************************/
+		/***********************買家出貨 *************************/
+		/***********************買家出貨 *************************/
+		/***********************買家出貨 *************************/
+		
+		
+		if ("shipped".equals(action)) {
+			
+			Integer bidOrderId = Integer.valueOf(req.getParameter("bidOrderId"));
+			Integer sellMbrId = Integer.valueOf(req.getParameter("sellMbrId"));
+			Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
+			String type = "競標訂單通知";
+			String title = "賣家已出貨";
+			String sellContent = "賣家已出貨";
+			String buyContent = "賣家已出貨";
+			
+			Timestamp notifyDate = null;
+			notifyDate = new Timestamp(currentDate.getTime());
+			
+			//買家
+			bidOrderNotifyServiceImpl.addBidOrderNotify(buyMbrId, bidOrderId, notifyDate, title, buyContent);
+			//賣家
+			bidOrderNotifyServiceImpl.addBidOrderNotify(sellMbrId, bidOrderId, notifyDate, title, sellContent);
+			
+			/////////////////////////////////////redis測試////////////////////	
+			
+			NoticeJedisDAO noticeJedisDAO = new NoticeJedisDAO();
+			Notice notice = new Notice();
+			
+			String buyUrl = "/bidorder/BidOrder.do?action=buyBidOrder2&buyMbrId="+buyMbrId;
+			notice.setType(type);
+			notice.setHead(title);
+			notice.setContent(buyContent);
+			notice.setLink(buyUrl);
+			notice.setImageLink("/images/Mainicon.jpg");
+			noticeJedisDAO.insert(notice, buyMbrId);
+			
+			String sellUrl = "/bidorder/BidOrder.do?action=sellBidOrder2&sellMbrId="+sellMbrId;
+			notice.setType(type);
+			notice.setHead(title);
+			notice.setContent(sellContent);
+			notice.setLink(sellUrl);
+			notice.setImageLink("/images/Mainicon.jpg");
+			noticeJedisDAO.insert(notice, sellMbrId);
+			/////////////////////////////////////redis測試////////////////////	
+			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+			
+			
+			String url = "/bidorder/BidOrder.do?action=sellBidOrder2&sellMbrId="+sellMbrId;
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
+			
+			
+		}
+		
+		/***********************賣家取消交易  *************************/
+		/***********************賣家取消交易  *************************/
+		/***********************賣家取消交易  *************************/
+		/***********************賣家取消交易  *************************/
+		/***********************賣家取消交易  *************************/
+		
+		
+		
+		if ("sell_Cancel_Order".equals(action)) {
+			
+			Integer bidOrderId = Integer.valueOf(req.getParameter("bidOrderId"));
+			Integer sellMbrId = Integer.valueOf(req.getParameter("sellMbrId"));
+			Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
+			String type = "競標訂單通知";
+			String title = "賣家取消訂單";
+			String sellContent = "賣家取消訂單已退款";
+			String buyContent = "賣家取消訂單";
+				
+			Timestamp notifyDate = null;
+			notifyDate = new Timestamp(currentDate.getTime());
+			
+			//買家
+			bidOrderNotifyServiceImpl.addBidOrderNotify(buyMbrId, bidOrderId, notifyDate, title, buyContent);
+			//賣家
+			bidOrderNotifyServiceImpl.addBidOrderNotify(sellMbrId, bidOrderId, notifyDate, title, sellContent);
+			
+			/////////////////////////////////////redis測試////////////////////	
+						
+			NoticeJedisDAO noticeJedisDAO = new NoticeJedisDAO();
+			Notice notice = new Notice();
+			
+			String buyUrl = "/bidorder/BidOrder.do?action=buyBidOrder4&buyMbrId="+buyMbrId;
+			notice.setType(type);
+			notice.setHead(title);
+			notice.setContent(buyContent);
+			notice.setLink(buyUrl);
+			notice.setImageLink("/images/Mainicon.jpg");
+			noticeJedisDAO.insert(notice, buyMbrId);
+			
+			String sellUrl = "/bidorder/BidOrder.do?action=sellBidOrder4&sellMbrId="+sellMbrId;
+			notice.setType(type);
+			notice.setHead(title);
+			notice.setContent(sellContent);
+			notice.setLink(sellUrl);
+			notice.setImageLink("/images/Mainicon.jpg");
+			noticeJedisDAO.insert(notice, sellMbrId);
+			/////////////////////////////////////redis測試////////////////////	
+			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+			
+			
+			String url = "/bidorder/BidOrder.do?action=sellBidOrder4&sellMbrId="+sellMbrId;
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
+						
+			
+		}
+		
 		
 	}
 }

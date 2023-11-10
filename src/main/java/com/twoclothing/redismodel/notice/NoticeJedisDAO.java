@@ -14,41 +14,46 @@ public class NoticeJedisDAO implements NoticeDAO {
 
     private final Gson gson = new Gson();
 
-    private static final String NOTICE_PREFIX = "noticeId:";
+    private static final int REDIS_NUMBER = 15;
 
-    private static final String MBR_PREFIX = "mbrId:";
+    private static final String NOTICE_PREFIX = "notice:";
 
-    // 通知存活30天(2592000秒)
-    private final int TTL = 2_592_000;
+    private static final String MBR_PREFIX = "mbr:";
+
+    private static final String MBR_SUFFIX = ":notice";
+
+    // 通知存活30天
+    private final int TTL = 60 * 60 * 24 * 30;
 
 
     @Override
     public void insert(Notice notice, Integer mbrId) {
-        Jedis jedis = jedisPool.getResource();
-        jedis.select(15);
-        String noticeId = String.valueOf(jedis.incr("noticeId"));
-        jedis.rpush(MBR_PREFIX + mbrId, NOTICE_PREFIX + noticeId);
-        String noticeJson = gson.toJson(notice);
-        jedis.set(NOTICE_PREFIX + noticeId, noticeJson);
-        jedis.expire(NOTICE_PREFIX + noticeId, TTL);
-        jedis.close();
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(REDIS_NUMBER);
+            String value = NOTICE_PREFIX + jedis.incr("noticeId");
+            jedis.rpush(MBR_PREFIX + mbrId + MBR_SUFFIX, value);
+            String noticeJson = gson.toJson(notice);
+            jedis.set(value, noticeJson);
+            jedis.expire(value, TTL);
+        }
     }
 
     @Override
     public List<Notice> getAllByMbrId(Integer mbrId) {
         List<Notice> noticeList = new ArrayList<>();
-        Jedis jedis = jedisPool.getResource();
-        jedis.select(15);
-        List<String> noticeIds = jedis.lrange(MBR_PREFIX + mbrId, 0, -1);
-        for (String id : noticeIds) {
-            String noticeId = jedis.get(id);
-            if (noticeId != null) {
-                Notice notice = gson.fromJson(noticeId, Notice.class);
-                noticeList.add(notice);
-            } else {
-                jedis.lrem(MBR_PREFIX + mbrId, 1, id);
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(REDIS_NUMBER);
+            List<String> noticeIds = jedis.lrange(MBR_PREFIX + mbrId + MBR_SUFFIX, 0, -1);
+            for (String id : noticeIds) {
+                String noticeId = jedis.get(id);
+                if (noticeId != null) {
+                    Notice notice = gson.fromJson(noticeId, Notice.class);
+                    noticeList.add(notice);
+                } else {
+                    jedis.lrem(MBR_PREFIX + mbrId + MBR_SUFFIX, 1, id);
+                }
             }
+            return noticeList;
         }
-        return noticeList;
     }
 }
