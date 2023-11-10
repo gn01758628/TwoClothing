@@ -193,7 +193,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelBid">取消</button>
                 <button type="button" class="btn btn-primary" id="commitBid">確定出價</button>
             </div>
         </div>
@@ -301,6 +301,7 @@
 
         // 確認出價按鈕
         $("#commitBid").on("click", function () {
+            const cancelBid = $("#cancelBid");
             // 金額正確,發送請求
             console.log("發送請求");
             $.post('${pageContext.request.contextPath}/front/biditem/anyone/bid', {
@@ -309,13 +310,21 @@
                 currentBid: currentBid,
                 bidType: bidType.text()
             }, function (data) {
+                if (data === "0") {
+                    alert("您不能對自己的商品出價。請對其他商品進行投標，感謝配合。");
+                    bidAmountInp.val(0);
+                    cancelBid.click();
+                }
                 if (data === "1") {
-                    console.log("123");
+                    alert("您的出價金額有誤，故此次出價無效。請重新出價，感謝配合。");
+                    bidAmountInp.val(0);
+                    cancelBid.click();
+                }
+                if (data === "2") {
                     alert("您已成功出價，將刷新頁面，以便您觀察最新出價狀況");
                     location.reload();
                 }
-                if (data === "2") {
-                    console.log("456");
+                if (data === "3") {
                     alert("恭喜！您已成功以直購價提前結標。請瀏覽您的訂單並繼續後續流程。");
                     location.reload();
                     // TODO 結標頁面更新

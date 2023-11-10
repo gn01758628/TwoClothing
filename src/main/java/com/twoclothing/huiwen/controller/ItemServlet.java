@@ -119,13 +119,11 @@ public class ItemServlet extends HttpServlet {
 			List<Integer> allSelectableTagsId = itemService.getAllSelectableTagsId();
 			System.out.println("列表" + allSelectableTagsId);
 			if (tagId == null || tagId.trim().isEmpty()) {
-				System.out.println("類別錯1");
 				errorMsgs.add("請正確選擇商品類別標籤");
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/front_end/item/itemSellerUpload.jsp");
 				failureView.forward(req, res);
 			} else if (!allSelectableTagsId.contains(Integer.parseInt(tagId))) {
-				System.out.println("類別錯2");
 				errorMsgs.add("您選擇的類別標籤並非是可選標籤");
 			}
 
@@ -206,7 +204,6 @@ public class ItemServlet extends HttpServlet {
 			// 如果錯誤訊系不為空則轉發回新增頁面
 			if (!errorMsgs.isEmpty()) {
 				req.setAttribute("item", item);
-				System.out.println("不為空");
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/front_end/item/itemSellerUpload.jsp");
 				failureView.forward(req, res);
@@ -238,7 +235,6 @@ public class ItemServlet extends HttpServlet {
 		String updateRoad = req.getParameter("getOneForUpdate");
 		
 		if ("getOne".equals(updateRoad)) {
-System.out.println("updateRoad+"+updateRoad);
 			Integer itemId = Integer.valueOf(req.getParameter("itemId"));
 
 			Item item = itemService.getItemByItemId(itemId);
@@ -248,6 +244,7 @@ System.out.println("updateRoad+"+updateRoad);
 			RequestDispatcher dispatcher1 = req.getRequestDispatcher(url);
 			dispatcher1.forward(req, res);
 		}
+		
 		// 修改
 		String forUpdate = req.getParameter("forUpdate");
 		if ("update".equals(forUpdate)) {
@@ -264,7 +261,6 @@ System.out.println("updateRoad+"+updateRoad);
 
 			int itemUpdate = itemService.updateItem(itemId, itemName, grade, size, detail, price, quantity);
 			if (itemUpdate == 1) {
-				System.out.println("修改成功");
 				
 				Item item = itemService.getItemByItemId(itemId);
 				req.setAttribute("item", item);
@@ -273,7 +269,6 @@ System.out.println("updateRoad+"+updateRoad);
 				RequestDispatcher dispatcher = req.getRequestDispatcher(url);
 				dispatcher.forward(req, res);
 			} else {
-				System.out.println("修改失敗");
 				Item item = itemService.getItemByItemId(itemId);
 				req.setAttribute("item", item);
 

@@ -88,8 +88,6 @@ public class ItemServiceImpl implements ItemService{
 	@Override
 	public List<Item> getAllItems(int page) {
 		List<Item> list = dao.getAll(page);
-		System.out.println("2222"+list);
-
 		return list;
 	}
 	@Override
@@ -116,7 +114,6 @@ public class ItemServiceImpl implements ItemService{
 			// 若是value為空即代表沒有查詢條件，做個去除動作
 			String value = row.getValue()[0];
 
-//			System.out.println("keyValue:"+key+":"+value);
 			
 			if ( value == null || value.isEmpty()) {
 				continue;
@@ -154,7 +151,6 @@ public class ItemServiceImpl implements ItemService{
 	
     @Override
     public List<CategoryTags> getAllCategoryTags() {
-    	System.out.println("!!!!"+categoryTagsDAO.getAll());
         return categoryTagsDAO.getAll();
     }
 	
@@ -200,8 +196,4 @@ System.out.println("::"+categoryTagsDAO.getTagIdsWithoutChildren());
 	public Integer getMbrIdByItemId(Integer itemId) {
 		return dao.getMbrIdById(itemId);
 	}
-
-
 }
-//MembersCoupon.MembersCouponCompositeDetail compositeKey = new MembersCoupon.MembersCouponCompositeDetail(mbrId, cpnId);
-//return (MembersCoupon)MemCouponDAO.getByPrimaryKey(compositeKey);

@@ -1,6 +1,8 @@
 package com.twoclothing.redismodel.notice;
 
-public class Notice {
+import java.io.Serializable;
+
+public class Notice implements Serializable {
 
     // 通知類別
     private String type;

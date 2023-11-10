@@ -63,12 +63,14 @@
 			
 		}
 
-		form.form_add div.main_container div.main_right div.right_rightimg > div{
-			margin: 10px 0px;
-		}
-
 		form.form_add div.main_container div.main_right div.right_rightimg div{
 			border: 1px solid black;
+			height: 100%;
+			width: 100%;
+			margin: 10px 0px;
+		}
+		
+		form.form_add div.main_container div.main_right div.right_rightimg div img{
 			height: 100%;
 			width: 100%;
 		}
@@ -149,6 +151,7 @@
 		    border-radius: 5px;
 			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 		}
+		
 	</style>
 </head>
 <body>
@@ -202,7 +205,7 @@
 
 					<select class="sel_size" name="size"> 
 						<option value="" disabled selected>尺寸</option>
-						<option value="">其他</option>
+						<option value="8">其他</option>
 						<option value="0">XS(含)以下</option>
 						<option value="1">S</option>
 						<option value="2">M</option>
@@ -238,8 +241,13 @@
 				</div>
 
 				<div class="right_rightimg">
-					<div>圖片</div>
-					<div>圖片2</div>
+					<div>
+						<img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="Product Image">
+					</div>
+					<div>
+						<img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=2" alt="Product Image">
+						
+					</div>
 				</div>
 			</div>
 		</div>

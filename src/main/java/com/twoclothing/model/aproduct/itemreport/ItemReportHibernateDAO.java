@@ -26,8 +26,8 @@ public class ItemReportHibernateDAO implements ItemReportDAO {
 	}
 
 	@Override
-	public int insert(ItemReport itemReport) {
-		return (Integer) getSession().save(itemReport);
+	public void insert(ItemReport itemReport) {
+		getSession().save(itemReport);
 	}
 
 	@Override
@@ -139,12 +139,7 @@ public class ItemReportHibernateDAO implements ItemReportDAO {
 	}
 
 	@Override
-	public boolean update(ItemReport itemReport) {
-		try {
-			getSession().update(itemReport);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+	public void update(ItemReport itemReport) {
+		getSession().update(itemReport);
 	}
 }

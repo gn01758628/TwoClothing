@@ -58,8 +58,7 @@ public class ItemTrackingServlet extends HttpServlet {
 	}
 
 	private String getAllByMbrId(HttpServletRequest req, HttpServletResponse res) {
-//		String mbrIdString = req.getParameter("mbrId");
-//		int mbrId = Integer.parseInt(mbrIdString);
+//		int mbrId = Integer.parseInt(req.getParameter("mbrId"));
 		int mbrId = 1; // 測試用，到時這行可刪
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
@@ -76,30 +75,31 @@ public class ItemTrackingServlet extends HttpServlet {
 	}
 
 	private String addItemTracking(HttpServletRequest req, HttpServletResponse res) {
-		String itemIdString = req.getParameter("itemId");
-		int itemId = Integer.parseInt(itemIdString);
-		String mbrIdString = req.getParameter("mbrId");
-		int mbrId = Integer.parseInt(mbrIdString);
-
+		int itemId = Integer.parseInt(req.getParameter("itemId"));
+		int mbrId = Integer.parseInt(req.getParameter("mbrId"));
 		ItemTracking itemTracking = new ItemTracking();
-		itemTracking.setCompositeKey(new ItemTracking.CompositeDetail(itemId, mbrId));
-		Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-		itemTracking.setTrackingTime(currentTime);
 
-		req.setAttribute("itemTracking", itemTrackingService.addItemTracking(itemTracking));
+		itemTracking.setCompositeKey(new ItemTracking.CompositeDetail(itemId, mbrId));
+		itemTracking.setTrackingTime(new Timestamp(System.currentTimeMillis()));
+
+		itemTrackingService.addItemTracking(itemTracking);
 
 		return "/itemtrackinglist?action=getAllByMbrId";
 	}
 
 	private String deleteItemTracking(HttpServletRequest req, HttpServletResponse res) {
-		String itemIdString = req.getParameter("itemId");
-		int itemId = Integer.parseInt(itemIdString);
-		String mbrIdString = req.getParameter("mbrId");
-		int mbrId = Integer.parseInt(mbrIdString);
+		int itemId = Integer.parseInt(req.getParameter("itemId"));
+		int mbrId = Integer.parseInt(req.getParameter("mbrId"));
 		List<String> errorMsgs = new LinkedList<String>();
+		
+		int delete = itemTrackingService.deleteItemTracking(itemId, mbrId);
 
-		if (itemTrackingService.deleteItemTracking(itemId, mbrId) != 1) {
+		if (delete != 1) {
 			errorMsgs.add("刪除失敗");
+		}
+		
+		if (!errorMsgs.isEmpty()) {
+			req.setAttribute("errorMsgs", errorMsgs);
 		}
 
 		return "/itemtrackinglist?action=getAllByMbrId";

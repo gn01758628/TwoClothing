@@ -5,6 +5,7 @@ import com.twoclothing.model.abid.biditemimage.BidItemImage;
 import com.twoclothing.model.categorytags.CategoryTags;
 import com.twoclothing.model.employee.Employee;
 import com.twoclothing.model.members.Members;
+import com.twoclothing.redismodel.bidItemViewHistory.BidItemViewHistory;
 import com.twoclothing.redismodel.bidrecord.BidRecord;
 import com.twoclothing.redismodel.notice.Notice;
 
@@ -25,6 +26,8 @@ public interface BidItemService {
     void addNotice(Notice notice, Integer mbrId);
 
     void addBidRecord(BidRecord bidRecord, Integer bidItemId, LocalDateTime endTime);
+
+    void addBidItemViewHistory(BidItemViewHistory bidItemViewHistory);
 
     BidItem getBidItemByBidItemId(Integer bidItemId);
 

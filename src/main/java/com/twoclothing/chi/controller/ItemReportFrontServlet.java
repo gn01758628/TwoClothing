@@ -92,10 +92,8 @@ public class ItemReportFrontServlet extends HttpServlet {
 	}
 
 	private String addItemReport(HttpServletRequest req, HttpServletResponse res) {
-		String itemIdString = req.getParameter("itemId");
-		int itemId = Integer.parseInt(itemIdString);
-		String mbrIdString = req.getParameter("mbrId");
-		int mbrId = Integer.parseInt(mbrIdString);
+		String itemId = req.getParameter("itemId");
+		String mbrId = req.getParameter("mbrId");
 		String description = req.getParameter("description");
 
 		List<String> errorMsgs = new LinkedList<String>();
@@ -109,14 +107,14 @@ public class ItemReportFrontServlet extends HttpServlet {
 		}
 
 		ItemReport itemReport = new ItemReport();
-		itemReport.setItemId(itemId);
-		itemReport.setMbrId(mbrId);
+		itemReport.setItemId(Integer.parseInt(itemId));
+		itemReport.setMbrId(Integer.parseInt(mbrId));
 		Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 		itemReport.setReportDate(currentTime);
 		itemReport.setDescription(description);
 		itemReport.setrStatus(0);
 
-		req.setAttribute("itemReport", itemReportService.addItemReport(itemReport));
+		itemReportService.addItemReport(itemReport);
 
 		return "/front/itemreport?action=getAllByMbrId";
 	}

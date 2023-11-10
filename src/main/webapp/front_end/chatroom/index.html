@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-hant" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>聊天室按鈕</title>
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="/TwoClothing/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!--Font Awesome-->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row">
+        <label for="chatSelect" class="form-label">選擇聊天對象ID</label>
+        <select id="chatSelect" class="form-select" name="currentTargetId">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        <a id="chatLink" href="/TwoClothing/front/chatroom/1.check" class="btn btn-outline-primary btn-lg mt-2">聊天囉</a>
+    </div>
+</div>
+
+
+<!--bootstrap5 js-->
+<script src="/TwoClothing/js/bootstrap5/popper.min.js"></script>
+<script src="/TwoClothing/js/bootstrap5/bootstrap.min.js"></script>
+<!--jQuery-->
+<script src="/TwoClothing/js/jQuery/jquery-3.7.1.min.js"></script>
+
+<script>
+    $('#chatSelect').change(function() {
+        let selectedId = $(this).val();
+        $('#chatLink').attr('href', '/TwoClothing/front/chatroom/' + selectedId + '.check');
+    });
+</script>
+</body>
+</html>

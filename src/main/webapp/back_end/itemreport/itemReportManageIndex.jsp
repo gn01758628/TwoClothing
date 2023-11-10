@@ -36,16 +36,16 @@
 		<label>審核狀態</label>
 		<select name="rStatus">
 			<option value="">狀態</option>
-			<option value="0">0</option>
-			<option value="1">1</option>
+			<option value="0">待審核</option>
+			<option value="1">已審核</option>
 		</select>
 		<br>
 		
 		<label>審核結果</label>
 		<select name="result">
 			<option value="">結果</option>
-			<option value="0">0</option>
-			<option value="1">1</option>
+			<option value="0">處分</option>
+			<option value="1">不處分</option>
 		</select>
 		<br>
 		
