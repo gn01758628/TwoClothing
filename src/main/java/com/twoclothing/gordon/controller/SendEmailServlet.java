@@ -78,9 +78,9 @@ public class SendEmailServlet extends HttpServlet {
     		 MailService mailService = new MailService();
     		 mailService.sendMail(to, subject, messageText);
     		 
-		        res.setContentType("text/plain");
-		        res.getWriter().write("123");
-		        res.sendRedirect(req.getContextPath() + "/front_end/members/verificationEmail.jsp");
+//		        res.setContentType("text/plain");
+//		        res.getWriter().write("123");
+//		        res.sendRedirect(req.getContextPath() + "/front_end/members/verificationEmail.jsp");
     	}
 //		===============================驗證================================
 //		===============================驗證================================

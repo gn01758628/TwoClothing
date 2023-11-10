@@ -53,10 +53,10 @@ input:disabled {
     </style>
 </head>
 <body>
-	<%
-	// 获取存储在 session 中的用户数据
+ 	<% 
+ 	// 获取存储在 session 中的用户数据
 	com.twoclothing.model.members.Members user = (com.twoclothing.model.members.Members) session.getAttribute("user");
-	%>
+ 	%> 
 	<a href='${pageContext.request.contextPath}/index.jsp'>回首頁</a>
     <h1>会员中心</h1>
 
@@ -67,19 +67,44 @@ input:disabled {
     <!-- 在这里添加更多个人信息字段 -->
 
     <h2>设置</h2>
+    <ul>
+    	
+    	<li>
+			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/members/Members.do">
+				<input type="hidden" name="mbrId" value="${user.mbrId}">
+				<input type="hidden" name="action" value="memberProfile">
+				<input type="submit" value="個人資訊">
+			</FORM>
+		</li>
+    	<li>
+			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/members/Members.do">
+				<input type="hidden" name="mbrId" value="${user.mbrId}">
+				<input type="hidden" name="action" value="walletAndPoints">
+				<input type="submit" value="錢包與點數">
+			</FORM>
+		</li>
+
+    	<li>
+			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/members/Members.do">
+				<input type="hidden" name="mbrId" value="${user.mbrId}">
+				<input type="hidden" name="action" value="userRating">
+				<input type="submit" value="我的評價">
+			</FORM>
+		</li>
+    	<li>
+			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/shipsetting/Shipsetting.do">
+				<input type="hidden" name="mbrId" value="${user.mbrId}">
+				<input type="hidden" name="action" value="getAll_For_MbrId">
+				<input type="submit" value="會員物流設定">
+			</FORM>
+		</li>
+    </ul>
 	
     <h2>其他功能</h2>
     <ul>
 
     	
-	    <li>
-			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/shipsetting/Shipsetting.do">
-				<input type="hidden" name="mbrId" value="${user.mbrId}">
-				<input type="hidden" name="action" value="getAll_For_MbrId">
-				<input type="submit" value="會員物流設定">
-				
-			</FORM>
-		</li>
+	
 	    <li>
 			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
 			<input type="hidden" name="buyMbrId" value="${user.mbrId}">
@@ -98,6 +123,9 @@ input:disabled {
 
     </ul>
 
-    <p><a href="logout.jsp">注销</a></p>
+    <form action="${pageContext.request.contextPath}/members/Members.do" method="post">
+        <input type="hidden" name="action" value="logout">
+        <button type="submit">登出</button>
+   	</form>
 </body>
 </html>
