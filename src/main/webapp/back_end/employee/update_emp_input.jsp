@@ -1,13 +1,22 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.*"%>
 <%@ page import="com.twoclothing.tonyhsieh.service.*"%>
-<%@ page import="com.twoclothing.model.empmissions.*"%>
+<%@ page import="com.twoclothing.model.employee.*"%>
+<%@ page import="com.twoclothing.model.department.*"%>
 
+ <%
+	
+//  	DepartmentServiceImpl departmentServiceImpl = new DepartmentServiceImpl();
+//    	List<Department> list = departmentServiceImpl.getAllDepartment();
+//     pageContext.setAttribute("list",list);
+	
+	%>
 
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>員工權限資料修改 - update_empmis_input.jsp</title>
+<title>員工資料修改 - update_emp_input.jsp</title>
 
 <style>
   table#table-1 {
@@ -64,14 +73,6 @@
 
 </head>
 <body bgcolor='white'>
-
-<table id="table-1">
-	<tr><td>
-		 <h3>員工權限資料修改 - update_empmis_input.jsp</h3>
-		 <h4><a href="select_page.jsp">回首頁</a></h4>
-	</td></tr>
-</table>
-
 <h3>資料修改:</h3>
 
 <%-- 錯誤表列 --%>
@@ -84,39 +85,53 @@
 <!-- 	</ul> -->
 <%-- </c:if> --%>
 
-<FORM METHOD="post" ACTION="EmpMissions.do" name="form1" enctype="multipart/form-data">
+<FORM METHOD="post" ACTION="Employee.do" name="form1" enctype="multipart/form-data">
 <table>
     <tr>
 		<td>員工編號:<font color=red><b>*</b></font></td>
-		<td>${param.empid}</td>
+		<td>${param.empId}</td>
 	</tr>
-<%-- 	<jsp:useBean id="EmployeeServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.EmployeeServiceImpl" /> --%>
+
+	<jsp:useBean id="DepartmentServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.service.DepartmentServiceImpl" />
 	<tr>
-		<td>權限編號:</td>
-		<td><input type="TEXT" name="permissionid" value="${param.permissionid}" size="45"/></td>
+		<td>部門:<font color=red><b>*</b></font></td>
+		<td><select size="1" name="deptid">
+			<c:forEach var="department" items="${DepartmentServiceImpl.allDepartment}">
+				<option value="${department.deptId}"${(param.deptId==employee.deptId)? 'selected':'' } >${department.deptName}
+			
+			</c:forEach>
+		</select></td>
 	</tr>
-
-	
-	    		
-	    		
-	    		
 	
 
-<%-- 	<jsp:useBean id="EmployeeServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.EmployeeServiceImpl" /> --%>
-<!-- 	<tr> -->
-<!-- 		<td>部門:<font color=red><b>*</b></font></td> -->
-<!-- 		<td><select size="1" name="deptno"> -->
-<%-- 			<c:forEach var="deptVO" items="${deptSvc.all}"> --%>
-<%-- 				<option value="${deptVO.deptno}" ${(param.deptno==deptVO.deptno)? 'selected':'' } >${deptVO.dname} --%>
-<%-- 			</c:forEach> --%>
-<!-- 		</select></td> -->
-<!-- 	</tr> -->
-
+	<tr>
+		<td>員工姓名:</td>
+		<td><input type="TEXT" name="empname" value="${param.empName}" size="45"/></td> <td>${errorMsgs.empname}</td>
+	</tr>
+	<tr>
+		<td>電話:</td>
+		<td><input type="text" name="phone" value="${param.phone}"  size="45"/></td> <td>${errorMsgs.phone}</td>
+	</tr>	
+	<tr>
+		<td>員工地址:</td>
+		<td><input type="TEXT" name="address" value="${param.address}" size="45"/></td> <td>${errorMsgs.address}</td>
+	</tr>
+	<tr>
+		<td>EMAIL:</td>
+		<td><input type="TEXT" name="email"   value="${param.email}"   size="45"/></td> <td>${errorMsgs.email}</td>
+	</tr>
+	<tr>
+		<td>圖片:</td>
+		<td><input class="form-control" type="file" id="avatar" name="avatar"  size="45"/>
+	   
+		</td>
+	</tr>
+	
+	
 </table>
 <br>
 <input type="hidden" name="action" value="update">
-<input type="hidden" name="empid" value="${param.empid}">
-<input type="hidden" name="permissionid" value="${param.permissionid}">
+<input type="hidden" name="empid" value="${param.empId}">
 <input type="submit" value="送出修改"></FORM>
 </body>
 

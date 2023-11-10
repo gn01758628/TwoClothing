@@ -24,11 +24,11 @@
        	<h2>員工登入</h2>
         <form id="myForm" autocomplete="off"> 
           <div class="user-box">
-            <input type="text" id="empId" name="empId" required >
+            <input type="text" id="empId" name="empId" required value="00001">
             <label>員工編號</label>
           </div>
           <div class="user-box">
-            <input type="password" id="password" name="password" required >
+            <input type="password" id="password" name="password" required value="password1">
             <label>密碼</label>
           </div>
           <div id="errorMsgs"></div>
@@ -73,7 +73,7 @@
 	        // 發送 AJAX 請求
 	        $.ajax({
 	            type: 'POST', // 或 'GET'，取決於你的需求
-	            url: '/TwoClothing/EmployeeCenter.do', // 請求的URL
+	            url: 'EmployeeCenter.do', // 請求的URL
 	            data: formData, // 要發送的數據
 	            success: function(url) {
 	                // 跳轉到指定URL

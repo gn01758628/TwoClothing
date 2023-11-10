@@ -25,7 +25,7 @@
 		 </div>
 		 
         <div class="profile-btn">
-<!--           <button id="profile-edit"><a href="front_end/employee/select_page.jsp">修改資料</a></button> -->
+<!--           <button id="profile-edit"><a href="front_end/employee/select_page.jsp">上傳頭像</a></button> -->
           <button id="logout">登出</button>
         </div>
 		 
@@ -34,140 +34,148 @@
     <nav class="sidebar-nav">
       <ul>
         <li>
-          <a href=""><i class="icon ion-ios-color-filter-outline"></i> <span>Shop</span></a>
+          <a class="drop-down-menu"><i class="icon ion-ios-color-filter-outline"></i> <span>員工管理</span></a>
           
           <ul class="nav-flyout">
           
             <li>
-              <a href="/TwoClothing/back/tags/list"><i class="ion-ios-color-filter-outline"></i>Derps</a>
+              <a href="/TwoClothing/back_end/employee/Employee.do?action=get_On_Duty"><i class="ion-ios-color-filter-outline"></i>查看在職員工資料</a>
             </li>
             
             <li>
-              <a href="/TwoClothing/front_end/employee/select_page.jsp"><i class="ion-ios-clock-outline"></i>Times</a>
+              <a href="/TwoClothing/back_end/empmissions/EmpMissions.do"><i class="ion-ios-clock-outline"></i>在職員工權限修改</a>
             </li>
             
             <li>
-              <a href=""><i class="ion-android-star-outline"></i>Hates</a>
-            </li>
-            
-            <li>
-              <a href=""><i class="ion-heart-broken"></i>Beat</a>
+              <a href="/TwoClothing/back_end/employee/Employee.do?action=get_Not_On_Duty"><i class=""></i>查看離職員工資料</a>
             </li>
             
           </ul>
         </li>
         
         <li>
-          <a href=""><i class="ion-ios-settings"></i> <span class="">Controls</span></a>
+          <a href="" class="drop-down-menu"><i class="ion-ios-settings"></i> <span class="">會員管理</span></a>
           
           <ul class="nav-flyout">
             <li>
-              <a href=""><i class="ion-ios-alarm-outline"></i>Watch</a>
+              <a href="/TwoClothing/back_"><i class="ion-ios-alarm-outline"></i>查看會員資料</a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-camera-outline"></i>Creeper</a>
+              <a href=""><i class="ion-ios-camera-outline"></i></a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-chatboxes-outline"></i>Hate</a>
+              <a href=""><i class="ion-ios-chatboxes-outline"></i></a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-cog-outline"></i>Grinder</a>
+              <a href=""><i class="ion-ios-cog-outline"></i></a>
             </li>
             
           </ul>
         </li>
         
         <li>
-          <a href=""><i class="ion-ios-briefcase-outline"></i> <span class="">Folio</span></a>
+          <a href="" class="drop-down-menu"><i class="ion-ios-briefcase-outline"></i> <span class="">最新消息管理</span></a>
           
           <ul class="nav-flyout">
             <li>
-              <a href=""><i class="ion-ios-flame-outline"></i>Burn</a>
+              <a href=""><i class="ion-ios-flame-outline"></i></a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-lightbulb-outline"></i>Bulbs</a>
+              <a href=""><i class="ion-ios-lightbulb-outline"></i></a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-location-outline"></i>Where You</a>
+              <a href=""><i class="ion-ios-location-outline"></i></a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-locked-outline"></i>On Lock</a>
+              <a href=""><i class="ion-ios-locked-outline"></i></a>
             </li>
              <li>
-              <a href=""><i class="ion-ios-navigate-outline"></i>Ghostface</a>
+              <a href=""><i class="ion-ios-navigate-outline"></i></a>
             </li>
           </ul>
           
         </li>
         
         <li>
-          <a href=""><i class="ion-ios-analytics-outline"></i> <span class="">Graphicals</span></a>
+          <a href="" class="drop-down-menu"><i class="ion-ios-analytics-outline"></i> <span class="">競標管理</span></a>
           
           <ul class="nav-flyout">
             <li>
-              <a href=""><i class="ion-ios-timer-outline"></i>Timers</a>
+              <a href=""><i class="ion-ios-timer-outline"></i></a>
             </li>
             <li>
-              <a href=""><i class="ion-arrow-graph-down-left"></i>You Lose</a>
+              <a href=""><i class="ion-arrow-graph-down-left"></i></a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-partlysunny-outline"></i>Stormy</a>
+              <a href=""><i class="ion-ios-partlysunny-outline"></i></a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-timer-outline"></i>Lookie Look</a>
+              <a href=""><i class="ion-ios-timer-outline"></i></a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-game-controller-a-outline"></i>Dork Mfer</a>
+              <a href=""><i class="ion-ios-game-controller-a-outline"></i></a>
             </li>
           </ul>
           
         </li>
         
         <li>
-          <a href=""><i class="ion-ios-paper-outline"></i> <span class="">Papers</span></a>
+          <a href="" class="drop-down-menu"><i class="ion-ios-paper-outline"></i> <span class="">商城管理</span></a>
           
           <ul class="nav-flyout">
             <li>
-              <a href=""><i class="ion-ios-filing-outline"></i>File Cab</a>
+              <a href=""><i class="ion-ios-filing-outline"></i></a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-information-outline"></i>Infos</a>
+              <a href=""><i class="ion-ios-information-outline"></i></a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-paperplane-outline"></i>Planes</a>
+              <a href=""><i class="ion-ios-paperplane-outline"></i></a>
             </li>
             <li>
-              <a href=""><i class="ion-android-star-outline"></i>Shop</a>
+              <a href=""><i class="ion-android-star-outline"></i></a>
             </li>
           </ul>
           
         </li>
         
         <li>
-          <a href=""><i class="ion-ios-navigate-outline"></i> <span class="">Ass Finder</span></a>
+          <a href="" class="drop-down-menu"><i class="ion-ios-navigate-outline"></i> <span class="">商品檢舉管理</span></a>
           
           <ul class="nav-flyout">
             <li>
-              <a href=""><i class="ion-ios-flame-outline"></i>Burn</a>
+              <a href=""><i class="ion-ios-flame-outline"></i></a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-lightbulb-outline"></i>Bulbs</a>
+              <a href=""><i class="ion-ios-lightbulb-outline"></i></a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-location-outline"></i>Where You</a>
+              <a href=""><i class="ion-ios-location-outline"></i></a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-locked-outline"></i>On Lock</a>
+              <a href=""><i class="ion-ios-locked-outline"></i></a>
             </li>
              <li>
-              <a href=""><i class="ion-ios-navigate-outline"></i>Ghostface</a>
+              <a href=""><i class="ion-ios-navigate-outline"></i></a>
             </li>
           </ul>
           
         </li>
         
         <li>
-          <a href=""><i class="ion-ios-medical-outline"></i> <span class="">Cocaine</span></a>
+          <a href="" class="drop-down-menu"><i class="ion-ios-medical-outline"></i> <span class="">一般商品訂單管理</span></a>
+        </li>
+        
+        <li>
+          <a href="" class="drop-down-menu"><i class="ion-ios-medical-outline"></i> <span class="">競標商品訂單管理</span></a>
+        </li>
+        
+        <li>
+          <a href="" class="drop-down-menu"><i class="ion-ios-medical-outline"></i> <span class="">客服中心</span></a>
+        </li>
+        
+        <li>
+          <a href="" class="drop-down-menu"><i class="ion-ios-medical-outline"></i> <span class="">虛擬錢包提款審核</span></a>
         </li>
         
       </ul>
@@ -189,14 +197,7 @@ $(document).ready(function() {
         success: function(emp) {
             $('#formatEmpId').text(emp.formatEmpId);
             $('#empName').text(emp.empName);
-            let imageUrl = URL.createObjectURL(new Blob([new Uint8Array(emp.avatar)], { type: 'image/gif' }));
-            let image = new Image();
-            image.src = imageUrl;
-            image.onload = function() {
-                // 圖片載入成功，可以在這裡執行相應的操作
-                $('#profile-image').attr('src', imageUrl);
-                $('#profile-image').css('display', 'block');
-            };
+            $('#profile-image').attr('src', "/TwoClothing/CJImageReader/Employee?id="+emp.empId).css('display', 'block');
         },
         error: function(xhr, textStatus, errorThrown) {
             alert("帳號已登出,請重新登入");
@@ -237,6 +238,18 @@ $(document).ready(function() {
 	        }
 	    });
     });
+	
+	const iframe = document.querySelector('iframe');
+
+	iframe.onload = function() {
+	  // 獲取 iframe 中載入的具體 URL
+	  const iframeURL = iframe.contentWindow.location.href;
+	  if (iframeURL.includes("")) {
+		  alert("帳號已登出,請重新登入");
+		    window.location.href = "/TwoClothing/empLogin.html"; // 替換為實際的跳轉 URL
+		    // 如果是目標 URL，父頁面進行跳轉
+		  }
+	};
 	
 });
 

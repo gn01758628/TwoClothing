@@ -395,21 +395,22 @@ CREATE TABLE employee
     pswdhash  VARCHAR(60) NOT NULL DEFAULT '',
     empstatus TINYINT              DEFAULT 0,
     avatar    MEDIUMBLOB,
+    empmissions	VARCHAR(8) NOT NULL DEFAULT '00000000',
     PRIMARY KEY (empid)
 );
 
 -- 表格：員工 插入假資料
-INSERT INTO employee (deptid, empname, phone, address, email, pswdhash, empstatus)
-VALUES (1, '張三', '0912345678', '台北市中正區123號', 'zhangsan@example.com', 'password1', 0),
-       (2, '李四', '0923456789', '台北市大安區456號', 'lisi@example.com', 'password2', 1),
-       (3, '王五', '0934567890', '台北市信義區789號', 'wangwu@example.com', 'password3', 0),
-       (1, '陳六', '0945678901', '台北市松山區101號', 'chenliu@example.com', 'password4', 0),
-       (2, '趙七', '0956789012', '台北市中山區202號', 'zhaoqi@example.com', 'password5', 1),
-       (3, '孫八', '0967890123', '台北市大同區303號', 'sunba@example.com', 'password6', 0),
-       (1, '周九', '0978901234', '台北市萬華區404號', 'zhoujiu@example.com', 'password7', 0),
-       (2, '吳十', '0989012345', '台北市文山區505號', 'wushi@example.com', 'password8', 1),
-       (3, '劉十一', '0990123456', '台北市南港區606號', 'liuyi@example.com', 'password9', 0),
-       (1, '蔡十二', '0912233445', '台北市北投區707號', 'caishier@example.com', 'password10', 0);
+INSERT INTO employee (deptid, empname, phone, address, email, pswdhash, empstatus,empmissions)
+VALUES (1, '張三', '0912345678', '台北市中正區123號', 'zhangsan@example.com', 'password1', 0,'11000000'),
+       (2, '李四', '0923456789', '台北市大安區456號', 'lisi@example.com', 'password2', 1,'01100000'),
+       (3, '王五', '0934567890', '台北市信義區789號', 'wangwu@example.com', 'password3', 0,'00011100'),
+       (1, '陳六', '0945678901', '台北市松山區101號', 'chenliu@example.com', 'password4', 0,'00000011'),
+       (2, '趙七', '0956789012', '台北市中山區202號', 'zhaoqi@example.com', 'password5', 1,'11000000'),
+       (3, '孫八', '0967890123', '台北市大同區303號', 'sunba@example.com', 'password6', 0,'01100000'),
+       (1, '周九', '0978901234', '台北市萬華區404號', 'zhoujiu@example.com', 'password7', 0,'00011100'),
+       (2, '吳十', '0989012345', '台北市文山區505號', 'wushi@example.com', 'password8', 1,'00000011'),
+       (3, '劉十一', '0990123456', '台北市南港區606號', 'liuyi@example.com', 'password9', 0,'11111111'),
+       (1, '蔡十二', '0912233445', '台北市北投區707號', 'caishier@example.com', 'password10', 0,'00000000');
 
 -- 表格：員工 檢查
 -- SELECT * FROM employee;
@@ -453,16 +454,16 @@ CREATE TABLE empmissions
 
 -- 表格：員工權限配置 插入假資料
 INSERT INTO empmissions (empid, permissionid)
-VALUES (1, 1),
-       (2, 2),
-       (3, 3),
-       (4, 1),
-       (5, 2),
-       (6, 3),
-       (7, 1),
-       (8, 2),
-       (9, 3),
-       (10, 1);
+VALUES (1, 1),(1, 2),
+       (2, 2),(2, 3),
+       (3, 5),(3, 6),(3, 7),
+       (4, 7),(4, 8),
+       (5, 1), (5, 2),
+       (6, 2),(6, 3),
+       (7, 7),(7, 8),
+       (8, 1),(8, 2),
+       (9, 2), (9, 3),
+       (10, 5),(10, 6),(10, 7);
 
 -- 表格：員工權限配置 檢查
 -- SELECT * FROM empmissions;
@@ -487,9 +488,14 @@ CREATE TABLE permissions
 
 -- 表格：權限清單 插入假資料
 INSERT INTO permissions (permissionname, descriptions)
-VALUES ('Read', 'Can read data'),
-       ('Write', 'Can write data'),
-       ('Admin', 'Admin privileges');
+VALUES ('競標管理', '管理競標商品上下架'),
+	   ('商城管理', '管理一般商品類別及優惠券發放'),
+	   ('最新消息管理', '最新消息刊登及編輯'),
+	   ('商品檢舉管理', '檢舉查核'),
+	   ('一般訂單管理', '一般商品訂單退貨、檢舉處理'),
+	   ('競標訂單管理', '競標商品訂單退貨、檢舉處理'),
+       ('客服中心', '線上即時客服'),
+       ('虛擬錢包提款審核', '提款申請查核');
 
 -- 表格：權限清單 檢查
 -- SELECT * FROM permissions;

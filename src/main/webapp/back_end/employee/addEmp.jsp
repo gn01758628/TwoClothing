@@ -2,14 +2,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.twoclothing.tonyhsieh.service.*"%>
-<%@ page import="com.twoclothing.model.empmissions.*"%>
+<%@ page import="com.twoclothing.model.employee.*"%>
 
-
+<%
+  // EmpVO empVO = (EmpVO) request.getAttribute("empVO");
+%>
 
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>員工權限資料新增 - addEmpmis.jsp</title>
+<title>員工資料新增 - addEmp.jsp</title>
 
 <style>
   table#table-1 {
@@ -48,7 +50,7 @@
 
 <table id="table-1">
 	<tr><td>
-		 <h3>員工權限資料新增 - addEmpmis.jsp</h3></td><td>
+		 <h3>員工資料新增 - addEmp.jsp</h3></td><td>
 		 <h4><a href="select_page.jsp">回首頁</a></h4>
 	</td></tr>
 </table>
@@ -65,27 +67,48 @@
 <!-- 	</ul> -->
 <%-- </c:if> --%>
 
-<FORM METHOD="post" ACTION="EmpMissions.do" name="form1" enctype="multipart/form-data">
+<FORM METHOD="post" ACTION="Employee.do" name="form1" enctype="multipart/form-data">
 <table>
 	
-	<jsp:useBean id="EmployeeServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.service.EmployeeServiceImpl" />
+
+	<jsp:useBean id="DepartmentServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.service.DepartmentServiceImpl" />
 	<tr>
-		<td>員工:</td>
-		<td><select size="1" name="empid">
-			<c:forEach var="employee" items="${EmployeeServiceImpl.all}">
-				<option value="${employee.empId}"${(param.empId==employee.empId)? 'selected':'' } >${employee.empName}
+		<td>部門:<font color=red><b>*</b></font></td>
+		<td><select size="1" name="deptid">
+			<c:forEach var="department" items="${DepartmentServiceImpl.allDepartment}">
+				<option value="${department.deptId}"${(param.deptId==employee.deptId)? 'selected':'' } >${department.deptName}
 			
 			</c:forEach>
 		</select></td>
 	</tr>
+	<tr>
+		<td>員工姓名:</td>
+		<td><input type="TEXT" name="empname" value="${param.empName}" size="45"/></td> <td>${errorMsgs.empname}</td>
+	</tr>
+	<tr>
+		<td>電話:</td>
+		<td><input type="TEXT" name="phone"   value="${param.phone}"   size="45"/></td> <td>${errorMsgs.phone}</td>
+	</tr>
+	<tr>
+		<td>地址:</td>
+		<td><input type="TEXT" name="address"   value="${param.address}"   size="45"/></td> <td>${errorMsgs.address}</td>
+	</tr>
+	<tr>
+		<td>EMAIL:</td>
+		<td><input type="TEXT" name="email"   value="${param.email}"   size="45"/></td> <td>${errorMsgs.email}</td>
+	</tr>
+	<tr>
+		<td>密碼:</td>
+		<td><input type="TEXT" name="pswdhash"   value="${param.pswdHash}"   size="45"/></td> 
+	</tr>
 	
 	<tr>
-		<td>權限:</td>
-	    <td><input type="checkbox" name="permissionId" value="1" id="permission1" size="45"> Permission 1</td>
-	    <td><input type="checkbox" name="permissionId" value="2" id="permission2" size="45"> Permission 2</td>
-	    <td><input type="checkbox" name="permissionId" value="3" id="permission3" size="45"> Permission 3</td>
-	    <td><input type="checkbox" name="permissionId" value="4" id="permission4" size="45"> Permission 4</td>
-   	</tr>
+		<td>圖片:</td>
+		<td><input class="form-control" type="file" id="avatar" name="avatar"  size="45"/>
+	   
+		</td>
+	</tr>
+	
 
 
 <!-- 	<tr> -->

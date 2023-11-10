@@ -33,11 +33,13 @@ import com.twoclothing.utils.generic.GenericService;
 @MultipartConfig(fileSizeThreshold = 1024*1024, maxFileSize = 5*1024*1024,maxRequestSize =5*5*1024*1024 )
 public class EmployeeCenterServlet extends HttpServlet {
 	private GenericService gs;
-
 //	@Override
 	public void init() throws ServletException {
 		this.gs = gs.getInstance();
 	}
+	
+	String errorUrl ="/TwoClothing/empLogin.html";
+	String successUrl ="/TwoClothing/empCenter.html";
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -121,15 +123,12 @@ public class EmployeeCenterServlet extends HttpServlet {
         HttpSession session = req.getSession();
         session.setAttribute("emp", emp);
         
-        // 假設這是後端要回傳的URL
-        String url = req.getContextPath()+"/empCenter.html";
-        
         res.setContentType("text/html;charset=UTF-8");
         
         // 獲取PrintWriter
         PrintWriter out = res.getWriter();
         
-        out.print(url);
+        out.print(successUrl);
         out.flush();
 	}
 
@@ -137,15 +136,12 @@ public class EmployeeCenterServlet extends HttpServlet {
 		HttpSession  session = req.getSession();
 		Employee emp = (Employee)session.getAttribute("emp");               
 		if (emp == null) {                                      
-			String url = req.getContextPath() + "/back_end/employee/empLogin.html";
 			 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			 res.setContentType("text/plain");
-			 res.getWriter().write(url);
+			 res.getWriter().write(errorUrl);
 			 return;
 		} 
 		res.setContentType("application/json; charset=UTF-8");
-		System.out.println(emp);
-		System.out.println(emp.getAvatar());
 		
 	    PrintWriter out = res.getWriter();
 		String empData = new Gson().toJson(emp);
@@ -160,11 +156,10 @@ public class EmployeeCenterServlet extends HttpServlet {
 		HttpSession  session = req.getSession();
 		session.removeAttribute("emp");
 		
-		String url = req.getContextPath() + "/back_end/employee/empLogin.html";
         
         res.setContentType("text/html;charset=UTF-8");
         PrintWriter out = res.getWriter();
-        out.print(url);
+        out.print(errorUrl);
         out.flush();
 	}
 	
@@ -172,10 +167,9 @@ public class EmployeeCenterServlet extends HttpServlet {
 		HttpSession  session = req.getSession();
 		Employee emp = (Employee)session.getAttribute("emp");               
 		if (emp == null) {                                      
-			String url = req.getContextPath() + "/back_end/employee/empLogin.html";
 			 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			 res.setContentType("text/plain");
-			 res.getWriter().write(url);
+			 res.getWriter().write(errorUrl);
 			 return;
 		}
 	}
