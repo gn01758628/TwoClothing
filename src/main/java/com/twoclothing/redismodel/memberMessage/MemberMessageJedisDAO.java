@@ -3,11 +3,10 @@ package com.twoclothing.redismodel.memberMessage;
 import com.twoclothing.utils.JedisPoolUtil;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Pipeline;
+import redis.clients.jedis.Response;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class MemberMessageJedisDAO implements MemberMessageDAO {
 
@@ -50,7 +49,7 @@ public class MemberMessageJedisDAO implements MemberMessageDAO {
             jedis.hset(messageId, "senderId", String.valueOf(senderId));
             jedis.hset(messageId, "receiverId", String.valueOf(receiverId));
             jedis.hset(messageId, "content", message.getContent());
-            jedis.hset(messageId, "status", message.getStatus().toString());
+            jedis.hset(messageId, "isRead", String.valueOf(message.isRead()));
             jedis.expire(messageId, LONG_TTL);
 
             // 3.儲存會話列表
@@ -72,11 +71,11 @@ public class MemberMessageJedisDAO implements MemberMessageDAO {
             Set<String> partnerIdSet = jedis.zrevrange(memberListKey, 0, -1);
             if (partnerIdSet != null) {
                 for (String partnerId : partnerIdSet) {
+                    String id = partnerId.replaceAll(".*:(\\d+)", "$1");
                     // 檢查對應的sessionKey是否還存在(不存在就移除)
-                    String sessionKey = getSessionKey(mbrId, Integer.parseInt(partnerId));
+                    String sessionKey = getSessionKey(mbrId, Integer.parseInt(id));
                     if (!jedis.exists(sessionKey)) jedis.zrem(memberListKey, partnerId);
-
-                    partnerIdList.add(Integer.valueOf(partnerId));
+                    partnerIdList.add(Integer.valueOf(id));
                 }
             }
             return partnerIdList;
@@ -110,6 +109,25 @@ public class MemberMessageJedisDAO implements MemberMessageDAO {
     }
 
     @Override
+    public LastMessageInfo getLastMessageBetweenMembers(Integer mbrId, Integer partnerId) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(REDIS_NUMBER);
+            String sessionKey = getSessionKey(mbrId, partnerId);
+            String lastMessageId = jedis.zrange(sessionKey, -1, -1).stream().findFirst().orElse(null);
+
+            if (lastMessageId != null) {
+                Map<String, String> lastMessageData = jedis.hgetAll(lastMessageId);
+                String content = lastMessageData.get("content");
+                String senderIdStr = lastMessageData.get("senderId");
+                boolean isSender = mbrId.equals(Integer.parseInt(senderIdStr));
+                double timestamp = jedis.zscore(sessionKey, lastMessageId);
+                return new LastMessageInfo(partnerId, content, isSender, (long) timestamp);
+            }
+        }
+        return null; // 如果沒有找到消息，返回 null
+    }
+
+    @Override
     public List<MemberMessage> getHistoryBetweenMembers(Integer memberId1, Integer memberId2) {
         List<MemberMessage> messageList = new ArrayList<>();
         try (Jedis jedis = jedisPool.getResource()) {
@@ -122,13 +140,13 @@ public class MemberMessageJedisDAO implements MemberMessageDAO {
                 Integer senderId = Integer.parseInt(messageData.get("senderId"));
                 Integer receiverId = Integer.parseInt(messageData.get("receiverId"));
                 String content = messageData.get("content");
-                String status = messageData.get("status");
+                String isRead = messageData.get("isRead");
                 double timestamp = jedis.zscore(sessionKey, messageId);
                 MemberMessage message = new MemberMessage();
                 message.setSenderId(senderId);
                 message.setReceiverId(receiverId);
                 message.setContent(content);
-                message.setStatus(MemberMessage.MessageStatus.valueOf(status));
+                message.setRead(Boolean.parseBoolean(isRead));
                 message.setTimestamp((long) timestamp);
                 messageList.add(message);
             }
@@ -137,19 +155,45 @@ public class MemberMessageJedisDAO implements MemberMessageDAO {
     }
 
     @Override
-    public void markMessagesAsRead(Integer receiverId, Integer senderId) {
+    public int getUnreadMessageCount(Integer receiverId, Integer senderId) {
+        int unreadCount = 0;
+        List<MemberMessage> history = getHistoryBetweenMembers(receiverId, senderId);
+        if (history == null) return unreadCount;
+        for (MemberMessage msg : history) {
+            if (msg.getReceiverId().equals(receiverId) && !msg.isRead()) {
+                unreadCount++;
+            }
+        }
+        return unreadCount;
+    }
+
+    @Override
+    public void updateMessagesAsRead(Integer receiverId, Integer senderId) {
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.select(REDIS_NUMBER);
             String sessionKey = getSessionKey(receiverId, senderId);
             Set<String> messageIdSet = jedis.zrange(sessionKey, 0, -1);
-            if (messageIdSet == null) return;
+            if (messageIdSet == null || messageIdSet.isEmpty()) return;
+            // Pipeline可以批量執行存取命令
+            Pipeline pipeline = jedis.pipelined();
+            // 進行批量讀取
+            // 使用Response<T>來代表命令尚未執行的返回數據
+            Map<String, Response<String>> receiverIdMap = new HashMap<>();
+            Map<String, Response<String>> readStatusMap = new HashMap<>();
             for (String messageId : messageIdSet) {
-                // 接收者是自己的才改為已讀
-                String receiverIdStr = jedis.hget(messageId, "receiverId");
-                if (receiverId.equals(Integer.parseInt(receiverIdStr))) {
-                    jedis.hset(messageId, "status", MemberMessage.MessageStatus.READ.toString());
+                receiverIdMap.put(messageId, pipeline.hget(messageId, "receiverId"));
+                readStatusMap.put(messageId, pipeline.hget(messageId, "isRead"));
+            }
+            pipeline.sync();
+            // 再次使用pipeline來進行批量操作
+            for (String messageId : messageIdSet) {
+                Integer receiverIdFromHistory = Integer.parseInt(receiverIdMap.get(messageId).get());
+                String readStatus = readStatusMap.get(messageId).get();
+                if (receiverId.equals(receiverIdFromHistory) && "false".equals(readStatus)) {
+                    pipeline.hset(messageId, "isRead", "true");
                 }
             }
+            pipeline.sync();
         }
     }
 

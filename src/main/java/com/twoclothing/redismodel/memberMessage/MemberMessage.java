@@ -9,34 +9,17 @@ public class MemberMessage implements Serializable {
     private Integer receiverId;
     private String content;
     private long timestamp;
-    private MessageStatus status = MessageStatus.UNREAD;
-
-    // 內部枚舉類型
-    public enum MessageStatus {
-        READ("已讀"),
-        UNREAD("未讀");
-
-        private final String status;
-
-        MessageStatus(String status) {
-            this.status = status;
-        }
-
-        @Override
-        public String toString() {
-            return this.status;
-        }
-    }
+    private boolean isRead = false;
 
     public MemberMessage() {
     }
 
-    public MemberMessage(Integer senderId, Integer receiverId, String content, long timestamp, MessageStatus status) {
+    public MemberMessage(Integer senderId, Integer receiverId, String content, long timestamp, boolean isRead) {
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.content = content;
         this.timestamp = timestamp;
-        this.status = status;
+        this.isRead = isRead;
     }
 
     @Override
@@ -46,7 +29,7 @@ public class MemberMessage implements Serializable {
                 ", receiverId=" + receiverId +
                 ", content='" + content + '\'' +
                 ", timestamp=" + timestamp +
-                ", status=" + status +
+                ", isRead=" + isRead +
                 '}';
     }
 
@@ -54,13 +37,13 @@ public class MemberMessage implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MemberMessage message = (MemberMessage) o;
-        return timestamp == message.timestamp && Objects.equals(senderId, message.senderId) && Objects.equals(receiverId, message.receiverId) && Objects.equals(content, message.content) && status == message.status;
+        MemberMessage that = (MemberMessage) o;
+        return timestamp == that.timestamp && isRead == that.isRead && Objects.equals(senderId, that.senderId) && Objects.equals(receiverId, that.receiverId) && Objects.equals(content, that.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(senderId, receiverId, content, timestamp, status);
+        return Objects.hash(senderId, receiverId, content, timestamp, isRead);
     }
 
     public Integer getSenderId() {
@@ -95,12 +78,12 @@ public class MemberMessage implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public MessageStatus getStatus() {
-        return status;
+    public boolean isRead() {
+        return isRead;
     }
 
-    public void setStatus(MessageStatus status) {
-        this.status = status;
+    public void setRead(boolean read) {
+        isRead = read;
     }
 }
 
