@@ -119,47 +119,6 @@
                </a> 
             </li>
          </c:forEach>
-<!--             <li> -->
-<!--                 <a href=""> -->
-<!--                  <div class="imgBlock"> -->
-<!--                      <img src="https://dummyimage.com/500x600/fcfcfc/0011ff" alt=""> -->
-<!--                  </div> -->
-<%--                  <span>${item.itemName}</span><span class="price">${item.price}</span> --%>
-<!--                 </a>  -->
-<!--              </li> -->
-<!--              <li> -->
-<!--                 <a href=""> -->
-<!--                  <div class="imgBlock"> -->
-<!--                      <img src="https://dummyimage.com/500x600/fcfcfc/0011ff" alt=""> -->
-<!--                  </div> -->
-<%--                  <span>${item.itemName}</span><span class="price">${item.price}</span> --%>
-<!--                 </a>  -->
-<!--              </li> -->
-<!--              <li> -->
-<!--                 <a href=""> -->
-<!--                  <div class="imgBlock"> -->
-<!--                      <img src="https://dummyimage.com/500x600/fcfcfc/0011ff" alt=""> -->
-<!--                  </div> -->
-<%--                  <span>${item.itemName}</span><span class="price">${item.price}</span> --%>
-<!--                 </a>  -->
-<!--              </li> -->
-  
-<!--              <li> -->
-<!--                 <a href=""> -->
-<!--                  <div class="imgBlock"> -->
-<!--                      <img src="https://dummyimage.com/500x600/fcfcfc/0011ff" alt=""> -->
-<!--                  </div> -->
-<!--                  <span>商品名</span><span class="price">(價錢)</span> -->
-<!--                 </a>  -->
-<!--              </li> -->
-<!--              <li> -->
-<!--                 <a href=""> -->
-<!--                  <div class="imgBlock"> -->
-<!--                      <img src="https://dummyimage.com/500x600/fcfcfc/0011ff" alt=""> -->
-<!--                  </div> -->
-<!--                  <span>商品名</span><span class="price">(價錢)</span> -->
-<!--                 </a>  -->
-<!--              </li> -->
 
 
         </ul>

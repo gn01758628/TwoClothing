@@ -160,6 +160,9 @@ input {
 						required ><span id="loginPpswdHashError"
 						style="color: red;"></span>
 					<div class="tab"></div>
+					<label for="rememberMe">記住我</label>
+				    <input type="checkbox" id="rememberMe">
+				    <div class="tab"></div>
 					<input type="submit" name="action" value="login" class="submit">
 				</form>
 <!-- ============================登入================================================ -->
@@ -321,26 +324,27 @@ input {
 
 					if (response.success) {
 
-						if (response.mbrStatus === 0) {
-
-//							alert("請至信箱驗證");
-							window.location.href = contextPath +  "/front_end/members/verificationEmail.jsp";
-						}else{
+//						if (response.mbrStatus === 0) {
+//這個if其實可以刪掉
+//							window.location.href = contextPath +  "/front_end/members/verificationEmail.jsp";
+//						}else{
 							if(response.location !== null && response.location !== undefined){
 								window.location.href = response.location ;
  								}else{
  									window.location.href = contextPath + "/index.jsp";}
-									
-					}
+//					}
 					}else{
-							alert("錯誤:" + response.errors.error);
-// 							alert("帳號密碼錯誤");
+						if (response.mbrStatus === 0) {
+
+							alert("請至信箱驗證");
+							window.location.href = contextPath +  "/front_end/members/verificationEmail.jsp";
+						}else{
 							$("#loginPpswdHashError").text(response.errors.error);////
+							}
 						}
 					
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					// 在這裡處理 AJAX 請求的錯誤
 					alert("AJAX 錯誤：" + errorThrown);
 				}
 			});
@@ -374,27 +378,9 @@ form.addEventListener('submit', function(event) {
             try {
                 if (response.success) {
                 	
-                    // 注册成功的逻辑
-                    window.location.href = contextPath +"/registerLogin.jsp";
-//                     window.location.href = "registerLogin.jsp";
+                    window.location.href = contextPath +"/front_end/members/registerLogin.jsp";
                 } else {
-                    // 注册失败，显示错误消息
-                    if (response.errors) {
-                    	
-                        if (response.errors.email) {
-                         	var errorMessage = response.errors.email;
-                         	$("#registerEmailError").text(response.errors.email);////
-                            // 使用 alert 显示错误消息
-//                             alert("错误：" + response.errors.email);
-                        
-
-                        }
-                        if(response.errors.sessionCode){
- //                       	 alert("错误：" + response.errors.sessionCode);
-                        	 $("#VerificationCodeError").text(response.errors.sessionCode);
-                        }
-                        // 如果有其他错误字段，可以类似处理
-                    }
+                	handleErrors(response.errors);
                 }
             } catch (error) {
                 alert("AJAX 响应解析错误：" + error);
@@ -402,16 +388,48 @@ form.addEventListener('submit', function(event) {
         },
 		
         error: function(jqXHR, textStatus, errorThrown) {
-
-  //        	 window.location.href = contextPath +"/registerLogin.jsp";
-      	 window.location.href = "registerLogin.jsp";
+        	alert("AJAX 錯誤：" + errorThrown);
         }
     });
 });
 
 //==================================================註冊ajax================================================			
+function handleErrors(errors) {
+    if (errors) {
+        if (errors.email) {
+            $("#registerEmailError").text(errors.email);
+        }
+        if (errors.sessionCode) {
+            $("#VerificationCodeError").text(errors.sessionCode);
+        }
+        // 如果有其他錯誤字段，可以類似處理
+    }
+}
 
-  
+
+
+
+$(document).ready(function() {
+    // 在頁面載入時，檢查localStorage並填充email和"記住我"的勾選狀態
+    var savedEmail = localStorage.getItem("savedEmail");
+    var rememberMeChecked = localStorage.getItem("rememberMeChecked") === "true";
+
+    if (savedEmail) {
+        $("#email2").val(savedEmail);
+    }
+
+    $("#rememberMe").prop("checked", rememberMeChecked);
+
+    $(".login-form").submit(function() {
+        // 獲取使用者輸入的email和"記住我"的勾選狀態
+        var email = $("#email2").val();
+        var rememberMe = $("#rememberMe").is(":checked");
+
+        // 保存email和"記住我"的勾選狀態到localStorage
+        localStorage.setItem("savedEmail", email);
+        localStorage.setItem("rememberMeChecked", rememberMe);
+    });
+});
 
 		
 	</script>  
