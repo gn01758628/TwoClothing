@@ -16,5 +16,9 @@ public interface WithdrawRequestDAO {
 
     List<WithdrawRequest> getAllByReqStatus(Integer reqstatus);
 
-    int update(WithdrawRequest withdrawRequest);
+    int update(List<WithdrawRequest> withdrawRequest);
+
+    Integer getBalanceByMbrId(Integer mbrId);
+
+	List<WithdrawRequest> getByStatus();
 }

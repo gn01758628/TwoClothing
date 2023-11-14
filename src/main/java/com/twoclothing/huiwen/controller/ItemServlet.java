@@ -265,7 +265,7 @@ public class ItemServlet extends HttpServlet {
 				Item item = itemService.getItemByItemId(itemId);
 				req.setAttribute("item", item);
 
-				String url = "/front_end/item/itemSellerListCompositeQuery.jsp";
+				String url = "/front_end/item/itemSellerSearch.jsp";
 				RequestDispatcher dispatcher = req.getRequestDispatcher(url);
 				dispatcher.forward(req, res);
 			} else {
@@ -311,12 +311,63 @@ public class ItemServlet extends HttpServlet {
 		if (page == null) {
 			String itemNameSearch = req.getParameter("itemNameSearch");
 			req.getSession().setAttribute("itemNameSearch", itemNameSearch);
+System.out.println(itemNameSearch);
 			// 其他參數比照
 			String itemPriceSearchStart = req.getParameter("itemPriceSearchStart");
 			req.getSession().setAttribute("itemPriceSearchStart", itemPriceSearchStart);
 
 			String itemPriceSearchEnd = req.getParameter("itemPriceSearchEnd");
 			req.getSession().setAttribute("itemPriceSearchEnd", itemPriceSearchEnd);
+
+			String itemGrade = req.getParameter("itemGrade");
+			req.getSession().setAttribute("itemGrade", itemGrade);
+System.out.println(itemGrade);
+			
+			String itemSize = req.getParameter("itemSize");
+			req.getSession().setAttribute("itemSize", itemSize);
+			
+//			String itemQuantityStart = req.getParameter("itemQuantityStart");
+//			req.getSession().setAttribute("itemQuantityStart", itemQuantityStart);
+//			
+//			String itemQuantityEnd = req.getParameter("itemQuantityEnd");
+//			req.getSession().setAttribute("itemQuantityEnd", itemQuantityEnd);
+			
+			
+			String itemQuantity = req.getParameter("itemQuantity");
+System.out.println(itemQuantity);
+		    if (itemQuantity != null) {
+		        switch (itemQuantity) {
+		            case "2":
+		                req.getSession().setAttribute("itemQuantityStart", "0");
+		                req.getSession().setAttribute("itemQuantityEnd", "5");
+		                
+System.out.println(req.getSession().getAttribute("itemQuantityEnd"));
+
+		                break;
+		            case "3":
+		                req.getSession().setAttribute("itemQuantityStart", "6");
+		                req.getSession().removeAttribute("itemQuantityEnd"); // 设置为null表示不设上限
+		                break;
+		            default:
+		                req.getSession().removeAttribute("itemQuantityStart");
+		                req.getSession().removeAttribute("itemQuantityEnd");
+		                break;
+		        }
+		    }
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			String itemStatus = req.getParameter("itemStatus");
+			req.getSession().setAttribute("itemStatus", itemStatus);
 			// 後續切頁
 		} else {
 			String itemNameSearch = (String) req.getSession().getAttribute("itemNameSearch");
@@ -333,7 +384,47 @@ public class ItemServlet extends HttpServlet {
 			if (itemPriceSearchEnd != null) {
 				map.put("itemPriceSearchEnd", new String[] { itemPriceSearchEnd });
 			}
+			String itemGrade = (String) req.getSession().getAttribute("itemGrade");
+			if (itemGrade != null) {
+				map.put("itemGrade", new String[] { itemGrade });
+			}
+			String itemSize = (String) req.getSession().getAttribute("itemSize");
+			if (itemSize != null) {
+				map.put("itemSize", new String[] { itemSize });
+			}
+			String itemQuantityStart = (String) req.getSession().getAttribute("itemQuantityStart");
+			if (itemQuantityStart != null) {
+				map.put("itemQuantityStart", new String[] { itemQuantityStart });
+			}
+			String itemQuantityEnd = (String) req.getSession().getAttribute("itemQuantityEnd");
+			if (itemQuantityEnd != null) {
+				map.put("itemQuantityEnd", new String[] { itemQuantityEnd });
+			}
+			
+			
+			
+			
+			
+
+
+
+
+
+
+
+
+			
+			
+			
+			
+			
+			
+			String itemStatus = (String) req.getSession().getAttribute("itemStatus");
+			if (itemStatus != null) {
+				map.put("itemStatus", new String[] { itemStatus });
+			}
 		}
+System.out.println("map:"+map);
 
 		if (map.size() != 0) {
 
