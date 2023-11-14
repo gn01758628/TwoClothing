@@ -1,3 +1,6 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html lang="zh-hant">
 
@@ -17,11 +20,11 @@
 <body>
   <aside class="sidebar">
 	<header>
-         <img src="" id="profile-image" class="profile-image" style="display: none;" >
+         <img src="${pageContext.request.contextPath}/CJImageReader/Employee?id=${employee.empId}" id="profile-image" class="profile-image" >
          
          <div class="personal">
-		    <p>員工編號:<span id="formatEmpId"></span></p>
-		    <p>員工姓名:<span id="empName"></span></p>
+		    <p>員工編號:<span id="formatEmpId">${emp.formatEmpId}</span></p>
+		    <p>員工姓名:<span id="empName">${emp.empName}</span></p>
 		 </div>
 		 
         <div class="profile-btn">
@@ -38,6 +41,10 @@
           
           <ul class="nav-flyout">
           
+            <li>
+              <a href="/TwoClothing/back_end/employee/addEmp.jsp"><i class="ion-ios-color-filter-outline"></i>新增員工資料</a>
+            </li>
+            
             <li>
               <a href="/TwoClothing/back_end/employee/Employee.do?action=get_On_Duty"><i class="ion-ios-color-filter-outline"></i>查看在職員工資料</a>
             </li>
@@ -58,7 +65,7 @@
           
           <ul class="nav-flyout">
             <li>
-              <a href="/TwoClothing/back_"><i class="ion-ios-alarm-outline"></i>查看會員資料</a>
+              <a href=""><i class="ion-ios-alarm-outline"></i>查看會員資料</a>
             </li>
             <li>
               <a href=""><i class="ion-ios-camera-outline"></i></a>
@@ -187,47 +194,47 @@
 <script >
 $(document).ready(function() {
 	
-	$.ajax({
-        url: '/TwoClothing/EmployeeCenter.do', // 替換為後端API的實際URL
-        type: 'POST', // 請求的類型為POST
-        dataType: 'json',
-        data: {
-            action: 'center'
-        }, // 直接傳遞參數
-        success: function(emp) {
-            $('#formatEmpId').text(emp.formatEmpId);
-            $('#empName').text(emp.empName);
-            $('#profile-image').attr('src', "/TwoClothing/CJImageReader/Employee?id="+emp.empId).css('display', 'block');
-        },
-        error: function(xhr, textStatus, errorThrown) {
-            alert("帳號已登出,請重新登入");
-            window.location.href = xhr.responseText; 
-        }
-    });
+// 	$.ajax({
+//         url: '/TwoClothing/EmployeeCenter.do', // 替換為後端API的實際URL
+//         type: 'POST', // 請求的類型為POST
+//         dataType: 'json',
+//         data: {
+//             action: 'center'
+//         }, // 直接傳遞參數
+//         success: function(emp) {
+//             $('#formatEmpId').text(emp.formatEmpId);
+//             $('#empName').text(emp.empName);
+//             $('#profile-image').attr('src', "/TwoClothing/CJImageReader/Employee?id="+emp.empId).css('display', 'block');
+//         },
+//         error: function(xhr, textStatus, errorThrown) {
+//             alert("帳號已登出,請重新登入");
+//             window.location.href = xhr.responseText; 
+//         }
+//     });
 	
 	$('.sidebar a').click(function(event) {
         // 阻止默認的超鏈結行為
         event.preventDefault();
         
      // 驗證帳號是否還在登入狀態
-        $.get('/TwoClothing/EmployeeCenter.do', { action: 'check' })
-            .done(function(emp) {
-            })
-            .fail(function(xhr, textStatus, errorThrown) {
-                alert("帳號已登出,請重新登入");
-                window.location.href = xhr.responseText;
-			});
-        
+//         $.get('/TwoClothing/EmployeeCenter.do', { action: 'check' })
+//             .done(function(emp) {
+//             })
+//             .fail(function(xhr, textStatus, errorThrown) {
+//                 alert("帳號已登出,請重新登入");
+//                 window.location.href = xhr.responseText;
+// 			});
         
 	        // 獲取被點擊的 a 標籤的 href 屬性的值
 	        var hrefValue = $(this).attr('href');
 	        $('#content').attr('src', hrefValue);
+        
     	});
 	
 	
 	$('#logout').click(function() {
 		$.ajax({
-	        url: '/TwoClothing/EmployeeCenter.do', // 替換為後端API的實際URL
+	        url: '/TwoClothing/EmployeeLogin.do', // 替換為後端API的實際URL
 	        type: 'POST', // 請求的類型為POST
 	        data: {
 	            action: 'logout'
@@ -244,8 +251,8 @@ $(document).ready(function() {
 	iframe.onload = function() {
 	  // 獲取 iframe 中載入的具體 URL
 	  const iframeURL = iframe.contentWindow.location.href;
-	  if (iframeURL.includes("")) {
-		  alert("帳號已登出,請重新登入");
+// 	  if (iframeURL.includes("")) {   之後都整合完畢 會改這個 這樣跳轉時iframe不會有畫面  過濾器那邊指定的跳轉頁面也要改成""
+	  if (iframeURL.includes("/TwoClothing/empLogin.html")) {
 		    window.location.href = "/TwoClothing/empLogin.html"; // 替換為實際的跳轉 URL
 		    // 如果是目標 URL，父頁面進行跳轉
 		  }

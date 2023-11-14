@@ -7,8 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -18,14 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import org.apache.commons.imaging.ImageInfo;
-import org.apache.commons.imaging.ImageReadException;
-import org.apache.commons.imaging.Imaging;
-
 import com.twoclothing.model.employee.Employee;
-import com.twoclothing.tonyhsieh.service.EmployeeService;
 import com.twoclothing.tonyhsieh.service.EmployeeServiceImpl;
 import com.twoclothing.utils.generic.GenericService;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 @WebServlet("/back_end/employee/Employee.do")
 @MultipartConfig(fileSizeThreshold = 1024*1024, maxFileSize = 5*1024*1024,maxRequestSize =5*5*1024*1024 )
@@ -84,12 +79,12 @@ public class EmployeeServlet extends HttpServlet {
 			resp.sendRedirect(req.getContextPath() + url);
 			return;
 		}
+		else if("change_Password".equals(action)) {
+			
+		}
 		
 		
 		else if ("getOne_For_Update".equals(action)) { // 來自listAllEmp.jsp的請求
-
-			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
-			req.setAttribute("errorMsgs", errorMsgs);
 			
 				/***************************1.接收請求參數****************************************/
 				Integer empid = Integer.valueOf(req.getParameter("empId"));
@@ -107,7 +102,8 @@ public class EmployeeServlet extends HttpServlet {
 						       "&empName="    +employee.getEmpName()+
 						       "&deptId="   +employee.getDeptId()+
 						       "&empStatus=" +employee.getEmpStatus()+
-								"&avatar=" +employee.getAvatar();
+								"&avatar=" +employee.getAvatar()+
+								"&formatEmpId="+employee.getFormatEmpId();
 				String url = "update_emp_input.jsp"+param;
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
 				successView.forward(req, resp);
@@ -140,6 +136,12 @@ public class EmployeeServlet extends HttpServlet {
 				String phone = req.getParameter("phone").trim();
 				if (phone == null || phone.trim().length() == 0) {
 					errorMsgs.put("phone","手機請勿空白");
+				}else {
+				    // 使用正規表達式檢查手機號碼格式
+				    String phoneRegex = "09\\d{8}";
+				    if (!phone.matches(phoneRegex)) {
+				        errorMsgs.put("phone", "手機號碼格式不正確");
+				    }
 				}
 				
 				String address = req.getParameter("address").trim();
@@ -238,12 +240,18 @@ public class EmployeeServlet extends HttpServlet {
 				if (empname == null || empname.trim().length() == 0) {
 					errorMsgs.put("empname","員工姓名: 請勿空白");
 				} else if(!empname.trim().matches(enameReg)) { //以下練習正則(規)表示式(regular-expression)
-					errorMsgs.put("ename","員工姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
+					errorMsgs.put("empname","員工姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
 	            }
 				
 				String phone = req.getParameter("phone").trim();
 				if (phone == null || phone.trim().length() == 0) {
 					errorMsgs.put("phone","手機請勿空白");
+				}else {
+				    // 使用正規表達式檢查手機號碼格式
+				    String phoneRegex = "09\\d{8}";
+				    if (!phone.matches(phoneRegex)) {
+				        errorMsgs.put("phone", "手機號碼格式不正確");
+				    }
 				}
 												
 				String address = req.getParameter("address").trim();
@@ -261,7 +269,9 @@ public class EmployeeServlet extends HttpServlet {
 				if (pswdhash == null || pswdhash.trim().length() == 0) {
 					errorMsgs.put("pswdhash","密碼請勿空白");
 				}
-								
+				
+				String bcryptHashString = BCrypt.withDefaults().hashToString(12, pswdhash.toCharArray());
+						
 				Part image = null;
 	            try {
 	            	image = req.getPart("avatar");
@@ -290,24 +300,13 @@ public class EmployeeServlet extends HttpServlet {
 				
 				/***************************2.開始新增資料***************************************/
 				EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-				employeeServiceImpl.insert(deptid, empname, phone, address, email, pswdhash,0,avatar);				
+				employeeServiceImpl.insert(deptid, empname, phone, address, email, bcryptHashString,0,avatar);				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "listAllEmp.jsp";
+				String url = "addEmp.jsp";
+				req.setAttribute("success", "新增成功!!");
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 				successView.forward(req, resp);				
 		}
-		
-//		
-//		else {
-//			EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
-//			List<Employee> empList = employeeServiceImpl.getAll();
-//			
-//			/***************************3.查詢完成,準備轉交(Send the Success view)*************/
-//			req.setAttribute("empList", empList); // 資料庫取出的empVO物件,存入req
-//			String url = "/back_end/employee/listAllEmp.jsp";
-//			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
-//			successView.forward(req, resp);
-//		}
         
 	}
 	

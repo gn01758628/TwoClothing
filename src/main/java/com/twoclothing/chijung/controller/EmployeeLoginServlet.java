@@ -29,9 +29,11 @@ import com.twoclothing.tonyhsieh.service.EmployeeService;
 import com.twoclothing.tonyhsieh.service.EmployeeServiceImpl;
 import com.twoclothing.utils.generic.GenericService;
 
-@WebServlet("/EmployeeCenter.do")
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
+@WebServlet("/EmployeeLogin.do")
 @MultipartConfig(fileSizeThreshold = 1024*1024, maxFileSize = 5*1024*1024,maxRequestSize =5*5*1024*1024 )
-public class EmployeeCenterServlet extends HttpServlet {
+public class EmployeeLoginServlet extends HttpServlet {
 	private GenericService gs;
 //	@Override
 	public void init() throws ServletException {
@@ -39,7 +41,7 @@ public class EmployeeCenterServlet extends HttpServlet {
 	}
 	
 	String errorUrl ="/TwoClothing/empLogin.html";
-	String successUrl ="/TwoClothing/empCenter.html";
+	String successUrl ="/TwoClothing/back_end/empCenter.jsp";
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -58,17 +60,17 @@ public class EmployeeCenterServlet extends HttpServlet {
 				login(req,res);
 				break;
 				
-			case "center":
-				center(req,res);
-				break;
+//			case "center":
+//				center(req,res);
+//				break;
 				
 			case "logout":
 				logout(req,res);
 				break;
 				
-			case "check":
-				check(req,res);
-				break;
+//			case "check":
+//				check(req,res);
+//				break;
 		}
 	
 	}
@@ -103,13 +105,14 @@ public class EmployeeCenterServlet extends HttpServlet {
             return;
 		}
         
-        Employee emp;
-        emp = gs.getByPrimaryKey(Employee.class, empid);
+        Employee emp = gs.getByPrimaryKey(Employee.class, empid);
         
-        if( emp == null || !str.equals(emp.getFormatEmpId()) ||  !pwd.equals(emp.getPswdHash())  ){
+        BCrypt.Result result = BCrypt.verifyer().verify(pwd.toCharArray(), emp.getPswdHash());
+        
+        if( emp == null || !str.equals(emp.getFormatEmpId()) ||  !result.verified  ){
         	errorMsgs.put("idOrPassword","編號或密碼輸入錯誤");
         }
-        
+		
         if(!errorMsgs.isEmpty()){
         	res.setContentType("application/json; charset=UTF-8");
     	    PrintWriter out = res.getWriter();
@@ -132,24 +135,24 @@ public class EmployeeCenterServlet extends HttpServlet {
         out.flush();
 	}
 
-	private void center(HttpServletRequest req, HttpServletResponse res) throws IOException{
-		HttpSession  session = req.getSession();
-		Employee emp = (Employee)session.getAttribute("emp");               
-		if (emp == null) {                                      
-			 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			 res.setContentType("text/plain");
-			 res.getWriter().write(errorUrl);
-			 return;
-		} 
-		res.setContentType("application/json; charset=UTF-8");
-		
-	    PrintWriter out = res.getWriter();
-		String empData = new Gson().toJson(emp);
-        out.print(empData);
-        out.flush();
-        return;
-		
-	}
+//	private void center(HttpServletRequest req, HttpServletResponse res) throws IOException{
+//		HttpSession  session = req.getSession();
+//		Employee emp = (Employee)session.getAttribute("emp");               
+//		if (emp == null) {                                      
+//			 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//			 res.setContentType("text/plain");
+//			 res.getWriter().write(errorUrl);
+//			 return;
+//		} 
+//		res.setContentType("application/json; charset=UTF-8");
+//		
+//	    PrintWriter out = res.getWriter();
+//		String empData = new Gson().toJson(emp);
+//        out.print(empData);
+//        out.flush();
+//        return;
+//		
+//	}
 	
 	private void logout(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		
@@ -163,14 +166,14 @@ public class EmployeeCenterServlet extends HttpServlet {
         out.flush();
 	}
 	
-	private void check(HttpServletRequest req, HttpServletResponse res) throws IOException{
-		HttpSession  session = req.getSession();
-		Employee emp = (Employee)session.getAttribute("emp");               
-		if (emp == null) {                                      
-			 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			 res.setContentType("text/plain");
-			 res.getWriter().write(errorUrl);
-			 return;
-		}
-	}
+//	private void check(HttpServletRequest req, HttpServletResponse res) throws IOException{
+//		HttpSession  session = req.getSession();
+//		Employee emp = (Employee)session.getAttribute("emp");               
+//		if (emp == null) {                                      
+//			 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//			 res.setContentType("text/plain");
+//			 res.getWriter().write(errorUrl);
+//			 return;
+//		}
+//	}
 }

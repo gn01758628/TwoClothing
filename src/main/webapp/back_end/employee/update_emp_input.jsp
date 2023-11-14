@@ -89,7 +89,7 @@
 <table>
     <tr>
 		<td>­û¤u½s¸¹:<font color=red><b>*</b></font></td>
-		<td>${param.empId}</td>
+		<td>${param.formatEmpId}</td>
 	</tr>
 
 	<jsp:useBean id="DepartmentServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.service.DepartmentServiceImpl" />

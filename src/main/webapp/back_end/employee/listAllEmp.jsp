@@ -1,4 +1,3 @@
-<%@page import="com.twoclothing.model.permissions.Permissions"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -43,9 +42,7 @@ body {
 </style>
 
 </head>
- <div>
-    <a href="addEmp.jsp">新增</a>
-  </div>
+
 <table id="example" class="display" style="width: 100%">
 	<thead >
 		<tr>
@@ -64,7 +61,7 @@ body {
 	<c:forEach var="employee" items="${empList}">
 	
 		<tr>
-			<td>${employee.empId}</td>
+			<td>${employee.formatEmpId}</td>
 			<td>${employee.empName}</td>
 			<td>${employee.address}</td>
 			<td>${employee.email}</td>
@@ -89,10 +86,10 @@ body {
 			     <input type="hidden" name="empId"  value="${employee.empId}">
 			     <input type="hidden" name="action"	value="getOne_For_Update">
 		     </FORM>
-		     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/employee/Employee.do" style="margin-bottom: 0px;">
+		     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/employee/change_password.jsp" style="margin-bottom: 0px;">
 			     <input type="submit" value="修改密碼">
-			     <input type="hidden" name="empId"  value="${employee.empId}">
-			     <input type="hidden" name="action"	value="getOne_For_Update">
+			     <input type="hidden" name="empName"  value="${employee.empName}">
+			     <input type="hidden" id="change_Password_btn" name="action" value="change_Password">
 		     </FORM>
 		     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/employee/Employee.do" style="margin-bottom: 0px;right:0;display:fixed;">
 			     <c:choose>
@@ -106,14 +103,5 @@ body {
 		</tr>
 	</c:forEach>
 </table>
-<script>
-	let initialOrder = [[1,'asc']];
-	
-	$(document).ready(function(){
-		let dataTable = $('#yourDataTable').DataTable({
-			order:
-		})
-	})
-</script>
 </body>
 </html>

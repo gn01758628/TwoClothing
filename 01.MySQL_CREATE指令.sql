@@ -401,16 +401,16 @@ CREATE TABLE employee
 
 -- 表格：員工 插入假資料
 INSERT INTO employee (deptid, empname, phone, address, email, pswdhash, empstatus,empmissions)
-VALUES (1, '張三', '0912345678', '台北市中正區123號', 'zhangsan@example.com', 'password1', 0,'11000000'),
-       (2, '李四', '0923456789', '台北市大安區456號', 'lisi@example.com', 'password2', 1,'01100000'),
-       (3, '王五', '0934567890', '台北市信義區789號', 'wangwu@example.com', 'password3', 0,'00011100'),
-       (1, '陳六', '0945678901', '台北市松山區101號', 'chenliu@example.com', 'password4', 0,'00000011'),
-       (2, '趙七', '0956789012', '台北市中山區202號', 'zhaoqi@example.com', 'password5', 1,'11000000'),
-       (3, '孫八', '0967890123', '台北市大同區303號', 'sunba@example.com', 'password6', 0,'01100000'),
-       (1, '周九', '0978901234', '台北市萬華區404號', 'zhoujiu@example.com', 'password7', 0,'00011100'),
-       (2, '吳十', '0989012345', '台北市文山區505號', 'wushi@example.com', 'password8', 1,'00000011'),
-       (3, '劉十一', '0990123456', '台北市南港區606號', 'liuyi@example.com', 'password9', 0,'11111111'),
-       (1, '蔡十二', '0912233445', '台北市北投區707號', 'caishier@example.com', 'password10', 0,'00000000');
+VALUES (1, '張三', '0912345678', '台北市中正區123號', 'zhangsan@example.com', '$2a$12$ge8vavXJ721wWNdYQqEZdulwCYrH3M6ldh70uDlgAqWMMEY0.6dqG', 0,'11000000'),
+       (2, '李四', '0923456789', '台北市大安區456號', 'lisi@example.com', '$2a$12$vnK8ufIPn8/wbqqR7qOn2uYc8Rbn3CbSSF5XHX/Mojy5abZAH0rOO', 1,'01100000'),
+       (3, '王五', '0934567890', '台北市信義區789號', 'wangwu@example.com', '$2a$12$CLhZ6y0U10VIvlBHDqrWYOVQ.ZZHnL0KTQt6GfmXszWEFLaZC7612', 0,'00011100'),
+       (1, '陳六', '0945678901', '台北市松山區101號', 'chenliu@example.com', '$2a$12$FvmYeCRuxXbOWclvTZ5.c.Dy4V9lh1BSWDXl5e7saB3JbS11eJY7i', 0,'00000011'),
+       (2, '趙七', '0956789012', '台北市中山區202號', 'zhaoqi@example.com', '$2a$12$YjcqHX4GvXxGTH.vORZa3OBerkavVzCIvCafWzq7QRcZ301kiNRmW', 1,'11000000'),
+       (3, '孫八', '0967890123', '台北市大同區303號', 'sunba@example.com', '$2a$12$kYFwxNGmGUjpPOMHK0o0gOLKHVDDXP32w9uiUBjE5NC1z9QsN3Lti', 0,'01100000'),
+       (1, '周九', '0978901234', '台北市萬華區404號', 'zhoujiu@example.com', '$2a$12$AjaI67SmrK7rw.gE1xCVXe2tMROQsXC0bcohRJz7jIaImLOxg3l7a', 0,'00011100'),
+       (2, '吳十', '0989012345', '台北市文山區505號', 'wushi@example.com', '$2a$12$NWXPKvXoOhoZRmY69s6Br.8DCEtNfaGx4GtjMO9L8LluGHSsmOTD2', 1,'00000011'),
+       (3, '劉十一', '0990123456', '台北市南港區606號', 'liuyi@example.com', '$2a$12$BZkb90iKZZDpxXZs5iWE7OvI9TtIUk0TXNfY57fiF8rB9vLCwFaw.', 0,'11111111'),
+       (1, '蔡十二', '0912233445', '台北市北投區707號', 'caishier@example.com', '$2a$12$kQRH5CBWSWW2jC2HjVyC6.YR7upxxaobWVqFUytWQtvWiXatpkuNS', 0,'00000000');
 
 -- 表格：員工 檢查
 -- SELECT * FROM employee;
