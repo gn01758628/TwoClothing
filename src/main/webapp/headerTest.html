@@ -61,14 +61,24 @@
         }
 
         @media screen and (max-width: 1399.2px) {
+
             .linkText {
-                display:none;
+                display: none;
+            }
+
+            .linkIcon {
+                font-size: 20px;
             }
         }
 
-        @media screen and (max-width: 1399.2px) {
+        @media screen and (max-width: 991.2px) {
+
             .linkText {
-                display:none;
+                display: inline-block;
+            }
+
+            .linkIcon {
+                font-size: 14px;
             }
         }
 
@@ -81,8 +91,10 @@
     <div id="scroll-progress"></div>
     <nav class="navbar navbar-expand-lg bg-white sticky-top navbar-light p-3 shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="#"><img src="images/Mainicon.png"
-                                                  style="height: 50px"><strong>TwoClothing</strong></a>
+            <a class="navbar-brand" href="#">
+                <img src="images/Mainicon.png" style="height: 50px">
+                <strong>TwoClothing</strong>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
                     aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -108,19 +120,19 @@
                 <ul class="navbar-nav ms-auto ">
                     <li class="nav-item">
                         <a class="nav-link mx-2" href="#">
-                            <i class="fa-solid fa-shirt linkIcon "></i>
+                            <i class="fa-solid fa-shirt linkIcon"></i>
                             <span class="linkText">商品分類</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link mx-2" href="#">
-                            <i class="fa-solid fa-sack-dollar linkIcon "></i>
+                            <i class="fa-solid fa-sack-dollar linkIcon"></i>
                             <span class="linkText">賣東西</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link mx-2" href="#">
-                            <i class="fa-solid fa-scale-balanced linkIcon "></i>
+                            <i class="fa-solid fa-scale-balanced linkIcon"></i>
                             <span class="linkText">競標專區</span>
                         </a>
                     </li>
@@ -138,13 +150,13 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link mx-2" href="#">
-                            <i class="fa-solid fa-cart-shopping linkIcon "></i>
+                            <i class="fa-solid fa-cart-shopping linkIcon"></i>
                             <span class="linkText">購物車</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link mx-2" href="#">
-                            <i class="fa-solid fa-circle-user linkIcon "></i>
+                            <i class="fa-solid fa-circle-user linkIcon"></i>
                             <span class="linkText">會員中心</span>
                         </a>
                     </li>
@@ -184,12 +196,12 @@
             if (prevScrollPos < currentScrollPos && currentScrollPos > scrollPositionThreshold) {
                 if (!isNavCollapsed) {
                     isNavCollapsed = true;
-                    $("#nav-top").slideUp(300);
+                    $("header").slideUp(300);
                 }
             } else {
                 if (isNavCollapsed) {
                     isNavCollapsed = false;
-                    $("#nav-top").slideDown(300);
+                    $("header").slideDown(300);
                 }
             }
             prevScrollPos = currentScrollPos;
