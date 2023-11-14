@@ -1,0 +1,201 @@
+<!doctype html>
+<!--suppress ALL -->
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>導覽列</title>
+    <!--bootstrap5-->
+    <link rel="stylesheet" href="/TwoClothing/css/bootstrap5/bootstrap.min.css">
+    <!--google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!--Font Awesome-->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            margin-top: 130px;
+        }
+
+        #scroll-progress {
+            height: 3px;
+            background-color: #ee90aa;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            z-index: 9999;
+            transition: width 0.1s;
+        }
+
+        header {
+            background-color: #fff8fb;
+        }
+
+        a {
+            font-size: 14px;
+            font-weight: 700
+        }
+
+        .superNav {
+            font-size: 13px;
+        }
+
+        .form-control {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        @media screen and (max-width: 540px) {
+            .centerOnMobile {
+                text-align: center
+            }
+        }
+
+        @media screen and (max-width: 1399.2px) {
+            .linkText {
+                display:none;
+            }
+        }
+
+        @media screen and (max-width: 1399.2px) {
+            .linkText {
+                display:none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<header class="fixed-top">
+    <!-- 頁面進度條 -->
+    <div id="scroll-progress"></div>
+    <nav class="navbar navbar-expand-lg bg-white sticky-top navbar-light p-3 shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#"><img src="images/Mainicon.png"
+                                                  style="height: 50px"><strong>TwoClothing</strong></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="mx-auto my-3 d-lg-none d-sm-block d-xs-block">
+                <div class="input-group">
+                    <span class="border-warning input-group-text bg-warning text-white"><i
+                            class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" class="form-control border-warning" style="color:#7a7a7a">
+                    <button class="btn btn-warning text-white">Search</button>
+                </div>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <div class="ms-auto d-none d-lg-block">
+                    <div class="input-group">
+                        <span class="border-warning input-group-text bg-warning text-white"><i
+                                class="fa-solid fa-magnifying-glass"></i></span>
+                        <input type="text" class="form-control border-warning" style="color:#7a7a7a">
+                        <button class="btn btn-warning text-white">Search</button>
+                    </div>
+                </div>
+                <ul class="navbar-nav ms-auto ">
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="#">
+                            <i class="fa-solid fa-shirt linkIcon "></i>
+                            <span class="linkText">商品分類</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="#">
+                            <i class="fa-solid fa-sack-dollar linkIcon "></i>
+                            <span class="linkText">賣東西</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="#">
+                            <i class="fa-solid fa-scale-balanced linkIcon "></i>
+                            <span class="linkText">競標專區</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="#">
+                            <i class="fa-solid fa-comments linkIcon"></i>
+                            <span class="linkText">即時通</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="#">
+                            <i class="fa-solid fa-bell linkIcon"></i>
+                            <span class="linkText">系統通知</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="#">
+                            <i class="fa-solid fa-cart-shopping linkIcon "></i>
+                            <span class="linkText">購物車</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="#">
+                            <i class="fa-solid fa-circle-user linkIcon "></i>
+                            <span class="linkText">會員中心</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+<div class="container-fluid" style="height: 9000px; background-color: #e1c1c1;">
+</div>
+
+
+<!--bootstrap5-->
+<script src="/TwoClothing/js/bootstrap5/popper.min.js"></script>
+<script src="/TwoClothing/js/bootstrap5/bootstrap.min.js"></script>
+<!--jQuery-->
+<script src="/TwoClothing/js/jQuery/jquery-3.7.1.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // 頁面進度條
+        $(document).scroll(function () {
+            const scrollHeight = $(document).height() - $(window).height();
+            const scrollTop = $(window).scrollTop();
+            const scrollProgress = (scrollTop / scrollHeight) * 100;
+            $("#scroll-progress").css("width", scrollProgress + "%");
+        });
+        // 視窗滾動決定導覽列收縮
+        let prevScrollPos = $(window).scrollTop();
+        const scrollPositionThreshold = 400;
+        let isNavCollapsed = false;
+
+        $(window).scroll(function () {
+            let currentScrollPos = $(window).scrollTop();
+            if (prevScrollPos < currentScrollPos && currentScrollPos > scrollPositionThreshold) {
+                if (!isNavCollapsed) {
+                    isNavCollapsed = true;
+                    $("#nav-top").slideUp(300);
+                }
+            } else {
+                if (isNavCollapsed) {
+                    isNavCollapsed = false;
+                    $("#nav-top").slideDown(300);
+                }
+            }
+            prevScrollPos = currentScrollPos;
+        });
+    });
+</script>
+
+</body>
+</html>
