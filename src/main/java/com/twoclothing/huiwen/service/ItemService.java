@@ -52,4 +52,5 @@ public interface ItemService {
     List<ShipSetting> getSettingByMbrId(Integer mbrId);
     
     Integer getMbrIdByItemId(Integer itemId);
+
 }

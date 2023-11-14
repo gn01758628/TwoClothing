@@ -43,7 +43,7 @@ public class BalanceHistoryServlet extends HttpServlet{
 			successView.forward(req, res);
 			
 		}
-		//連去搜尋
+		//連去搜尋，直接顯示查全部
 		if("search".equals(choice)) {
 			List<BalanceHistory> balanceHistoryList = BHSvc.getAllBH();
 			req.setAttribute("BHList", balanceHistoryList);

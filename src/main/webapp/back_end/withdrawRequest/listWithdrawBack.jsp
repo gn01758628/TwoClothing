@@ -1,108 +1,222 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.*"%>
-<%-- ¦¹­¶½m²ß±Ä¥Î EL ªº¼gªk¨ú­È --%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>·|­ûµêÀÀ¿ú¥]´£´Ú¥Ó½Ğ¬d¸ßµ²ªG</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-	body {
-		display:flex;
-		justy-content:center;
- 		flex-direction: column;
- 		align-items: center;
-	}
-  table#table-1 {
-	background-color: #BEBEBE;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
+	<title>è™›æ“¬éŒ¢åŒ…ææ¬¾å¯©æ ¸</title>
 
-<style>
-  table {
-	width: 1000px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
+	<style>
+		*{
+			box-sizing: border-box;
+		}
+		body{
+			height: 100%;
+			width: 100%;
+		}
+		main.main{
+
+			height: 100%;
+			width: 100%;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			padding: 10px;
+
+		}
+		main.main div{
+			position: relative;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			height: 100%;
+			width: 90%;
+		}
+		table{
+			width: 100%;
+			padding: 10px;
+			border-collapse: collapse;
+
+
+		}
+		
+		form.form_update{
+			width:90%;
+			height:100%;
+			position: relative;
+		}
+		table thead.head tr{
+			border: 1px solid black;
+			background-color: rgb(255, 234, 208);
+			height: 40px;
+
+		}
+		
+
+
+		table tbody.body tr{
+			border: 1px solid black;
+			height: 50px;
+		}
+
+		table tbody.body tr th, td{
+			text-align: center;
+		} 
+
+		button{
+			width: 100px;
+			height: 30px;
+			margin: 10px;
+			background-color: rgb(255, 234, 208);
+			font-size: 16px;
+			border: 2px solid gray;
+			position: absolute;
+    		right: 0px;
+		}
+		button:hover{
+			box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.2);
+			cursor: pointer;
+		}
+
+		label:hover{
+			cursor: pointer;
+		}
+	</style>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
-	
-  }
-  table, th, td {
-    border: 1px solid #BEBEBE;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  }
-
-  
- 
-  
-</style>
-
 </head>
-<body bgcolor='white'>
+<body>
 
-<table id="table-1">
-	<tr><td>
-		 <h3>·|­ûµêÀÀ¿ú¥]´£´Ú¥Ó½Ğ¬d¸ßµ²ªG</h3>
-		 <h4><a href="${pageContext.request.contextPath}/front_end/withdrawRequest/WRMain.jsp">¦^­º­¶</a></h4>
-	</td></tr>
-</table>
-
-<table>
-	<tr>
-		<th>´£´Ú¥Ó½Ğ½s¸¹</th>
-		<th>·|­û½s¸¹</th>
-		<th>´£´Úª÷ÃB</th>
-		<th>¶×¤J±b¸¹</th>
-		<th>¥Ó½Ğ¤é´Á</th>
-		<th>¥Ó½Ğª¬ºA</th>
-		<th>­û¤u½s¸¹</th>
-		<th>¼f®Ö¤é´Á</th>
-		<th>³Æµù</th>
-		<th>­×§ï</th>
+	<main class="main">
+		<h2>è™›æ“¬éŒ¢åŒ…ææ¬¾å¯©æ ¸</h2>
 	
-		
-	</tr>
-<%-- 	<%@ include file="page1.file" %>  --%>
-	<c:forEach var="withdrawRequest" items="${WRList}">
-		
-		<tr>
-			<td>${withdrawRequest.wrId}</td>
-			<td>${withdrawRequest.mbrId}</td>
-			<td>${withdrawRequest.amount}</td>
-			<td>${withdrawRequest.mbrAccount}</td>
-			<td>${withdrawRequest.reqDate}</td>
-			<td>${withdrawRequest.reqStatus}</td>
-			<td>${withdrawRequest.empId}</td>
-			<td>${withdrawRequest.checkDate}</td>
-			<td>${withdrawRequest.note}</td>
-			<td>
-			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/WithdrawRequest/Update" style="margin-bottom: 0px;">
-			     <input type="submit" value="­×§ï">
-			     <input type="hidden" name="wrId"  value="${withdrawRequest.wrId}">
-			     <input type="hidden" name="choice"	value="getStatusList">
-			  </FORM>
-			</td>
-		</tr>
+		<div>
+			<form class="form_update" method="post" action="${pageContext.request.contextPath}/WithdrawRequest/Update">
+				<table>
+					<thead class="head">
+						<tr>
+							<th>ç·¨è™Ÿ</th>
+							<th>æœƒå“¡ç·¨è™Ÿ</th>
+							<th>ææ¬¾é‡‘é¡</th>
+							<th>åŒ¯å…¥å¸³è™Ÿ</th>
+							<th>ç”³è«‹æ—¥æœŸ</th>
+							<th>ç”³è«‹ç‹€æ…‹</th>
+							<th>å‚™è¨»</th>
+							<th>å¯©æ ¸</th>
+						</tr>
+					</thead>
+					
+					<tbody class="body">
+						<c:forEach var="withdrawRequest" items="${WRList}" varStatus="loop">
+	<%-- 					<input type="hidden" name="wrId" value="${withdrawRequest.wrId}"> --%>
+							<tr>
+								<td>${loop.index+1}</td>
+								<td>${withdrawRequest.mbrId}</td>
+								<td>${withdrawRequest.amount}</td>
+								<td>${withdrawRequest.mbrAccount}</td>
+								<td>${withdrawRequest.reqDate}</td>
+								<td class="status">${withdrawRequest.reqStatus}</td>
+								<td>${withdrawRequest.note}</td>
+								<td>
+							<input type="hidden" name="wrId"  value="${withdrawRequest.wrId}">
+									<label for="pass_${withdrawRequest.wrId}_${loop.index}">
+										<input type="radio" name="status_${withdrawRequest.wrId}" id="pass_${withdrawRequest.wrId}_${loop.index}" value="1">
+										é€šé
+									</label>
+									<label for="dis_${withdrawRequest.wrId}_${loop.index}">
+										<input type="radio" name="status_${withdrawRequest.wrId}" id="dis_${withdrawRequest.wrId}_${loop.index}" value="2">
+										ä¸é€šé
+									</label>
+								</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+				<input type="hidden" name="choice"	value="UpdateStatus">
+				<button type="button" class="submitBtn">ç¢ºèª</button>
+			</FORM>
+		</div>
+	</main>
 
-	</c:forEach>
-</table>
-<%-- <%@ include file="page2.file" %> --%>
+	<script>
+	$(".submitBtn").click(function(){
+		var statusarr=[];
+		var selectedValue ;
+		var wrId ;
+		var amount;
+		var btnElement = $(this);
+		$('input[name^="status_"]:checked').each(function() {			
+			selectedValue = $(this).val();
+	        wrId = $(this).closest('tr').find('input[name="wrId"]').val();
+	        console.log(wrId);
+	        statusarr.push({ wrId: wrId, status: selectedValue});
+		
+		});
+
+		var formDataObject = {};
+		statusarr.forEach(function (item, index) {
+		    formDataObject['wrId_' + index] = item.wrId;
+		    formDataObject['reqStatus_' + index] = item.status;
+		});
+
+   		let formDataUrlEncoded = new URLSearchParams(formDataObject);
+   		console.log(formDataUrlEncoded);
+
+		 fetch("${pageContext.request.contextPath}/WithdrawRequest/withdraw?choice=UpdateStatus", {
+		    method: "post",
+		    body: formDataUrlEncoded
+		 })
+		 .then(function (response) {
+			    console.log(response); // è¼¸å‡ºå®Œæ•´çš„ response ç‰©ä»¶
+
+		 	return response.json();
+		 })
+		 
+		 
+		 
+		 
+		 .then(function (data) {
+		 	console.log(data);
+		 	switch(data.message){
+		 		case "ok":
+		 			window.alert("å¯©æ ¸æˆåŠŸï¼");
+		 			break;
+		 		case "out_of_e_wallet":
+		 			window.alert("å¯©æ ¸å¤±æ•—");
+		 			break;
+		 		default:
+		 			window.alert(data.message);
+		 			break;
+		 	}
+		 });
+		 
+			if($(".status").text() != "0"){
+				btnElement.closest("tr").hide();
+					console.log($(".status").text());
+				}
+	});
+	
+	$(document).ready(function() {
+		$(".status").each(function () {
+			let status = $(this).text();
+			switch(status){
+				case "0":
+					$(this).text("å¾…å¯©æ ¸");
+				break;
+				case "1":
+					$(this).text("å·²é€šé");
+				break;
+				case "2":
+					$(this).text("æœªé€šé");
+				break;
+				}
+			})
+	});
+	
+	</script>
 
 </body>
 </html>

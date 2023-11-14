@@ -15,9 +15,9 @@ public class ChatRoomFrontServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Integer mbrId = (Integer) session.getAttribute("mbrId");
-        Integer targetId = Integer.parseInt(request.getPathInfo().split("[/.]")[1]);
-        request.setAttribute("mbrId", mbrId);
+        String targetId = request.getPathInfo().split("[/.]")[1];
         request.setAttribute("targetId", targetId);
+        request.setAttribute("mbrId", mbrId);
         request.getRequestDispatcher("/front_end/chatroom/ChatRoom.jsp").forward(request, response);
     }
 }

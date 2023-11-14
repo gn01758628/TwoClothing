@@ -7,23 +7,23 @@ import org.hibernate.SessionFactory;
 
 import com.twoclothing.model.balancehistory.BalanceHistory;
 
-public class WithdrawRequestHibernateDAO implements WithdrawRequestDAO{
-	
+public class WithdrawRequestHibernateDAO implements WithdrawRequestDAO {
+
 	private SessionFactory factory;
 
 	public WithdrawRequestHibernateDAO(SessionFactory factory) {
 		this.factory = factory;
 	}
-	
+
 	private Session getSession() {
 		return factory.getCurrentSession();
 	}
-	
+
 	@Override
 	public int insert(WithdrawRequest withdrawRequest) {
 		Integer wrId = (Integer) getSession().save(withdrawRequest);
 		return wrId;
-		
+
 	}
 
 	@Override
@@ -34,36 +34,56 @@ public class WithdrawRequestHibernateDAO implements WithdrawRequestDAO{
 
 	@Override
 	public List<WithdrawRequest> getAll() {
-		return getSession().createQuery("from WithdrawRequest", WithdrawRequest.class).list();
+		return getSession().createQuery("from WithdrawRequest order by wrId desc", WithdrawRequest.class).list();
 
 	}
 
 	@Override
 	public List<WithdrawRequest> getAllByEmpId(Integer empId) {
-		return getSession().createQuery("from WithdrawRequest where empId = :empId", WithdrawRequest.class).setParameter("empId", empId).list();
+		return getSession().createQuery("from WithdrawRequest where empId = :empId", WithdrawRequest.class)
+				.setParameter("empId", empId).list();
 
 	}
 
 	@Override
 	public List<WithdrawRequest> getAllByMbrId(Integer mbrId) {
-		return getSession().createQuery("from WithdrawRequest where mbrId = :mbrId", WithdrawRequest.class).setParameter("mbrId", mbrId).list();
+		return getSession()
+				.createQuery("from WithdrawRequest where mbrId = :mbrId order by wrId desc", WithdrawRequest.class)
+				.setParameter("mbrId", mbrId).list();
 
 	}
 
 	@Override
 	public List<WithdrawRequest> getAllByReqStatus(Integer reqstatus) {
-		return getSession().createQuery("from WithdrawRequest where reqstatus = :reqstatus", WithdrawRequest.class).setParameter("reqstatus", reqstatus).list();
+		return getSession().createQuery("from WithdrawRequest where reqstatus = :reqstatus", WithdrawRequest.class)
+				.setParameter("reqstatus", reqstatus).list();
 
 	}
 
 	@Override
-	public int update(WithdrawRequest withdrawRequest) {
+	public int update(List<WithdrawRequest> withdrawRequest) {
 		try {
-			getSession().update(withdrawRequest);
-			return 1;
+	        for (WithdrawRequest wr : withdrawRequest) {
+	            getSession().update(wr);
+	        }
+	            return 1;
 		}catch(Exception e) {
 			return -1;
 		}
+		
 	}
 
+	@Override
+	public Integer getBalanceByMbrId(Integer mbrId) {
+		return (Integer) getSession().createQuery("select balance from Members  where mbrId = :mbrId")
+				.setParameter("mbrId", mbrId).uniqueResult();
+	}
+
+	@Override
+	public List<WithdrawRequest> getByStatus() {
+		return getSession()
+				.createQuery("from WithdrawRequest where reqStatus = 0 order by wrId desc", WithdrawRequest.class)
+				.list();
+
+	}
 }
