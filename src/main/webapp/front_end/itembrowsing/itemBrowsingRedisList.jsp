@@ -53,7 +53,9 @@
 
 	<a href="${pageContext.request.contextPath}">回首頁</a>
 
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
-	<script src="js/jQquery/jquery-3.7.1.min.js"></script>
 </body>
 </html>

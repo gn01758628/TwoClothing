@@ -1,5 +1,6 @@
 package com.twoclothing.chi.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.twoclothing.chi.service.ItemReportService;
 import com.twoclothing.chi.service.ItemReportServiceImpl;
 import com.twoclothing.model.aproduct.itemreport.ItemReport;
@@ -54,11 +57,12 @@ public class ItemReportBackServlet extends HttpServlet {
 			url = getCompositeQuery(req, res);
 			break;
 		case "getOne":
-			url = getItemReport(req, res);
-			break;
+			req.getParameter("reportId");
+			getItemReport(req, res);
+			return;
 		case "update":
-			url = updateItemReport(req, res);
-			break;
+			updateItemReport(req, res);
+			return;
 		default:
 			url = "/back_end/itemreport/itemReportManageIndex.jsp";
 		}
@@ -133,34 +137,58 @@ public class ItemReportBackServlet extends HttpServlet {
 		return "/back_end/itemreport/itemReportManageList.jsp";
 	}
 
-	private String getItemReport(HttpServletRequest req, HttpServletResponse res) {
+	private void getItemReport(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		Integer reportId = Integer.parseInt(req.getParameter("reportId"));
 		ItemReport itemReport = itemReportService.getByPrimaryKey(reportId);
 
-		Map<Integer, String> rStatusMap = new HashMap<>();
-		rStatusMap.put(0, "待審核");
-		rStatusMap.put(1, "已審核");
+//		Map<Integer, String> rStatusMap = new HashMap<>();
+//		rStatusMap.put(0, "待審核");
+//		rStatusMap.put(1, "已審核");
+//
+//		req.setAttribute("itemReport", itemReport);
+//		req.setAttribute("rStatusMap", rStatusMap);
 
-		req.setAttribute("itemReport", itemReport);
-		req.setAttribute("rStatusMap", rStatusMap);
+		setJsonResponse(res, itemReport);
 
-		return "/back_end/itemreport/itemReportManageUpdate.jsp";
+//		return "/back_end/itemreport/itemReportManageUpdate.jsp";
 	}
 
-	private String updateItemReport(HttpServletRequest req, HttpServletResponse res) {
-		Integer reportId = Integer.parseInt(req.getParameter("reportId"));
-		ItemReport itemReport = itemReportService.getByPrimaryKey(reportId);
+	private void updateItemReport(HttpServletRequest req, HttpServletResponse res) throws IOException {
+//		Integer reportId = Integer.parseInt(req.getParameter("reportId"));
 		
+		BufferedReader reader = req.getReader();
+		StringBuilder jsonInput = new StringBuilder();
+		String line;
+
+		while ((line = reader.readLine()) != null) {
+			jsonInput.append(line);
+		}
+
+		Gson gson = new Gson();
+		Map<String, Object> updateRequest = gson.fromJson(jsonInput.toString(), new TypeToken<Map<String, Object>>() {
+		}.getType());
+
+		int reportId = -1; // 預設值或者你認為合適的值
+
+		if (updateRequest != null && updateRequest.containsKey("reportId")) {
+		    reportId = Integer.parseInt(updateRequest.get("reportId").toString());
+		}
+		
+		ItemReport itemReport = itemReportService.getByPrimaryKey(reportId);
+
 //		int empId = Integer.parseInt(req.getParameter("empId"));
+//		int empId = Integer.parseInt(updateRequest.get("empId").toString());
 		int empId = 1; // 測試用，到時這行可刪
-		int result = Integer.parseInt(req.getParameter("result"));
-		String note = req.getParameter("note");
+//		int result = Integer.parseInt(req.getParameter("result"));
+//		String note = req.getParameter("note");
+		int result = Integer.parseInt(updateRequest.get("result").toString());
+	    String note = (String) updateRequest.get("note");
 
-		List<String> errorMsgs = new LinkedList<String>();
+//		List<String> errorMsgs = new LinkedList<String>();
 
-		if (result == -1) {
-			errorMsgs.add("請進行處分");
-		} else {
+//		if (result == -1) {
+//			errorMsgs.add("請進行處分");
+//		} else {
 			itemReport.setEmpId(empId);
 			itemReport.setrStatus(1);
 			Timestamp auditdate = new Timestamp(System.currentTimeMillis());
@@ -184,13 +212,25 @@ public class ItemReportBackServlet extends HttpServlet {
 
 			notice.setLink("/front/itemreport?action=getAllByMbrId&mbrId=${mbrId}"); // 到時加上連結至(會員前台)我的檢舉
 			itemReportService.addNotice(notice, itemReport.getMbrId());
-		}
+//		}
 
-		if (!errorMsgs.isEmpty()) {
-			req.setAttribute("errorMsgs", errorMsgs);
-			return "/back/itemreport?action=getOne";
-		}
+//		if (!errorMsgs.isEmpty()) {
+//			req.setAttribute("errorMsgs", errorMsgs);
+//			return "/back/itemreport?action=getOne";
+//		}
 
-		return "/back/itemreport?action=getAll";
+//		return "/back/itemreport?action=getAll";
+			
+		String updatedItemReportJson = gson.toJson(itemReport);
+		
+		setJsonResponse(res, updatedItemReportJson);
+	}
+
+	private void setJsonResponse(HttpServletResponse res, Object obj) throws IOException {
+		Gson gson = new Gson();
+		String jsonData = gson.toJson(obj);
+		res.setContentType("application/json");
+		res.setCharacterEncoding("UTF-8");
+		res.getWriter().write(jsonData);
 	}
 }
