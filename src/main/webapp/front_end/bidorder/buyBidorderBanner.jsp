@@ -32,40 +32,34 @@
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
 	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
 	<input type="hidden" name="action" value="buyBidOrder0">
-	<input type="submit" value="待付款">
+	<input type="submit" value="買家待付款">
 	</FORM>
 	
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
 	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
 	<input type="hidden" name="action" value="buyBidOrder1">
-	<input type="submit" value="待出貨">
+	<input type="submit" value="買家待賣家出貨">
 	</FORM>
 	
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
 	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
 	<input type="hidden" name="action" value="buyBidOrder2">
-	<input type="submit" value="待收貨">
+	<input type="submit" value="買家待收貨">
 	</FORM>
 	
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
 	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
 	<input type="hidden" name="action" value="buyBidOrder3">
-	<input type="submit" value="交易完成">
+	<input type="submit" value="買家交易完成">
 	</FORM>
-	
+
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
 	<input type="hidden" name="buyMbrId" value="${user.mbrId}">
 	<input type="hidden" name="action" value="buyBidOrder4">
-	<input type="submit" value="不成立">
+	<input type="submit" value="買家不成立">
 	</FORM>
 </div>
-<!--	
-  	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">
-	<input type="hidden" name="sellMbrId" value="${user.mbrId}">
-	<input type="hidden" name="action" value="sellBidOrder">
-	<input type="submit" value="賣家競標訂單">
-	</FORM>
--->			
+	
 
 </body>
 </html>
