@@ -1,6 +1,5 @@
 package com.twoclothing.chi.controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.twoclothing.chi.service.ItemReportService;
 import com.twoclothing.chi.service.ItemReportServiceImpl;
 import com.twoclothing.model.aproduct.itemreport.ItemReport;
@@ -154,64 +152,44 @@ public class ItemReportBackServlet extends HttpServlet {
 	}
 
 	private void updateItemReport(HttpServletRequest req, HttpServletResponse res) throws IOException {
-//		Integer reportId = Integer.parseInt(req.getParameter("reportId"));
-		
-		BufferedReader reader = req.getReader();
-		StringBuilder jsonInput = new StringBuilder();
-		String line;
-
-		while ((line = reader.readLine()) != null) {
-			jsonInput.append(line);
-		}
-
-		Gson gson = new Gson();
-		Map<String, Object> updateRequest = gson.fromJson(jsonInput.toString(), new TypeToken<Map<String, Object>>() {
-		}.getType());
-
-		int reportId = -1; // 預設值或者你認為合適的值
-
-		if (updateRequest != null && updateRequest.containsKey("reportId")) {
-		    reportId = Integer.parseInt(updateRequest.get("reportId").toString());
-		}
-		
+		Integer reportId = Integer.parseInt(req.getParameter("reportId"));
+		System.out.println(reportId);
 		ItemReport itemReport = itemReportService.getByPrimaryKey(reportId);
 
 //		int empId = Integer.parseInt(req.getParameter("empId"));
-//		int empId = Integer.parseInt(updateRequest.get("empId").toString());
 		int empId = 1; // 測試用，到時這行可刪
-//		int result = Integer.parseInt(req.getParameter("result"));
-//		String note = req.getParameter("note");
-		int result = Integer.parseInt(updateRequest.get("result").toString());
-	    String note = (String) updateRequest.get("note");
+		int result = Integer.parseInt(req.getParameter("result"));
+		System.out.println("result: " + result);
+		String note = req.getParameter("note");
 
 //		List<String> errorMsgs = new LinkedList<String>();
 
 //		if (result == -1) {
 //			errorMsgs.add("請進行處分");
 //		} else {
-			itemReport.setEmpId(empId);
-			itemReport.setrStatus(1);
-			Timestamp auditdate = new Timestamp(System.currentTimeMillis());
-			itemReport.setAuditDate(auditdate);
-			itemReport.setResult(result);
-			itemReport.setNote(note);
+		itemReport.setEmpId(empId);
+		itemReport.setrStatus(1);
+		Timestamp auditdate = new Timestamp(System.currentTimeMillis());
+		itemReport.setAuditDate(auditdate);
+		itemReport.setResult(result);
+		itemReport.setNote(note);
 
-			itemReportService.updateItemReport(itemReport);
+		itemReportService.updateItemReport(itemReport);
 
-			Notice notice = new Notice();
-			notice.setType("檢舉審核結果");
-			notice.setHead("請確認商品檢舉審核結果");
+		Notice notice = new Notice();
+		notice.setType("檢舉審核結果");
+		notice.setHead("請確認商品檢舉審核結果");
 
-			if (result == 0) {
-				notice.setContent("商品檢舉審核為「處分」結果，請至「我的檢舉」查看。");
-				notice.setImageLink("/images/report0.png");
-			} else if (result == 1) {
-				notice.setContent("商品檢舉審核為「不處分」結果，請至「我的檢舉」查看。");
-				notice.setImageLink("/images/report1.png");
-			}
+		if (result == 0) {
+			notice.setContent("商品檢舉審核為「處分」結果，請至「我的檢舉」查看。");
+			notice.setImageLink("/images/report0.png");
+		} else if (result == 1) {
+			notice.setContent("商品檢舉審核為「不處分」結果，請至「我的檢舉」查看。");
+			notice.setImageLink("/images/report1.png");
+		}
 
-			notice.setLink("/front/itemreport?action=getAllByMbrId&mbrId=${mbrId}"); // 到時加上連結至(會員前台)我的檢舉
-			itemReportService.addNotice(notice, itemReport.getMbrId());
+		notice.setLink("/front/itemreport?action=getAllByMbrId&mbrId=${mbrId}"); // 到時加上連結至(會員前台)我的檢舉
+		itemReportService.addNotice(notice, itemReport.getMbrId());
 //		}
 
 //		if (!errorMsgs.isEmpty()) {
@@ -220,10 +198,8 @@ public class ItemReportBackServlet extends HttpServlet {
 //		}
 
 //		return "/back/itemreport?action=getAll";
-			
-		String updatedItemReportJson = gson.toJson(itemReport);
-		
-		setJsonResponse(res, updatedItemReportJson);
+
+		setJsonResponse(res, itemReport);
 	}
 
 	private void setJsonResponse(HttpServletResponse res, Object obj) throws IOException {

@@ -168,7 +168,7 @@
 	     	    	
 	     	    	if (result == "") {
 	     	    		$('#result').html(`
-	     	    			<select name="result">
+	     	    			<select id="selectResult" name="result">
 	     	    			<option value="-1">選擇處分</option>
 	     	    			<option value="0">處分</option>
 	     	    			<option value="1">不處分</option>
@@ -176,7 +176,7 @@
 	     	    		`);
 	     	    		
 	     	    		$('#note').html(`
-	     	    			<input type="text" id="note" name="note" size="70"/>
+	     	    			<input type="text" id="inputNote" name="note" size="70"/>
 		     	    	`);
 	     	    		
 	     	    		$('#update').show();
@@ -197,21 +197,21 @@
 	    }
 	    
 	    function update() {
-	    	console.log("update觸發");
-	    	if ($('#result').val() === "-1") {
+	    	if ($('#selectResult').val() == "-1") {
 	            alert("請選擇處分");
 	            return;
 	        }
 	    	
+	    	let data = new FormData();
+	    	data.append(reportId, $('#reportId').val());
+	    	data.append(result, $('#selectResult').val());
+	    	data.append(note, $('#inputNote').val());
+	    	
+	    	
 	    	fetch(`${pageContext.request.contextPath}/back/itemreport?action=update`, {
-	    			method: 'POST', headers: {'Content-Type': 'application/json',
-	    			},
-	    			body: JSON.stringify({
-	    				reportId: $('#reportId').val(),
-	    				result: $('#result').val(),
-	    				note: $('#note').val(),
-	    				}),
-	    			})
+	    			method: 'POST', 
+	    			headers: {'Content-Type': 'multipart/form-data'},
+	    			body: data})
 	    			.then(function(response) {
 	    		        return response.json();
 	    		    })
@@ -221,7 +221,7 @@
 	    		    })
 	    		    .catch(function(error) {
 	    		    	console.log(error);
-	    		    });
+	    		    })
 	    }
 	</script>
 </body>
