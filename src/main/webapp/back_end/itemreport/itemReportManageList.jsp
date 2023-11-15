@@ -201,17 +201,16 @@
 	            alert("請選擇處分");
 	            return;
 	        }
-	    	
+
 	    	let data = new FormData();
-	    	data.append(reportId, $('#reportId').val());
-	    	data.append(result, $('#selectResult').val());
-	    	data.append(note, $('#inputNote').val());
-	    	
-	    	
+	    	data.append("reportId", $('#reportId').text());
+	    	data.append("result", $('#selectResult').val());
+	    	data.append("note", $('#inputNote').val());
+
 	    	fetch(`${pageContext.request.contextPath}/back/itemreport?action=update`, {
-	    			method: 'POST', 
-	    			headers: {'Content-Type': 'multipart/form-data'},
+	    			method: 'POST',
 	    			body: data})
+	    			
 	    			.then(function(response) {
 	    		        return response.json();
 	    		    })

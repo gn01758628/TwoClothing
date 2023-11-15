@@ -2,6 +2,7 @@ package com.twoclothing.chi.controller;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +23,7 @@ import com.twoclothing.model.aproduct.itemreport.ItemReport;
 import com.twoclothing.redismodel.notice.Notice;
 
 @WebServlet("/back/itemreport")
+@MultipartConfig
 public class ItemReportBackServlet extends HttpServlet {
 	private ItemReportService itemReportService;
 
@@ -39,6 +42,11 @@ public class ItemReportBackServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		String url = "";
+		
+		Enumeration<String> names = req.getParameterNames();
+		while (names.hasMoreElements()) {
+			System.out.println(names.nextElement());
+		}
 
 		switch (action) {
 		case "getAll":
@@ -153,13 +161,11 @@ public class ItemReportBackServlet extends HttpServlet {
 
 	private void updateItemReport(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		Integer reportId = Integer.parseInt(req.getParameter("reportId"));
-		System.out.println(reportId);
 		ItemReport itemReport = itemReportService.getByPrimaryKey(reportId);
 
 //		int empId = Integer.parseInt(req.getParameter("empId"));
 		int empId = 1; // 測試用，到時這行可刪
 		int result = Integer.parseInt(req.getParameter("result"));
-		System.out.println("result: " + result);
 		String note = req.getParameter("note");
 
 //		List<String> errorMsgs = new LinkedList<String>();
