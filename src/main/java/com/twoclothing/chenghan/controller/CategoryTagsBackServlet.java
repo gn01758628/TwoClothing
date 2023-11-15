@@ -29,10 +29,6 @@ public class CategoryTagsBackServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        /*
-        TODO 判定員工是否有此項功能的權限
-        */
-
         String servletPath = request.getServletPath() + request.getPathInfo();
         switch (servletPath) {
             case "/back/tags/list" -> doList(request, response);
