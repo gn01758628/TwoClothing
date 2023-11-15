@@ -15,9 +15,9 @@ import com.twoclothing.huiwen.service.ItemService;
 import com.twoclothing.huiwen.service.ItemServiceImpl;
 import com.twoclothing.model.aproduct.item.Item;
 
-@WebServlet("/Itemfront/*")
+@WebServlet("/SellerHome/*")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 2 * 1024 * 1024, maxRequestSize = 2 * 2 * 1024 * 1024)
-public class ItemFrontServlet extends HttpServlet{
+public class SellerHomeServlet extends HttpServlet{
 	
 	private ItemService itemService;
 	
@@ -37,14 +37,11 @@ public class ItemFrontServlet extends HttpServlet{
 		req.setCharacterEncoding("UTF-8");
 		res.setContentType("text; charset=UTF-8");
 		
-		//商品列表 到 商品詳情頁
-		System.out.println(req.getParameter("goto"));
-		String goTo = req.getParameter("goto");
-		int itemId = Integer.valueOf(goTo);
-		Item item = itemService.getItemByItemId(itemId);
+		Integer mbrId = Integer.valueOf(req.getParameter("mbrId"));
 		
-		req.setAttribute("item", item);
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/itemDetail.jsp");
-		dispatcher.forward(req, res);						
+		
+//		req.setAttribute("item", item);
+//		RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/itemDetail.jsp");
+//		dispatcher.forward(req, res);						
 	}	
 }

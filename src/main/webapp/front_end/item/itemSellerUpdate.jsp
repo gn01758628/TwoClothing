@@ -128,7 +128,7 @@
                 <td>新舊</td>
                 <td>
                 <select  name="grade">
-                    <option value="${item.grade}" selected>${item.grade}</option><span>請選擇商品新舊程度</span>
+<%--                     <option value="${item.grade}" selected>${item.grade}</option><span>請選擇商品新舊程度</span> --%>
                     <option value="0">全新(沒使用過且包裝未拆,吊牌未剪)</option>
                     <option value="1">9成5新(沒有使用痕跡,但包裝已拆,吊牌已剪)</option>
                     <option value="2">9成新(有使用痕跡,但沒有瑕疵)</option>
@@ -141,7 +141,7 @@
                 <td>尺寸</td>
                 <td>
                     <select  name="size">
-                        <option value="${item.size}" selected>${item.size}</option> 
+<%--                         <option value="${item.size}" selected>${item.size}</option>  --%>
                         <option value="8">其他</option>
                         <option value="0">XS(含)以下</option>
                         <option value="1">S</option>
@@ -158,7 +158,7 @@
                 <td>商品狀態</td>
                 <td>
                     <select name="itemStatus">
-                        <option value="${item.itemStatus}"></option>
+<%--                         <option value="${item.itemStatus}"></option> --%>
                         <option value="0">上架</option>
                         <option value="1">下架</option>
                         <option value="2">刪除</option>
@@ -187,6 +187,27 @@
 	
 		
 		$(document).ready(function() {
+			var itemStatus = '${item.itemStatus}';
+		    $("select[name='itemStatus'] option").each(function() {
+		        if ($(this).val() === itemStatus) {
+		            $(this).prop("selected", true);
+		        }
+		    });
+			var grade = '${item.grade}';
+		    $("select[name='grade'] option").each(function() {
+		        if ($(this).val() === grade) {
+		            $(this).prop("selected", true);
+		        }
+		    });
+			var size = '${item.size}';
+		    $("select[name='size'] option").each(function() {
+		        if ($(this).val() === size) {
+		            $(this).prop("selected", true);
+		        }
+		    });
+			
+			
+			
 			$("select[name='size']").each(function () {
 				let status = $(this).text();
 				switch(status){
@@ -221,7 +242,6 @@
 			});
 			
 			$("select[name='grade']").each(function () {
-				console.log($("select[name='grade']"));
 				let status = $(this).text();
 				switch(status){
 					case "0":
@@ -247,11 +267,10 @@
 			});
 			
 			$("select[name='itemStatus']").each(function () {
-				let status = $(this).val();
-				console.log(status);
+				let status = $(this).text();
 				switch(status){
 					case "0":
-						 $(this).find("option[value='0']").text("上架");
+						 $(this).text("上架");
 					break;
 					case "1":
 						$(this).text("下架");

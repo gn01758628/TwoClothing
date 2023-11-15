@@ -17,7 +17,7 @@ public interface ItemService {
 	
 	int addItem(Item item);
 	
-	Item updateItem(Item item);
+//	Item updateItem(Item item);
 	
 	void deleteItem(Integer itemId);
 	
@@ -31,7 +31,7 @@ public interface ItemService {
 
 	int getResultTotalCondition(Map<String, String[]> map);
 
-	int updateItem(Integer itemId, String itemName, Integer grade, Integer size, String detail, Integer price, Integer quantity);
+	int updateItem(Item item);
 
 	List<Integer> getAllSelectableTagsId();
 
