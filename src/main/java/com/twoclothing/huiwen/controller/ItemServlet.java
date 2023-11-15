@@ -119,13 +119,11 @@ public class ItemServlet extends HttpServlet {
 			List<Integer> allSelectableTagsId = itemService.getAllSelectableTagsId();
 			System.out.println("列表" + allSelectableTagsId);
 			if (tagId == null || tagId.trim().isEmpty()) {
-				System.out.println("類別錯1");
 				errorMsgs.add("請正確選擇商品類別標籤");
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/front_end/item/itemSellerUpload.jsp");
 				failureView.forward(req, res);
 			} else if (!allSelectableTagsId.contains(Integer.parseInt(tagId))) {
-				System.out.println("類別錯2");
 				errorMsgs.add("您選擇的類別標籤並非是可選標籤");
 			}
 
@@ -206,7 +204,6 @@ public class ItemServlet extends HttpServlet {
 			// 如果錯誤訊系不為空則轉發回新增頁面
 			if (!errorMsgs.isEmpty()) {
 				req.setAttribute("item", item);
-				System.out.println("不為空");
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/front_end/item/itemSellerUpload.jsp");
 				failureView.forward(req, res);
@@ -238,7 +235,6 @@ public class ItemServlet extends HttpServlet {
 		String updateRoad = req.getParameter("getOneForUpdate");
 		
 		if ("getOne".equals(updateRoad)) {
-System.out.println("updateRoad+"+updateRoad);
 			Integer itemId = Integer.valueOf(req.getParameter("itemId"));
 
 			Item item = itemService.getItemByItemId(itemId);
@@ -248,36 +244,54 @@ System.out.println("updateRoad+"+updateRoad);
 			RequestDispatcher dispatcher1 = req.getRequestDispatcher(url);
 			dispatcher1.forward(req, res);
 		}
+		
 		// 修改
 		String forUpdate = req.getParameter("forUpdate");
 		if ("update".equals(forUpdate)) {
-
+//			Item item = new Item();
 			Integer itemId = Integer.valueOf(req.getParameter("itemId"));
 			String itemName = req.getParameter("itemName");
 			Integer price = Integer.valueOf(req.getParameter("price"));
-			Integer size = Integer.valueOf(req.getParameter("size"));
 			Integer grade = Integer.valueOf(req.getParameter("grade"));
-			String detail = req.getParameter("detail");
+			Integer size = Integer.valueOf(req.getParameter("size"));
+			Integer itemStatus = Integer.valueOf(req.getParameter("itemStatus"));
 			Integer quantity = Integer.valueOf(req.getParameter("quantity"));
-			System.out.println(
-					itemId + "/" + itemName + "/" + grade + "/" + size + "/" + detail + "/" + price + "/" + quantity);
+			String detail = req.getParameter("detail");
+//			System.out.println(
+//					itemId + "/" + itemName + "/" + grade + "/" + size + "/" + detail + "/" + price + "/" + quantity);
 
-			int itemUpdate = itemService.updateItem(itemId, itemName, grade, size, detail, price, quantity);
+//			int itemUpdate = itemService.updateItem(itemId, itemName, grade, size, detail, price, quantity);
+			
+			Item item = itemService.getItemByItemId(itemId);
+			
+			
+			item.setItemId(itemId);
+			item.setItemName(itemName);
+			item.setPrice(price);
+			item.setGrade(grade);
+			item.setSize(size);
+			item.setItemStatus(itemStatus);
+			item.setQuantity(quantity);
+			item.setDetail(detail);
+			
+			
+			
+			
+			int itemUpdate = itemService.updateItem(item);
+			System.out.println(itemUpdate);
 			if (itemUpdate == 1) {
-				System.out.println("修改成功");
 				
-				Item item = itemService.getItemByItemId(itemId);
+				item = itemService.getItemByItemId(itemId);
 				req.setAttribute("item", item);
 
-				String url = "/front_end/item/itemSellerListCompositeQuery.jsp";
+				String url = "/front_end/item/itemSellerUpdateOne.jsp";
 				RequestDispatcher dispatcher = req.getRequestDispatcher(url);
 				dispatcher.forward(req, res);
 			} else {
-				System.out.println("修改失敗");
-				Item item = itemService.getItemByItemId(itemId);
+				item = itemService.getItemByItemId(itemId);
 				req.setAttribute("item", item);
 
-				String url = "/front_end/item/itemSellerLUpdate.jsp";
+				String url = "/front_end/item/itemSellerUpdate.jsp";
 				RequestDispatcher dispatcher = req.getRequestDispatcher(url);
 				dispatcher.forward(req, res);
 			}
@@ -316,12 +330,63 @@ System.out.println("updateRoad+"+updateRoad);
 		if (page == null) {
 			String itemNameSearch = req.getParameter("itemNameSearch");
 			req.getSession().setAttribute("itemNameSearch", itemNameSearch);
+System.out.println(itemNameSearch);
 			// 其他參數比照
 			String itemPriceSearchStart = req.getParameter("itemPriceSearchStart");
 			req.getSession().setAttribute("itemPriceSearchStart", itemPriceSearchStart);
 
 			String itemPriceSearchEnd = req.getParameter("itemPriceSearchEnd");
 			req.getSession().setAttribute("itemPriceSearchEnd", itemPriceSearchEnd);
+
+			String itemGrade = req.getParameter("itemGrade");
+			req.getSession().setAttribute("itemGrade", itemGrade);
+System.out.println(itemGrade);
+			
+			String itemSize = req.getParameter("itemSize");
+			req.getSession().setAttribute("itemSize", itemSize);
+			
+//			String itemQuantityStart = req.getParameter("itemQuantityStart");
+//			req.getSession().setAttribute("itemQuantityStart", itemQuantityStart);
+//			
+//			String itemQuantityEnd = req.getParameter("itemQuantityEnd");
+//			req.getSession().setAttribute("itemQuantityEnd", itemQuantityEnd);
+			
+			
+			String itemQuantity = req.getParameter("itemQuantity");
+System.out.println(itemQuantity);
+		    if (itemQuantity != null) {
+		        switch (itemQuantity) {
+		            case "2":
+		                req.getSession().setAttribute("itemQuantityStart", "0");
+		                req.getSession().setAttribute("itemQuantityEnd", "5");
+		                
+System.out.println(req.getSession().getAttribute("itemQuantityEnd"));
+
+		                break;
+		            case "3":
+		                req.getSession().setAttribute("itemQuantityStart", "6");
+		                req.getSession().removeAttribute("itemQuantityEnd"); // 设置为null表示不设上限
+		                break;
+		            default:
+		                req.getSession().removeAttribute("itemQuantityStart");
+		                req.getSession().removeAttribute("itemQuantityEnd");
+		                break;
+		        }
+		    }
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			String itemStatus = req.getParameter("itemStatus");
+			req.getSession().setAttribute("itemStatus", itemStatus);
 			// 後續切頁
 		} else {
 			String itemNameSearch = (String) req.getSession().getAttribute("itemNameSearch");
@@ -338,7 +403,47 @@ System.out.println("updateRoad+"+updateRoad);
 			if (itemPriceSearchEnd != null) {
 				map.put("itemPriceSearchEnd", new String[] { itemPriceSearchEnd });
 			}
+			String itemGrade = (String) req.getSession().getAttribute("itemGrade");
+			if (itemGrade != null) {
+				map.put("itemGrade", new String[] { itemGrade });
+			}
+			String itemSize = (String) req.getSession().getAttribute("itemSize");
+			if (itemSize != null) {
+				map.put("itemSize", new String[] { itemSize });
+			}
+			String itemQuantityStart = (String) req.getSession().getAttribute("itemQuantityStart");
+			if (itemQuantityStart != null) {
+				map.put("itemQuantityStart", new String[] { itemQuantityStart });
+			}
+			String itemQuantityEnd = (String) req.getSession().getAttribute("itemQuantityEnd");
+			if (itemQuantityEnd != null) {
+				map.put("itemQuantityEnd", new String[] { itemQuantityEnd });
+			}
+			
+			
+			
+			
+			
+
+
+
+
+
+
+
+
+			
+			
+			
+			
+			
+			
+			String itemStatus = (String) req.getSession().getAttribute("itemStatus");
+			if (itemStatus != null) {
+				map.put("itemStatus", new String[] { itemStatus });
+			}
 		}
+System.out.println("map:"+map);
 
 		if (map.size() != 0) {
 

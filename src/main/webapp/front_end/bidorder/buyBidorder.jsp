@@ -3,16 +3,63 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*"%>
 
+<%-- <%@ include file="/header.html" %> --%>
 <%@ include file="buyBidorderBanner.jsp" %> 
+
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css"/>
+<title>訂單</title>
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css" />
 <style type="text/css">
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
 
+h1 {
+    color: red;
+}
+
+#myTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#myTable th, #myTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#myTable th {
+    background-color: #f2f2f2;
+}
+
+#myTable tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* DataTables styling */
+.dataTables_wrapper {
+    margin-top: 20px;
+}
+
+.dataTables_filter label {
+    font-weight: normal;
+}
+
+.dataTables_length label {
+    font-weight: normal;
+}
 </style>
+
 </head>
 <body>
 <h1 style="color: red;">全部訂單</h1>
@@ -37,12 +84,11 @@
 		<th>收件人手機</th>
 		<th>備註</th>
 	  </tr>
-	  </thead>
-	 <c:choose>
+	 </thead>
+<c:choose>
     <c:when test="${not empty BidOrder}">	
     
 	<c:forEach var="BidOrder" items="${BidOrder}" >
-		
 		<tr>
 		<td>${BidOrder.bidOrderId}</td>
 		<td>${BidOrder.bidItemId}</td>
@@ -61,49 +107,36 @@
 		<td>${BidOrder.receiveName}</td>
 		<td>${BidOrder.receivePhone}</td>
 		<td>${BidOrder.remarks}</td>
- <!--  		
-			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="修改">
-			     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}">
-			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
-			</td>
-			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="刪除">
-			     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}">
-			     <input type="hidden" name="action" value="delete"></FORM>
-			</td>
--->				
+			
+					
 		</tr>
+		 
 		
 	</c:forEach>
 	 </c:when>
   
 </c:choose>
+
+
 	
-	
-    </table>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-        	$('#myTable').DataTable( {
-        		
-        		columnDefs: [
+</table>
+<script type="text/javascript"
+		src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#myTable').DataTable({
+
+				columnDefs: [
         		    {
         		        targets: -1,
         		        className: 'dt-body-right'
         		    }
         		  ]
-        	
-        	
-        		
-        		
-        		 
-        		} );
-            
-        });
-    </script>
+			});
+
+		});
+	</script>
 </body>
 </html>

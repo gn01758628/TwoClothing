@@ -43,9 +43,12 @@ public class BalanceHistoryServlet extends HttpServlet{
 			successView.forward(req, res);
 			
 		}
-		//連去搜尋
+		//連去搜尋，直接顯示查全部
 		if("search".equals(choice)) {
-			String url = "/back_end/balanceHistory/BHSearch.jsp";
+			List<BalanceHistory> balanceHistoryList = BHSvc.getAllBH();
+			req.setAttribute("BHList", balanceHistoryList);
+			
+			String url = "/front_end/balanceHistory/BHSearchList.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
 		}

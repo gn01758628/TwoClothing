@@ -19,13 +19,8 @@ public class ShipSettingServiceImpl implements ShipSettingService{
 	
 	@Transactional
 	@Override
-	public ShipSetting addShipSetting(Integer mbrId, String receiveName, String receivePhone, String receiveAddress ) {
-		ShipSetting shipSetting = new ShipSetting();
-		
-		shipSetting.setMbrId(mbrId);
-		shipSetting.setReceiveName(receiveName);
-		shipSetting.setReceivePhone(receivePhone);
-		shipSetting.setReceiveAddress(receiveAddress);
+	public ShipSetting addShipSetting(ShipSetting shipSetting) {
+
 		dao.insert(shipSetting);
 		return shipSetting;
 	}
@@ -50,14 +45,8 @@ public class ShipSettingServiceImpl implements ShipSettingService{
 	}
 	@Transactional
 	@Override
-	public ShipSetting updateShipSetting(Integer shipId, Integer mbrId, String receiveName, String receivePhone, String receiveAddress) {
-		ShipSetting shipSetting = new ShipSetting();
+	public ShipSetting updateShipSetting(ShipSetting shipSetting) {
 		
-		shipSetting.setShipId(shipId);
-		shipSetting.setMbrId(mbrId);
-		shipSetting.setReceiveName(receiveName);
-		shipSetting.setReceivePhone(receivePhone);
-		shipSetting.setReceiveAddress(receiveAddress);
 		dao.update(shipSetting);
 	
 		return shipSetting ;

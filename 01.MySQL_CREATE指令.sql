@@ -14,7 +14,7 @@ CREATE TABLE members
     mbrid      INT AUTO_INCREMENT NOT NULL,
     mbrname      VARCHAR(20),
     email      VARCHAR(64) NOT NULL UNIQUE,
-    pswdhash   VARCHAR(60) NOT NULL,
+    pswdhash   VARCHAR(200) NOT NULL,
     mbrstatus  TINYINT     NOT NULL DEFAULT 0,
     avatar     MEDIUMBLOB,
     shopimg01  MEDIUMBLOB,
@@ -34,16 +34,16 @@ CREATE TABLE members
 -- 表格：會員 插入假資料
 INSERT INTO members (mbrname, email, pswdhash, mbrstatus, sellscore, buyscore)
 VALUES
-('Michael', 'email1@example.com', 'hash1', 0, 10, 4),
-('Mike', 'email2@example.com', 'hash2', 1, 4, 10),
-('Devil', 'email4@example.com', 'hash3', 1, 10, 4),
-('Angel', 'email5@example.com', 'hash4', 0, 10, 10),
-('Water', 'email6@example.com', 'hash5', 0, 3, 10),
-('Fire', 'email7@example.com', 'hash6', 1, 10, 2),
-('Sky', 'email8@example.com', 'hash7', 0, 1, 10),
-('Apple', 'email9@example.com', 'hash8', 0, 10, 3),
-('Banana', 'email10@example.com', 'hash9', 1, 2, 10),
-('John', 'email11@example.com', 'hash10', 0, 1, 7);
+('Michael', 'email1@example.com', 'af316ecb91a8ee7ae99210702b2d4758f30cdde3bf61e3d8e787d74681f90a6e', 0, 10, 4),
+('Mike', 'email2@example.com', 'e7bf382f6e5915b3f88619b866223ebf1d51c4c5321cccde2e9ff700a3259086', 1, 4, 10),
+('Devil', 'email4@example.com', '42caa4abb7b60f8f914e5bfb8e6511d7d9bd9817de719b74251755d97fe97bf1', 1, 10, 4),
+('Angel', 'email5@example.com', '1c27099b3b84b13d0e3fbd299ba93ae7853ec1d0d3a4e5daa89e68b7ad59d7cb', 0, 10, 10),
+('Water', 'email6@example.com', '7da450ab64a26820e56dd73cd346950d656e60a20dba00bd4be9ced75ba7cdef', 0, 3, 10),
+('Fire', 'email7@example.com', 'f1a378f474d1b799d77111258db6989a9a1e1a8cdfe047ca64a78dc2a7e6a6f2', 1, 10, 2),
+('Sky', 'email8@example.com', '840963230e9a00f8062884ead549f7786fdaac65f832d0f50f3559bb25eb44c4', 0, 1, 10),
+('Apple', 'email9@example.com', 'd6f693d2eb42c624e596b7c4a08a54632e9674db5820b9bf21968e94203443e2', 0, 10, 3),
+('Banana', 'email10@example.com', '8b497a90fdfd0deb9a3c254f73e2a40e6b59cfab39b5372d8995d01041a8c892', 1, 2, 10),
+('John', 'email11@example.com', '9d1bb9a72cd7b11f6753e82f9fdf379bb1beb4c4fa4773f571bdbe0e23cde569', 0, 1, 7);
 
 -- 表格：會員 檢查
 -- SELECT * FROM Members;
@@ -395,21 +395,22 @@ CREATE TABLE employee
     pswdhash  VARCHAR(60) NOT NULL DEFAULT '',
     empstatus TINYINT              DEFAULT 0,
     avatar    MEDIUMBLOB,
+    empmissions	VARCHAR(8) NOT NULL DEFAULT '00000000',
     PRIMARY KEY (empid)
 );
 
 -- 表格：員工 插入假資料
-INSERT INTO employee (deptid, empname, phone, address, email, pswdhash, empstatus)
-VALUES (1, '張三', '0912345678', '台北市中正區123號', 'zhangsan@example.com', 'password1', 0),
-       (2, '李四', '0923456789', '台北市大安區456號', 'lisi@example.com', 'password2', 1),
-       (3, '王五', '0934567890', '台北市信義區789號', 'wangwu@example.com', 'password3', 0),
-       (1, '陳六', '0945678901', '台北市松山區101號', 'chenliu@example.com', 'password4', 0),
-       (2, '趙七', '0956789012', '台北市中山區202號', 'zhaoqi@example.com', 'password5', 1),
-       (3, '孫八', '0967890123', '台北市大同區303號', 'sunba@example.com', 'password6', 0),
-       (1, '周九', '0978901234', '台北市萬華區404號', 'zhoujiu@example.com', 'password7', 0),
-       (2, '吳十', '0989012345', '台北市文山區505號', 'wushi@example.com', 'password8', 1),
-       (3, '劉十一', '0990123456', '台北市南港區606號', 'liuyi@example.com', 'password9', 0),
-       (1, '蔡十二', '0912233445', '台北市北投區707號', 'caishier@example.com', 'password10', 0);
+INSERT INTO employee (deptid, empname, phone, address, email, pswdhash, empstatus,empmissions)
+VALUES (1, '張三', '0912345678', '台北市中正區123號', 'zhangsan@example.com', '$2a$12$ge8vavXJ721wWNdYQqEZdulwCYrH3M6ldh70uDlgAqWMMEY0.6dqG', 0,'11000000'),
+       (2, '李四', '0923456789', '台北市大安區456號', 'lisi@example.com', '$2a$12$vnK8ufIPn8/wbqqR7qOn2uYc8Rbn3CbSSF5XHX/Mojy5abZAH0rOO', 1,'01100000'),
+       (3, '王五', '0934567890', '台北市信義區789號', 'wangwu@example.com', '$2a$12$CLhZ6y0U10VIvlBHDqrWYOVQ.ZZHnL0KTQt6GfmXszWEFLaZC7612', 0,'00011100'),
+       (1, '陳六', '0945678901', '台北市松山區101號', 'chenliu@example.com', '$2a$12$FvmYeCRuxXbOWclvTZ5.c.Dy4V9lh1BSWDXl5e7saB3JbS11eJY7i', 0,'00000011'),
+       (2, '趙七', '0956789012', '台北市中山區202號', 'zhaoqi@example.com', '$2a$12$YjcqHX4GvXxGTH.vORZa3OBerkavVzCIvCafWzq7QRcZ301kiNRmW', 1,'11000000'),
+       (3, '孫八', '0967890123', '台北市大同區303號', 'sunba@example.com', '$2a$12$kYFwxNGmGUjpPOMHK0o0gOLKHVDDXP32w9uiUBjE5NC1z9QsN3Lti', 0,'01100000'),
+       (1, '周九', '0978901234', '台北市萬華區404號', 'zhoujiu@example.com', '$2a$12$AjaI67SmrK7rw.gE1xCVXe2tMROQsXC0bcohRJz7jIaImLOxg3l7a', 0,'00011100'),
+       (2, '吳十', '0989012345', '台北市文山區505號', 'wushi@example.com', '$2a$12$NWXPKvXoOhoZRmY69s6Br.8DCEtNfaGx4GtjMO9L8LluGHSsmOTD2', 1,'00000011'),
+       (3, '劉十一', '0990123456', '台北市南港區606號', 'liuyi@example.com', '$2a$12$BZkb90iKZZDpxXZs5iWE7OvI9TtIUk0TXNfY57fiF8rB9vLCwFaw.', 0,'11111111'),
+       (1, '蔡十二', '0912233445', '台北市北投區707號', 'caishier@example.com', '$2a$12$kQRH5CBWSWW2jC2HjVyC6.YR7upxxaobWVqFUytWQtvWiXatpkuNS', 0,'00000000');
 
 -- 表格：員工 檢查
 -- SELECT * FROM employee;
@@ -453,16 +454,16 @@ CREATE TABLE empmissions
 
 -- 表格：員工權限配置 插入假資料
 INSERT INTO empmissions (empid, permissionid)
-VALUES (1, 1),
-       (2, 2),
-       (3, 3),
-       (4, 1),
-       (5, 2),
-       (6, 3),
-       (7, 1),
-       (8, 2),
-       (9, 3),
-       (10, 1);
+VALUES (1, 1),(1, 2),
+       (2, 2),(2, 3),
+       (3, 5),(3, 6),(3, 7),
+       (4, 7),(4, 8),
+       (5, 1), (5, 2),
+       (6, 2),(6, 3),
+       (7, 7),(7, 8),
+       (8, 1),(8, 2),
+       (9, 2), (9, 3),
+       (10, 5),(10, 6),(10, 7);
 
 -- 表格：員工權限配置 檢查
 -- SELECT * FROM empmissions;
@@ -487,9 +488,14 @@ CREATE TABLE permissions
 
 -- 表格：權限清單 插入假資料
 INSERT INTO permissions (permissionname, descriptions)
-VALUES ('Read', 'Can read data'),
-       ('Write', 'Can write data'),
-       ('Admin', 'Admin privileges');
+VALUES ('競標管理', '管理競標商品上下架'),
+	   ('商城管理', '管理一般商品類別及優惠券發放'),
+	   ('最新消息管理', '最新消息刊登及編輯'),
+	   ('商品檢舉管理', '檢舉查核'),
+	   ('一般訂單管理', '一般商品訂單退貨、檢舉處理'),
+	   ('競標訂單管理', '競標商品訂單退貨、檢舉處理'),
+       ('客服中心', '線上即時客服'),
+       ('虛擬錢包提款審核', '提款申請查核');
 
 -- 表格：權限清單 檢查
 -- SELECT * FROM permissions;
@@ -1223,40 +1229,6 @@ VALUES (1, 1, '2023-10-01 09:00:00', '通知標題1', '通知内容1'),
 -- ALTER TABLE bidordernotify
 -- ADD CONSTRAINT fk_bidordernotify_mbrid FOREIGN KEY (mbrid) REFERENCES Members(mbrid),
 -- ADD CONSTRAINT fk_bidordernotify_bidorderid FOREIGN KEY (bidorderid) REFERENCES bidorder(bidorderid);
--- ================================================================================================================================ --
--- 表格：競標商品瀏覽紀錄 刪除
-DROP TABLE IF EXISTS biditembrowsing;
-
--- 表格：競標商品瀏覽紀錄 創建
-CREATE TABLE biditembrowsing
-(
-    mbrid        INT      NOT NULL,
-    biditemid    INT      NOT NULL,
-    browsingtime DATETIME NOT NULL,
-    PRIMARY KEY (mbrid, biditemid)
-);
-
--- 表格：競標商品瀏覽紀錄 插入假資料
-INSERT INTO biditembrowsing (mbrid, biditemid, browsingtime)
-VALUES (101, 1, '2023-10-01 09:00:00'),
-       (102, 2, '2023-09-28 15:30:00'),
-       (103, 3, '2023-09-25 14:00:00'),
-       (104, 4, '2023-09-20 18:00:00'),
-       (105, 5, '2023-09-15 10:00:00'),
-       (106, 6, '2023-09-10 11:45:00'),
-       (107, 7, '2023-09-05 12:30:00'),
-       (108, 8, '2023-09-01 13:15:00'),
-       (109, 9, '2023-08-28 14:20:00'),
-       (110, 10, '2023-08-25 16:00:00');
-
--- 表格：競標商品瀏覽紀錄 檢查
--- SELECT * FROM biditembrowsing;
--- DESCRIBE biditembrowsing;
-
--- 表格：競標商品瀏覽紀錄 添加FK
--- ALTER TABLE biditembrowsing
--- ADD CONSTRAINT fk_biditembrowsing_mbrid FOREIGN KEY (mbrid) REFERENCES Members(mbrid),
--- ADD CONSTRAINT fk_biditembrowsing_biditemid FOREIGN KEY (biditemid) REFERENCES biditem(biditemid);
 -- ================================================================================================================================ --
 -- 表格：競標商品檢舉 刪除
 DROP TABLE IF EXISTS biditemreport;

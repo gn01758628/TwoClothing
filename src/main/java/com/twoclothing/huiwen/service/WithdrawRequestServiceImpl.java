@@ -48,8 +48,18 @@ public class WithdrawRequestServiceImpl implements WithdrawRequestService{
 	}
 
 	@Override
-	public int updateWR(WithdrawRequest withdrawRequest) {
+	public int updateWR(List<WithdrawRequest> withdrawRequest) {
 		return WRDAO.update(withdrawRequest);
+	}
+
+	@Override
+	public Integer getBalanceByMbrId(Integer mbrId) {
+		return WRDAO.getBalanceByMbrId(mbrId);
+	}
+	
+	@Override
+	public List<WithdrawRequest> getByStatus() {
+		return WRDAO.getByStatus();
 	}
 
 }

@@ -18,10 +18,8 @@ public class OpenSessionInRequestFilter implements Filter {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         try {
             sessionFactory.getCurrentSession().beginTransaction();
-            System.out.println("Get Session");
             filterChain.doFilter(servletRequest, servletResponse);
             sessionFactory.getCurrentSession().getTransaction().commit();
-            System.out.println("Session Commit");
         } catch (Exception e) {
             sessionFactory.getCurrentSession().getTransaction().rollback();
             e.printStackTrace();

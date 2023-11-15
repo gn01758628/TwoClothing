@@ -37,8 +37,7 @@ public class ShipSettingServlet extends HttpServlet{
 		
 		if("getAll_For_MbrId".equals(action)) {
 			Integer mbrId =Integer.parseInt(req.getParameter("mbrId"));
-			
-System.out.println(mbrId);			
+		
 /*************************** 2.開始查詢資料 *****************************************/
 
 			ShipSettingServiceImpl shipSettingServiceImpl = new ShipSettingServiceImpl();
@@ -93,10 +92,12 @@ System.out.println(mbrId);
 			Integer shipId = Integer.valueOf(req.getParameter("shipId"));
 			Integer mbrId = Integer.valueOf(req.getParameter("mbrId"));
 			
-			String receiveName  = null;
-			
-			receiveName = req.getParameter("receiveName").trim();
-			
+			String receiveName = req.getParameter("receiveName").trim();
+		    String county = req.getParameter("county");
+		    String district = req.getParameter("district");
+		    String zipcode = req.getParameter("zipcode");
+		    String address = req.getParameter("address").trim();
+		    String receiveAddress =  county.concat(district).concat(zipcode).concat(address);
 			String receivePhone = null;
 			try {
 			    String receivePhoneStr = req.getParameter("receivePhone").trim();
@@ -110,10 +111,6 @@ System.out.println(mbrId);
 			    errorMsgs.put("receivePhone", "請輸入有效的台灣手機號碼");
 			}
 			
-			String receiveAddress  = null;
-			
-			receiveAddress = req.getParameter("receiveAddress").trim();
-			
 		
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/front_end/shipsetting/update_ShipSetting_input.jsp");
@@ -121,9 +118,16 @@ System.out.println(mbrId);
 				return;// 程式中斷
 			}
 /***************************2.開始修改資料*****************************************/
-
 			ShipSettingServiceImpl shipSettingServiceImpl = new ShipSettingServiceImpl();
-			ShipSetting shipSetting = shipSettingServiceImpl.updateShipSetting(shipId, mbrId, receiveName, receivePhone, receiveAddress);
+			ShipSetting shipSetting =shipSettingServiceImpl.getByPrimaryKey(shipId);
+			
+			
+			shipSetting.setMbrId(mbrId);
+			shipSetting.setReceiveName(receiveName);
+			shipSetting.setReceivePhone(receivePhone);
+			shipSetting.setReceiveAddress(receiveAddress);
+			
+			shipSettingServiceImpl.updateShipSetting(shipSetting);
 /***************************3.修改完成,準備轉交(Send the Success view)*************/
 			req.setAttribute("ShipSetting", shipSetting); 
 			String url = "/front_end/shipsetting/listOneShipSetting.jsp";
@@ -144,8 +148,13 @@ System.out.println(mbrId);
 			
 		    /***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 			Integer mbrId = Integer.valueOf(req.getParameter("mbrId"));
-
-		    String receiveName = req.getParameter("receiveName");
+			
+			String receiveName = req.getParameter("receiveName");
+		    String county = req.getParameter("county");
+		    String district = req.getParameter("district");
+		    String zipcode = req.getParameter("zipcode");
+		    String address = req.getParameter("address");
+		  
 		    
 			String receivePhone = null;
 			try {
@@ -160,17 +169,26 @@ System.out.println(mbrId);
 			    errorMsgs.put("receivePhone", "請輸入有效的台灣手機號碼");
 			}
 		    
-		    String receiveAddress = req.getParameter("receiveAddress");
+//		    String receiveAddress = req.getParameter("receiveAddress");
+		    String receiveAddress =  county.concat(district).concat(zipcode).concat(address);
 	
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/front_end/shipsetting/addShipSetting.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
+
 	        /***************************2.開始新增資料***************************************/
+			ShipSetting shipSetting = new ShipSetting();
+			shipSetting.setMbrId(mbrId);
+			shipSetting.setReceiveName(receiveName);
+			shipSetting.setReceivePhone(receivePhone);
+			shipSetting.setReceiveAddress(receiveAddress);
+			
+			
 
 			ShipSettingServiceImpl shipSettingServiceImpl = new ShipSettingServiceImpl();
-		    ShipSetting shipSetting = shipSettingServiceImpl.addShipSetting(mbrId, receiveName, receivePhone, receiveAddress);
+		    shipSettingServiceImpl.addShipSetting(shipSetting);
 			
 	        
 		    /***************************3.修改完成,準備轉交(Send the Success view)*************/
@@ -191,12 +209,12 @@ System.out.println(mbrId);
 			Integer shipId = Integer.valueOf(req.getParameter("shipId"));
 			Integer mbrId =Integer.parseInt(req.getParameter("mbrId"));
 
+
 			
 		    /***************************2.開始刪除資料***************************************/
 			
 			ShipSettingServiceImpl shipSettingServiceImpl = new ShipSettingServiceImpl();
 			shipSettingServiceImpl.deleteShipSetting(shipId);
-			
 
 		    /***************************3.刪除完成,準備轉交(Send the Success view)***********/
 			

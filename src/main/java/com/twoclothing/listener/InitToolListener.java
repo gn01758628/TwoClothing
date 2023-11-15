@@ -20,11 +20,18 @@ public class InitToolListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         HibernateUtil.getSessionFactory();
         JedisPool jedisPool = JedisPoolUtil.getJedisPool();
-        // 檢查並初始化noticeId
-        Jedis jedis = jedisPool.getResource();
-        jedis.select(15);
-        if (!jedis.exists("noticeId")) {
-            jedis.set("noticeId", "0");
+
+        // 檢查並初始化noticeId,messageId
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(15);
+            if (!jedis.exists("noticeId")) {
+                jedis.set("noticeId", "0");
+            }
+
+            jedis.select(11);
+            if (!jedis.exists("messageId")) {
+                jedis.set("messageId", "0");
+            }
         }
     }
 

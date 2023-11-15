@@ -40,6 +40,9 @@ public class Employee implements Serializable {
 	
 	@Column(name = "avatar", columnDefinition = "MEDIUMBLOB")
 	private byte[] avatar;
+
+	@Column(name = "empmissions")
+	private String empMissions;
 	
 	@Formula("LPAD(empId, 5, '0')")
 	private String formatEmpId;
@@ -48,10 +51,11 @@ public class Employee implements Serializable {
 
 	public Employee() {
 		super();
+		this.empMissions="00000000";
 	}
 
 	public Employee(Integer deptId, String empName, String phone, String address, String email, String pswdHash,
-			Integer empStatus, byte[] avatar) {
+			Integer empStatus, byte[] avatar,String empMissions) {
 		super();
 		this.deptId = deptId;
 		this.empName = empName;
@@ -61,6 +65,7 @@ public class Employee implements Serializable {
 		this.pswdHash = pswdHash;
 		this.empStatus = empStatus;
 		this.avatar = avatar;
+		this.empMissions= empMissions;
 	}
 
 	public Integer getEmpId() {
@@ -136,6 +141,14 @@ public class Employee implements Serializable {
 		this.avatar = avatar;
 	}
 	
+	public String getEmpMissions() {
+		return empMissions;
+	}
+
+	public void setEmpMissions(String empMissions) {
+		this.empMissions = empMissions;
+	}
+
 	public void setFormatEmpId() {
 		this.formatEmpId = String.format("%05d", empId);;
 	}
@@ -172,7 +185,7 @@ public class Employee implements Serializable {
 		
 		return "Employee [empId=" + empId + ", deptId=" + deptId + ", empName=" + empName + ", phone=" + phone
 				+ ", address=" + address + ", email=" + email + ", pswdHash=" + pswdHash + ", empStatus=" + empStatus
-				+ ", avatar=" + avatarStr + ", formatEmpId=" +formatEmpId+ "]";
+				+ ", avatar=" + avatarStr + ", empmissions="+empMissions+", formatEmpId=" +formatEmpId+ "]";
 	}
 
 	  public com.twoclothing.model.department.Department getDepartment() {
