@@ -1,99 +1,110 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@page import="com.twoclothing.model.permissions.Permissions"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.*"%>
-<%@ page import="com.twoclothing.tonyhsieh.service.*"%>
-<%@ page import="com.twoclothing.model.empmissions.*"%>
-<%@ page import="com.twoclothing.model.employee.*" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
- <%
- 	EmpMissionsServiceImpl empMissionsServiceImpl = new EmpMissionsServiceImpl();
-   	List<EmpMissions> list = empMissionsServiceImpl.getAll();
-    pageContext.setAttribute("list",list);
-	%>
-
+<!DOCTYPE html>
 <html>
 <head>
-<title>©Ò¦³­û¤uÅv­­¸ê®Æ - listAllempmis.jsp</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>æ‰€æœ‰å“¡å·¥æ¬Šé™è³‡æ–™ - listAllempmis.jsp</title>
 
-<style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>                                    <!-- â—â—js  for jquery datatables ç”¨ -->
+<script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              <!-- â—â—js  for jquery datatables ç”¨ -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" /> <!-- â—â—css for jquery datatables ç”¨ -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-<style>
-  table {
-	width: 800px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
-  }
-  table, th, td {
-    border: 1px solid #CCCCFF;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  }
-  
- 
-  
+<!-- â—â— jquery datatables è¨­å®š -->
+<script>
+	$(document).ready(function() {
+		$('#example').DataTable({
+			"lengthMenu": [5, 10, 20, 50, 100],
+			"searching": true,  //æœå°‹åŠŸèƒ½, é è¨­æ˜¯é–‹å•Ÿ
+		    "paging": true,     //åˆ†é åŠŸèƒ½, é è¨­æ˜¯é–‹å•Ÿ
+		    "ordering": true,   //æ’åºåŠŸèƒ½, é è¨­æ˜¯é–‹å•Ÿ
+		    "language": {
+		    	url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/zh_Hant.json" 
+		    },
+		    "columnDefs": [
+                { "orderable": true, "targets": [0, 1] }, // å‰ä¸‰åˆ—ä¸æ’åº
+                { "orderDataType": "dom-checkbox", "type": "checkbox", "targets": [2, 3, 4, 5, 6, 7, 8, 9] } // ä½¿ç”¨checkboxæ’åºæ–¹å¼çš„åˆ—
+            ]
+		});
+	});
+</script>
+<style type="text/css">
+body {
+	margin: 2rem ;
+}
 </style>
 
 </head>
-<body bgcolor='white'>
+<body>
 
 
-<table id="table-1">
-	<tr><td>
-		 <h3>©Ò¦³­û¤uÅv­­¸ê®Æ - listAllempmis</h3>
-		 <h4><a href="select_page.jsp">¦^­º­¶</a></h4>
-	</td></tr>
-</table>
 
-<table>
-	<tr>
-		<th>­û¤u½s¸¹</th>
-		<th>Åv­­½s¸¹</th>
-
+<table id="example" class="display" style="width: 100%">
+  <thead >
+	<tr style="background-color:#CCCCFF">
+		<th>å“¡å·¥ç·¨è™Ÿ</th>
+		<th>å“¡å·¥å§“å</th>
+		<c:forEach var="permission" items="${pmlist}">
+			<th> ${permission.permissionName}</th>
+		</c:forEach>
+		<th>æ›´æ–°æ¬Šé™</th>
 	</tr>
-	<c:forEach var="empmissions" items="${list}" >
-		
-		<tr>
-			<td>${empmissions.compositeKey.empId}</td>
-			<td>${empmissions.compositeKey.permissionId}</td>
-								
-		<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/empmissions/EmpMissions.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="­×§ï">
-	   			 <input type="hidden" name="empid"  value="${empmissions.compositeKey.empId}">
-			     <input type="hidden" name="permissionid"  value="${empmissions.compositeKey.permissionId}">
-			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
-			</td>
-			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/empmissions/EmpMissions.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="§R°£">
-			     <input type="hidden" name="empid"  value="${empmissions.compositeKey.empId}">
-			     <input type="hidden" name="permissionid"  value="${empmissions.compositeKey.permissionId}">
-			      <input type="hidden" name="action" value="delete">
-			         </FORM>
-			</td>
-		</tr>
+  </thead>
+  
+  <tbody>
+	<c:forEach var="employee" items="${emplist}">
+			<tr>
+				<td>${employee.empId}</td>
+				<td>${employee.empName}</td>
+				<c:forEach var="permission" items="${pmlist}">
+					<td>
+						<input type="checkbox" name="empMissions" value="${permission.permissionId}" 
+                       		${fn:substring(employee.empMissions, permission.permissionId - 1, permission.permissionId) eq '1' ? 'checked' : ''}>
+					</td>
+				</c:forEach>
+				<td><input type="submit" class="update-button" value="æ›´æ–°"></td>
+			</tr>
 	</c:forEach>
+			
+  </tbody>
 </table>
-<%-- <%@ include file="page2.file" %> --%>
+
+
+<script>
+	$("document").ready(function(){
+		$(".update-button").click(function(){
+			let empId = $(this).closest("tr").find("td:first-child").text();
+			let empMissionsList = [];
+			
+			$(this).closest("tr").find("input[type=checkbox]:checked").each(function(){
+				empMissionsList.push($(this).val());
+			});
+			
+			$.ajax({
+			    type: "POST",
+			    url: "EmpMissions.do",
+			    data:{
+			        action: "update",
+			        empId: empId,
+			        empMissionsList: empMissionsList
+			    },
+			    success: function(res){
+			        alert(res);
+			    },
+			    error: function(xhr, status, error){
+			    	alert("æ›´æ–°å¤±æ•—ï¼š" + error);
+			    }
+			});
+
+		});
+	});
+</script>
 
 </body>
 </html>

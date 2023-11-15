@@ -125,7 +125,6 @@ public class GenericHibernateDAOImpl<T> implements GenericDAO<T> {
 			// 如果 fieldType 不是 String 或者為 null
 			hql = "from " + className + " where " + fieldName + " = :" + alias;
 		}
-		System.out.println(hql);
 
 		Query query = getSession().createQuery(hql);
 		query.setParameter(alias, value);

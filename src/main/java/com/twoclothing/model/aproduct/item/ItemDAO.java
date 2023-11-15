@@ -21,6 +21,8 @@ public interface ItemDAO {
 	 public List<Item> getAllByMbrId(Integer mbrId);
 	 
 	 public List<Item> getAllByItemStatus(Integer itemStatus);
+	 
+	 public List<Item> getAllSubByTagId(Integer tagId);
 
 	 public int update(Item item);
 

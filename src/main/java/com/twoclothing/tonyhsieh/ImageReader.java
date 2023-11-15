@@ -31,9 +31,11 @@ public class ImageReader extends HttpServlet{
 			Employee employee = employeeHibernateDAO.getByPrimaryKey(empid);
 			if (employee != null) {
 				byte[] avatar = employee.getAvatar();
-				System.out.println("avatar");
-				outputStream.write(avatar);
-				outputStream.close();
+				if(avatar != null) {
+					outputStream.write(avatar);
+					outputStream.close();
+				}
+				
 			}
 
 		} catch (Exception e) {

@@ -16,6 +16,8 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import com.twoclothing.model.categorytags.CategoryTags;
+
 public class ItemHibernateDAO implements ItemDAO {
 
 	private final SessionFactory factory;
@@ -60,6 +62,26 @@ public class ItemHibernateDAO implements ItemDAO {
 		return getSession().createQuery("from Item where itemStatus = :itemStatus", Item.class)
 				.setParameter("itemStatus", itemStatus)
 				.list();
+	}
+	
+	@Override
+	public List<Item> getAllSubByTagId(Integer tagId){
+		String sql ="WITH RECURSIVE tahhierarchy AS ( "
+					+"SELECT tagid "
+					+"FROM categorytags "
+					+"WHERE tagid = :tagId "
+					+"UNION ALL "
+					+"SELECT ct.tagid "
+					+"FROM categorytags ct "
+					+"INNER JOIN tahhierarchy th ON ct.supertagid = th.tagid "
+					+") "
+					+"SELECT DISTINCT it.* "
+					+"FROM tahhierarchy th "
+					+"INNER JOIN item it ON th.tagid = it.tagid; ";
+		
+        return getSession().createNativeQuery(sql, Item.class)
+                .setParameter("tagId", tagId)
+                .list();
 	}
 
 	@Override
