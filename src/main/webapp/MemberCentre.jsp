@@ -70,6 +70,7 @@ input:disabled {
     <ul>
     	
     	<li>
+    	 
 			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/members/Members.do">
 				<input type="hidden" name="mbrId" value="${user.mbrId}">
 				<input type="hidden" name="action" value="memberProfile">

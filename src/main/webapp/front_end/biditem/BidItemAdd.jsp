@@ -219,7 +219,7 @@
 <!--輸入類別標籤的資料結構(必須在引用標籤js檔之前宣告)-->
 <script>
     const categoryData = [
-        <c:forEach var="tags" items="${categoryTags}" begin="1">
+        <c:forEach var="tags" items="${applicationScope.categoryTags}" begin="1">
         {id:${tags.tagId}, name: '${tags.categoryName}', parentId:${tags.superTagId}},
         </c:forEach>
     ];

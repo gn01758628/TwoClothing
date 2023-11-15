@@ -57,22 +57,15 @@ public class ItemServiceImpl implements ItemService{
 	}
 
 	@Override
-	public int updateItem(Integer itemId, String itemName, Integer grade, Integer size, String detail, Integer price, Integer quantity) {
-		Item item = dao.getByPrimaryKey(itemId);
-		item.setItemName(itemName);
-		item.setGrade(grade);
-		item.setSize(size);
-		item.setDetail(detail);
-		item.setPrice(price);
-		item.setQuantity(quantity);
+	public int updateItem(Item item) {
 		return dao.update(item);
 	}
 
-	@Override
-	public Item updateItem(Item item) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public Item updateItem(Item item) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 	
 	@Override
 	public void deleteItem(Integer itemId) {

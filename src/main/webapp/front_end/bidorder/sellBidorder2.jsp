@@ -14,7 +14,49 @@
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css"/>
 <style type="text/css">
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
 
+h1 {
+    color: red;
+}
+
+#myTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#myTable th, #myTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#myTable th {
+    background-color: #f2f2f2;
+}
+
+#myTable tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* DataTables styling */
+.dataTables_wrapper {
+    margin-top: 20px;
+}
+
+.dataTables_filter label {
+    font-weight: normal;
+}
+
+.dataTables_length label {
+    font-weight: normal;
+}
 </style>
 </head>
 <body>

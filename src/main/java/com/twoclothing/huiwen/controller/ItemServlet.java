@@ -248,31 +248,50 @@ public class ItemServlet extends HttpServlet {
 		// 修改
 		String forUpdate = req.getParameter("forUpdate");
 		if ("update".equals(forUpdate)) {
-
+//			Item item = new Item();
 			Integer itemId = Integer.valueOf(req.getParameter("itemId"));
 			String itemName = req.getParameter("itemName");
 			Integer price = Integer.valueOf(req.getParameter("price"));
-			Integer size = Integer.valueOf(req.getParameter("size"));
 			Integer grade = Integer.valueOf(req.getParameter("grade"));
-			String detail = req.getParameter("detail");
+			Integer size = Integer.valueOf(req.getParameter("size"));
+			Integer itemStatus = Integer.valueOf(req.getParameter("itemStatus"));
 			Integer quantity = Integer.valueOf(req.getParameter("quantity"));
-			System.out.println(
-					itemId + "/" + itemName + "/" + grade + "/" + size + "/" + detail + "/" + price + "/" + quantity);
+			String detail = req.getParameter("detail");
+//			System.out.println(
+//					itemId + "/" + itemName + "/" + grade + "/" + size + "/" + detail + "/" + price + "/" + quantity);
 
-			int itemUpdate = itemService.updateItem(itemId, itemName, grade, size, detail, price, quantity);
+//			int itemUpdate = itemService.updateItem(itemId, itemName, grade, size, detail, price, quantity);
+			
+			Item item = itemService.getItemByItemId(itemId);
+			
+			
+			item.setItemId(itemId);
+			item.setItemName(itemName);
+			item.setPrice(price);
+			item.setGrade(grade);
+			item.setSize(size);
+			item.setItemStatus(itemStatus);
+			item.setQuantity(quantity);
+			item.setDetail(detail);
+			
+			
+			
+			
+			int itemUpdate = itemService.updateItem(item);
+			System.out.println(itemUpdate);
 			if (itemUpdate == 1) {
 				
-				Item item = itemService.getItemByItemId(itemId);
+				item = itemService.getItemByItemId(itemId);
 				req.setAttribute("item", item);
 
-				String url = "/front_end/item/itemSellerSearch.jsp";
+				String url = "/front_end/item/itemSellerUpdateOne.jsp";
 				RequestDispatcher dispatcher = req.getRequestDispatcher(url);
 				dispatcher.forward(req, res);
 			} else {
-				Item item = itemService.getItemByItemId(itemId);
+				item = itemService.getItemByItemId(itemId);
 				req.setAttribute("item", item);
 
-				String url = "/front_end/item/itemSellerLUpdate.jsp";
+				String url = "/front_end/item/itemSellerUpdate.jsp";
 				RequestDispatcher dispatcher = req.getRequestDispatcher(url);
 				dispatcher.forward(req, res);
 			}
