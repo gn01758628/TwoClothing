@@ -6,7 +6,7 @@ import com.twoclothing.model.shipsetting.ShipSetting;
 
 public interface ShipSettingService {
 	
-	ShipSetting addShipSetting(Integer mbrId, String receiveName, String receivePhone, String receiveAddress);
+	ShipSetting addShipSetting(ShipSetting shipSetting);
 	
 	List<ShipSetting> getAll();
 	
@@ -14,7 +14,7 @@ public interface ShipSettingService {
 	
 	List<ShipSetting> getByMbrId(Integer mbrId);
 	
-	public ShipSetting updateShipSetting(Integer shipId, Integer mbrId, String receiveName, String receivePhone, String receiveAddress);
+	public ShipSetting updateShipSetting(ShipSetting shipSetting);
 	
 	Integer deleteShipSetting(Integer shipId);
 }

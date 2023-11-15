@@ -64,6 +64,21 @@ h5:hover {
 	top: 100px;
 	text-align: center;
 }
+ #forgotPasswordModal{
+	margin: 50px;
+	padding: 10px;
+	width: 230px;
+	height: 200px;
+	background-color: white;
+	border-radius: 5px;
+	border-top: 10px solid #df5334;
+	box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1);
+	/*定位對齊*/
+	position: relative;
+	margin: auto;
+	top: 100px;
+	text-align: center;
+}
 
 .system_name {
 	/*定位對齊*/
@@ -91,6 +106,10 @@ h5:hover {
 #container2 {
 	visibility: hidden; /*剛開始消失*/
 	height: 450px;
+}
+#forgotPasswordModal{
+	visibility: hidden; /*剛開始消失*/
+	height: 200px;
 }
 
 #copyright {
@@ -137,15 +156,15 @@ input {
 .register-form:invalid+.icon::after {
 	content: '😳';
 }
+
 </style>
 
 </head>
 <body>
-<%-- 	<a href='${pageContext.request.contextPath}/index.jsp'>回首頁</a> --%>
 
 
 	<div class="system_name">
-		<h2>登入</h2>
+		<h2>TwoClothing歡迎您</h2>
 	</div>
 	<div class="login_page">
 		<div id="container1">
@@ -167,6 +186,8 @@ input {
 				</form>
 <!-- ============================登入================================================ -->
 				<h5 onclick="show_hide()">註冊帳號</h5>
+				<h5 id="forgotPasswordBtn" onclick="showForgotPasswordModal()">忘記密碼</h5>
+				
 			</div>
 			<!-- login end -->
 		</div>
@@ -216,11 +237,28 @@ input {
 		<!-- container2 end -->
 	</div>
 	<!-- signup_page end -->
+	<!--忘記密碼==================================================================-->
+	<div id="forgotPasswordModal" class="modal" style="display: none;">
+	    <div class="modal-content">
+	    	<h3>忘記密碼</h3>
+	        <form action="${pageContext.request.contextPath}/members/SendEmailServlet" onsubmit="sendForgotPasswordEmail(); return false;">
+	            <label for="email3">輸入你的EMAIL:</label>
+	            <input type="text" id="email3" name="email3" placeholder="Email">
+<!-- 	            <input type="hidden" name="action" value="forgotPasswordEmail" class="submit"> -->
+	            <input type="submit" name="action"  value="寄出驗證信" class="submit">
+	            <h5 onclick="show_hide()">登入帳號</h5>
+	        </form>
+	    </div>
+	</div>
+
+
 
 	<div id="copyright">
 		<h4>Copyright © 2018 RoseWang All rights reserved</h4>
 		<!--因為js，會跑版-->
 	</div>
+	
+	
 
 	<script>
 	    var contextPath = "${pageContext.request.contextPath}";
@@ -278,28 +316,54 @@ input {
 
 //===============================================登入註冊切換===============================================
 
-		function show_hide() {
-			var login = document.getElementById("container1");
-			var signup = document.getElementById("container2");
-			var copyright = document.getElementById("copyright");
-			var location = null;
-			if (login.style.display === "none") {
-				login.style.display = "block"; //lonin出現
-				document.getElementById("email").value = "";
-				document.getElementById("pswdHash").value = "";
-				signup.style.display = "none"; //signup消失
-				copyright.style.margin = "200px 0px 0px 0px";
-			} else {
-				login.style.display = "none"; //login消失
-				signup.style.display = "block"; //signup出現
-				signup.style.visibility = "visible";
-				copyright.style.margin = "200px 0px 0px 0px";
+// 		function show_hide() {
+// 			var login = document.getElementById("container1");
+// 			var signup = document.getElementById("container2");
+// 			var copyright = document.getElementById("copyright");
+// 			var location = null;
+// 			if (login.style.display === "none") {
+// 				login.style.display = "block"; //lonin出現
+// 				document.getElementById("email").value = "";
+// 				document.getElementById("pswdHash").value = "";
+// 				signup.style.display = "none"; //signup消失
+// 				copyright.style.margin = "200px 0px 0px 0px";
+// 			} else {
+// 				login.style.display = "none"; //login消失
+// 				signup.style.display = "block"; //signup出現
+// 				signup.style.visibility = "visible";
+// 				copyright.style.margin = "200px 0px 0px 0px";
 
-				document.getElementById("email").value = "";
-				document.getElementById("pswdHash").value = "";
-				document.getElementById("comfirm_password").value = "";
-			}
-		}
+// 				document.getElementById("email").value = "";
+// 				document.getElementById("pswdHash").value = "";
+// 				document.getElementById("comfirm_password").value = "";
+// 			}
+// 		}
+
+function show_hide() {
+    var login = document.getElementById("container1");
+    var signup = document.getElementById("container2");
+    var forgotPasswordModal = document.getElementById("forgotPasswordModal");
+    var copyright = document.getElementById("copyright");
+
+    if (login.style.display === "none") {
+        login.style.display = "block"; // 登入出現
+        document.getElementById("email").value = "";
+        document.getElementById("pswdHash").value = "";
+        signup.style.display = "none"; // 註冊消失
+        forgotPasswordModal.style.display = "none"; // 忘記密碼消失
+        copyright.style.margin = "200px 0px 0px 0px";
+    } else {
+        login.style.display = "none"; // 登入消失
+        signup.style.display = "block"; // 註冊出現
+        signup.style.visibility = "visible";
+        forgotPasswordModal.style.display = "none"; // 忘記密碼消失
+        copyright.style.margin = "200px 0px 0px 0px";
+
+        document.getElementById("email").value = "";
+        document.getElementById("pswdHash").value = "";
+        document.getElementById("comfirm_password").value = "";
+    }
+}
 
 //===============================================登入註冊切換===============================================
 //==================================================登入ajax================================================			
@@ -432,6 +496,28 @@ $(document).ready(function() {
 });
 
 		
+		
+
+
+function showForgotPasswordModal() {
+    var login = document.getElementById("container1");
+    var signup = document.getElementById("container2");
+    var forgotPasswordModal = document.getElementById("forgotPasswordModal");
+    var copyright = document.getElementById("copyright");
+
+    login.style.display = "none";
+    signup.style.display = "none";
+    forgotPasswordModal.style.display = "block";
+    forgotPasswordModal.style.visibility = "visible";
+    copyright.style.margin = "200px 0px 0px 0px";
+}
+
+function closeModal() {
+    var forgotPasswordModal = document.getElementById("forgotPasswordModal");
+    forgotPasswordModal.style.display = "none";
+}
+		
+
 	</script>  
 
 </body>

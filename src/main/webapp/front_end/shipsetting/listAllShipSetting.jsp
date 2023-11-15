@@ -1,18 +1,8 @@
-<%@page import="org.hibernate.internal.build.AllowSysOut"%>
-<%@page import="com.twoclothing.gordon.service.*"%>
-<%@ page import="com.twoclothing.model.shipsetting.*" %>
-<%@ page import="java.util.*"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="BIG5"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
- 
- <% 
-     Object account = session.getAttribute("user");                  // ±q session¤º¨ú¥X (key) accountªº­È
-     if (account == null) {                                             // ¦p¬° null, ¥Nªí¦¹user¥¼µn¤J¹L , ¤~°µ¥H¤U¤u§@
-       session.setAttribute("location", request.getRequestURI());       //*¤u§@1 : ¦P®É°O¤U¥Ø«e¦ì¸m , ¥H«K©ólogin.htmlµn¤J¦¨¥\«á , ¯à°÷ª½±µ¾É¦Ü¦¹ºô­¶(¶·°t¦XLoginHandler.java) 
-       response.sendRedirect(request.getContextPath()+"/front_end/members/registerLogin.jsp");   //*¤u§@2 : ½Ğ¸Óuser¥hµn¤Jºô­¶(login.html) , ¶i¦æµn¤J 
-       return; 
-     } 
- %>  
+<%@ page import="java.util.*"%>
+
 
 <!DOCTYPE html>
 
@@ -20,78 +10,100 @@
 
 <html>
 <head>
+<meta charset="UTF-8">
+<title>ç‰©æµè¨­å®š</title>
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css" />
+<style type="text/css">
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
 
-<title>listAllShipSetting.jsp</title>
-
-<style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
+h1 {
     color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
+}
+
+#myTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#myTable th, #myTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#myTable th {
+    background-color: #f2f2f2;
+}
+
+#myTable tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* DataTables styling */
+.dataTables_wrapper {
+    margin-top: 20px;
+}
+
+.dataTables_filter label {
+    font-weight: normal;
+}
+
+.dataTables_length label {
+    font-weight: normal;
+}
+.green-button {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: block; 
+    margin: 0 auto; 
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
 </style>
 
-<style>
-  table {
-	width: 800px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
-  }
-  table, th, td {
-    border: 1px solid #CCCCFF;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  }
-</style>
 
 </head>
-<body bgcolor='white'>
-
-<h4>¦¹­¶½m²ß±Ä¥Î EL ªº¼gªk¨ú­È:</h4>
-<table id="table-1">
-	<tr><td>
-		<p><strong>·|­û½s¸¹:</strong> ${user.mbrId}</p>
-		 <h3>©Ò¦³ª«¬y³]©w - listAllShipSetting.jsp</h3>
-		 <h4><a href='${pageContext.request.contextPath}/MemberCentre.jsp'>·|­û¤¤¤ß</a>
-</h4>
-	</td></tr>
+<body>
+<h1 style="color: red;">ç‰©æµè¨­å®š</h1>
+<table id="myTable">
+	<tr>
+		<td>
+			 <h4><a href='${pageContext.request.contextPath}/MemberCentre.jsp' class="green-button">æœƒå“¡ä¸­å¿ƒ</a></h4>
+		</td>
+	</tr>
 </table>
 
-<table>
+<table id="myTable">
+<thead>
     <tr>
-        <th>·|­ûª«¬y³]©w½s¸¹</th>
-        <th>·|­û½s¸¹</th>
-        <th>·|­û©m¦W</th>
-        <th>¦¬¥ó¤H©m¦W</th>
-        <th>¦¬¥ó¤H¤â¾÷</th>
-        <th>¦¬¥ó¤H¦a§}</th>
+        <th>æ”¶ä»¶äººå§“å</th>
+        <th>æ”¶ä»¶äººæ‰‹æ©Ÿ</th>
+        <th>æ”¶ä»¶äººåœ°å€</th>
+        <th>ä¿®æ”¹</th>
+        <th>åˆªé™¤</th>
     </tr>
-    
+    </thead>
 <c:choose>
     <c:when test="${not empty ShipSetting}">
         <c:forEach var="ShipSetting" items="${ShipSetting}">
             <tr>
-                <td>${ShipSetting.shipId}</td>
-                <td>${ShipSetting.mbrId}</td>
-                <td>${user.mbrName}</td>
                 <td>${ShipSetting.receiveName}</td>
                 <td>${ShipSetting.receivePhone}</td>
                 <td>${ShipSetting.receiveAddress}</td>
                 <td>
                     <form method="post" action="<%=request.getContextPath()%>/shipsetting/Shipsetting.do" style="margin-bottom: 0px;">
-                        <input type="submit" value="­×§ï">
+                        <input type="submit" value="ä¿®æ”¹">
                         <input type="hidden" name="shipId"  value="${ShipSetting.shipId}">
                         <input type="hidden" name="mbrId"  value="${ShipSetting.mbrId}">
                         <input type="hidden" name="action" value="getOne_For_Update">
@@ -99,7 +111,7 @@
                 </td>
                 <td>
                     <form method="post" action="<%=request.getContextPath()%>/shipsetting/Shipsetting.do" style="margin-bottom: 0px;">
-                        <input type="submit" value="§R°£">
+                        <input type="submit" value="åˆªé™¤">
                         <input type="hidden" name="mbrId"  value="${ShipSetting.mbrId}">
                         <input type="hidden" name="shipId"  value="${ShipSetting.shipId}">
                         <input type="hidden" name="action" value="delete">
@@ -108,16 +120,30 @@
             </tr>
         </c:forEach>
     </c:when>
-    <c:otherwise>
-        <tr>
-            <td colspan="6">µL¸ê®Æ</td>
-        </tr>
-    </c:otherwise>
+
 </c:choose>
 </table>
     <form method="post" action="<%=request.getContextPath()%>/front_end/shipsetting/addShipSetting.jsp" style="margin-bottom: 0px;">
-         <input type="submit" value="·s¼W">
+         <input type="submit" value="æ–°å¢">
          <input type="hidden" name="action" value="insert">
      </form>
+     <script type="text/javascript"
+		src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#myTable').DataTable({
+
+				columnDefs: [
+        		    {
+        		        targets: -1,
+        		        className: 'dt-body-right'
+        		    }
+        		  ]
+			});
+
+		});
+	</script>
 </body>
 </html>
