@@ -47,7 +47,7 @@ body {
 			<th>員工電話</th>
 			<th>員工部門</th>
 			<th>員工狀態</th>
-			<th>員工密碼</th>
+<!-- 			<th>員工密碼</th> -->
 			<th>員工圖片</th>
 			<th>修改</th>
 			
@@ -67,11 +67,11 @@ body {
        			 <c:when test="${employee.empStatus == 1}">離職</c:when>
        			 </c:choose>
 			</td>
-			<td>${employee.pswdHash}</td>
+<%-- 			<td>${employee.pswdHash}</td> --%>
 			<td>
-				<c:if test="${not empty employee.avatar}">
-					<img src="${pageContext.request.contextPath}/ReadIMG?empId=${employee.empId}" width=100px height=100px>
-				</c:if>
+<%-- 				<c:if test="${not empty employee.avatar}"> --%>
+					<img src="${pageContext.request.contextPath}/CJImageReader/Employee?id=${employee.empId}" width=100px height=100px>
+<%-- 				</c:if> --%>
 			
 			</td>  
 			
