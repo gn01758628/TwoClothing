@@ -16,6 +16,8 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import com.twoclothing.model.categorytags.CategoryTags;
+
 public class ItemHibernateDAO implements ItemDAO {
 
 	private final SessionFactory factory;
@@ -61,6 +63,26 @@ public class ItemHibernateDAO implements ItemDAO {
 				.setParameter("itemStatus", itemStatus)
 				.list();
 	}
+	
+	@Override
+	public List<Item> getAllSubByTagId(Integer tagId){
+		String sql ="WITH RECURSIVE tahhierarchy AS ( "
+					+"SELECT tagid "
+					+"FROM categorytags "
+					+"WHERE tagid = :tagId "
+					+"UNION ALL "
+					+"SELECT ct.tagid "
+					+"FROM categorytags ct "
+					+"INNER JOIN tahhierarchy th ON ct.supertagid = th.tagid "
+					+") "
+					+"SELECT DISTINCT it.* "
+					+"FROM tahhierarchy th "
+					+"INNER JOIN item it ON th.tagid = it.tagid; ";
+		
+        return getSession().createNativeQuery(sql, Item.class)
+                .setParameter("tagId", tagId)
+                .list();
+	}
 
 	@Override
 	public int update(Item item) {
@@ -90,9 +112,11 @@ public class ItemHibernateDAO implements ItemDAO {
 		
 		if (map.containsKey("itemPriceSearchStart") && map.containsKey("itemPriceSearchEnd"))
 			predicates.add(builder.between(root.get("price"), new BigDecimal(map.get("itemPriceSearchStart")), new BigDecimal(map.get("itemPriceSearchEnd"))));
-	
-
 		
+		if (map.containsKey("itemQuantityStart") && map.containsKey("itemQuantityEnd")) {
+			predicates.add(builder.between(root.get("quantity"), new BigDecimal(map.get("itemQuantityStart")), new BigDecimal(map.get("itemQuantityEnd"))));	
+System.out.println("map///"+map);
+		}
 		for (Map.Entry<String, String> row : map.entrySet()) {
 
 			if("itemNameSearch".equals(row.getKey())){
@@ -103,8 +127,26 @@ public class ItemHibernateDAO implements ItemDAO {
 					predicates.add(builder.greaterThanOrEqualTo(root.get("price"), new BigDecimal(row.getValue())));
 			}
 			if("itemPriceSearchEnd".equals(row.getKey())) {
-				if(!map.containsKey("itemPriceSearchEnd"))
-					predicates.add(builder.greaterThanOrEqualTo(root.get("price"), new BigDecimal(row.getValue())));
+				if(!map.containsKey("itemPriceSearchStart"))
+					predicates.add(builder.lessThanOrEqualTo(root.get("price"), new BigDecimal(row.getValue())));
+			}
+			if("itemGrade".equals(row.getKey())) {
+					predicates.add(builder.equal(root.get("grade"), new BigDecimal(row.getValue())));
+			}
+			if("itemSize".equals(row.getKey())) {
+					predicates.add(builder.equal(root.get("size"), new BigDecimal(row.getValue())));
+			}
+			if("itemStatus".equals(row.getKey())) {
+					predicates.add(builder.equal(root.get("itemStatus"), new BigDecimal(row.getValue())));
+			}
+			
+			if("itemQuantityEnd".equals(row.getKey())) {
+				if(!map.containsKey("itemQuantityStart"))
+					predicates.add(builder.lessThanOrEqualTo(root.get("quantity"), new BigDecimal(row.getValue())));
+			}
+			if("itemQuantityStart".equals(row.getKey())) {
+				if(!map.containsKey("itemQuantityend"))
+					predicates.add(builder.greaterThanOrEqualTo(root.get("quantity"), new BigDecimal(row.getValue())));
 			}
 		}	
 
@@ -118,6 +160,7 @@ public class ItemHibernateDAO implements ItemDAO {
 	    List<Item> resultList = query.getResultList();
 
 	    int total = resultList.size();
+	    System.out.println(predicates);
 
 		return (query.setFirstResult(first)
 				.setMaxResults(ITEM_PAGE_MAX_RESULT)
@@ -126,7 +169,7 @@ public class ItemHibernateDAO implements ItemDAO {
 
 	@Override
 	public int getResultTotal(Map<String, String> map) {
-		System.out.println("map:"+map);
+//		System.out.println("map:"+map);
 
 //		if(map.size()==0) { 
 //			System.out.println("map:沒資料"+map);
@@ -140,6 +183,9 @@ public class ItemHibernateDAO implements ItemDAO {
 		
 		if (map.containsKey("itemPriceSearchStart") && map.containsKey("itemPriceSearchEnd"))
 			predicates.add(builder.between(root.get("price"), new BigDecimal(map.get("itemPriceSearchStart")), new BigDecimal(map.get("itemPriceSearchEnd"))));
+		
+		if (map.containsKey("itemQuantityStart") && map.containsKey("itemQuantityEnd"))
+			predicates.add(builder.between(root.get("quantity"), new BigDecimal(map.get("itemQuantityStart")), new BigDecimal(map.get("itemQuantityEnd"))));
 	
 		for (Map.Entry<String, String> row : map.entrySet()) {
 
@@ -152,7 +198,24 @@ public class ItemHibernateDAO implements ItemDAO {
 			}
 			if("itemPriceSearchEnd".equals(row.getKey())) {
 				if(!map.containsKey("itemPriceSearchEnd"))
-					predicates.add(builder.greaterThanOrEqualTo(root.get("price"), new BigDecimal(row.getValue())));
+					predicates.add(builder.lessThanOrEqualTo(root.get("price"), new BigDecimal(row.getValue())));
+			}
+			if("itemGrade".equals(row.getKey())) {
+					predicates.add(builder.equal(root.get("grade"), new BigDecimal(row.getValue())));
+			}
+			if("itemSize".equals(row.getKey())) {
+					predicates.add(builder.equal(root.get("size"), new BigDecimal(row.getValue())));
+			}
+			if("itemStatus".equals(row.getKey())) {
+					predicates.add(builder.equal(root.get("itemStatus"), new BigDecimal(row.getValue())));
+			}
+			if("itemQuantityEnd".equals(row.getKey())) {
+				if(!map.containsKey("itemQuantityStart"))
+					predicates.add(builder.lessThanOrEqualTo(root.get("quantity"), new BigDecimal(row.getValue())));
+			}
+			if("itemQuantityStart".equals(row.getKey())) {
+				if(!map.containsKey("itemQuantityend"))
+					predicates.add(builder.greaterThanOrEqualTo(root.get("quantity"), new BigDecimal(row.getValue())));
 			}
 		}
 		
@@ -193,4 +256,5 @@ public class ItemHibernateDAO implements ItemDAO {
 	public Integer getMbrIdById(Integer itemId) {
 		return (Integer)getSession().createQuery("select mbrId from Item where itemId = :itemId").setParameter("itemId", itemId).uniqueResult();
 	}
+
 }

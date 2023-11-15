@@ -29,15 +29,19 @@ import com.twoclothing.tonyhsieh.service.EmployeeService;
 import com.twoclothing.tonyhsieh.service.EmployeeServiceImpl;
 import com.twoclothing.utils.generic.GenericService;
 
-@WebServlet("/EmployeeCenter.do")
-@MultipartConfig(fileSizeThreshold = 1024*1024, maxFileSize = 5*1024*1024,maxRequestSize =5*5*1024*1024 )
-public class EmployeeCenterServlet extends HttpServlet {
-	private GenericService gs;
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
+@WebServlet("/EmployeeLogin.do")
+@MultipartConfig(fileSizeThreshold = 1024*1024, maxFileSize = 5*1024*1024,maxRequestSize =5*5*1024*1024 )
+public class EmployeeLoginServlet extends HttpServlet {
+	private GenericService gs;
 //	@Override
 	public void init() throws ServletException {
 		this.gs = gs.getInstance();
 	}
+	
+	String errorUrl ="/TwoClothing/empLogin.html";
+	String successUrl ="/TwoClothing/back_end/empCenter.jsp";
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -56,17 +60,17 @@ public class EmployeeCenterServlet extends HttpServlet {
 				login(req,res);
 				break;
 				
-			case "center":
-				center(req,res);
-				break;
+//			case "center":
+//				center(req,res);
+//				break;
 				
 			case "logout":
 				logout(req,res);
 				break;
 				
-			case "check":
-				check(req,res);
-				break;
+//			case "check":
+//				check(req,res);
+//				break;
 		}
 	
 	}
@@ -101,13 +105,14 @@ public class EmployeeCenterServlet extends HttpServlet {
             return;
 		}
         
-        Employee emp;
-        emp = gs.getByPrimaryKey(Employee.class, empid);
+        Employee emp = gs.getByPrimaryKey(Employee.class, empid);
         
-        if( emp == null || !str.equals(emp.getFormatEmpId()) ||  !pwd.equals(emp.getPswdHash())  ){
+        BCrypt.Result result = BCrypt.verifyer().verify(pwd.toCharArray(), emp.getPswdHash());
+        
+        if( emp == null || !str.equals(emp.getFormatEmpId()) ||  !result.verified  ){
         	errorMsgs.put("idOrPassword","編號或密碼輸入錯誤");
         }
-        
+		
         if(!errorMsgs.isEmpty()){
         	res.setContentType("application/json; charset=UTF-8");
     	    PrintWriter out = res.getWriter();
@@ -121,62 +126,54 @@ public class EmployeeCenterServlet extends HttpServlet {
         HttpSession session = req.getSession();
         session.setAttribute("emp", emp);
         
-        // 假設這是後端要回傳的URL
-        String url = req.getContextPath()+"/empCenter.html";
-        
         res.setContentType("text/html;charset=UTF-8");
         
         // 獲取PrintWriter
         PrintWriter out = res.getWriter();
         
-        out.print(url);
+        out.print(successUrl);
         out.flush();
 	}
 
-	private void center(HttpServletRequest req, HttpServletResponse res) throws IOException{
-		HttpSession  session = req.getSession();
-		Employee emp = (Employee)session.getAttribute("emp");               
-		if (emp == null) {                                      
-			String url = req.getContextPath() + "/back_end/employee/empLogin.html";
-			 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			 res.setContentType("text/plain");
-			 res.getWriter().write(url);
-			 return;
-		} 
-		res.setContentType("application/json; charset=UTF-8");
-		System.out.println(emp);
-		System.out.println(emp.getAvatar());
-		
-	    PrintWriter out = res.getWriter();
-		String empData = new Gson().toJson(emp);
-        out.print(empData);
-        out.flush();
-        return;
-		
-	}
+//	private void center(HttpServletRequest req, HttpServletResponse res) throws IOException{
+//		HttpSession  session = req.getSession();
+//		Employee emp = (Employee)session.getAttribute("emp");               
+//		if (emp == null) {                                      
+//			 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//			 res.setContentType("text/plain");
+//			 res.getWriter().write(errorUrl);
+//			 return;
+//		} 
+//		res.setContentType("application/json; charset=UTF-8");
+//		
+//	    PrintWriter out = res.getWriter();
+//		String empData = new Gson().toJson(emp);
+//        out.print(empData);
+//        out.flush();
+//        return;
+//		
+//	}
 	
 	private void logout(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		
 		HttpSession  session = req.getSession();
 		session.removeAttribute("emp");
 		
-		String url = req.getContextPath() + "/back_end/employee/empLogin.html";
         
         res.setContentType("text/html;charset=UTF-8");
         PrintWriter out = res.getWriter();
-        out.print(url);
+        out.print(errorUrl);
         out.flush();
 	}
 	
-	private void check(HttpServletRequest req, HttpServletResponse res) throws IOException{
-		HttpSession  session = req.getSession();
-		Employee emp = (Employee)session.getAttribute("emp");               
-		if (emp == null) {                                      
-			String url = req.getContextPath() + "/back_end/employee/empLogin.html";
-			 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			 res.setContentType("text/plain");
-			 res.getWriter().write(url);
-			 return;
-		}
-	}
+//	private void check(HttpServletRequest req, HttpServletResponse res) throws IOException{
+//		HttpSession  session = req.getSession();
+//		Employee emp = (Employee)session.getAttribute("emp");               
+//		if (emp == null) {                                      
+//			 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//			 res.setContentType("text/plain");
+//			 res.getWriter().write(errorUrl);
+//			 return;
+//		}
+//	}
 }

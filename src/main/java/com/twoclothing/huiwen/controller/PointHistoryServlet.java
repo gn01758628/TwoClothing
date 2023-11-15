@@ -45,9 +45,13 @@ public class PointHistoryServlet extends HttpServlet {
 			
 		}
 		
-		//連去搜尋
+		//連去搜尋，直接顯示查全部
 		if("search".equals(choice)) {
-			String url = "/back_end/pointHistory/PHSearch.jsp";
+			List<PointHistory> PHList = PHSvc.getAllPH();
+			req.setAttribute("PHList", PHList);
+			
+			
+			String url = "/front_end/pointHistory/PHSearchList.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
 		}

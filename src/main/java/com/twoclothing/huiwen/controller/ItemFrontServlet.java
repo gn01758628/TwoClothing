@@ -45,10 +45,6 @@ public class ItemFrontServlet extends HttpServlet{
 		
 		req.setAttribute("item", item);
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/itemDetail.jsp");
-		dispatcher.forward(req, res);			
-
-
-	}
-			
-	
+		dispatcher.forward(req, res);						
+	}	
 }

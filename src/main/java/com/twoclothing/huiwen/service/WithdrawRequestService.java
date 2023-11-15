@@ -18,5 +18,9 @@ public interface WithdrawRequestService {
 
     List<WithdrawRequest> getAllWRByReqStatus(Integer reqstatus);
 
-    int updateWR(WithdrawRequest withdrawRequest);
+    int updateWR(List<WithdrawRequest> withdrawRequests);
+
+	Integer getBalanceByMbrId(Integer mbrId);
+
+	List<WithdrawRequest> getByStatus();
 }

@@ -10,184 +10,216 @@
 <!--bootstrap5 css-->
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
-<style>
-* {
-	box-sizing: border-box;
-}
-
-body {
-	display: flex;
-	justify-content: center;
-	flex-direction: row;
-	margin: 10px;
-	height: calc(100vh - 20px);
-}
-
-form.form_cart{
-	display:flex;
-	flex-direction: row;
-}
-
-div.leftMain {
-	height: 100%;
-	max-height: 100%;
-	overflow: auto;
-	padding: 0px 10px;
-}
-
-div.detailBox {
-	/* border: 1px solid black; */
-	/* height: 150px; */
-	border-radius: 0.5rem;
-	background-color: lightgrey;
-	width: 1000px;
-	padding: 30px 60px;
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	margin-bottom: 10px;
-}
-
-div.detailBox>* {
-	padding: 0px 10px;
-}
-
-div.detailBox input[type='checkbox'] {
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+		
+		body {
+			display: flex;
+			justify-content: center;
+			flex-direction: row;
+			margin: 10px;
+			height: calc(100vh - 20px);
+		}
+		
+		form.form_cart{
+			display:flex;
+			flex-direction: row;
+		    justify-content: center;
+		    max-width: 1300px;
+		    width: 1300px;
+		    border: 1px solid;
+		}
+		
+		div.leftMain {
+			height: 100%;
+			max-height: 100%;
+			overflow: auto;
+			padding: 0px 10px;
+			border:1px solid red; 
+			width:875px;
+			display:flex;
+			flex-direction: column;
+/* 		    justify-content: center; */
+		    align-items: center;
+		}
+		
+		div.detailBox {
+			/* border: 1px solid black; */
+			/* height: 150px; */
+			border-radius: 1rem;
+			background-color: lightgrey;
+			max-width:850px;
+			width: 850px;
+			padding: 30px 35px;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			margin-bottom: 10px;
+		}
+		
+		div.detailBox>* {
+			padding: 0px 10px;
+		}
+		
+		div.detailBox input[type='checkbox'] {
+			
+		}
+		
+		div.detailBox img.itemImg {
+			width: 150px;
+		    height: 100px;
+		    margin-left: 30px;
+		}
+		
+		div.detailBox div.info {
+			height: 100%;
+			width: 300px;
+			display: flex;
+			flex-direction: column;
+			padding: 25px 10px;
+		}
+		
+		div.detailBox div.info p.item-name {
+			font-size: 22px;
+			margin: 0;
+			height: 30%;
+			margin-bottom: 5px;
+			text-align: center;
+		}
+		
+		div#detailBox div.info p.item-description {
+			font-size: 16px;
+			margin: 0;
+			height: 70%;
+		}
+		
+		div.detailBox table {
+			border-collapse: separate;
+			border-spacing: 10px;
+			width: 50%;
+		}
+		
+		div.detailBox table tr.trth th {
+			border-bottom: 1px solid black;
+			padding-bottom: 5px;
+			text-align: center;
+		}
+		
+		div.detailBox table tr.trtd {
+			text-align: center;
+		}
+		
+		div.detailBox table tr.trtd input[type='number'] {
+			padding: 5px;
+			width: 50px;
+			background: transparent;
+			border: 0px;
+			outline: none;
+			text-align: right;
+		}
+		
+		div.detailBox div.del-box button {
+			padding: 5px;
+			cursor: pointer;
+			background-color: rgba(0, 0, 0, 0);
+			border: 0px;
+		}
+		
+		button.close_x img{
+			width:35px;
+			height:35px;
+		}
+		
+		div.rightMain {
+			border: 1px solid black;
+			padding: 25px;
+			margin-left: 40px;
+			width: 300px;
+			display: flex;
+			justify-content: center;
+			background-color: lightgrey;
+			border-radius: 0.5rem;
+			margin-bottom: 10px;
+			position: sticky;
+			top: 8px;
+			align-items: center;
+		}
+		
+		div.rightMain div.rightInner {
+			/*             border: 1px solid red; */
+			/* 	position: fixed; */
+			bottom: 20%;
+			width: 100%;
+		}
+		
+		div.rightMain div.rightInner>label {
+			/*             border: 1px solid blue; */
+			font-size: 20px;
+			display: inline-block;
+			margin-bottom: 20px;
+			border-bottom: 1px solid gray;
+			width: 100%;
+			padding-bottom: 20px;
+		}
+		
+		div.rightMain div.rightInner>div {
+			border: 1px solid black;
+			font-size: 20px;
+			text-align: center;
+			margin: 20px 0px;
+			margin-bottom: 34px;
+		}
+		
+		div.rightMain div.rightInner button {
+			width: 100%;
+			height: 35px;
+		
+		}
+		
+		
+		div.rightMain div.rightInner input.btn-primary{
+			width: 100%;
+			height: 35px;
+		}
+		
+		
+		.btn-primary {
+			background-color: gray;
+			border-color: black;
+		}
+		
+		.btn-primary:hover {
+			background-color: black;
+		}
+		
+		.btn-primary:focus {
+			background-color: gray;
+			border-color: black;
+		}
+		
+		
+		label.Coupon input.coupon_radio:disabled+span {
+			background-color: #FFFFFF;
+			color: lightgray;
+		}
+		img.cart_empty{
+			width:540px;
+			height:540px;
+ 			display: none;
+		}
+		.display_none{
+			display: block;
+		}
 	
-}
-
-div.detailBox img.itemImg {
-	width: 250px;
-}
-
-div.detailBox div.info {
-	height: 100%;
-	width: 300px;
-	display: flex;
-	flex-direction: column;
-	padding: 25px 10px;
-}
-
-div.detailBox div.info p.item-name {
-	font-size: 28px;
-	margin: 0;
-	height: 30%;
-	margin-bottom: 5px;
-}
-
-div#detailBox div.info p.item-description {
-	font-size: 16px;
-	margin: 0;
-	height: 70%;
-}
-
-div.detailBox table {
-	border-collapse: separate;
-	border-spacing: 10px;
-}
-
-div.detailBox table tr.trth th {
-	border-bottom: 1px solid black;
-	padding-bottom: 5px;
-	text-align: center;
-}
-
-div.detailBox table tr.trtd {
-	text-align: center;
-}
-
-div.detailBox table tr.trtd input[type='number'] {
-	padding: 5px;
-	width: 50px;
-	background: transparent;
-	border: 0px;
-	outline: none;
-	text-align: right;
-}
-
-div.detailBox div.del-box button {
-	padding: 5px;
-	cursor: pointer;
-}
-
-div.rightMain {
-	border: 1px solid black;
-	padding: 40px;
-	margin-left: 40px;
-	width: 20%;
-	display: flex;
-	justify-content: center;
-	background-color: lightgrey;
-	border-radius: 0.5rem;
-	margin-bottom: 10px;
-	position: sticky;
-	top: 8px;
-	align-items: center;
-}
-
-div.rightMain div.rightInner {
-	/*             border: 1px solid red; */
-	/* 	position: fixed; */
-	bottom: 20%;
-	width: 100%;
-}
-
-div.rightMain div.rightInner>label {
-	/*             border: 1px solid blue; */
-	font-size: 20px;
-	display: inline-block;
-	margin-bottom: 20px;
-	border-bottom: 1px solid gray;
-	width: 100%;
-	padding-bottom: 20px;
-}
-
-div.rightMain div.rightInner>div {
-	border: 1px solid black;
-	font-size: 20px;
-	text-align: center;
-	margin: 20px 0px;
-	margin-bottom: 34px;
-}
-
-div.rightMain div.rightInner button {
-	width: 100%;
-	height: 35px;
-}
-
-div.rightMain div.rightInner input.btn-primary{
-	width: 100%;
-	height: 35px;
-}
-
-
-.btn-primary {
-	background-color: gray;
-	border-color: black;
-}
-
-.btn-primary:hover {
-	background-color: black;
-}
-
-.btn-primary:focus {
-	background-color: gray;
-	border-color: black;
-}
-
-
-label.Coupon input.coupon_radio:disabled+span {
-	background-color: #FFFFFF;
-	color: lightgray;
-}
-</style>
+	</style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 	<form class="form_cart" method="post" action="${pageContext.request.contextPath}/ItemCart/toPay" enctype="multipart/form-data">
 		<div class="leftMain">
-			<div>您的購物車是空的!</div>
-			
+<!-- 			<div>您的購物車是空的!</div> -->
 			<c:forEach var="item" items="${itemList}" varStatus="loop">
 				<div class="detailBox">
 					<input type="checkbox" name="itemIdCheck" class="checkboxLeft" checked
@@ -198,8 +230,6 @@ label.Coupon input.coupon_radio:disabled+span {
 						<p style="display: none" name="itemId" class="item-id"
 							data-item-id="${item.itemId}">${item.itemId}</p>
 						<p class="item-name">${item.itemName}</p>
-						<p class="item-description">Lorem ipsum dolor sit amet
-							consectetur, adipisicing elit. Nihil animi doloremque mollitia</p>
 					</div>
 					<table>
 						<tr class="trth">
@@ -221,10 +251,12 @@ label.Coupon input.coupon_radio:disabled+span {
 					</table>
 	
 					<div class="del-box">
-						<button class="close_x">X</button>
+						<button class="close_x"><img src="${pageContext.request.contextPath}/images/cart/garbage1.png"></button>
 					</div>
 				</div>
-			</c:forEach>		
+			</c:forEach>
+			<img class="cart_empty" src="${pageContext.request.contextPath}/images/cart/Shopping.png">
+					
 		</div>
 		<div class="rightMain">
 			<div class="rightInner">
@@ -350,7 +382,19 @@ label.Coupon input.coupon_radio:disabled+span {
 
 				// 然後刪除整個 detailBox 元素
 				$detailBox.remove();
+				    
+
+				//購物車是否有商品，若無則顯示購物圖片
+				var leftMain = $(".leftMain");
+				if (leftMain.find('.detailBox').length === 0) {
+				    leftMain.find('.cart_empty').show();
+				} else {
+				    leftMain.find('.cart_empty').hide();
+				}
+  
+				
 			});
+			
 		});
 	</script>
 	
@@ -438,8 +482,16 @@ label.Coupon input.coupon_radio:disabled+span {
 	
 	$(document).ready(function() {	
 		countEverything();
+		
+		//購物車是否有商品，若無則顯示購物圖片
+		var leftMain = $(".leftMain");
+		if (leftMain.find('.detailBox').length === 0) {
+		    leftMain.find('.cart_empty').show();
+		} else {
+		    leftMain.find('.cart_empty').hide();
+		}
 	});
-	
+
 	
 	</script>
 	

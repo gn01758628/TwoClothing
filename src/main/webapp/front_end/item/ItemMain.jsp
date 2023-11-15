@@ -14,11 +14,11 @@
 
     <div class="container">
     
-    	<a href="${pageContext.request.contextPath}/Item/item?choice=addItem">新增商品</a>
+    	<a href="${pageContext.request.contextPath}/Item/item?choice=addItem">賣家新增商品</a>
     	<br>
-    	<a href="${pageContext.request.contextPath}/Item/item?choice=search">查詢</a>
+    	<a href="${pageContext.request.contextPath}/Item/item?choice=search">賣家商品查詢</a>
     	<br>
-    	<a href="${pageContext.request.contextPath}/Item/item?choice=getAllList">商品列表</a>
+    	<a href="${pageContext.request.contextPath}/Item/item?choice=getAllList">前台商品列表</a>
 
     </div>
 
