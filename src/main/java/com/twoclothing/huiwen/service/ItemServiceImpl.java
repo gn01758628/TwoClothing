@@ -57,22 +57,15 @@ public class ItemServiceImpl implements ItemService{
 	}
 
 	@Override
-	public int updateItem(Integer itemId, String itemName, Integer grade, Integer size, String detail, Integer price, Integer quantity) {
-		Item item = dao.getByPrimaryKey(itemId);
-		item.setItemName(itemName);
-		item.setGrade(grade);
-		item.setSize(size);
-		item.setDetail(detail);
-		item.setPrice(price);
-		item.setQuantity(quantity);
+	public int updateItem(Item item) {
 		return dao.update(item);
 	}
 
-	@Override
-	public Item updateItem(Item item) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public Item updateItem(Item item) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 	
 	@Override
 	public void deleteItem(Integer itemId) {
@@ -101,47 +94,142 @@ public class ItemServiceImpl implements ItemService{
 
 	@Override
 	public List<Item> getItemByCompositeQuery(Map<String, String[]> map, int page) {
-		Map<String, String> query = new HashMap<>();
-		// Map.Entry即代表一組key-value
-		Set<Map.Entry<String, String[]>> entry = map.entrySet();
+//		Map<String, String> query = new HashMap<>();
+//		// Map.Entry即代表一組key-value
+//		Set<Map.Entry<String, String[]>> entry = map.entrySet();
+//		
+//		for (Map.Entry<String, String[]> row : entry) {
+//			String key = row.getKey();
+//			// 因為請求參數裡包含了action，做個去除動作
+//			if ("choice".equals(key)) {
+//				continue;
+//			}
+//			// 若是value為空即代表沒有查詢條件，做個去除動作
+//			String value = row.getValue()[0];
+//
+//			
+//			if ( value == null || value.isEmpty()) {
+//				continue;
+//			}
+//			query.put(key, value);
+//		}
+//System.out.println(query);
 		
-		for (Map.Entry<String, String[]> row : entry) {
-			String key = row.getKey();
-			// 因為請求參數裡包含了action，做個去除動作
-			if ("action".equals(key)) {
-				continue;
-			}
-			// 若是value為空即代表沒有查詢條件，做個去除動作
-			String value = row.getValue()[0];
-
-			
-			if ( value == null || value.isEmpty()) {
-				continue;
-			}
-			query.put(key, value);
+		
+	    Map<String, String> query = new HashMap<>();
+	    
+	    Set<Map.Entry<String, String[]>> entrySet = map.entrySet();
+	    
+	    for (Map.Entry<String, String[]> entry : entrySet) {
+	        String key = entry.getKey();
+	        String[] values = entry.getValue();
+	        
+	        if ("choice".equals(key)) {
+	            continue;
+	        }
+		
+		
+		if (values != null && values.length > 0) {
+            String value = values[0];
+            if (value != null && !value.isEmpty()) {
+                if ("itemQuantity".equals(key)) {
+                    switch (value) {
+                        case "2":
+                            query.put("itemQuantityStart", "0");
+                            query.put("itemQuantityEnd", "5");
+                            break;
+                        case "3":
+                            query.put("itemQuantityStart", "6");
+                            // 可以不加這行，因為 Map 本身不包含該 key 就代表是 null
+                            query.remove("itemQuantityEnd");
+                            break;
+                        default:
+                            // 其他情況，可以根據需要進行處理
+                            break;
+                    }
+                } else {
+                    // 將原有的 key-value 放入 query 中
+                    query.put(key, value);
+                }
+            }
 		}
-
+	}
+	
+	System.out.println("query :" + query);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		return dao.getByCompositeQuery(query, page);
 	}
 
 
 	public int getResultTotalCondition(Map<String, String[]> map) {
-		Map<String, String> query = new HashMap<>();
-		// Map.Entry即代表一組key-value
-		Set<Map.Entry<String, String[]>> entry = map.entrySet();
-		
-		for (Map.Entry<String, String[]> row : entry) {
-			String key = row.getKey();
-			// 因為請求參數裡包含了action，做個去除動作
-			if ("action".equals(key)) {
-				continue;
-			}
+//		Map<String, String> query = new HashMap<>();
+//		// Map.Entry即代表一組key-value
+//		Set<Map.Entry<String, String[]>> entry = map.entrySet();
+//		
+//		for (Map.Entry<String, String[]> row : entry) {
+//			String key = row.getKey();
+//			// 因為請求參數裡包含了action，做個去除動作
+//			if ("choice".equals(key)) {
+//				continue;
+//			}
 			// 若是value為空即代表沒有查詢條件，做個去除動作
-			String value = row.getValue()[0];
-			if ( value == null || value.isEmpty()) {
-				continue;
+//			String value = row.getValue()[0];
+//			if ( value == null || value.isEmpty()) {
+//				continue;
+//			}
+//			query.put(key, value);
+			
+			
+			
+			
+		    Map<String, String> query = new HashMap<>();
+		    
+		    Set<Map.Entry<String, String[]>> entrySet = map.entrySet();
+		    
+		    for (Map.Entry<String, String[]> entry : entrySet) {
+		        String key = entry.getKey();
+		        String[] values = entry.getValue();
+		        
+		        if ("choice".equals(key)) {
+		            continue;
+		        }
+			
+			
+			if (values != null && values.length > 0) {
+	            String value = values[0];
+	            if (value != null && !value.isEmpty()) {
+	                if ("itemQuantity".equals(key)) {
+	                    switch (value) {
+	                        case "2":
+	                            query.put("itemQuantityStart", "0");
+	                            query.put("itemQuantityEnd", "5");
+	                            break;
+	                        case "3":
+	                            query.put("itemQuantityStart", "6");
+	                            // 可以不加這行，因為 Map 本身不包含該 key 就代表是 null
+	                            query.remove("itemQuantityEnd");
+	                            break;
+	                        default:
+	                            // 其他情況，可以根據需要進行處理
+	                            break;
+	                    }
+	                } else {
+	                    // 將原有的 key-value 放入 query 中
+	                    query.put(key, value);
+	                }
+	            }
 			}
-			query.put(key, value);
 		}
 		
 		System.out.println("query :" + query);
@@ -196,4 +284,5 @@ System.out.println("::"+categoryTagsDAO.getTagIdsWithoutChildren());
 	public Integer getMbrIdByItemId(Integer itemId) {
 		return dao.getMbrIdById(itemId);
 	}
+
 }

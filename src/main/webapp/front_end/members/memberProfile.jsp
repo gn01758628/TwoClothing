@@ -1,14 +1,14 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.twoclothing.gordon.service.*"%>
-<%-- ¦¹­¶¼È½m²ß±Ä¥Î Script ªº¼gªk¨ú­È --%>
+<%-- æ­¤é æš«ç·´ç¿’æ¡ç”¨ Script çš„å¯«æ³•å–å€¼ --%>
 
 <%
-//   Members members = (Members) request.getAttribute("members"); //EmpServlet.java(Concroller), ¦s¤JreqªºempVOª«¥ó
+//   Members members = (Members) request.getAttribute("members"); //EmpServlet.java(Concroller), å­˜å…¥reqçš„empVOç‰©ä»¶
 %>
 
 <html>
 <head>
-<title>­Ó¤H¸ê®Æ</title>
+<title>å€‹äººè³‡æ–™</title>
 
 <style>
 
@@ -20,27 +20,27 @@
 
 <style>
   table {
-    width: 50%; /* Åıªí®æ¼e«×¶ñº¡¤÷¤¸¯À */
-    border-collapse: collapse; /* ¦X¨Öªí®æÃä®Ø */
+    width: 50%; /* è®“è¡¨æ ¼å¯¬åº¦å¡«æ»¿çˆ¶å…ƒç´  */
+    border-collapse: collapse; /* åˆä½µè¡¨æ ¼é‚Šæ¡† */
     margin-top: 5px;
     margin-bottom: 5px;
-    margin: 0 auto; /* ¤ô¥­¸m¤¤ */
+    margin: 0 auto; /* æ°´å¹³ç½®ä¸­ */
   }
   th, td {
     border: 1px solid #CCCCFF;
-    padding: 10px; /* ½Õ¾ã¤ºÃä¶Z */
-    text-align: center; /* ¤å¥»¸m¤¤ */
+    padding: 10px; /* èª¿æ•´å…§é‚Šè· */
+    text-align: center; /* æ–‡æœ¬ç½®ä¸­ */
   }
   th {
-    background-color: #CCCCFF; /* ¼ĞÃD­I´ºÃC¦â */
-    font-weight: bold; /* ¥[²Ê¦rÅé */
+    background-color: #CCCCFF; /* æ¨™é¡ŒèƒŒæ™¯é¡è‰² */
+    font-weight: bold; /* åŠ ç²—å­—é«” */
   }
   img {
     max-width: 100px;
     max-height: 100px;
   }
    table#table-1 {
-    width: 50%; /* »P¤U­±ªºªí®æ¤j¤p¬Û¤Ç°t */
+    width: 50%; /* èˆ‡ä¸‹é¢çš„è¡¨æ ¼å¤§å°ç›¸åŒ¹é… */
   }
 </style>
 
@@ -51,47 +51,196 @@
 
 	<tr><td>
 		 
-		 <h4><a href="${pageContext.request.contextPath}/MemberCentre.jsp">·|­û¤¤¤ß</a></h4>
+		 <h4><a href="${pageContext.request.contextPath}/MemberCentre.jsp">æœƒå“¡ä¸­å¿ƒ</a></h4>
 	</td></tr>
 </table>
 
 <table>
-	<tr>
-    <th>·|­û©m¦W</th>
-    <td>${Members.mbrName}</td>
+  <tr style="display: none;">
+    <th >æœƒå“¡ç·¨è™Ÿ</th>
+    <td id="mbrId">${user.mbrId}</td>
+	</tr>
+
+  <tr>
+    <th>æœƒå“¡å§“å</th>
+    <td id="mbrName">${user.mbrName}</td>
+    <td><button class="editButton" onclick="editMemberData('mbrName')">ä¿®æ”¹</button></td>
   </tr>
   <tr>
-    <th>·|­û«H½c(±b¸¹)</th>
-    <td>${Members.email}</td>
+    <th>æœƒå“¡ä¿¡ç®±(å¸³è™Ÿ)</th>
+    <td>${user.email}</td>
   </tr>
   <tr>
-    <th>·|­û±K½X«¢§Æ­È</th>
-    <td>${Members.pswdHash}</td>
+    <th>æœƒå“¡å¯†ç¢¼</th>
+    <td>**********</td>
   </tr>
   <tr>
-    <th>·|­û¤jÀY¶K</th>
-    <td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=avatar" width=100px height=100px  ></td>
+    <th>æœƒå“¡å¤§é ­è²¼</th>
+    <td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${user.mbrId}&imgType=avatar" width=100px height=100px  >
+  	</td>
+  	<td>
+  		<form METHOD="post" action="${pageContext.request.contextPath}/members/Members.do" id="avatarForm" enctype="multipart/form-data"  style="display: none;">
+            
+            <input type="file" id="avatar" name="avatar" accept="image/*">
+            <input type="hidden" name="mbrId" value="${user.mbrId}">
+            <input type="hidden" name="action" value="members_UpdateImage"  >
+            <input type="submit"  value="ä¿®æ”¹å¤§é ­è²¼"  >
+        </form>
+  		<button id="avatarFormA"onclick="showUploadAvatarForm()">ä¿®æ”¹å¤§é ­è²¼</button>
+  		<button id="avatarFormCancel"onclick="cancelImage1Form()" style="display: none;">å–æ¶ˆ</button>
+  	</td>
   </tr>
   <tr>
-    <th>·|­û½æ®a°Ó³õ¹Ï¤ù01</th>
-    <td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg01" width=100px height=100px ></td>
+    <th>æœƒå“¡è³£å®¶å•†å ´åœ–ç‰‡01</th>
+    <td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${user.mbrId}&imgType=shopimg01" width=100px height=100px >
+    
+    </td>
+    <td>
+    	<form METHOD="post" action="${pageContext.request.contextPath}/members/Members.do" id="shopImage1Form" enctype="multipart/form-data"  style="display: none;">
+		    <input type="file" name="shopImage01" accept="image/*">
+		    
+		    <input type="hidden" name="mbrId" value="${user.mbrId}">
+		    <input type="hidden" name="action" value="members_UpdateImage"  >
+		    <input type="submit" value="ä¿®æ”¹å•†å ´åœ–ç‰‡01" >
+		</form>
+  		<button id="shopImage1FormA" onclick="showUploadAhopImage1Form()">ä¿®æ”¹å•†å ´åœ–ç‰‡01</button>
+  		<button id="shopImage1FormCancel"  onclick="cancelImage1Form()" style="display: none;">å–æ¶ˆ</button>
+  	</td>
   </tr>
   <tr>
-    <th>·|­û½æ®a°Ó³õ¹Ï¤ù02</th>
-    <td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg02" width=100px height=100px ></td>
+    <th>æœƒå“¡è³£å®¶å•†å ´åœ–ç‰‡02</th>
+    <td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${user.mbrId}&imgType=shopimg02" width=100px height=100px >
+    
+    </td>
+    <td>
+	    <form METHOD="post" action="${pageContext.request.contextPath}/members/Members.do" id="shopImage2Form" enctype="multipart/form-data"  style="display: none;"> 
+		    <input type="file" name="shopImage02" accept="image/*">
+		    <input type="hidden" name="mbrId" value="${user.mbrId}">
+			<input type="hidden" name="action" value="members_UpdateImage"  >
+		    <input type="submit" value="ä¿®æ”¹å•†å ´åœ–ç‰‡02">
+		</form>
+  		<button id="shopImage2FormA" onclick="showUploadShopImage2Form()">ä¿®æ”¹å•†å ´åœ–ç‰‡02</button>
+  		<button id="shopImage2FormCancel" onclick="cancelImage1Form()" style="display: none;">å–æ¶ˆ</button>
+  	</td>
   </tr>
 
 
 </table> 
-<table id="table-1">
 
-	<tr><td>
-		 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/members/Members.do" style="margin-bottom: 0px;">
-	      <input type="submit" value="­×§ï">
-	      <input type="hidden" name="mbrId"  value="${Members.mbrId}">
-	      <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
-	</td></tr>
-</table>
+<script>
+	var contextPath = "${pageContext.request.contextPath}";	
+	
+	
+	function showUploadAvatarForm() {
+	    var form = document.getElementById('avatarForm');
+	    var avatarFormA = document.getElementById('avatarFormA');
+	    var avatar = document.getElementById('avatarFormCancel');
+	    form.style.display = 'block';  
+	    avatar.style.display = 'block';  
+	    avatarFormA.style.display = 'none';  
+	}
+	function showUploadAhopImage1Form() {
+	    var form = document.getElementById('shopImage1Form');
+	    var shopImage1FormA = document.getElementById('shopImage1FormA');
+	    var shopImage1 = document.getElementById('shopImage1FormCancel');
+	    form.style.display = 'block';  
+	    shopImage1.style.display = 'block';  
+	    shopImage1FormA.style.display = 'none';  
+	}
+	function showUploadShopImage2Form() {
+	    var form = document.getElementById('shopImage2Form');
+	    var shopImage1FormA = document.getElementById('shopImage2FormA');
+	    var shopImage2 = document.getElementById('shopImage2FormCancel');
+	    form.style.display = 'block';  
+	    shopImage2.style.display = 'block';  
+	    shopImage1FormA.style.display = 'none';  
+	}
+	
+	function cancelImage1Form() {
+	    var form = document.getElementById('avatarForm');
+	    form.style.display = 'none';  
+	    var form = document.getElementById('shopImage1Form');
+	    form.style.display = 'none';  
+	    var form = document.getElementById('shopImage2Form');
+	    form.style.display = 'none';
+	    var avatar = document.getElementById('avatarFormCancel');
+	    avatar.style.display = 'none';
+	    var shopImage1 = document.getElementById('shopImage1FormCancel');
+	    shopImage1.style.display = 'none';
+	    var shopImage2 = document.getElementById('shopImage2FormCancel');
+	    shopImage2.style.display = 'none';
+	    var avatarFormA = document.getElementById('avatarFormA');
+	    avatarFormA.style.display = 'block'; 
+	    var shopImage1FormA = document.getElementById('shopImage1FormA');
+	    shopImage1FormA.style.display = 'block'; 
+	    var shopImage1FormA = document.getElementById('shopImage2FormA');
+	    shopImage1FormA.style.display = 'block'; 
+
+
+
+
+	}
+
+
+
+
+  function editMemberData(field) {
+    var currentValue = document.getElementById(field).innerText;
+    var newValue = prompt('è«‹è¼¸å…¥æ–°çš„å€¼ï¼š', currentValue);
+    var mbrId = document.getElementById("mbrId").innerText;
+    var action ='members_UpdateName';
+    if (newValue !== null && newValue !== currentValue) {
+    	
+   	  var xhr = new XMLHttpRequest();
+      xhr.open('POST', contextPath + "/members/Members.do?action="+action+"&mbrId="+mbrId, true);
+      xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+      var data = {
+    	 
+         field: field,
+         newValue: newValue,
+         
+         
+      };
+
+      xhr.send(JSON.stringify(data));
+      
+      document.getElementById(field).innerText = newValue;
+      alert('ä½ è¼¸å…¥çš„æ–°å€¼ç‚ºï¼š' + newValue);
+      // åœ¨é€™è£¡æ·»åŠ å°‡æ–°å€¼æäº¤çµ¦å¾Œç«¯çš„é‚è¼¯
+    }
+  }
+  
+//   function uploadImage(formId, imageType) {
+// 	    var formData = new FormData();
+// 	    var fileInput = document.querySelector(`#${formId} [name=${imageType}]`);
+
+// 	    var mbrId = document.getElementById("mbrId").innerText;
+// 	    var file = fileInput.files[0];
+// 	    var action = 'members_UpdateImage';
+
+// 	    if (file) {
+// 	        formData.append('imageType', imageType);
+// 	        formData.append('image', file);
+
+// 	        var xhr = new XMLHttpRequest();
+// 	        xhr.open('POST', contextPath + "/members/Members.do?action=" + action + "&mbrId=" + mbrId + "&fileInput=" + imageType, true);
+// 	        xhr.onload = function () {
+// 	            if (xhr.status === 200) {
+// 	                alert('åœ–ç‰‡ä¸Šå‚³æˆåŠŸï¼');
+// 	            } else {
+// 	                alert('åœ–ç‰‡ä¸Šå‚³å¤±æ•—ï¼');
+// 	            }
+// 	        };
+
+// 	        xhr.send(formData);
+// 	    } else {
+// 	        alert('è«‹é¸æ“‡ä¸€å¼µåœ–ç‰‡ï¼');
+// 	    }
+// 	}
+
+</script>
+
 
 </body>
 </html>

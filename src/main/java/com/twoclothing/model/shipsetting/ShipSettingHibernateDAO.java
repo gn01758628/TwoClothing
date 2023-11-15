@@ -23,30 +23,30 @@ public class ShipSettingHibernateDAO implements ShipSettingDAO{
 		return factory.getCurrentSession();
 	}
 	
-//	@Transactional
-//	@Override
-//	public int insert(ShipSetting shipSetting) {
-//		Integer shipId = (Integer) getSession().save(shipSetting);
-//		
-//		return shipId;
-//		
-//	}
+	@Transactional
+	@Override
 	public int insert(ShipSetting shipSetting) {
-	    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-	    Transaction transaction = null;
-	    Integer shipId = null;
-	    try {
-	        transaction = session.beginTransaction();
-	         shipId = (Integer) getSession().save(shipSetting);
-	        transaction.commit();
-	    } catch (RuntimeException ex) {
-	        if (transaction != null) {
-	            transaction.rollback();
-	        }
-	        throw ex;
-	    }
-	    return  shipId;
+		Integer shipId = (Integer) getSession().save(shipSetting);
+		
+		return shipId;
+		
 	}
+//	public int insert(ShipSetting shipSetting) {
+//	    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//	    Transaction transaction = null;
+//	    Integer shipId = null;
+//	    try {
+//	        transaction = session.beginTransaction();
+//	         shipId = (Integer) getSession().save(shipSetting);
+//	        transaction.commit();
+//	    } catch (RuntimeException ex) {
+//	        if (transaction != null) {
+//	            transaction.rollback();
+//	        }
+//	        throw ex;
+//	    }
+//	    return  shipId;
+//	}
 	
 	
 	@Transactional
@@ -96,42 +96,42 @@ public class ShipSettingHibernateDAO implements ShipSettingDAO{
 		}
 		
 	}
-//	@Transactional
-//	@Override
-//	public int delete(Integer shipId) {
-//		ShipSetting shipSetting = getSession().get(ShipSetting.class, shipId);
-//		if (shipSetting != null) {
-//			getSession().delete(shipSetting);
-//			// 回傳給 service，1代表刪除成功
-//			return 1;
-//		} else {
-//			// 回傳給 service，-1代表刪除失敗
-//			return -1;
-//		}
-//	}
-	
+	@Transactional
+	@Override
 	public int delete(Integer shipId) {
-		   Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		    Transaction transaction = null;
-		
-		    try {
-		        transaction = session.beginTransaction();
 		ShipSetting shipSetting = getSession().get(ShipSetting.class, shipId);
 		if (shipSetting != null) {
 			getSession().delete(shipSetting);
 			// 回傳給 service，1代表刪除成功
-			transaction.commit();
 			return 1;
 		} else {
 			// 回傳給 service，-1代表刪除失敗
 			return -1;
 		}
-	    } catch (RuntimeException ex) {
-	        if (transaction != null) {
-	            transaction.rollback();
-	        }
-	        
-	    }
-		    return -1;
 	}
+	
+//	public int delete(Integer shipId) {
+//		   Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		    Transaction transaction = null;
+//		
+//		    try {
+//		        transaction = session.beginTransaction();
+//		ShipSetting shipSetting = getSession().get(ShipSetting.class, shipId);
+//		if (shipSetting != null) {
+//			getSession().delete(shipSetting);
+//			// 回傳給 service，1代表刪除成功
+//			transaction.commit();
+//			return 1;
+//		} else {
+//			// 回傳給 service，-1代表刪除失敗
+//			return -1;
+//		}
+//	    } catch (RuntimeException ex) {
+//	        if (transaction != null) {
+//	            transaction.rollback();
+//	        }
+//	        
+//	    }
+//		    return -1;
+//	}
 }

@@ -1,11 +1,8 @@
 package com.twoclothing.chijung.controller;
 
-import com.twoclothing.model.employee.Employee;
-import com.twoclothing.model.permissions.Permissions;
-import com.twoclothing.utils.generic.DAOSelector;
-import com.twoclothing.utils.generic.GenericDAO;
-import com.twoclothing.utils.generic.GenericService;
-import com.twoclothing.utils.generic.QueryCondition;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -13,9 +10,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
+import com.twoclothing.model.aproduct.item.Item;
+import com.twoclothing.model.aproduct.item.ItemDAO;
+import com.twoclothing.model.aproduct.item.ItemHibernateDAO;
+import com.twoclothing.model.employee.Employee;
+import com.twoclothing.model.permissions.Permissions;
+import com.twoclothing.utils.HibernateUtil;
+import com.twoclothing.utils.generic.DAOSelector;
+import com.twoclothing.utils.generic.GenericDAO;
+import com.twoclothing.utils.generic.GenericService;
+import com.twoclothing.utils.generic.QueryCondition;
 
 // @MultipartConfig
 //  fileSizeThreshold = 檔案小於這個值,檔案寫入內存,提高效率
@@ -96,6 +101,21 @@ public class GenericTestServlet extends HttpServlet {
 		for (Employee enetity : list4) {
 			System.out.println(enetity);
 			System.out.println(enetity.getFormatEmpId());
+		}
+		
+		// 
+		ItemDAO itDao = new ItemHibernateDAO(HibernateUtil.getSessionFactory());
+		
+		List<Item> list = itDao.getAllSubByTagId(1);
+		for(Item item : list) {
+			System.out.println(item);
+		}
+		
+		System.out.println("==================================");
+		
+		list = itDao.getAllSubByTagId(2);
+		for(Item item : list) {
+			System.out.println(item);
 		}
 		
 		

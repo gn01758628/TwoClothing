@@ -1,6 +1,8 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600); /* 引入Google Fonts中的字體 */
 
-
+:root {
+  --aside-width: 14em;
+}
 
 body {
   font-family: "Lato", sans-serif; /* 設定字體 */
@@ -18,8 +20,8 @@ body {
 
 #content {
     
-      width: calc(100% - 272px);
-      margin-left:272px;
+      width: calc(100% - var(--aside-width));
+      margin-left:var(--aside-width);
       height: 100%;
       border: none; /* 可以去掉 iframe 的邊框 */
       display:block;
@@ -30,7 +32,7 @@ body {
 /* Sidebar樣式 */
 .sidebar {
   position: fixed; /* 相對於最近的定位父元素 */
-  width: 17em; /* 設定寬度 */
+  width: var(--aside-width); /* 設定寬度 */
   height: 100vh; /* 設定高度為視窗的100% */
   top: 0; /* 與父元素上方對齊 */
   overflow: hidden; /* 隱藏溢出內容 */
@@ -61,6 +63,7 @@ body {
   margin: 10px;
   margin-left: auto;
   cursor:pointer;
+  font-size:0.8em;
 }
 
 .sidebar header .profile-image {
@@ -79,6 +82,7 @@ body {
 
 .sidebar header .personal p {
   margin: 11px 0;
+  font-size:0.8em;
 }
 
 
@@ -88,7 +92,7 @@ body {
   background-color: #19222a; /* 設定背景顏色 */
   height: 100%; /* 設定高度為視窗的100% */
   font-weight: 400; /* 設定字體粗細 */
-  font-size: 1.2em; /* 設定字體大小 */
+  font-size: 1em; /* 設定字體大小 */
   overflow: auto; /* 溢出內容時顯示滾動條 */
   padding-bottom: 6em; /* 底部留出6em的空間 */
   z-index: 9; /* 設定堆疊順序 */
@@ -113,7 +117,7 @@ body {
 .sidebar-nav ul li a {
   color: rgba(255, 255, 255, 0.9); /* 設定字體顏色 */
   font-size: 0.75em; /* 設定字體大小 */
-  padding: 1.05em 1em; /* 設定內邊距 */
+  padding: 0.95em 1em; /* 設定內邊距 */
   position: relative; /* 相對定位 */
   display: block; /* 顯示為區塊元素 */
 }
@@ -131,7 +135,7 @@ body {
   vertical-align: middle; /* 垂直置中對齊 */
 }
 
-.sidebar-nav > ul > li > a:after {
+.sidebar-nav > ul > li > a.drop-down-menu:after {
   content: '\f125'; /* 使用ionicons字體的特定圖標 */
   font-family: ionicons; /* 指定字體 */
   font-size: 0.5em; /* 設定字體大小 */
@@ -139,7 +143,7 @@ body {
   color: #fff; /* 設定字體顏色 */
   position: absolute; /* 絕對定位 */
   right: 0.75em; /* 與父元素右邊對齊 */
-  top: 45%; /* 與父元素上方45%的位置對齊 */
+  top: 40%; /* 與父元素上方45%的位置對齊 */
 }
 
 /* 滑鼠懸停時顯示的下拉菜單 */
