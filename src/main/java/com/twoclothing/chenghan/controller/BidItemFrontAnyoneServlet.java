@@ -90,7 +90,7 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         // TODO 從session取的會員ID 這裡先寫死
-        Integer mbrId = 3;
+        Integer mbrId = 5;
         String bidItemId = request.getParameter("bidItemId");
         BidItem bidItem = bidItemService.getBidItemByBidItemId(Integer.parseInt(bidItemId));
         LocalDateTime endTime = bidItem.getEndTime().toLocalDateTime();

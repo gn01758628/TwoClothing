@@ -18,10 +18,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @WebServlet("/back_end/servlet/biditem/*")
 public class BidItemBackServlet extends HttpServlet {
@@ -167,6 +164,32 @@ public class BidItemBackServlet extends HttpServlet {
             notice.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItemId);
             notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
             bidItemService.addNotice(notice, bidItem.getMbrId());
+        }
+
+        //強制下架
+        if ("rejectEnforce".equals(request.getParameter("result"))) {
+            bidItem.setBidStatus(6);
+            bidItem.setEmpId(empid);
+            bidItemService.updateBidItem(bidItem);
+            // 發送通知跟競標商品擁有者
+            Notice notice = new Notice();
+            notice.setType("競標審核");
+            notice.setHead("對不起，您上架中的競標商品已被強制下架");
+            notice.setContent(message);
+            notice.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItemId);
+            notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
+            bidItemService.addNotice(notice, bidItem.getMbrId());
+            // 發送通知給競標商品出價者
+            Set<Integer> mbrIdSet = bidItemService.getAllMbrIdInBidRecord(Integer.parseInt(bidItemId));
+            Notice notice2 = new Notice();
+            notice2.setType("競標動態");
+            notice2.setHead("參與中的競標商品已被強制下架");
+            notice2.setContent("您投標的商品：" + bidItem.getBidName() + "，因商品違規而被強制下架");
+            notice2.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItemId);
+            notice2.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
+            for (Integer mbrId : mbrIdSet) {
+                bidItemService.addNotice(notice2, mbrId);
+            }
         }
 
         //回傳處理的員工

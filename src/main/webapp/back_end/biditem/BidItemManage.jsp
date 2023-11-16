@@ -128,6 +128,12 @@
                                         </button>
                                         <input type="hidden" value="${bidItem.bidItemId}">
                                     </c:if>
+                                    <c:if test="${bidItem.bidStatus == 4}">
+                                        <input type="hidden" value="${bidItem.bidName}">
+                                        <button class="btn btn-outline-danger btn-sm mt-2 mb-2 btn_reject_enforce">強制下架
+                                        </button>
+                                        <input type="hidden" value="${bidItem.bidItemId}">
+                                    </c:if>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -217,7 +223,7 @@
                         cancelButtonColor: "#3085d6",
                         confirmButtonText: "拒絕上架",
                         cancelButtonText: "取消",
-                        inputLabel: "簡單明瞭地解釋為何拒絕上架",
+                        inputLabel: "簡單明瞭地敘述為何拒絕上架",
                         inputPlaceholder: "提供拒絕上架的理由，以幫助用戶明白我們的決定...",
                         inputAttributes: {
                             "aria-label": "Type your message here",
@@ -253,6 +259,69 @@
                 }
             });
         });
+        // 強制下架
+        $(".btn_reject_enforce").on("click", function () {
+            let bidItemId = $(this).next().val();
+            let bidItemName = $(this).prev().val();
+            const td_empName = $(this).closest("tr").find(".td-empName");
+            const td_bidStatus = $(this).closest("tr").find(".td-bidStatus");
+            const btn_reject_enforce = $(this);
+
+            Swal.fire({
+                title: "確定要強制上架嗎?\n" + "商品名稱：" + bidItemName,
+                text: "一旦執行此操作，將無法撤回!",
+                icon: "warning",
+                showCancelButton: true,
+                allowOutsideClick: false,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "強制下架",
+                cancelButtonText: "取消"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        input: "textarea",
+                        width: 600,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "強制下架",
+                        cancelButtonText: "取消",
+                        inputLabel: "簡單明瞭地敘述為何強制下架",
+                        inputPlaceholder: "提供下架的理由，以幫助用戶明白我們的決定...",
+                        inputAttributes: {
+                            "aria-label": "Type your message here",
+                            "required": "true"
+                        },
+                        showCancelButton: true,
+                        inputValidator: (value) => {
+                            if (!value) {
+                                return '請注意，必須提供強制下架的理由才能繼續操作!'
+                            }
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: "操作成功!",
+                                text: "此競標商品已被強制下架",
+                                icon: "success"
+                            });
+
+                            // jQuery Ajax Post request
+                            $.post('${pageContext.request.contextPath}/back_end/servlet/biditem/vent', {
+                                result: "rejectEnforce",
+                                id: bidItemId,
+                                message: result.value
+                            }, function (data) {
+                                td_empName.text(data);
+                                td_bidStatus.text("被下架");
+                                btn_reject_enforce.remove();
+                            })
+                        }
+                    });
+                }
+            });
+
+        })
     });
 </script>
 
