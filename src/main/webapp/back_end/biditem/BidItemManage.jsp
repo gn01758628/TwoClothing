@@ -20,6 +20,8 @@
     </style>
     <!--Font Awesome-->
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -27,7 +29,7 @@
     <div class="text-center mb-4">
         <p>根據你已知的資訊來幫助搜索，請提供你所掌握的資訊：</p>
     </div>
-    <form action="${pageContext.request.contextPath}/back/biditem/find" method="GET" id="searchForm">
+    <form action="${pageContext.request.contextPath}/back_end/servlet/biditem/find" method="GET" id="searchForm">
         <div class="row justify-content-center">
             <div class="col-md-4 mb-3">
                 <label for="bidItemId" class="form-label">競標商品編號</label>
@@ -122,8 +124,7 @@
                                         <input type="hidden" value="${bidItem.bidName}">
                                         <button class="btn btn-outline-success btn-sm mt-2 mb-2 btn_agree">批准上架
                                         </button>
-                                        <button class="btn btn-outline-danger btn-sm mt-2 mb-2 btn_reject"
-                                                data-bs-toggle="modal" data-bs-target="#rejectReasons">拒絕上架
+                                        <button class="btn btn-outline-danger btn-sm mt-2 mb-2 btn_reject">拒絕上架
                                         </button>
                                         <input type="hidden" value="${bidItem.bidItemId}">
                                     </c:if>
@@ -135,36 +136,6 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="rejectReasons" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-             aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">簡單明瞭地解釋為何拒絕上架</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="was-validated">
-                            <div class="mb-3">
-                                <label for="rejectReasons_text" class="form-label"></label>
-                                <textarea class="form-control is-invalid" id="rejectReasons_text"
-                                          placeholder="提供拒絕上架的理由，以幫助用戶明白我們的決定。"
-                                          required maxlength="50"></textarea>
-                                <div class="invalid-feedback" style="display: none">
-                                    請注意，必須提供拒絕上架的理由才能繼續操作
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_reject_cancel">
-                            取消
-                        </button>
-                        <button type="submit" class="btn btn-danger" id="btn_reject_sure">拒絕上架</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </c:if>
 </c:if>
 
@@ -173,10 +144,12 @@
 <script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
 <!--jQuery-->
 <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+
 
 <script>
     $(function () {
-        const textarea_rejectReasons = $("#rejectReasons_text");
         // 批准上架
         $(".btn_agree").on("click", function () {
             let bidItemId = $(this).next().next().val();
@@ -185,19 +158,36 @@
             const td_bidStatus = $(this).closest("tr").find(".td-bidStatus");
             const btn_agree = $(this);
             const btn_reject = $(this).next();
-            if (window.confirm("確定要批准上架嗎?\n" + "商品名稱：" + bidItemName)) {
-                // jQuery Ajax Post request
-                $.post('${pageContext.request.contextPath}/back/biditem/vent', {
-                    result: "agree",
-                    id: bidItemId,
-                    message: ""
-                }, function (data) {
-                    td_empName.text(data);
-                    td_bidStatus.text("已過審");
-                    btn_agree.remove();
-                    btn_reject.remove();
-                })
-            }
+            Swal.fire({
+                title: "確定要批准上架嗎?\n" + "商品名稱：" + bidItemName,
+                text: "一旦執行此操作，將無法撤回!",
+                icon: "warning",
+                showCancelButton: true,
+                allowOutsideClick: false,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "批准上架",
+                cancelButtonText: "取消"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "操作成功!",
+                        text: "此競標商品已通過審核",
+                        icon: "success"
+                    });
+                    // jQuery Ajax Post request
+                    $.post('${pageContext.request.contextPath}/back_end/servlet/biditem/vent', {
+                        result: "agree",
+                        id: bidItemId,
+                        message: ""
+                    }, function (data) {
+                        td_empName.text(data);
+                        td_bidStatus.text("已過審");
+                        btn_agree.remove();
+                        btn_reject.remove();
+                    })
+                }
+            });
         });
         // 拒絕上架
         $(".btn_reject").on("click", function () {
@@ -207,37 +197,61 @@
             const td_bidStatus = $(this).closest("tr").find(".td-bidStatus");
             const btn_reject = $(this);
             const btn_agree = $(this).prev();
-            const btn_reject_sure = $("#btn_reject_sure");
-            //取消上次綁定的事件
-            btn_reject_sure.off();
-            // 模態框的確認按鈕
-            btn_reject_sure.on("click", function () {
-                if (textarea_rejectReasons.val() !== "") {
-                    if (window.confirm("確定要拒絕上架嗎?\n" + "商品名稱：" + bidItemName)) {
-                        // jQuery Ajax Post request
-                        $.post('${pageContext.request.contextPath}/back/biditem/vent', {
-                            result: "reject",
-                            id: bidItemId,
-                            message: textarea_rejectReasons.val()
-                        }, function (data) {
-                            td_empName.text(data);
-                            td_bidStatus.text("被下架");
-                            btn_agree.remove();
-                            btn_reject.remove();
-                            $("#btn_reject_cancel").click();
-                        })
-                    } else {
-                        $("#btn_reject_cancel").click();
-                    }
-                } else {
-                    $(".invalid-feedback").slideDown(400);
+
+            Swal.fire({
+                title: "確定要拒絕上架嗎?\n" + "商品名稱：" + bidItemName,
+                text: "一旦執行此操作，將無法撤回!",
+                icon: "warning",
+                showCancelButton: true,
+                allowOutsideClick: false,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "拒絕上架",
+                cancelButtonText: "取消"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        input: "textarea",
+                        width: 600,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "拒絕上架",
+                        cancelButtonText: "取消",
+                        inputLabel: "簡單明瞭地解釋為何拒絕上架",
+                        inputPlaceholder: "提供拒絕上架的理由，以幫助用戶明白我們的決定...",
+                        inputAttributes: {
+                            "aria-label": "Type your message here",
+                            "required": "true"
+                        },
+                        showCancelButton: true,
+                        inputValidator: (value) => {
+                            if (!value) {
+                                return '請注意，必須提供拒絕上架的理由才能繼續操作!'
+                            }
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: "操作成功!",
+                                text: "此競標商品已被拒絕上架",
+                                icon: "success"
+                            });
+
+                            // jQuery Ajax Post request
+                            $.post('${pageContext.request.contextPath}/back_end/servlet/biditem/vent', {
+                                result: "reject",
+                                id: bidItemId,
+                                message: result.value
+                            }, function (data) {
+                                td_empName.text(data);
+                                td_bidStatus.text("被下架");
+                                btn_agree.remove();
+                                btn_reject.remove();
+                            })
+                        }
+                    });
                 }
-            })
-            // 模態框的取消按鈕
-            $("#btn_reject_cancel").on("click", function () {
-                $(".invalid-feedback").hide();
-                textarea_rejectReasons.val("");
-            })
+            });
         });
     });
 </script>

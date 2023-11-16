@@ -27,7 +27,7 @@
 <body>
 
 <div class="container mt-5">
-    <form action="${pageContext.request.contextPath}/back_end/tags/save" method="post">
+    <form action="${pageContext.request.contextPath}/back_end/servlet/categoryTags/save" method="post">
         <div class="mb-3">
             <label for="superTagId" class="form-label">父類別標籤</label>
             <select class="form-select" id="superTagId" name="superTagId" required>

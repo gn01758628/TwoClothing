@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/back_end/tags/*")
+@WebServlet("/back_end/servlet/categoryTags/*")
 public class CategoryTagsBackServlet extends HttpServlet {
 
     // 簡單的CRUD捨棄service
@@ -81,7 +81,7 @@ public class CategoryTagsBackServlet extends HttpServlet {
         // 更新綁定在ServletContext的數據
         List<CategoryTags> categoryTags = categoryTagsDAO.getAll();
         servletContext.setAttribute("categoryTags", categoryTags);
-        response.sendRedirect(request.getContextPath() + "/back_end/tags/list");
+        response.sendRedirect(request.getContextPath() + "/back_end/servlet/categoryTags/list");
     }
 
     private void doModify(HttpServletRequest request, HttpServletResponse response)
@@ -109,6 +109,6 @@ public class CategoryTagsBackServlet extends HttpServlet {
         // 更新綁定在ServletContext的數據
         List<CategoryTags> categoryTags = categoryTagsDAO.getAll();
         servletContext.setAttribute("categoryTags", categoryTags);
-        response.sendRedirect(request.getContextPath() + "/back_end/tags/list");
+        response.sendRedirect(request.getContextPath() + "/back_end/servlet/categoryTags/list");
     }
 }

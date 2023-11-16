@@ -44,7 +44,7 @@
                 <td class="text-center align-middle">${tags.categoryName}</td>
                 <td class="text-center align-middle">${tags.empId}：${empName[tags.empId]}</td>
                 <td class="text-center align-middle">
-                    <a href="${pageContext.request.contextPath}/back_end/tags/modify?tagId=${tags.tagId}"
+                    <a href="${pageContext.request.contextPath}/back_end/servlet/categoryTags/modify?tagId=${tags.tagId}"
                        class="btn btn-outline-primary btn-sm mt-2 mb-2">修改</a>
                     <button type="button" class="btn btn-outline-primary btn-sm mt-2 mb-2">詳情</button>
                 </td>
@@ -78,8 +78,6 @@
         {id:${tags.tagId}, name: '${tags.categoryName}', parentId:${tags.superTagId}},
         </c:forEach>
     ];
-
-    console.log(categoryData);
 
     // 根據選項的ID,獲得完整的路徑
     function getFullCategoryName(categoryId, data) {

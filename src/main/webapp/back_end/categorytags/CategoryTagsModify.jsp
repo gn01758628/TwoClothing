@@ -27,7 +27,7 @@
 <body>
 
 <div class="container mt-5">
-    <form action="${pageContext.request.contextPath}/back_end/tags/update" method="post">
+    <form action="${pageContext.request.contextPath}/back_end/servlet/categoryTags/update" method="post">
         <div class="mb-3">
             <label for="tagId" class="form-label">標籤編號</label>
             <input type="text" class="form-control" id="tagId" name="tagId" value="${currentTag.tagId}" readonly>
