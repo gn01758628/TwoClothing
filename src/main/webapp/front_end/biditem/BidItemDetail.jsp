@@ -128,7 +128,7 @@
             <div class="row justify-content-end">
                 <div class="col-auto">
                     <div id="bidHelp" style="display: none;">
-                        最低出價金額$<span id="minRequest"></span>，全站競標出價增額皆為5%
+                        最低出價金額$<span id="minRequest"></span>，全站競標出價增額皆為3%
                     </div>
                 </div>
             </div>
@@ -246,7 +246,7 @@
         let directPrice = $("#directPrice").text();
         let currentBid = Number($("#currentBid").text().replace(/[\$,]/g, ''));
         // 計算最低出價金額
-        let minRequestAmount = currentBid == 0 ? Math.round(Number(startPrice) * 1.05) : Math.round(currentBid * 1.05);
+        let minRequestAmount = currentBid == 0 ? Math.round(Number(startPrice) * 1.03) : Math.round(currentBid * 1.03);
         $("#minRequest").text(minRequestAmount);
         // 直購金額格式化
         const directPriceHelp = $("#directPriceHelp").text(formatToMoney(directPrice));
@@ -304,7 +304,7 @@
             const cancelBid = $("#cancelBid");
             // 金額正確,發送請求
             console.log("發送請求");
-            $.post('${pageContext.request.contextPath}/front/biditem/anyone/bid', {
+            $.post('${pageContext.request.contextPath}/front/biditem/anyone/bid.check', {
                 bidItemId: bidItemId,
                 bidAmount: bidAmountInp.val(),
                 currentBid: currentBid,
@@ -314,20 +314,27 @@
                     alert("您不能對自己的商品出價。請對其他商品進行投標，感謝配合。");
                     bidAmountInp.val(0);
                     cancelBid.click();
+                    return;
                 }
                 if (data === "1") {
                     alert("您的出價金額有誤，故此次出價無效。請重新出價，感謝配合。");
                     bidAmountInp.val(0);
                     cancelBid.click();
+                    return;
                 }
                 if (data === "2") {
                     alert("您已成功出價，將刷新頁面，以便您觀察最新出價狀況");
                     location.reload();
+                    return;
                 }
                 if (data === "3") {
                     alert("恭喜！您已成功以直購價提前結標。請瀏覽您的訂單並繼續後續流程。");
                     location.reload();
-                    // TODO 結標頁面更新
+                    return;
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
                 }
             })
         })

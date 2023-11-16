@@ -3,6 +3,9 @@ package com.twoclothing.chenghan.schedule;
 import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.abid.biditem.BidItemDAO;
 import com.twoclothing.model.abid.biditem.BidItemHibernateDAO;
+import com.twoclothing.model.abid.bidorder.BidOrder;
+import com.twoclothing.model.abid.bidorder.BidOrderDAO;
+import com.twoclothing.model.abid.bidorder.BidOrderHIbernateDAO;
 import com.twoclothing.redismodel.bidrecord.BidRecord;
 import com.twoclothing.redismodel.bidrecord.BidRecordDAO;
 import com.twoclothing.redismodel.bidrecord.BidRecordJedisDAO;
@@ -30,9 +33,12 @@ public class BidItemEndingSchedule extends HttpServlet {
 
     private final BidItemDAO bidItemDAO = new BidItemHibernateDAO(sessionFactory);
 
+    private final BidOrderDAO bidOrderDAO = new BidOrderHIbernateDAO(sessionFactory);
+
     private final BidRecordDAO bidRecordDAO = new BidRecordJedisDAO();
 
     private final NoticeDAO noticeDAO = new NoticeJedisDAO();
+
 
     private Timer timer;
 
@@ -69,7 +75,16 @@ public class BidItemEndingSchedule extends HttpServlet {
                             bidItem.setBidStatus(2);
                             String successReason = "恭喜！您的競標商品：" + bidItemName + "，已結標。請瀏覽您的訂單並繼續後續流程。";
                             sendNotice("您的競標商品已結標", successReason, bidItemId, mbrId);
-                            // TODO 結標跑訂單
+                            // 結標新增訂單
+                            BidOrder bidOrder = new BidOrder();
+                            bidOrder.setBidItemId(bidItemId);
+                            bidOrder.setBuyMbrId(record.getMbrId());
+                            bidOrder.setSellMbrId(mbrId);
+                            bidOrder.setOrderDate(new Timestamp(System.currentTimeMillis()));
+                            bidOrder.setAmount(FormatUtil.parseFormattedNumber(record.getBidAmount()));
+                            bidOrder.setOrderStatus(0);
+                            bidOrderDAO.insert(bidOrder);
+                            // TODO 發送訂單成立通知(通知買賣雙方)
                         } else {
                             // 競標失敗-流標
                             bidItem.setBidStatus(3);
