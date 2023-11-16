@@ -27,15 +27,15 @@
 <body>
 
 <div class="container mt-5">
-    <form action="${pageContext.request.contextPath}/back/tags/update" method="post">
+    <form action="${pageContext.request.contextPath}/back_end/tags/update" method="post">
         <div class="mb-3">
             <label for="tagId" class="form-label">標籤編號</label>
-            <input type="text" class="form-control" id="tagId" name="tagId" value="${param.tagId}" readonly>
+            <input type="text" class="form-control" id="tagId" name="tagId" value="${currentTag.tagId}" readonly>
         </div>
         <div class="mb-3">
             <label for="superTagId" class="form-label">父類別標籤</label>
             <select class="form-select" id="superTagId" name="superTagId" required>
-                <c:forEach var="tags" items="${categoryTags}">
+                <c:forEach var="tags" items="${applicationScope.categoryTags}">
                     <option value="${tags.tagId}" <c:if test="${tags.tagId == currentSuperTagId}">selected</c:if>>
                             ${tags.categoryName}
                     </option>
@@ -44,7 +44,7 @@
         </div>
         <div class="mb-3">
             <label for="categoryName" class="form-label">標籤名稱</label>
-            <input type="text" class="form-control" id="categoryName" name="categoryName" value="${currentCategoryName}" required>
+            <input type="text" class="form-control" id="categoryName" name="categoryName" value="${currentTag.categoryName}" required>
         </div>
         <div class="d-grid gap-2">
             <button class="btn btn-primary" type="submit">修改標籤</button>

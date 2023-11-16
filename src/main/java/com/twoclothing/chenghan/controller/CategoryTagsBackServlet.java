@@ -3,9 +3,13 @@ package com.twoclothing.chenghan.controller;
 import com.twoclothing.model.categorytags.CategoryTags;
 import com.twoclothing.model.categorytags.CategoryTagsDAO;
 import com.twoclothing.model.categorytags.CategoryTagsHibernateDAO;
+import com.twoclothing.model.employee.Employee;
+import com.twoclothing.model.employee.EmployeeDAO;
+import com.twoclothing.model.employee.EmployeeHibernateDAO;
 import com.twoclothing.utils.HibernateUtil;
 import org.hibernate.SessionFactory;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/back/tags/*")
+@WebServlet("/back_end/tags/*")
 public class CategoryTagsBackServlet extends HttpServlet {
 
     // 簡單的CRUD捨棄service
@@ -25,37 +29,45 @@ public class CategoryTagsBackServlet extends HttpServlet {
 
     private final CategoryTagsDAO categoryTagsDAO = new CategoryTagsHibernateDAO(sessionFactory);
 
+    private final EmployeeDAO employeeDAO = new EmployeeHibernateDAO(sessionFactory);
+
+    private ServletContext servletContext;
+
+    @Override
+    public void init() throws ServletException {
+        servletContext = getServletContext();
+    }
+
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String servletPath = request.getServletPath() + request.getPathInfo();
-        switch (servletPath) {
-            case "/back/tags/list" -> doList(request, response);
-            case "/back/tags/add" -> doAdd(request, response);
-            case "/back/tags/save" -> doSave(request, response);
-            case "/back/tags/modify" -> doModify(request, response);
-            case "/back/tags/update" -> doUpdate(request, response);
+        String pathInfo = request.getPathInfo();
+        switch (pathInfo) {
+            case "/list" -> doList(request, response);
+            case "/save" -> doSave(request, response);
+            case "/modify" -> doModify(request, response);
+            case "/update" -> doUpdate(request, response);
         }
     }
 
     private void doList(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<CategoryTags> categoryTags = categoryTagsDAO.getAll();
-        Map<Integer,String> tagsName = new HashMap<>();
-        for (CategoryTags tags: categoryTags) {
-            tagsName.put(tags.getTagId(),tags.getCategoryName());
+        List<CategoryTags> categoryTags = (List<CategoryTags>) servletContext.getAttribute("categoryTags");
+        // 綁定標籤名稱(父標籤使用)
+        Map<Integer, String> tagsName = new HashMap<>();
+        for (CategoryTags tags : categoryTags) {
+            tagsName.put(tags.getTagId(), tags.getCategoryName());
         }
-        request.setAttribute("categoryTags", categoryTags);
+        // 綁定員工名稱
+        Map<Integer, String> empName = new HashMap<>();
+        List<Employee> employeeList = employeeDAO.getAll();
+        for (Employee emp : employeeList) {
+            empName.put(emp.getEmpId(),emp.getEmpName());
+        }
         request.setAttribute("tagsName", tagsName);
+        request.setAttribute("empName", empName);
         request.getRequestDispatcher("/back_end/categorytags/CategoryTagsList.jsp").forward(request, response);
-    }
-
-    private void doAdd(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        List<CategoryTags> categoryTags = categoryTagsDAO.getAll();
-        request.setAttribute("categoryTags", categoryTags);
-        request.getRequestDispatcher("/back_end/categorytags/CategoryTagsAdd.jsp").forward(request, response);
     }
 
     private void doSave(HttpServletRequest request, HttpServletResponse response)
@@ -63,25 +75,20 @@ public class CategoryTagsBackServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String superTagId = request.getParameter("superTagId");
         String categoryName = request.getParameter("categoryName");
-
-        // TODO empId先寫死,之後要從session取
-        Integer empId = 9527;
-
-        CategoryTags categoryTags = new CategoryTags(Integer.parseInt(superTagId),categoryName,empId);
-        categoryTagsDAO.insert(categoryTags);
-        response.sendRedirect(request.getContextPath() + "/back/tags/list");
+        Integer empId = (Integer) request.getSession().getAttribute("empId");
+        CategoryTags categoryTag = new CategoryTags(Integer.parseInt(superTagId), categoryName, empId);
+        categoryTagsDAO.insert(categoryTag);
+        // 更新綁定在ServletContext的數據
+        List<CategoryTags> categoryTags = categoryTagsDAO.getAll();
+        servletContext.setAttribute("categoryTags", categoryTags);
+        response.sendRedirect(request.getContextPath() + "/back_end/tags/list");
     }
 
     private void doModify(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String tagId = request.getParameter("tagId");
-        CategoryTags tags = categoryTagsDAO.getByPrimaryKey(Integer.parseInt(tagId));
-        Integer currentSuperTagId = tags.getSuperTagId();
-        String currentCategoryName = tags.getCategoryName();
-        List<CategoryTags> categoryTags = categoryTagsDAO.getAll();
-        request.setAttribute("categoryTags", categoryTags);
-        request.setAttribute("currentSuperTagId", currentSuperTagId);
-        request.setAttribute("currentCategoryName",currentCategoryName);
+        CategoryTags currentTag = categoryTagsDAO.getByPrimaryKey(Integer.parseInt(tagId));
+        request.setAttribute("currentTag", currentTag);
         request.getRequestDispatcher("/back_end/categorytags/CategoryTagsModify.jsp").forward(request, response);
     }
 
@@ -91,16 +98,17 @@ public class CategoryTagsBackServlet extends HttpServlet {
         String tagId = request.getParameter("tagId");
         String superTagId = request.getParameter("superTagId");
         String categoryName = request.getParameter("categoryName");
+        Integer empId = (Integer) request.getSession().getAttribute("empId");
 
-        // TODO empId先寫死,之後要從session取
-        Integer empId = 9527;
-
-        CategoryTags categoryTags = new CategoryTags();
-        categoryTags.setTagId(Integer.parseInt(tagId));
-        categoryTags.setSuperTagId(Integer.parseInt(superTagId));
-        categoryTags.setCategoryName(categoryName);
-        categoryTags.setEmpId(empId);
-        categoryTagsDAO.update(categoryTags);
-        response.sendRedirect(request.getContextPath() + "/back/tags/list");
+        CategoryTags categoryTag = new CategoryTags();
+        categoryTag.setTagId(Integer.parseInt(tagId));
+        categoryTag.setSuperTagId(Integer.parseInt(superTagId));
+        categoryTag.setCategoryName(categoryName);
+        categoryTag.setEmpId(empId);
+        categoryTagsDAO.update(categoryTag);
+        // 更新綁定在ServletContext的數據
+        List<CategoryTags> categoryTags = categoryTagsDAO.getAll();
+        servletContext.setAttribute("categoryTags", categoryTags);
+        response.sendRedirect(request.getContextPath() + "/back_end/tags/list");
     }
 }
