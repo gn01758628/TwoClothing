@@ -36,13 +36,12 @@
                 <h5 class="modal-title" id="messageModalLabel">我們發現一些錯誤，請您確認後進行更正並重新提交</h5>
             </div>
             <div class="modal-body" id="messageContent">
-                <!-- 这里显示消息内容 -->
+                <!-- 顯示消息內容 -->
                 <div class="list-group">
-                    <!-- 这里将动态生成消息链接 -->
+                    <!-- 動態生成消息 -->
                 </div>
             </div>
             <div class="modal-footer" style="text-align: center;">
-                <!-- 添加一个关闭按钮并使其置中 -->
                 <button type="button" class="btn btn-warning" style="margin: 0 auto;" id="closeMessageBtn">我知道了
                 </button>
             </div>
@@ -54,7 +53,7 @@
 <div class="container">
     <div class="row justify-content-center my-5">
         <div class="col-12">
-            <form action="${pageContext.request.contextPath}/front/biditem/personal/save" method="post"
+            <form action="${pageContext.request.contextPath}/front/biditem/personal/save.check" method="post"
                   enctype="multipart/form-data">
 
                 <div class="mb-4 border p-4 rounded-3" style="background-color:white">

@@ -40,14 +40,14 @@
             padding: 0;
             display: flex;
             flex-wrap: wrap;
-            height:100%;
+            height:98%;
             
         }
 
         main.main ul.itemList > li {
         	border:1px solid blue;
             border: 1px solid black;
-            background-color: #C0C0C0;
+            background-color: snow; 
             width: calc(25% - 20px); /* 25% of the container width minus margin */
             margin-right: 20px;
             padding: 10px;
@@ -71,33 +71,39 @@
 
         main.main ul.itemList > li a div.imgBlock {
             width:100%;
-            height:calc(100% - 18px);
-            background-color: black;
+            height:calc(100% - 30px);
+             background-color: white; 
             font-size: 0;
             text-align: center;
             position:relative;
         }
-
-        main.main ul.itemList > li a span{
-            color: black;
+        
+        div.item_info{
+        	display:flex;
+        	justify-content: space-between;
+        	padding:2px 4px;
+        	align-items: baseline;
+        	color:black;
         }
-
-
-
-        main.main ul.itemList > li a span.price{
-            position: absolute;
-            right: 10px;
+        div.down_area{
+        	height:32px;
+        	border:1px solid black;
+        	text-align:center; 
         }
+        div.down_area span{
+        	font-size:20px;
+        	margin:0 4px;
+        }
+		a.pagearea span{
+			font-size:28px;
+		}
+
 
         img {
             max-width: 100%;
             max-height: 100%;
         }
 
-        span {
-            text-align: center;
-            height:30px;
-        }
 
 
 
@@ -115,26 +121,30 @@
                 <div class="imgBlock">
                     <img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="商品圖片">
                 </div>
-                <span>${item.itemName}</span><span class="price">${item.price}</span>
+                <div class="item_info">
+                	<span>${item.itemName}</span><span class="price">${item.price}</span>               
+                </div>               
                </a> 
             </li>
          </c:forEach>
 
 
         </ul>
-        
-        <c:if test="${pageNow > 1}">
-		<a href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=1">至第一頁</a>&nbsp;
-	</c:if>
-	<c:if test="${pageNow - 1 != 0}">
-		<a href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=${pageNow - 1}">上一頁</a>&nbsp;
-	</c:if>
-	<c:if test="${pageNow + 1 <= itemPageQty}">
-		<a href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=${pageNow + 1}">下一頁</a>&nbsp;
-	</c:if>
-	<c:if test="${pageNow != itemPageQty}">
-		<a href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=${itemPageQty}">至最後一頁</a>&nbsp;
-	</c:if>
+	<div class="down_area">      
+	    <c:if test="${pageNow > 1}">
+			<a class="pagearea" href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=1"><span>&#171;</span></a>&nbsp;
+		</c:if>
+		<c:if test="${pageNow - 1 != 0}">
+			<a class="pagearea" href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=${pageNow - 1}"><span>&#8249;</span></a>&nbsp;
+		</c:if>
+		<span>${pageNow}</span>
+		<c:if test="${pageNow + 1 <= itemPageQty}">
+			<a class="pagearea" href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=${pageNow + 1}"><span>&#8250;</span></a>&nbsp;
+		</c:if>
+		<c:if test="${pageNow != itemPageQty}">
+			<a class="pagearea" href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=${itemPageQty}"><span>&#187;</span></a>&nbsp;
+		</c:if>
+	</div>  
     </main>
 </body>
 </html>

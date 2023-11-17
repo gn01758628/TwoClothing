@@ -20,6 +20,9 @@ import com.twoclothing.model.categorytags.CategoryTagsDAO;
 import com.twoclothing.model.categorytags.CategoryTagsHibernateDAO;
 import com.twoclothing.model.coupon.Coupon;
 import com.twoclothing.model.coupon.CouponDAO;
+import com.twoclothing.model.members.Members;
+import com.twoclothing.model.members.MembersDAO;
+import com.twoclothing.model.members.MembersHibernateDAO;
 import com.twoclothing.model.memberscoupon.MembersCoupon;
 import com.twoclothing.model.memberscoupon.MembersCoupon.MembersCouponCompositeDetail;
 import com.twoclothing.model.shipsetting.ShipSetting;
@@ -42,6 +45,8 @@ public class ItemServiceImpl implements ItemService{
     
     private ShipSettingDAO shipSettingDAO;
     
+    private MembersDAO  membersDAO;
+    
 	public ItemServiceImpl() {
 		dao = new ItemHibernateDAO(HibernateUtil.getSessionFactory());
 		categoryTagsDAO = new CategoryTagsHibernateDAO(HibernateUtil.getSessionFactory());
@@ -49,6 +54,7 @@ public class ItemServiceImpl implements ItemService{
 		MemCouponDAO = DAOSelector.getDAO(MembersCoupon.class);
 		couponDAO = DAOSelector.getDAO(Coupon.class);
 		shipSettingDAO = new ShipSettingHibernateDAO(HibernateUtil.getSessionFactory());
+		membersDAO = new MembersHibernateDAO(HibernateUtil.getSessionFactory());
 	}
 	
 	@Override
@@ -144,7 +150,6 @@ public class ItemServiceImpl implements ItemService{
                             query.remove("itemQuantityEnd");
                             break;
                         default:
-                            // 其他情況，可以根據需要進行處理
                             break;
                     }
                 } else {
@@ -156,18 +161,6 @@ public class ItemServiceImpl implements ItemService{
 	}
 	
 	System.out.println("query :" + query);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		return dao.getByCompositeQuery(query, page);
 	}
 
@@ -244,7 +237,7 @@ public class ItemServiceImpl implements ItemService{
 	
 	@Override
     public List<Integer> getAllSelectableTagsId() {
-System.out.println("::"+categoryTagsDAO.getTagIdsWithoutChildren());
+		System.out.println(categoryTagsDAO.getTagIdsWithoutChildren());
         return categoryTagsDAO.getTagIdsWithoutChildren();
     }
 
@@ -283,6 +276,21 @@ System.out.println("::"+categoryTagsDAO.getTagIdsWithoutChildren());
 	@Override
 	public Integer getMbrIdByItemId(Integer itemId) {
 		return dao.getMbrIdById(itemId);
+	}
+
+	@Override
+	public List<Item> getItemBymbrIdAndStatus(Integer mbrId) {
+		return dao.getItemByMbrIdAndStatus(mbrId);
+	}
+	
+	@Override
+	public Members getMembersByPK(Integer mbrId) {
+		return membersDAO.getByPrimaryKey(mbrId);
+	}
+
+	@Override
+	public CategoryTags getByPrimaryKey(Integer tagId) {
+		return categoryTagsDAO.getByPrimaryKey(tagId);
 	}
 
 }

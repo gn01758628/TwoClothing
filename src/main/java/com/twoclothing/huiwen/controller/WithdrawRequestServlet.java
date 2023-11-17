@@ -217,7 +217,7 @@ public class WithdrawRequestServlet extends HttpServlet {
 	            WithdrawRequest withdrawRequest = withdrawSvc.getWRById(wrId);
 
 				
-				//修改會員balance數量，申請通過的才改
+				//修改會員balance金額，申請通過的才改
 	            if(reqStatus == 1) {
 	            	Integer withdrawAmount = withdrawRequest.getAmount();
 	            	Integer balance = withdrawSvc.getBalanceByMbrId(1);
