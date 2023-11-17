@@ -7,6 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.Key;
+import java.security.KeyStore;
+import java.util.Map;
+import java.util.Set;
 
 @WebFilter("*.check")
 public class MemberAuthenticationFilter implements Filter {
@@ -20,10 +24,15 @@ public class MemberAuthenticationFilter implements Filter {
         HttpSession session = request.getSession();
         // 取得user物件
         Object user = session.getAttribute("user");
+
+
         // 物件不存在等於沒登入
         if (user == null) {
             // 綁定發起請求的URI(保存上一頁)
             session.setAttribute("location", request.getRequestURI());
+            // 儲存請求參數
+            Map<String, String[]> filterParameterMap = request.getParameterMap();
+            request.getSession().setAttribute("filterParameterMap", filterParameterMap);
             // 判斷是不是Ajax請求
             //  獲得請求頭部中X-Requested-With的值
             //  當前端發起AJAX請求時,瀏覽器會自動在HTTP請求頭部添加"X-Requested-With: XMLHttpRequest"
@@ -36,7 +45,33 @@ public class MemberAuthenticationFilter implements Filter {
                 response.sendRedirect(request.getContextPath() + "/front_end/members/registerLogin.jsp");
             }
         } else {
-            chain.doFilter(request, response);
+            Object filterParameterMap = session.getAttribute("filterParameterMap");
+            session.removeAttribute("filterParameterMap");
+            if (filterParameterMap != null) {
+                Map<String, String[]> currentMap = (Map<String, String[]>) filterParameterMap;
+                Set<String> keySet = currentMap.keySet();
+                for (String key : keySet) {
+                    request.setAttribute(key, currentMap.get(key)[0]);
+                }
+                String location = (String) session.getAttribute("location");
+                System.out.println(location);
+                System.out.println(123);
+                // 轉發回上一頁
+                String realPath = extractPathAfterSecondSlash(location);
+                request.getRequestDispatcher(realPath).forward(request, response);
+            } else {
+                System.out.println(456);
+                chain.doFilter(request, response);
+            }
+        }
+    }
+
+    public String extractPathAfterSecondSlash(String originalPath) {
+        int secondSlashIndex = originalPath.indexOf('/', originalPath.indexOf('/') + 1);
+        if (secondSlashIndex != -1) {
+            return originalPath.substring(secondSlashIndex);
+        } else {
+            return originalPath;
         }
     }
 }
