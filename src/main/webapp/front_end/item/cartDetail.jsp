@@ -214,7 +214,6 @@
 		}
 	
 	</style>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 	<form class="form_cart" method="post" action="${pageContext.request.contextPath}/ItemCart/toPay" enctype="multipart/form-data">
@@ -312,12 +311,14 @@
 	</div>
 
 
+	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>	
 
 	<!--bootstrap5 js-->
 	<script
 		src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
 	<script
 		src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+		
 	<script>
 		$(document).ready(function() {
 			$("td[name='size']").each(function() {

@@ -15,6 +15,17 @@
 		*{
 			box-sizing: border-box;
 		}
+		div.main{
+			display: flex;
+		    flex-direction: column;
+		    justify-content: center;
+		    align-items: center;
+		    height:90%;
+		}
+		form.form_add{
+			width: 72%;
+			position: relative;	
+		}
 		div.main_container{
 			display: flex;
 			flex-direction:row;
@@ -25,6 +36,16 @@
 		    margin: 0 auto;
 		    width: 1000px;
 		    padding: 20px;
+		}
+/* 		類別標籤的input */
+		div.mb-3 {		      
+    		margin-bottom: 0rem!important;
+     		height:64px;
+     		display: flex;
+		    flex-direction: column;
+		    justify-content: center;
+		    align-items: center;
+     		   
 		}
 
 		form.form_add div.main_container div.main_right{
@@ -58,22 +79,24 @@
 		    flex-direction:column;
 			justify-content: center;
 		    align-items: center;
-			height: 100%;
+			height: 440px;
 			width: 200px;
 			
 		}
 
 		form.form_add div.main_container div.main_right div.right_rightimg div{
-			border: 1px solid black;
-			height: 100%;
-			width: 100%;
-			margin: 10px 0px;
+/* 			border: 1px solid black; */
+		    /* height: 100%; */
+		    width: 162px;
+		    margin: 10px 0px;
+		    max-height: 195px;
+		    text-align: center;
 		}
 		
-		form.form_add div.main_container div.main_right div.right_rightimg div img{
-			height: 100%;
-			width: 100%;
-		}
+/* 		form.form_add div.main_container div.main_right div.right_rightimg div img{ */
+/* 			height: 100%; */
+/* 			width: 100%; */
+/* 		} */
 
 		form.form_add div.main_container div.main_left{
 			display:flex;
@@ -133,14 +156,17 @@
 		    border-radius: 5px;
 		    cursor: pointer;
 		    font-weight: bold;
-			margin-left: 59.5%;
+			position: absolute;
+    		right: 30px;
 		}
 		
 		/* 標題樣式 */
 		h1 {
 		    font-size: 24px;
-			padding-left: 20.7%;
-			padding-top: 30px;
+			text-align: left;
+    		width: 1000px;
+    		padding: 75px;
+    		padding-bottom: 0px;
 		}
 		
 		.form-control {
@@ -150,6 +176,20 @@
 		    border: 1px solid #ccc;
 		    border-radius: 5px;
 			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+		
+		.form-control[type=file] {
+			width:200px;
+		}
+		
+		img{
+			width:175px;
+			max-width:100%;
+			max-height:100%;
+		}
+		
+		input.form-control{
+			width:430px;
 		}
 		
 	</style>
@@ -167,7 +207,7 @@
 
 
 <%-- <form class="form_add" method="post" action="${pageContext.request.contextPath}/Item/add" enctype="multipart/form-data"> --%>
-<div class="">
+<div class="main">
 	<h1>商品上傳</h1>
 	<form class="form_add" method="post" action="${pageContext.request.contextPath}/Item/add" enctype="multipart/form-data">
 		<div class="main_container">
@@ -175,22 +215,49 @@
 
 				<input class="input_name" type="text" placeholder="商品名稱" name="itemName" maxlength = 20>
 
-				<select class="sel_tagid" name="tagId"> 
-					<option value="1" disabled selected>所有種類</option >
-						<optgroup value="2" label="上衣">
-							<optgroup value="5" label="&nbsp;&nbsp;&nbsp;&nbsp;短袖">
-								<option value="9">&nbsp;&nbsp;&nbsp;男短袖</option>
-								<option value="10">&nbsp;&nbsp;&nbsp;女短袖</option>
-							</optgroup>
-						<option value="6">&nbsp;&nbsp;&nbsp;&nbsp;長袖</option>
-						</optgroup>
+
+					<div class="mb-3">
+                        <label for="categorySelect" class="form-label" ></label>
+                        <!-- 顯示選擇的完整結構,但不往後傳 -->
+                        <input type="text" class="form-control" id="categorySelect"
+                               aria-describedby="categorySelectHelp" readonly placeholder="商品類別標籤">
+                        <!--儲存標籤的id傳給後端-->
+                        <input type="hidden" id="selectedCategoryId" name="tagId">
+<!--                         <div id="categorySelectHelp" class="form-text">選擇適當的標籤，讓更多人能找到您的商品</div> -->
+                    </div>
+                    <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog"
+                         aria-labelledby="categoryModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="categoryModalLabel">選擇商品類別標籤</h5>
+                                </div>
+                                <div class="modal-body" id="categoryTree">
+                                    <!-- 類別標籤樹狀結構在這裡生成 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+<!-- 				<select class="sel_tagid" name="tagId">  -->
+<!-- 					<option value="1" disabled selected>所有種類</option > -->
+<!-- 						<optgroup value="2" label="上衣"> -->
+<!-- 							<optgroup value="5" label="&nbsp;&nbsp;&nbsp;&nbsp;短袖"> -->
+<!-- 								<option value="9">&nbsp;&nbsp;&nbsp;男短袖</option> -->
+<!-- 								<option value="10">&nbsp;&nbsp;&nbsp;女短袖</option> -->
+<!-- 							</optgroup> -->
+<!-- 						<option value="6">&nbsp;&nbsp;&nbsp;&nbsp;長袖</option> -->
+<!-- 						</optgroup> -->
 						
-						<optgroup value="3" label="褲子">
-							<option value="7">短褲</option>
-							<option value="8">長褲</option>
-						</optgroup >
-						<option value="4">飾品</option>
-				</select>
+<!-- 						<optgroup value="3" label="褲子"> -->
+<!-- 							<option value="7">短褲</option> -->
+<!-- 							<option value="8">長褲</option> -->
+<!-- 						</optgroup > -->
+<!-- 						<option value="4">飾品</option> -->
+<!-- 				</select> -->
 
 				<div class="inner_sel">
 					<select class="sel_grade" name="grade">
@@ -241,13 +308,8 @@
 				</div>
 
 				<div class="right_rightimg">
-					<div>
-						<img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="Product Image">
-					</div>
-					<div>
-						<img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=2" alt="Product Image">
-						
-					</div>
+					<div id="preview_img01"></div>
+					<div id="preview_img02"></div>
 				</div>
 			</div>
 		</div>
@@ -255,7 +317,7 @@
 	<input class="input_submit" type="submit" value="送出新增">
 	</form>	
 </div>
-    <a href="${pageContext.request.contextPath}/front_end/item/itemSellerSearch.jsp">查詢</a>
+<%--     <a href="${pageContext.request.contextPath}/front_end/item/itemSellerSearch.jsp">查詢</a> --%>
 
 <!--bootstrap5 js-->
 <script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
@@ -272,15 +334,67 @@
 <!--此頁面的js-->
 <%-- <script src="${pageContext.request.contextPath}/js/chengHan/addBid.js" type="text/javascript"></script> --%>
 <script>
-//     const categoryData = [
+    const categoryData = [
+    	
+        {id:2, name: '上衣', parentId:1},
+        {id:3, name: '庫子', parentId:1},
+        {id:4, name: '長袖', parentId:2},
+        {id:5, name: '長褲', parentId:3},
+    	
+    	
 //         <c:forEach var="tags" items="${categoryTags}" begin="1">
 //         {id:${tags.tagId}, name: '${tags.categoryName}', parentId:${tags.superTagId}},
 //         </c:forEach>
-//     ];
+    ];
 </script>
 
 <!--商品類別標籤的js-->
-<%-- <script src="${pageContext.request.contextPath}/js/chengHan/addBidCategoryTags.js"></script> --%>
+<script src="${pageContext.request.contextPath}/js/chengHan/addBidCategoryTags.js"></script>
+
+
+	<script>
+	
+	$(document).ready(function () {
+	    $("#image01").on("change", function () {
+	        var preview_img = $("#preview_img01");
+	        preview_img.empty(); 
+	        
+	        var files = this.files;
+
+	        for (var i = 0; i < files.length; i++) {
+	            var reader = new FileReader();
+	            var file = files[i];
+
+	            reader.onload = function (e) {
+	                var img = $("<img>").attr("src", e.target.result);
+	                preview_img.append(img);
+	            };
+
+	            reader.readAsDataURL(file);
+	        }
+	    });
+	    $("#image02").on("change", function () {
+	        var preview_img = $("#preview_img02");
+	        preview_img.empty(); 
+	        
+	        var files = this.files;
+
+	        for (var i = 0; i < files.length; i++) {
+	            var reader = new FileReader();
+	            var file = files[i];
+
+	            reader.onload = function (e) {
+	                var img = $("<img>").attr("src", e.target.result);
+	                preview_img.append(img);
+	            };
+
+	            reader.readAsDataURL(file);
+	        }
+	    });
+	});
+	
+	</script>
+
 
 </body>
 </html>

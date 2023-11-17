@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商品詳情</title>
+    <title>${item.itemName}</title>
 <style>
         * {
             box-sizing: border-box;
@@ -29,7 +29,7 @@
             width: 100%;
             display: flex;
             min-height: 400px;
-            height: 100%;
+            max-height: 412px;
         }
 
         div.downarea{
@@ -61,12 +61,16 @@
 
         div.container div.product-image {
             flex: 1;
+            min-width: 50%;
+            display: flex;
+    		justify-content: right;
+    		background-color: #f2f2f2;
         }
 
         div.container div.product-image img {
-            border: 1px solid black;
-            max-width: 100%;
-            height: 100%;
+/*             border: 1px solid black; */
+             max-width: 100%; 
+             height: 100%;
             display: block;
         }
 
@@ -190,17 +194,80 @@
             padding: 2px;
             font-size: 17px;
         }
+/*         項目條 */
+        button.carousel-indicators [data-bs-target]{
+        	background-color: gray;
+        }
+        
+        .carousel-inner{
+        	height: 100%;
+/*         	width:0; */
+        }
+
+/*         圖片容器 */ 
+        .carousel-item{
+        	height: 100%; 
+/*   			width: 400px;  */
+         }
+         .carousel-item active{ 
+         	height: 100%; 
+/* 	  		width: 400px;  */
+         } 
 
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
-<!-- https://dummyimage.com/550x650/fcfcfc/0011ff -->
 <body>
 <form class="form_detail" method="post" action="${pageContext.request.contextPath}/ItemCart/cart" enctype="multipart/form-data">
 
     <div class="container">
         <div class="product-image">
-            <img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="Product Image">
+<%--             <img id="slider_img" src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="Product Image"> --%>
+<!--         	<button type="button" onclick="nextImg()">按</button> -->
+        	
+        	
+        	
+        	
+        	
+			  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+			  <div class="carousel-indicators">
+			    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+			    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+<!-- 			    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button> -->
+			  </div>
+			  <div class="carousel-inner">
+			    <div class="carousel-item active">
+			      <img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" class="d-block w-100" alt="...">
+			    </div>
+			    <div class="carousel-item">
+			      <img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=2" class="d-block w-100" alt="...">
+			    </div>
+			  </div>
+			  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+			    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			    <span class="visually-hidden">Previous</span>
+			  </button>
+			  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+			    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			    <span class="visually-hidden">Next</span>
+			  </button>
+			</div>
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
         </div>
         <div class="product-info">
             <ul>
@@ -211,30 +278,12 @@
                 <li>
                     <p class="price" name="price">$${item.price}</p>
                 </li>
-<!--                 <li> -->
-<%--                     <p>尺寸：</p><p name="size">${item.size}</p> --%>
-<!--                 </li> -->
-<!--                 <li> -->
-<%--                     <p>新舊程度：</p><p name="grade">${item.grade}</p> --%>
-<!--                 </li> -->
                 <li class="li_num">
                     <p>數量：</p><input type="number" name="quantity" id="input_num" min="1" value="1" max="${item.quantity}">
                 </li>
                 <li class="li_quantity">
                     <p class="p_quantity">剩餘件數</p><p>${item.quantity}</p>
                 </li>
-<!--                 <li> -->
-<!--                     <div class="description"> -->
-<%--                         <p>${item.detail}</p> --%>
-<!--                     </div> -->
-<!--                 </li> -->
-<!--                 <li> -->
-<!--                     <div> -->
-<%--                         <a href="${pageContext.request.contextPath}/SellerHome/home?mbrId=${item.mbrId}">前往此賣家商城查看更多商品===></a> --%>
-<!--                     </div> -->
-<!--                 </li> -->
-            
-<!--                 <button class="buy-button">加入購物車</button> -->
 				<input type="hidden" name="mbrId"  value="2">
             	<input type="hidden" name="itemId"  value="${item.itemId}">
 				<input type="hidden" name="gotoCart" value="gotoCart">
@@ -254,17 +303,20 @@
                 </tr>
                 <tr>
                     <td>${item.detail}</td>
-                    <td>${item.size}</td>
-                    <td>${item.grade}</td>
+                    <td class="size" >${item.size}</td>
+                    <td class="grade" >${item.grade}</td>
                 </tr>
             </table>
         </div>
 	</form>
 	<a href="${pageContext.request.contextPath}/ItemCart/cartlist?goto=cart&mbrId=2">查看購物車</a>
-    
+	
+	
+    <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>	
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     	<script>
 	    	$(document).ready(function() {
-				$("p[name='size']").each(function () {
+				$(".size").each(function () {
 					let status = $(this).text();
 					switch(status){
 						case "0":
@@ -297,7 +349,7 @@
 					}
 				});
 	
-				$("p[name='grade']").each(function () {
+				$(".grade").each(function () {
 					let status = $(this).text();
 					switch(status){
 						case "0":
@@ -336,6 +388,19 @@
 	            console.log(error);
 	            })
 		})
+		
+// 		    const images = [
+//         "${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1",
+//         // 添加其他圖片的 URL
+//         "${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=2",
+//     ];
+
+//     let currentImageIndex = 0;
+
+//     function nextImg() {
+//         currentImageIndex = (currentImageIndex + 1) % images.length;
+//         document.getElementById("slider_img").src = images[currentImageIndex];
+//     }
 	</script>
 </body>
 </html>

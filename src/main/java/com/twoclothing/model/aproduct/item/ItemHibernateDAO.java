@@ -236,7 +236,7 @@ System.out.println("map///"+map);
 		
 		int first = (page - 1) * ITEM_PAGE_MAX_RESULT;
 
-		return getSession().createQuery("from Item order by itemId desc", Item.class)
+		return getSession().createQuery("from Item where itemStatus = 0 order by itemId desc", Item.class)
 				.setFirstResult(first)
 				.setMaxResults(ITEM_PAGE_MAX_RESULT)
 				.list();
@@ -256,5 +256,14 @@ System.out.println("map///"+map);
 	public Integer getMbrIdById(Integer itemId) {
 		return (Integer)getSession().createQuery("select mbrId from Item where itemId = :itemId").setParameter("itemId", itemId).uniqueResult();
 	}
+
+	@Override
+	public List<Item> getItemByMbrIdAndStatus(Integer mbrId) {		
+		return getSession().createQuery("from Item where mbrId = :mbrId and itemStatus = 0", Item.class)
+		.setParameter("mbrId", mbrId)
+		.list();
+	}
+	
+	
 
 }

@@ -46,7 +46,7 @@
         th,td{
             text-align: center;
             padding: 5px;
-            width: 90px;
+            width: 150px;
         }
         tr{
             height: 50px;
@@ -57,11 +57,20 @@
 		    justify-content: center;
 		    align-items: center;
         }
+        
         tr.tr_data:hover{
             background-color: white;
             box-shadow: 0px 0px 7px 4px rgba(181, 181, 181, 0.8);
 
         }
+        
+        td.img{
+        	display:flex;
+        	justify-content: center;
+		    align-items: center;
+		    padding: 0px;
+        }
+
         div a{
             padding: 5px;
             color: white;
@@ -116,8 +125,7 @@
             cursor: pointer;
         }
 		img {
-			width:50%;
-			height:90%;
+   			height: 50px;
 		}
 		.text_color{
 			color:#CD5C5C;
@@ -148,7 +156,8 @@
             <c:forEach var="item" items="${itemList}">
             
                 <tr class="tr_data">
-                    <td class="img"><img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="product" ></td>
+                    <td class="img"><img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="product" >
+                    <img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=2" alt="product" ></td>
                     <td>${item.itemName}</td>
                     <td>${item.price}</td>
                     <td name="grade">${item.grade}</td>

@@ -122,7 +122,7 @@
 
 
 </style>
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
     <h1>商品確認</h1>
@@ -199,6 +199,9 @@
             </div>
         </div>
     </div>
+    
+    <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>	
+    
     
     <script>
     	//存商品id、購買數量

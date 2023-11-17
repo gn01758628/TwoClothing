@@ -40,7 +40,7 @@
 	        border-collapse: collapse;
 	        width: 80%;
 	        max-width: 600px;
-            height: 500px;
+            height: 650px;
 	        margin: 0 auto;
 
 	    }
@@ -55,7 +55,19 @@
 
         table tbody tr{
             flex: 1;
+            width:79%;
+            display: flex;
+/*             justify-content: center; */
+            flex-direction: row;
+            align-items: center;
         }
+        
+         tr.imgtr01 td input{
+         	width:150px;
+         }
+         tr.imgtr02 td input{
+         	width:150px;
+         }
 
         table tr td:nth-child(1){
             color: #fff;
@@ -71,7 +83,7 @@
 	        text-align: left;
 	    }
 	
-	    input[type="text"], select {
+	    input[type="text"], select, input[type="file"] {
 	        width: 100%;
 	        padding: 8px;
             width: 300px;
@@ -79,7 +91,9 @@
             height: 40px;
             border: 2px solid rgb(101, 101, 101)
 	    }
-
+		input[type="file"]{
+			border:none;
+		}
 	
 	    input[type="submit"] {
 	        background-color: #9bc1e7;
@@ -94,23 +108,44 @@
 	        background-color: #0057b3c2;
             
 	    }
-	
-	    /* a {
-	        text-decoration: none;
-	        color: #007bff;
-	    }
-	
-	    a:hover {
-	        text-decoration: underline;
-	    } */
+	   	img{
+			max-width:100%;
+			max-height:100%;
+		}
+		div#preview_img01{
+			height: 70px;
+		}
+		div#preview_img02{
+			height: 70px;
+		}
+		td.td_img01{
+			padding:0px;
+			margin-left: 70px;
+		}
+		td.td_img02{
+			padding:0px;
+			margin-left: 70px;
+		}
+		
+		label{
+			border:1px solid black;
+			border-radius:10px;
+			color:white;
+			background-color:dodgerblue;
+			padding:8px;
+			cursor: pointer;
+		}
+
 	</style>
+	
+<link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css' rel='stylesheet'></link>
 
 </head>
 <body>
     <main class="main">
         <h3>商品資料修改</h3>
         
-        <form method="post" action="/TwoClothing/Item/Update">
+        <form method="post" action="/TwoClothing/Item/Update" enctype="multipart/form-data">
         <table>
             
 <!--                 <td>商品</td> -->
@@ -172,6 +207,40 @@
             <tr>
                 <td>描述</td>
                 <td><input type="text" name="detail"  value="${item.detail}" size="200"/></td>
+            </tr>
+            
+            <tr class="imgtr01">
+                <td>主圖片</td>
+                <td>
+<!--                 <td><input class="form-control" type="file" id="image01" name="image01" -->
+<!-- 							accept="image/jpeg, image/png"> -->
+							
+							<label class="btn btn-info form-control">
+								<input id="image01" style="display:none;" type="file" name="image01">
+								<i class="fa fa-photo"></i> 上傳圖片
+							</label>
+							
+							
+				</td>
+				<td class="td_img01">
+					<div id="preview_img01"></div>
+				</td>
+				
+            </tr>
+            <tr class="imgtr02">
+                <td>副圖片</td>
+                <td>
+<!--                 <input class="form-control" type="file" id="image02" name="image02" -->
+<!-- 							accept="image/jpeg, image/png"> -->
+					<label class="btn btn-info form-control">
+						<input id="image02" style="display:none;" type="file" name="image02">
+						<i class="fa fa-photo"></i> 上傳圖片
+					</label>
+							
+				</td>
+				<td class="td_img02">
+					<div id="preview_img02"></div>
+				</td>
             </tr>
         
         
@@ -280,6 +349,45 @@
 					break;
 				}
 			});
+			
+			//更改圖片的預覽
+			 $("#image01").on("change", function () {
+			        var preview_img = $("#preview_img01");
+			        preview_img.empty(); 
+			        
+			        var files = this.files;
+
+			        for (var i = 0; i < files.length; i++) {
+			            var reader = new FileReader();
+			            var file = files[i];
+
+			            reader.onload = function (e) {
+			                var img = $("<img>").attr("src", e.target.result);
+			                preview_img.append(img);
+			            };
+
+			            reader.readAsDataURL(file);
+			        }
+			    });
+			    $("#image02").on("change", function () {
+			        var preview_img = $("#preview_img02");
+			        preview_img.empty(); 
+			        
+			        var files = this.files;
+
+			        for (var i = 0; i < files.length; i++) {
+			            var reader = new FileReader();
+			            var file = files[i];
+
+			            reader.onload = function (e) {
+			                var img = $("<img>").attr("src", e.target.result);
+			                preview_img.append(img);
+			            };
+
+			            reader.readAsDataURL(file);
+			        }
+			    });
+			
 		});
 
 	

@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import com.twoclothing.huiwen.service.ItemImageService;
+import com.twoclothing.huiwen.service.ItemImageServiceImpl;
 import com.twoclothing.huiwen.service.ItemService;
 import com.twoclothing.huiwen.service.ItemServiceImpl;
 import com.twoclothing.model.aproduct.item.Item;
@@ -34,9 +36,11 @@ public class ItemServlet extends HttpServlet {
 
 	private ItemService itemService;
 	private JedisPool jedisPool;
+	private ItemImageService itemImageService;
 
 	public void init() throws ServletException {
 		itemService = new ItemServiceImpl();
+		itemImageService= new ItemImageServiceImpl();
 	}
 
 	@Override
@@ -215,7 +219,7 @@ public class ItemServlet extends HttpServlet {
 			ItemImage itemImage01 = new ItemImage();
 			itemImage01.setItemId(itemPK);
 			itemImage01.setImage(image01);
-			itemService.addItemImage(itemImage01);
+			itemImageService.addItemImage(itemImage01);
 
 			if (image02.length != 0) {
 				ItemImage itemImage02 = new ItemImage();
@@ -225,7 +229,7 @@ public class ItemServlet extends HttpServlet {
 			}
 			req.setAttribute("item", item);
 
-			String url = "/front_end/item/itemSellerListCompositeQuery.jsp";
+			String url = "/front_end/item/itemSellerUpdateOne.jsp";
 			RequestDispatcher dispatcher1 = req.getRequestDispatcher(url);
 			dispatcher1.forward(req, res);
 		}
@@ -248,7 +252,7 @@ public class ItemServlet extends HttpServlet {
 		// 修改
 		String forUpdate = req.getParameter("forUpdate");
 		if ("update".equals(forUpdate)) {
-//			Item item = new Item();
+
 			Integer itemId = Integer.valueOf(req.getParameter("itemId"));
 			String itemName = req.getParameter("itemName");
 			Integer price = Integer.valueOf(req.getParameter("price"));
@@ -257,11 +261,52 @@ public class ItemServlet extends HttpServlet {
 			Integer itemStatus = Integer.valueOf(req.getParameter("itemStatus"));
 			Integer quantity = Integer.valueOf(req.getParameter("quantity"));
 			String detail = req.getParameter("detail");
-//			System.out.println(
-//					itemId + "/" + itemName + "/" + grade + "/" + size + "/" + detail + "/" + price + "/" + quantity);
-
-//			int itemUpdate = itemService.updateItem(itemId, itemName, grade, size, detail, price, quantity);
 			
+			
+			Part imgPart1 = null, imgPart2 = null;
+			try {
+				Collection<Part> parts = req.getParts();
+				for (Part part : parts) {
+					if ("image01".equals(part.getName()))
+						imgPart1 = part;
+					if ("image02".equals(part.getName()))
+						imgPart2 = part;
+				}			// 單張圖片超過大小的例外處理
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			}
+			
+			byte[] image01 = null, image02 = null;
+			if (imgPart1 != null && imgPart2 != null) {
+				InputStream in = imgPart1.getInputStream();
+				image01 = in.readAllBytes();
+				in = imgPart2.getInputStream();
+				image02 = in.readAllBytes();
+				in.close();
+			}
+			System.out.println(image01);
+			List<ItemImage> itemImageList = itemImageService.getByItemId(itemId);
+			if (image01.length != 0) {
+			    itemImageList.get(0).setImage(image01);
+			    itemImageService.updateItemImage(itemImageList.get(0));
+			}
+
+			// 如果有第二張圖片，新增或更新第二張圖片
+			if (image02.length != 0) {
+			    ItemImage newItemImage2 ;
+
+			    if (itemImageList.size() > 1) {
+			        newItemImage2 = itemImageList.get(1);
+			        newItemImage2.setImage(image02);
+			        itemImageService.updateItemImage(newItemImage2);
+			    } else {
+			        newItemImage2 = new ItemImage();
+			        newItemImage2.setItemId(itemId);
+			        newItemImage2.setImage(image02);
+			        itemImageService.addItemImage(newItemImage2);
+			    }
+			}
+
 			Item item = itemService.getItemByItemId(itemId);
 			
 			
@@ -330,7 +375,6 @@ public class ItemServlet extends HttpServlet {
 		if (page == null) {
 			String itemNameSearch = req.getParameter("itemNameSearch");
 			req.getSession().setAttribute("itemNameSearch", itemNameSearch);
-System.out.println(itemNameSearch);
 			// 其他參數比照
 			String itemPriceSearchStart = req.getParameter("itemPriceSearchStart");
 			req.getSession().setAttribute("itemPriceSearchStart", itemPriceSearchStart);
@@ -340,28 +384,18 @@ System.out.println(itemNameSearch);
 
 			String itemGrade = req.getParameter("itemGrade");
 			req.getSession().setAttribute("itemGrade", itemGrade);
-System.out.println(itemGrade);
 			
 			String itemSize = req.getParameter("itemSize");
 			req.getSession().setAttribute("itemSize", itemSize);
 			
-//			String itemQuantityStart = req.getParameter("itemQuantityStart");
-//			req.getSession().setAttribute("itemQuantityStart", itemQuantityStart);
-//			
-//			String itemQuantityEnd = req.getParameter("itemQuantityEnd");
-//			req.getSession().setAttribute("itemQuantityEnd", itemQuantityEnd);
-			
 			
 			String itemQuantity = req.getParameter("itemQuantity");
-System.out.println(itemQuantity);
+
 		    if (itemQuantity != null) {
 		        switch (itemQuantity) {
 		            case "2":
 		                req.getSession().setAttribute("itemQuantityStart", "0");
 		                req.getSession().setAttribute("itemQuantityEnd", "5");
-		                
-System.out.println(req.getSession().getAttribute("itemQuantityEnd"));
-
 		                break;
 		            case "3":
 		                req.getSession().setAttribute("itemQuantityStart", "6");
@@ -373,18 +407,7 @@ System.out.println(req.getSession().getAttribute("itemQuantityEnd"));
 		                break;
 		        }
 		    }
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
 			String itemStatus = req.getParameter("itemStatus");
 			req.getSession().setAttribute("itemStatus", itemStatus);
 			// 後續切頁
@@ -419,31 +442,12 @@ System.out.println(req.getSession().getAttribute("itemQuantityEnd"));
 			if (itemQuantityEnd != null) {
 				map.put("itemQuantityEnd", new String[] { itemQuantityEnd });
 			}
-			
-			
-			
-			
-			
 
-
-
-
-
-
-
-
-			
-			
-			
-			
-			
-			
 			String itemStatus = (String) req.getSession().getAttribute("itemStatus");
 			if (itemStatus != null) {
 				map.put("itemStatus", new String[] { itemStatus });
 			}
 		}
-System.out.println("map:"+map);
 
 		if (map.size() != 0) {
 
