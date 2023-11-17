@@ -13,7 +13,6 @@
 <title>會員列表</title>
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css" />
-
 <style type="text/css">
   body {
     font-family: 'Arial', sans-serif;
@@ -64,6 +63,14 @@ h1 {
 <body>
 <h1 style="color: red;">會員列表</h1>
 <a href='${pageContext.request.contextPath}//members/Members.do?action=getAll'>後台會員列表()</a>
+
+    <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/members/Members.do" >
+        <b>輸入會員編號 (如1):</b>
+        <input type="text" name="mbrId" value="${param.mbrId}"><font color=red>${errorMsgs.mbrId}</font>
+        <input type="hidden" name="action" value="getOne_For_Display">
+        <input type="submit" value="送出">
+    </FORM>
+
     <table id="myTable">
         <thead>
 	  <tr>
@@ -90,7 +97,7 @@ h1 {
 <c:choose>
     <c:when test="${not empty Members}">	
     
-	
+	<c:forEach var="Members" items="${Members}" >
 		<tr>
 		<td>${Members.mbrId}</td>
 		<td>${Members.mbrName}</td>
@@ -118,7 +125,7 @@ h1 {
 		</tr>
 		 
 		
-	
+	</c:forEach>
 	 </c:when>
   
 </c:choose>

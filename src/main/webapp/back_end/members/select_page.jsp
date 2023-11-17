@@ -30,13 +30,9 @@
 </head>
 <body bgcolor='white'>
 
-<table id="table-1">
-   <tr><td><h3>IBM Members: Home</h3><h4>( MVC )</h4></td></tr>
-</table>
 
-<p>This is the Home page for IBM Members: Home</p>
 
-<h3>資料查詢:</h3>
+<a href='${pageContext.request.contextPath}/members/Members.do?action=getAll'>後台會員列表()</a>
 
 
 
@@ -70,6 +66,7 @@
 </ul>
 
 
+<a href='${pageContext.request.contextPath}//members/Members.do?action=getAll'>會員列表</a>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/jrIR_tHnf70?si=UUh5VAHJNh3KaFUc&playlist=jrIR_tHnf70&loop=1&autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
   </body>
