@@ -81,29 +81,20 @@ public class EmployeeServlet extends HttpServlet {
 		}
 		else if("change_Password".equals(action)) {
 			
-			String url = "/back_end/employee/change_password.jsp";
-			
 			Integer empId = Integer.valueOf(req.getParameter("empId"));
-//			req.setAttribute("empId", empId);
 			Employee emp = gs.getByPrimaryKey(Employee.class, empId);
-//			req.setAttribute("empName", emp.getEmpName());
 			
 			String pswdhash = req.getParameter("pswdhash");
-//			req.setAttribute("pswdhash", pswdhash);
 			
 			if (pswdhash == null || pswdhash.trim().length() == 0) {
-//				req.setAttribute("pswdhashErrorMsg","密碼請勿空白");
-				resp.getWriter().write("密碼修改成功");
-				resp.setStatus(HttpServletResponse.SC_OK);
+				resp.getWriter().write("密碼請勿空白");
+				resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			}else {
 				emp.setPswdHash(BCrypt.withDefaults().hashToString(12, pswdhash.toCharArray()));
-//				req.setAttribute("successMsg", "修改成功!");
 				resp.getWriter().write("密碼修改成功");
 				resp.setStatus(HttpServletResponse.SC_OK);
 			}
 			
-			RequestDispatcher successView = req.getRequestDispatcher(url); 
-			successView.forward(req, resp);
 		}
 		
 		
@@ -139,7 +130,6 @@ public class EmployeeServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 		
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-				System.out.println(req.getParameter("empid"));
 				Integer empid = Integer.valueOf(req.getParameter("empid"));
 				
 				Integer deptid = null;

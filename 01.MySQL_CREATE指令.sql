@@ -433,9 +433,9 @@ CREATE TABLE department
 
 -- 表格：部門 插入假資料
 INSERT INTO department (deptname)
-VALUES ('IT Department'),
-       ('Sales Department'),
-       ('Marketing Department');
+VALUES ('行銷部'),
+       ('會計部'),
+       ('客服部');
 
 -- 表格：部門 檢查
 -- SELECT * FROM department;
