@@ -2,6 +2,7 @@ package com.twoclothing.chenghan.service;
 
 import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.abid.biditemimage.BidItemImage;
+import com.twoclothing.model.abid.bidorder.BidOrder;
 import com.twoclothing.model.categorytags.CategoryTags;
 import com.twoclothing.model.employee.Employee;
 import com.twoclothing.model.members.Members;
@@ -28,6 +29,8 @@ public interface BidItemService {
     void addBidRecord(BidRecord bidRecord, Integer bidItemId, LocalDateTime endTime);
 
     void addBidItemViewHistory(BidItemViewHistory bidItemViewHistory);
+
+    void addBidOrder(BidOrder bidOrder);
 
     BidItem getBidItemByBidItemId(Integer bidItemId);
 

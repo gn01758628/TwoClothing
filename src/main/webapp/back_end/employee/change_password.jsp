@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>員工資料新增 - addEmp.jsp</title>
+<title>修改密碼</title>
 
 <style>
   table#table-1 {
@@ -40,24 +40,25 @@
 </head>
 <body bgcolor='white'>
 
-<h3>資料新增:</h3>
+<h3>修改員工密碼:</h3>
 
 <FORM METHOD="post" ACTION="Employee.do" name="form1" enctype="multipart/form-data" autocomplete="off">
 <table>
 	<tr>
 		<td>員工姓名:</td>
-		<td> ${param.empName} </td> <td>${errorMsgs.empname}</td>
+		<td>${empName} </td>
 	</tr>
 	<tr>
 		<td>輸入新密碼:</td>
-		<td><input type="TEXT" name="pswdhash"   value="${param.pswdHash}"   size="45"/></td> </td> <td>${errorMsgs.pswdHash}</td>
+		<td><input type="TEXT" name="pswdhash"   value="${pswdHash}"   size="45" required/></td> 
 	</tr>
 	
 
 </table>
 <br>
+<input type="hidden" name="empId"  value="${empId}">
 <input type="hidden" name="action" value="change_Password">
-<input type="submit" id="submit-button" value="送出新增"></FORM>${success}
+<input type="submit" id="submit-button" value="送出新增"></FORM>${successMsg}
 
 </body>
 

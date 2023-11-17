@@ -58,16 +58,55 @@
 
 <table>
 	<tr>
-	    <th>買家評價</th>
-	    <td>${Members.buyStar > 0 ? '☆' : ''}${Members.buyStar > 1 ? '☆' : ''}${Members.buyStar > 2 ? '☆' : ''}${Members.buyStar > 3 ? '☆' : ''}${Members.buyStar > 4 ? '☆' : ''}</td>
-	    <td><fmt:formatNumber value="${Members.buyStar / Members.buyRating}" type="number" maxFractionDigits="1"/></td>
-	</tr>
-	<tr>
-	    <th>賣家評價</th>
-	    <td>${Members.sellStar > 0 ? '☆' : ''}${Members.sellStar > 1 ? '☆' : ''}${Members.sellStar > 2 ? '☆' : ''}${Members.sellStar > 3 ? '☆' : ''}${Members.sellStar > 4 ? '☆' : ''}</td>
-	    <td><fmt:formatNumber value="${Members.sellStar / Members.sellRating}" type="number" maxFractionDigits="1"/></td>
-	</tr>
-
+    <th>買家評價</th>
+    <td>
+        <script>
+            var buyStar = ${Members.buyStar};
+            if (buyStar > 0) {
+                document.write('☆'.repeat(buyStar));
+            } else {
+                document.write('無評價');
+            }
+        </script>
+    </td>
+    <td>
+        <script>
+            var buyStar = ${Members.buyStar};
+            var buyRating = ${Members.buyRating};
+            if (buyStar > 0) {
+                var formattedNumber = (buyStar / buyRating).toFixed(1);
+                document.write(formattedNumber);
+            } else {
+                document.write('無評價');
+            }
+        </script>
+    </td>
+</tr>
+<<tr>
+    <th>賣家評價</th>
+    <td>
+        <script>
+            var sellStar = ${Members.sellStar};
+            if (sellStar > 0) {
+                document.write('☆'.repeat(sellStar));
+            } else {
+                document.write('無評價');
+            }
+        </script>
+    </td>
+    <td>
+        <script>
+            var sellStar = ${Members.sellStar};
+            var sellRating = ${Members.sellRating};
+            if (sellStar > 0) {
+                var formattedNumber = (sellStar / sellRating).toFixed(1);
+                document.write(formattedNumber);
+            } else {
+                document.write('無評價');
+            }
+        </script>
+    </td>
+</tr>
 
 
 </table> 

@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" /> <!-- ●●css for jquery datatables 用 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@latest"></script><!-- 引入 SweetAlert2 -->
 
 <!-- ●● jquery datatables 設定 -->
 <script>
@@ -42,7 +43,10 @@ body {
 </style>
 
 </head>
-
+<body>
+<%
+    String servletPath = request.getContextPath() + "/back_end/employee/Employee.do";
+%>
 <table id="example" class="display" style="width: 100%">
 	<thead >
 		<tr>
@@ -81,17 +85,19 @@ body {
 			
 
 			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/employee/Employee.do" style="margin-bottom: 0px;">
+			  <FORM METHOD="post" ACTION="<%= servletPath %>" style="margin-bottom: 0px;">
 			     <input type="submit" value="修改基本資料">
 			     <input type="hidden" name="empId"  value="${employee.empId}">
 			     <input type="hidden" name="action"	value="getOne_For_Update">
 		     </FORM>
-		     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/employee/change_password.jsp" style="margin-bottom: 0px;">
-			     <input type="submit" value="修改密碼">
-			     <input type="hidden" name="empName"  value="${employee.empName}">
-			     <input type="hidden" id="change_Password_btn" name="action" value="change_Password">
-		     </FORM>
-		     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/employee/Employee.do" style="margin-bottom: 0px;right:0;display:fixed;">
+<%-- 		     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/employee/Employee.do" style="margin-bottom: 0px;"> --%>
+			     <input id="change_Password_btn" type="submit" value="修改密碼">
+<!-- 			     <button type="button" style="border-width">修改密碼</button> -->
+<%-- 			     <input type="hidden" name="empId"  value="${employee.empId}"> --%>
+<%-- 			     <input type="hidden" name="empName"  value="${employee.empName}"> --%>
+<!-- 			     <input type="hidden" id="change_Password_btn" name="action" value="change_Password"> -->
+<!-- 		     </FORM> -->
+		     <FORM METHOD="post" ACTION="<%= servletPath %>" style="margin-bottom: 0px;right:0;display:fixed;">
 			     <c:choose>
 	       			 <c:when test="${employee.empStatus == 0}"><input type="submit" value="離職"></c:when>
 	       			 <c:when test="${employee.empStatus == 1}"><input type="submit" value="復職"></c:when>
@@ -103,5 +109,65 @@ body {
 		</tr>
 	</c:forEach>
 </table>
+<script>
+	$(function(){
+		let servletPath = '<%= servletPath %>';
+	    $('#change_Password_btn').click(function(){
+	    	// 找到最近的 tr 元素
+	        let tr = $(this).closest('tr');
+	        // 在 tr 元素中找到名為 empId 的 input 元素
+	        let empIdInput = tr.find('input[name="empId"]');
+	        // 獲取 empId 的值
+	        let empId = empIdInput.val();
+	    	
+	    	Swal.fire({
+	    		  title: "請輸入新密碼",
+	    		  input: "text",
+	    		  inputAttributes: {
+	    		    autocapitalize: "off"
+	    		  },
+	    		  showCancelButton: true,
+	    		  confirmButtonText: "確認",
+	    		  cancelButtonText: "取消",
+	    		  showLoaderOnConfirm: true,
+	    		  preConfirm: async (pswdhash) => {
+	    	            const inputPassword = Swal.getInput().value;
+
+	    	            if (!inputPassword) {
+	    	                Swal.showValidationMessage("密碼不能為空");
+	    	                return false;
+	    	            }
+
+	    	            // 發送請求到後端進行密碼驗證
+	    	            const response = await fetch(servletPath, {
+	    	                method: 'POST',
+	    	                headers: {
+	    	                    'Content-Type': 'application/x-www-form-urlencoded'
+	    	                },
+	    	                body: 'pswdhash='+pswdhash+'&empId='+empId+'&action=change_Password',
+	    	            });
+
+	    	            if (!response.ok) {
+	    	                const errorText = await response.text();
+	    	                Swal.showValidationMessage(`密碼驗證失敗: ${errorText}`);
+	    	                return false;
+	    	            }
+
+	    	            return inputPassword;
+	    	        },
+	    	        allowOutsideClick: () => !Swal.isLoading()
+	    	    });
+
+	    	    if (isConfirmed) {
+	    	        // 在這裡處理密碼驗證成功後的操作
+	    	        Swal.fire({
+	    	            title: "密碼驗證成功",
+	    	            text: `你輸入的密碼是：${password}`,
+	    	            icon: "success"
+	    	        });
+	    	    }
+	    });
+	});
+</script>
 </body>
 </html>

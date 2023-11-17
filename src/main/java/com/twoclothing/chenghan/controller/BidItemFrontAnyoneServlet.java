@@ -4,6 +4,7 @@ import com.twoclothing.chenghan.NumberMapping;
 import com.twoclothing.chenghan.service.BidItemService;
 import com.twoclothing.chenghan.service.BidItemServiceImpl;
 import com.twoclothing.model.abid.biditem.BidItem;
+import com.twoclothing.model.abid.bidorder.BidOrder;
 import com.twoclothing.model.members.Members;
 import com.twoclothing.redismodel.bidItemViewHistory.BidItemViewHistory;
 import com.twoclothing.redismodel.bidrecord.BidRecord;
@@ -19,10 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @WebServlet("/front/biditem/anyone/*")
 public class BidItemFrontAnyoneServlet extends HttpServlet {
@@ -40,7 +38,7 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
         String pathInfo = request.getPathInfo();
         switch (pathInfo) {
             case "/detail" -> doDetail(request, response);
-            case "/bid" -> doBid(request, response);
+            case "/bid.check" -> doBid(request, response);
         }
     }
 
@@ -75,13 +73,15 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
 
         // 競標商品瀏覽紀錄
         // 判斷是否為本人
-        // TODO 會員從session拿
-        Integer mbrid = 2;
-        if (!mbrid.equals(bidItem.getMbrId())) {
-            BidItemViewHistory history = new BidItemViewHistory(mbrid, bidItemId, System.currentTimeMillis());
-            bidItemService.addBidItemViewHistory(history);
+        Object mbrIdObj = request.getSession().getAttribute("mbrId");
+        if (mbrIdObj != null) {
+            Integer mbrId = (Integer) mbrIdObj;
+            if (!mbrId.equals(bidItem.getMbrId())) {
+                BidItemViewHistory history = new BidItemViewHistory(mbrId, bidItemId, System.currentTimeMillis());
+                bidItemService.addBidItemViewHistory(history);
+            }
         }
-
+        request.getSession().setAttribute("currentBidItemId", bidItemId);
         request.getRequestDispatcher("/front_end/biditem/BidItemDetail.jsp").forward(request, response);
     }
 
@@ -89,9 +89,14 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        // TODO 從session取的會員ID 這裡先寫死
-        Integer mbrId = 3;
+        Integer mbrId = (Integer) request.getSession().getAttribute("mbrId");
         String bidItemId = request.getParameter("bidItemId");
+        // 處理Ajax請求重定向
+        if (bidItemId == null) {
+            Integer currentBidItemId = (Integer) request.getSession().getAttribute("currentBidItemId");
+            response.sendRedirect(request.getContextPath() + "/front/biditem/anyone/detail?bidItemId=" + currentBidItemId);
+            return;
+        }
         BidItem bidItem = bidItemService.getBidItemByBidItemId(Integer.parseInt(bidItemId));
         LocalDateTime endTime = bidItem.getEndTime().toLocalDateTime();
         String bidAmount = request.getParameter("bidAmount");
@@ -109,7 +114,7 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
             return;
         }
         if (!"0".equals(currentBid)) {
-            if (Integer.parseInt(bidAmount) <= Integer.parseInt(currentBid)) {
+            if (Integer.parseInt(bidAmount) < Math.round(Integer.parseInt(currentBid) * 1.03)) {
                 out.print("1");
                 return;
             }
@@ -171,10 +176,20 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
             notice2.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItemId);
             notice2.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
             bidItemService.addNotice(notice2, bidItemMbrId);
+            // 新增競標商品訂單
+            BidOrder bidOrder = new BidOrder();
+            bidOrder.setBidItemId(Integer.parseInt(bidItemId));
+            bidOrder.setBuyMbrId(mbrId);
+            bidOrder.setSellMbrId(bidItem.getMbrId());
+            bidOrder.setOrderDate(new Timestamp(System.currentTimeMillis()));
+            bidOrder.setAmount(Integer.parseInt(bidAmount));
+            bidOrder.setOrderStatus(0);
+            bidItemService.addBidOrder(bidOrder);
+            // TODO 發送訂單成立通知(通知買賣雙方)
 
-            // TODO 跑訂單
-
+            // 傳送資料Ajax
             out.print("3");
+
         }
     }
 }

@@ -27,12 +27,12 @@
 <body>
 
 <div class="container mt-5">
-    <form action="${pageContext.request.contextPath}/back/tags/save" method="post">
+    <form action="${pageContext.request.contextPath}/back_end/servlet/categoryTags/save" method="post">
         <div class="mb-3">
             <label for="superTagId" class="form-label">父類別標籤</label>
             <select class="form-select" id="superTagId" name="superTagId" required>
                 <option value="" disabled selected>選擇標籤</option>
-                <c:forEach var="tags" items="${categoryTags}">
+                <c:forEach var="tags" items="${applicationScope.categoryTags}">
                 <option value="${tags.tagId}">${tags.categoryName}</option>
                 </c:forEach>
             </select>

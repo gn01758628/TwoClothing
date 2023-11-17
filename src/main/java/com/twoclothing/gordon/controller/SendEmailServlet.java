@@ -3,6 +3,8 @@ package com.twoclothing.gordon.controller;
 import java.io.IOException;
 import java.util.Map;
 import java.util.HashMap;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,11 +38,11 @@ public class SendEmailServlet extends HttpServlet {
 		
 		String activeCode = RandomStringGenerator.generateRandomString(10);
 		
-//		===============================寄信================================
-//		===============================寄信================================
-//		===============================寄信================================
-//		===============================寄信================================
-//		===============================寄信================================
+//		===============================寄驗證信================================
+//		===============================寄驗證信================================
+//		===============================寄驗證信================================
+//		===============================寄驗證信================================
+//		===============================寄驗證信================================
 		
     	if("verificationEmail".equals(action)) {
     		
@@ -121,17 +123,12 @@ public class SendEmailServlet extends HttpServlet {
     		}
     		
     		
-    		
-    		
-    		
-    		
 /////////////////////////////////////redis測試////////////////////	
 
     		if(activeCode.equals(getActiveCode)) {
     			System.out.println("激活成功");
     			System.out.println(activeCode);
     			System.out.println(getActiveCode);
-//    			members.setMbrName(null);
     			members.setMbrStatus(1);
     			res.sendRedirect(req.getContextPath() + "/index.jsp");
     		}else {
@@ -141,6 +138,26 @@ public class SendEmailServlet extends HttpServlet {
     		}
     		
     		
+    	}
+//		===============================寄忘記密碼信================================
+//		===============================寄忘記密碼信================================
+//		===============================寄忘記密碼信================================
+//		===============================寄忘記密碼信================================
+//		===============================寄忘記密碼信================================
+
+    	if("寄出驗證信".equals(action)) {
+    		System.out.println("寄出驗證信");
+    		String to = req.getParameter("email3");
+    		String subject = "TwoClothing 忘記密碼";
+    		
+    		String messageText =  "註冊成功，請點擊<a href='http://192.168.0.32/TwoClothing/front_end/members/forgotPassword.jsp?email="+to;
+    	           
+    		 MailService mailService = new MailService();
+    		 mailService.sendMail(to, subject, messageText);
+    		 
+    		 String url = "/front_end/members/registerLogin.jsp";
+         	RequestDispatcher successView = req.getRequestDispatcher(url); 
+         	successView.forward(req, res);
     	}
     	}
 

@@ -5,7 +5,9 @@ import com.twoclothing.chenghan.service.BidItemService;
 import com.twoclothing.chenghan.service.BidItemServiceImpl;
 import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.abid.biditemimage.BidItemImage;
-import com.twoclothing.model.categorytags.CategoryTags;
+import com.twoclothing.model.abid.bidorder.BidOrder;
+import com.twoclothing.redismodel.bidrecord.BidRecord;
+import com.twoclothing.redismodel.notice.Notice;
 import com.twoclothing.utils.FormatUtil;
 
 import javax.servlet.ServletException;
@@ -21,7 +23,10 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 // @MultipartConfig
@@ -47,20 +52,18 @@ public class BidItemFrontPersonalServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         // 獲取pathInfo
         String pathInfo = request.getPathInfo();
         switch (pathInfo) {
-            case "/add" -> doAdd(request, response);
-            case "/save" -> doSave(request, response);
+            case "/add.check" -> doAdd(request, response);
+            case "/save.check" -> doSave(request, response);
             case "/list.check" -> doList(request, response);
+            case "/endEarly" -> doEndEarly(request, response);
         }
     }
 
     private void doAdd(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<CategoryTags> allCategoryTags = bidItemService.getAllCategoryTags();
-        request.setAttribute("categoryTags", allCategoryTags);
         request.getRequestDispatcher("/front_end/biditem/BidItemAdd.jsp").forward(request, response);
     }
 
@@ -98,8 +101,7 @@ public class BidItemFrontPersonalServlet extends HttpServlet {
             errorMessages.add("您選擇的類別標籤並非是可選標籤");
         }
 
-        // TODO 會員編號先寫死,之後要從session取
-        Integer mbrId = 1;
+        Integer mbrId = (Integer) request.getSession().getAttribute("mbrId");
 
         String startPrice = request.getParameter("startPrice");
         if (startPrice == null || startPrice.trim().isEmpty() || !startPrice.matches("[1-9][0-9]*"))
@@ -135,7 +137,6 @@ public class BidItemFrontPersonalServlet extends HttpServlet {
                     if (!reserverPrice.isEmpty()) {
                         int reserverPriceValue = Integer.parseInt(reserverPrice);
                         if (directPriceValue < reserverPriceValue) errorMessages.add("立即結標價必須大於拍賣底價");
-                        return;
                     } else {
                         if (directPriceValue < startPriceValue) errorMessages.add("立即結標價必須大於起標價格");
                     }
@@ -253,27 +254,93 @@ public class BidItemFrontPersonalServlet extends HttpServlet {
             bidItemService.addBidItemImage(bidItemImage02);
         }
 
-        response.sendRedirect(request.getContextPath() + "/front/biditem/personal/list");
+        response.sendRedirect(request.getContextPath() + "/front/biditem/personal/list.check");
     }
 
     private void doList(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // TODO 會員編號先寫死,之後要從session取
-        Integer mbrId = 1;
-
+        Integer mbrId = (Integer) request.getSession().getAttribute("mbrId");
         List<BidItem> bidItemList = bidItemService.getAllLegalBidItemByMbrid(mbrId);
         Map<Integer, String[]> timeMap = new HashMap<>();
         // 格式化時間
         for (BidItem bidItem : bidItemList) {
             String[] arr = {FormatUtil.timestampNoSecond(bidItem.getStartTime()), FormatUtil.timestampNoSecond(bidItem.getEndTime())};
-            timeMap.put(bidItem.getBidItemId(),arr);
+            timeMap.put(bidItem.getBidItemId(), arr);
         }
+        // 狀態名稱
         Map<Integer, String> bidStatusMap = NumberMapping.bidStatusMap;
+        // 出價狀況
+        Map<Integer, String> currentBidMap = new HashMap<>();
+        for (BidItem bidItem : bidItemList) {
+            Integer bidItemId = bidItem.getBidItemId();
+            BidRecord bidRecord = bidItemService.getBidRecordByIndex(bidItemId, 0);
+            if (bidRecord != null) {
+                currentBidMap.put(bidItemId, bidRecord.getBidAmount());
+            }
+        }
         request.setAttribute("bidItemList", bidItemList);
-        request.setAttribute("bidStatusMap", bidStatusMap);
         request.setAttribute("timeMap", timeMap);
+        request.setAttribute("bidStatusMap", bidStatusMap);
+        request.setAttribute("currentBidMap", currentBidMap);
         request.getRequestDispatcher("/front_end/biditem/BidItemPersonalList.jsp").forward(request, response);
+    }
+
+    private void doEndEarly(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+        Integer bidItemId = Integer.parseInt(request.getParameter("bidItemId"));
+        BidItem bidItem = bidItemService.getBidItemByBidItemId(bidItemId);
+        List<BidRecord> bidRecordList = bidItemService.getAllBidRecordByBidItemId(bidItemId);
+        if ("流標".equals(action)) {
+            bidItem.setBidStatus(3);
+            bidItemService.updateBidItem(bidItem);
+            // 發送通知,所有參與投標者
+            for (BidRecord bidRecord : bidRecordList) {
+                Notice notice = new Notice();
+                notice.setType("競標動態");
+                notice.setHead("提前流標");
+                notice.setContent("您投標的商品：" + bidItem.getBidName() + "，因為賣方提前流標，競標已提前結束。");
+                notice.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItemId);
+                notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
+                bidItemService.addNotice(notice, bidRecord.getMbrId());
+            }
+            return;
+        }
+        if ("結標".equals(action)) {
+            bidItem.setBidStatus(2);
+            bidItemService.updateBidItem(bidItem);
+            BidRecord highestBidRecord = bidRecordList.get(0);
+            // 結標新增訂單
+            BidOrder bidOrder = new BidOrder();
+            bidOrder.setBidItemId(bidItemId);
+            bidOrder.setBuyMbrId(highestBidRecord.getMbrId());
+            bidOrder.setSellMbrId(bidItem.getMbrId());
+            bidOrder.setOrderDate(new Timestamp(System.currentTimeMillis()));
+            bidOrder.setAmount(FormatUtil.parseFormattedNumber(highestBidRecord.getBidAmount()));
+            bidOrder.setOrderStatus(0);
+            bidItemService.addBidOrder(bidOrder);
+            // 發送通知
+            //  得標者
+            Notice notice = new Notice();
+            notice.setType("競標動態");
+            notice.setHead("提前結標");
+            notice.setContent("恭喜！您投標的商品：" + bidItem.getBidName() + "，因為賣方提前結標，已由您得標！請瀏覽您的訂單並繼續後續流程。");
+            notice.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItemId);
+            notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
+            bidItemService.addNotice(notice, highestBidRecord.getMbrId());
+            //  其餘參與投標者
+            for (int i = 1; i < bidRecordList.size(); i++) {
+                BidRecord bidRecord = bidRecordList.get(i);
+                Notice noticeElse = new Notice();
+                noticeElse.setType("競標動態");
+                noticeElse.setHead("提前結標");
+                noticeElse.setContent("您投標的商品：" + bidItem.getBidName() + "，因為賣方提前結標，已由其他會員得標。");
+                noticeElse.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItemId);
+                noticeElse.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
+                bidItemService.addNotice(noticeElse, bidRecord.getMbrId());
+            }
+            // TODO 發送訂單成立通知(通知買賣雙方)
+        }
     }
 
 }
