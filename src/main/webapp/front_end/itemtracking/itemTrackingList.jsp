@@ -24,9 +24,9 @@
 		</ul>
 	</c:if>
 	
-	<a href="${pageContext.request.contextPath}/itemtrackinglist?action=getAllByMbrId&mbrId=${mbrId}">查詢所有商品追蹤</a>
+	<a href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId">查詢所有商品追蹤</a>
 
-	<form method="post" action="${pageContext.request.contextPath}/itemtrackinglist">
+	<form method="post" action="${pageContext.request.contextPath}/itemtrackinglist.check">
 		<h3>商品追蹤新增</h3>
 		<h4>到時應刪除，變同移除作法 > 帶商品及會員編號，轉回商品頁，放一顆愛心按鈕放在商品頁，已追蹤成紅色，反之無色</h4>
 		<label>商品編號</label>
@@ -49,21 +49,19 @@
 	<table style="width: 80%; text-align: center;">
 		<tr>
 			<th>商品圖片</th>
-			<th>商品編號</th>
-			<th>會員編號</th>
-			<th>紀錄時間</th>
+			<th>商品名稱</th>
+			<th>價格</th>
 		</tr>
-		<c:forEach var="itemTracking" items="${itemTrackingList}">
+		<c:forEach var="item" items="${itemTrackingList}">
 			<tr>
-				<td><img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${itemTracking.compositeKey.itemId}&position=1" class="img"></td>
-				<td>${itemTracking.compositeKey.itemId}</td>
-				<td>${itemTracking.compositeKey.mbrId}</td>
-				<td>${itemTracking.trackingTime}</td>
+				<td><img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" class="img"></td>
+				<td>${item.itemName}</td>
+				<td>${item.price}</td>
 				<td>
-					<form method="post" action="${pageContext.request.contextPath}/itemtrackinglist">
+					<form method="post" action="${pageContext.request.contextPath}/itemtrackinglist.check">
 						<button class="btn_delete" type="submit">移除</button>
-						<input type="hidden" name="itemId" value="${itemTracking.compositeKey.itemId}">
-						<input type="hidden" name="mbrId" value="${itemTracking.compositeKey.mbrId}">
+						<input type="hidden" name="itemId" value="${item.itemId}">
+						<input type="hidden" name="mbrId" value="${sessionScope.mbrId}">
 						<input type="hidden" name="action" value="delete">
 					</form>
 				</td>
@@ -72,16 +70,16 @@
 	</table>
 
 	<c:if test="${currentPage > 1}">
-		<a href="${pageContext.request.contextPath}/itemtrackinglist?action=getAllByMbrId&page=1&mbrId=${mbrId}">至第一頁</a>&nbsp;
+		<a href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=1">至第一頁</a>&nbsp;
 	</c:if>
 	<c:if test="${currentPage - 1 != 0}">
-		<a href="${pageContext.request.contextPath}/itemtrackinglist?action=getAllByMbrId&page=${currentPage - 1}&mbrId=${mbrId}">上一頁</a>&nbsp;
+		<a href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=${currentPage - 1}">上一頁</a>&nbsp;
 	</c:if>
 	<c:if test="${currentPage + 1 <= itemTrackingPageQty}">
-		<a href="${pageContext.request.contextPath}/itemtrackinglist?action=getAllByMbrId&page=${currentPage + 1}&mbrId=${mbrId}">下一頁</a>&nbsp;
+		<a href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=${currentPage + 1}">下一頁</a>&nbsp;
 	</c:if>
 	<c:if test="${currentPage != itemTrackingPageQty}">
-		<a href="${pageContext.request.contextPath}/itemtrackinglist?action=getAllByMbrId&page=${itemTrackingPageQty}&mbrId=${mbrId}">至最後一頁</a>&nbsp;
+		<a href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=${itemTrackingPageQty}">至最後一頁</a>&nbsp;
 	</c:if>
 
 	<a href="${pageContext.request.contextPath}">回首頁</a>

@@ -7,6 +7,7 @@ import redis.clients.jedis.JedisPool;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class NoticeJedisDAO implements NoticeDAO {
 
@@ -30,10 +31,18 @@ public class NoticeJedisDAO implements NoticeDAO {
     public void insert(Notice notice, Integer mbrId) {
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.select(REDIS_NUMBER);
+            // List儲存 (Key:會員ID,value:通知自增主鍵)
             String value = NOTICE_PREFIX + jedis.incr("noticeId");
             jedis.rpush(MBR_PREFIX + mbrId + MBR_SUFFIX, value);
-            String noticeJson = gson.toJson(notice);
-            jedis.set(value, noticeJson);
+
+            // Hash儲存 (Key:通知的自增主鍵)
+            jedis.hset(value, "type", notice.getType());
+            jedis.hset(value, "head", notice.getHead());
+            jedis.hset(value, "content", notice.getContent());
+            jedis.hset(value, "link", notice.getLink());
+            jedis.hset(value, "imageLink", notice.getImageLink());
+            jedis.hset(value, "read", Boolean.toString(notice.isRead()));
+
             jedis.expire(value, TTL);
         }
     }
@@ -42,18 +51,24 @@ public class NoticeJedisDAO implements NoticeDAO {
     public List<Notice> getAllByMbrId(Integer mbrId) {
         List<Notice> noticeList = new ArrayList<>();
         try (Jedis jedis = jedisPool.getResource()) {
-            jedis.select(REDIS_NUMBER);
-            List<String> noticeIds = jedis.lrange(MBR_PREFIX + mbrId + MBR_SUFFIX, 0, -1);
-            for (String id : noticeIds) {
-                String noticeId = jedis.get(id);
-                if (noticeId != null) {
-                    Notice notice = gson.fromJson(noticeId, Notice.class);
+            // 獲取所有與會員有關的通知ID
+            List<String> noticeIdList = jedis.lrange(MBR_PREFIX + mbrId + MBR_SUFFIX, 0, -1);
+            if (noticeIdList != null && !noticeIdList.isEmpty()) {
+                for (String noticeId : noticeIdList) {
+                    Map<String, String> noticeData = jedis.hgetAll(noticeId);
+                    Notice notice = new Notice();
+                    notice.setType(noticeData.get("type"));
+                    notice.setHead(noticeData.get("head"));
+                    notice.setContent(noticeData.get("content"));
+                    notice.setLink(noticeData.get("link"));
+                    notice.setImageLink(noticeData.get("imageLink"));
+                    notice.setRead(Boolean.parseBoolean(noticeData.get("read")));
                     noticeList.add(notice);
-                } else {
-                    jedis.lrem(MBR_PREFIX + mbrId + MBR_SUFFIX, 1, id);
                 }
             }
             return noticeList;
         }
     }
+
+
 }

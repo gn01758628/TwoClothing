@@ -139,6 +139,7 @@
         .chat-list .mbrAvatar {
             position: relative; /* 相對定位 */
             height: 65px; /* 高度 */
+            width: 65px;
             border-radius: 50%; /* 圓形邊框 */
             object-fit: cover; /* 圖片填充方式 */
         }
@@ -923,15 +924,15 @@
             // 取得最後訊息內容
             const targetLastMessageInfo = lastMessagesList.find(lastMessage => lastMessage.partnerId == targetId);
             if (targetLastMessageInfo) {
-                const targetLastMessage = targetLastMessageInfo.content;
-                const targetLastMessageTime = formatMessageTime(targetLastMessageInfo.timestamp);
-                const targetLastMessageIsSender = targetLastMessageInfo.isSender;
+                let targetLastMessage = targetLastMessageInfo.content;
+                let targetLastMessageTime = formatMessageTime(targetLastMessageInfo.timestamp);
+                let targetLastMessageIsSender = targetLastMessageInfo.isSender;
                 createChatListItem(targetId, targetInfo, targetOnlineStatus, targetUnreadNum
                     , targetLastMessage, targetLastMessageTime, targetLastMessageIsSender, true);
             } else {
-                const targetLastMessage = "";
-                const targetLastMessageTime = "";
-                const targetLastMessageIsSender = false;
+                let targetLastMessage = "";
+                let targetLastMessageTime = "";
+                let targetLastMessageIsSender = false;
                 createChatListItem(targetId, targetInfo, targetOnlineStatus, targetUnreadNum
                     , targetLastMessage, targetLastMessageTime, targetLastMessageIsSender, true);
             }

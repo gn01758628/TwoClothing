@@ -125,6 +125,7 @@ public class EmployeeLoginServlet extends HttpServlet {
         //儲存該員工資料到Session
         HttpSession session = req.getSession();
         session.setAttribute("emp", emp);
+        session.setAttribute("empId", emp.getEmpId());
         
         res.setContentType("text/html;charset=UTF-8");
         

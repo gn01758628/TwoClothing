@@ -35,5 +35,7 @@ public interface ItemDAO {
 	 Integer getPointByMbrId(Integer mbrId);
 	 
 	 Integer getMbrIdById(Integer itemId);
+	 
+	 List<Item> getItemByMbrIdAndStatus(Integer mbrId);
 
 }

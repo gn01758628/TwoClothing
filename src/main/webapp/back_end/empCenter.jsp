@@ -42,19 +42,19 @@
           <ul class="nav-flyout">
           
             <li>
-              <a href="/TwoClothing/back_end/employee/addEmp.jsp"><i class="ion-ios-color-filter-outline"></i>新增員工資料</a>
+              <a href="${pageContext.request.contextPath}/back_end/employee/addEmp.jsp"><i class="ion-ios-color-filter-outline"></i>新增員工資料</a>
             </li>
             
             <li>
-              <a href="/TwoClothing/back_end/employee/Employee.do?action=get_On_Duty"><i class="ion-ios-color-filter-outline"></i>查看在職員工資料</a>
+              <a href="${pageContext.request.contextPath}/back_end/employee/Employee.do?action=get_On_Duty"><i class="ion-ios-color-filter-outline"></i>查看在職員工資料</a>
             </li>
             
             <li>
-              <a href="/TwoClothing/back_end/empmissions/EmpMissions.do"><i class="ion-ios-clock-outline"></i>在職員工權限修改</a>
+              <a href="${pageContext.request.contextPath}/back_end/empmissions/EmpMissions.do"><i class="ion-ios-clock-outline"></i>在職員工權限修改</a>
             </li>
             
             <li>
-              <a href="/TwoClothing/back_end/employee/Employee.do?action=get_Not_On_Duty"><i class=""></i>查看離職員工資料</a>
+              <a href="${pageContext.request.contextPath}/back_end/employee/Employee.do?action=get_Not_On_Duty"><i class=""></i>查看離職員工資料</a>
             </li>
             
           </ul>
@@ -85,7 +85,7 @@
           
           <ul class="nav-flyout">
             <li>
-              <a href=""><i class="ion-ios-flame-outline"></i></a>
+              <a href="${pageContext.request.contextPath}/back_end/latestnews/addLatestNews.html"><i class="ion-ios-flame-outline"></i>新增最新消息</a>
             </li>
             <li>
               <a href=""><i class="ion-ios-lightbulb-outline"></i></a>

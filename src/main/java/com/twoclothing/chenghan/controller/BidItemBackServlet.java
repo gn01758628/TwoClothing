@@ -18,12 +18,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-@WebServlet("/back/biditem/*")
+@WebServlet("/back_end/servlet/biditem/*")
 public class BidItemBackServlet extends HttpServlet {
 
     // 一個Servlet物件對應一個Service物件
@@ -38,16 +35,12 @@ public class BidItemBackServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        /*
-        TODO 判定員工是否符合權限
-        */
-
         // 獲取servlet path
-        String servletPath = request.getServletPath() + request.getPathInfo();
-        switch (servletPath) {
-            case "/back/biditem/search" -> doSearch(request, response);
-            case "/back/biditem/find" -> doFind(request, response);
-            case "/back/biditem/vent" -> doVent(request, response);
+        String pathInfo = request.getPathInfo();
+        switch (pathInfo) {
+            case "/search" -> doSearch(request, response);
+            case "/find" -> doFind(request, response);
+            case "/vent" -> doVent(request, response);
         }
     }
 
@@ -102,13 +95,12 @@ public class BidItemBackServlet extends HttpServlet {
             request.setAttribute("membersMap", membersMap);
             request.setAttribute("employeeMap", employeeMap);
         }
-        request.getRequestDispatcher("/back/biditem/search").forward(request, response);
+        request.getRequestDispatcher("/back_end/servlet/biditem/search").forward(request, response);
     }
 
     private void doVent(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // TODO 從session取得員工編號 這裡先寫死
-        Integer empid = 1;
+        Integer empid = (Integer) request.getSession().getAttribute("empId");
         String bidItemId = request.getParameter("id");
         String message = request.getParameter("message");
         Employee employee = bidItemService.getEmployeeByEmpId(empid);
@@ -153,10 +145,9 @@ public class BidItemBackServlet extends HttpServlet {
             notice.setType("競標審核");
             notice.setHead("您的競標案審核已通過");
             notice.setContent("您的競標申請已通過，將在" + bidItem.getStartTime() + "開始上架");
-            // TODO 設置點擊前往的連結
-            notice.setLink("");
+            notice.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItemId);
             notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
-            bidItemService.addNotice(notice,bidItem.getMbrId());
+            bidItemService.addNotice(notice, bidItem.getMbrId());
 
         }
 
@@ -170,10 +161,35 @@ public class BidItemBackServlet extends HttpServlet {
             notice.setType("競標審核");
             notice.setHead("對不起，您的競標案審核因某些原因無法通過");
             notice.setContent(message);
-            // TODO 設置點擊前往的連結
-            notice.setLink("");
+            notice.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItemId);
             notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
-            bidItemService.addNotice(notice,bidItem.getMbrId());
+            bidItemService.addNotice(notice, bidItem.getMbrId());
+        }
+
+        //強制下架
+        if ("rejectEnforce".equals(request.getParameter("result"))) {
+            bidItem.setBidStatus(6);
+            bidItem.setEmpId(empid);
+            bidItemService.updateBidItem(bidItem);
+            // 發送通知跟競標商品擁有者
+            Notice notice = new Notice();
+            notice.setType("競標審核");
+            notice.setHead("對不起，您上架中的競標商品已被強制下架");
+            notice.setContent(message);
+            notice.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItemId);
+            notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
+            bidItemService.addNotice(notice, bidItem.getMbrId());
+            // 發送通知給競標商品出價者
+            Set<Integer> mbrIdSet = bidItemService.getAllMbrIdInBidRecord(Integer.parseInt(bidItemId));
+            Notice notice2 = new Notice();
+            notice2.setType("競標動態");
+            notice2.setHead("參與中的競標商品已被強制下架");
+            notice2.setContent("您投標的商品：" + bidItem.getBidName() + "，因商品違規而被強制下架");
+            notice2.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItemId);
+            notice2.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
+            for (Integer mbrId : mbrIdSet) {
+                bidItemService.addNotice(notice2, mbrId);
+            }
         }
 
         //回傳處理的員工

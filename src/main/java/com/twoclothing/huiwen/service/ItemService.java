@@ -3,13 +3,11 @@ package com.twoclothing.huiwen.service;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.TypedQuery;
-
-import com.twoclothing.model.abid.biditemimage.BidItemImage;
 import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.aproduct.itemimage.ItemImage;
 import com.twoclothing.model.categorytags.CategoryTags;
 import com.twoclothing.model.coupon.Coupon;
+import com.twoclothing.model.members.Members;
 import com.twoclothing.model.memberscoupon.MembersCoupon;
 import com.twoclothing.model.shipsetting.ShipSetting;
 
@@ -37,6 +35,8 @@ public interface ItemService {
 
 	List<CategoryTags> getAllCategoryTags();
 	
+	CategoryTags getByPrimaryKey(Integer tagId);
+	
     void addItemImage(ItemImage itemImage);
     
     Integer getMbrPointByMbrId(Integer mbrId);
@@ -52,5 +52,8 @@ public interface ItemService {
     List<ShipSetting> getSettingByMbrId(Integer mbrId);
     
     Integer getMbrIdByItemId(Integer itemId);
+    
+    List<Item> getItemBymbrIdAndStatus(Integer mbrId);
 
+    public Members getMembersByPK(Integer mbrId);
 }

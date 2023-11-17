@@ -81,6 +81,29 @@ public class EmployeeServlet extends HttpServlet {
 		}
 		else if("change_Password".equals(action)) {
 			
+			String url = "/back_end/employee/change_password.jsp";
+			
+			Integer empId = Integer.valueOf(req.getParameter("empId"));
+//			req.setAttribute("empId", empId);
+			Employee emp = gs.getByPrimaryKey(Employee.class, empId);
+//			req.setAttribute("empName", emp.getEmpName());
+			
+			String pswdhash = req.getParameter("pswdhash");
+//			req.setAttribute("pswdhash", pswdhash);
+			
+			if (pswdhash == null || pswdhash.trim().length() == 0) {
+//				req.setAttribute("pswdhashErrorMsg","密碼請勿空白");
+				resp.getWriter().write("密碼修改成功");
+				resp.setStatus(HttpServletResponse.SC_OK);
+			}else {
+				emp.setPswdHash(BCrypt.withDefaults().hashToString(12, pswdhash.toCharArray()));
+//				req.setAttribute("successMsg", "修改成功!");
+				resp.getWriter().write("密碼修改成功");
+				resp.setStatus(HttpServletResponse.SC_OK);
+			}
+			
+			RequestDispatcher successView = req.getRequestDispatcher(url); 
+			successView.forward(req, resp);
 		}
 		
 		
@@ -116,7 +139,8 @@ public class EmployeeServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 		
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-				Integer empid = Integer.valueOf(req.getParameter("empid").trim());
+				System.out.println(req.getParameter("empid"));
+				Integer empid = Integer.valueOf(req.getParameter("empid"));
 				
 				Integer deptid = null;
 				try {
@@ -154,24 +178,19 @@ public class EmployeeServlet extends HttpServlet {
 				if (!email.trim().matches(emailReg)) { //以下練習正則(規)表示式(regular-expression)
 					errorMsgs.put("email","EMAIL: 請符合EMAIL格式");
 	            }
-				
-				String pswdhash = req.getParameter("pswdhash").trim();
-				if (pswdhash == null || pswdhash.trim().length() == 0) {
-					errorMsgs.put("pswdhash","密碼請勿空白");
-				}
 								
-				Integer empstatus = null;
-				try {
-					empstatus = Integer.valueOf(req.getParameter("empstatus").trim());
-				} catch (NumberFormatException e) {
-					errorMsgs.put("empstatus","狀態請填數字");
-				}
+//				Integer empstatus = null;
+//				try {
+//					empstatus = Integer.valueOf(req.getParameter("empstatus").trim());
+//				} catch (NumberFormatException e) {
+//					errorMsgs.put("empstatus","狀態請填數字");
+//				}
 						
 			      Part image = null;
 		            try {
 		                Collection<Part> parts = req.getParts();
 		                for (Part part : parts) {
-		                    if ("image01".equals(part.getName())) image = part;
+		                    if ("avatar".equals(part.getName())) image = part;
 		                }
 		            } catch (IllegalArgumentException e){
 		                e.printStackTrace();
@@ -211,10 +230,18 @@ public class EmployeeServlet extends HttpServlet {
 				
 				/***************************2.開始修改資料*****************************************/
 				
-				Employee employee = employeeServiceImpl.update(empid, deptid, empname, phone, address, email, pswdhash, empstatus,avatar);
-
+//				Employee employee = employeeServiceImpl.update(empid, deptid, empname, phone, address, email, pswdhash, empstatus,avatar);
+				Employee emp = gs.getByPrimaryKey(Employee.class, empid);
+				emp.setDeptId(deptid);
+				emp.setEmpName(empname);
+				emp.setPhone(phone);
+				emp.setAddress(address);
+				emp.setEmail(email);
+				emp.setAvatar(avatar);
+				gs.update(emp);
+				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("employee", employee); // 資料庫update成功後,正確的的empVO物件,存入req
+				req.setAttribute("employee", emp); // 資料庫update成功後,正確的的empVO物件,存入req
 				String url = "/back_end/employee/listOneEmp.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				successView.forward(req, resp);
@@ -224,7 +251,7 @@ public class EmployeeServlet extends HttpServlet {
 			
 			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
 			req.setAttribute("errorMsgs", errorMsgs);
-
+			
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 
 			
@@ -302,9 +329,9 @@ public class EmployeeServlet extends HttpServlet {
 				EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
 				employeeServiceImpl.insert(deptid, empname, phone, address, email, bcryptHashString,0,avatar);				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "addEmp.jsp";
+				String url = "/back_end/employee/addEmp.jsp";
 				req.setAttribute("success", "新增成功!!");
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
+				RequestDispatcher successView = req.getRequestDispatcher(url); 
 				successView.forward(req, resp);				
 		}
         

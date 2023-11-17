@@ -312,7 +312,6 @@ public class MembersServlet extends HttpServlet {
 
             // 儲存上一頁的路徑
             if (location != null) {
-                session.removeAttribute("location");
                 response.put("location", location);
             }
 
@@ -343,7 +342,7 @@ public class MembersServlet extends HttpServlet {
             session.removeAttribute("location");
             session.removeAttribute("mbrId");
             session.removeAttribute("mbrStatus");
-            res.sendRedirect(req.getContextPath() + "/index.jsp");
+            res.sendRedirect(req.getContextPath() + "/headerTest.html");
         }
         // 會員的個人資訊
         if ("memberProfile".equals(action)) {
