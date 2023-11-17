@@ -41,7 +41,7 @@ public class MembersServlet extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
-        System.out.println("action="+action);
+
         //pk查詢
         if ("getOne_For_Display".equals(action)) { 
 
@@ -255,11 +255,6 @@ public class MembersServlet extends HttpServlet {
             session.setAttribute("user", members);
             session.setAttribute("mbrId", members.getMbrId());
             session.setAttribute("mbrStatus", members.getMbrStatus());
-
-            // 儲存上一頁的路徑
-            if (location != null) {
-                response.put("location", location);
-            }
 
             // 修改最後登入時間
             Timestamp loginDate = new Timestamp(System.currentTimeMillis());
