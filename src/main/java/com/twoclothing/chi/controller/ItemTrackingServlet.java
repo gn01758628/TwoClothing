@@ -45,17 +45,29 @@ public class ItemTrackingServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		String url = "";
+		
+//		if (action == null) {
+//			HttpSession session = req.getSession();
+//			String location = (String) session.getAttribute("location");
+//			System.out.println(location);
+//			RequestDispatcher successView = req.getRequestDispatcher(location);
+//			successView.forward(req, res);
+//		}
 
 		switch (action) {
 		case "getAllByMbrId":
 			url = getAllByMbrId(req, res);
 			break;
 		case "insert":
-			url = addItemTracking(req, res);
-			break;
+//			url = addItemTracking(req, res);
+//			break;
+			addItemTracking(req, res);
+			return;
 		case "delete":
-			url = deleteItemTracking(req, res);
-			break;
+//			url = deleteItemTracking(req, res);
+//			break;
+			deleteItemTracking(req, res);
+			return;
 		default:
 			url = "/front_end/itemtracking/itemTrackingList.jsp";
 		}
@@ -92,7 +104,7 @@ public class ItemTrackingServlet extends HttpServlet {
 		return "/front_end/itemtracking/itemTrackingList.jsp";
 	}
 
-	private String addItemTracking(HttpServletRequest req, HttpServletResponse res) {
+	private void addItemTracking(HttpServletRequest req, HttpServletResponse res) {		
 		int itemId = Integer.parseInt(req.getParameter("itemId"));
 		HttpSession session = req.getSession();
 		Integer mbrId = (Integer) session.getAttribute("mbrId");
@@ -103,10 +115,10 @@ public class ItemTrackingServlet extends HttpServlet {
 
 		itemTrackingService.addItemTracking(itemTracking);
 
-		return "/itemtrackinglist.check?action=getAllByMbrId";
+//		return "/itemtrackinglist.check?action=getAllByMbrId";
 	}
 
-	private String deleteItemTracking(HttpServletRequest req, HttpServletResponse res) {
+	private void deleteItemTracking(HttpServletRequest req, HttpServletResponse res) {
 		int itemId = Integer.parseInt(req.getParameter("itemId"));
 		HttpSession session = req.getSession();
 		Integer mbrId = (Integer) session.getAttribute("mbrId");
@@ -122,6 +134,6 @@ public class ItemTrackingServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 		}
 
-		return "/itemtrackinglist.check?action=getAllByMbrId";
+//		return "/itemtrackinglist.check?action=getAllByMbrId";
 	}
 }
