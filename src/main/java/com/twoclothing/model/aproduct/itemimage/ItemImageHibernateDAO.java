@@ -45,7 +45,7 @@ public class ItemImageHibernateDAO implements ItemImageDAO{
 
 	@Override
 	public List<ItemImage> getAllByItemId(Integer itemId) {
-		return getSession().createQuery("from ItemImage where itemId = :itemId order by itemId", ItemImage.class)
+		return getSession().createQuery("from ItemImage where itemId = :itemId order by imgId", ItemImage.class)
                 .setParameter("itemId", itemId)
                 .list();
 	}
