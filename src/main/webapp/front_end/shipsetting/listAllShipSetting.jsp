@@ -1,117 +1,84 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*"%>
 
-
 <!DOCTYPE html>
-
-
-
-<html>
+<html >
 <head>
-<meta charset="UTF-8">
-<title>ç‰©æµè¨­å®š</title>
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css" />
-<style type="text/css">
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-h1 {
-    color: red;
-}
-
-#myTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-#myTable th, #myTable td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-#myTable th {
-    background-color: #f2f2f2;
-}
-
-#myTable tr:hover {
-    background-color: #f5f5f5;
-}
-
-/* DataTables styling */
-.dataTables_wrapper {
-    margin-top: 20px;
-}
-
-.dataTables_filter label {
-    font-weight: normal;
-}
-
-.dataTables_length label {
-    font-weight: normal;
-}
-.green-button {
-    background-color: green;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: block; 
-    margin: 0 auto; 
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>·|­û¤¤¤ß-±b¤á¸ê°T www.bootstrapmb.com</title>
+<style type="">
+*,body{ margin:0px; padding:0px; font-size:12px; font-family:Arial; color:#333;}
+body{ background-color:#f5f5f5;}
+ul,dl,dt,dd,p,h1,h2,h3,h4,h5,h6{ margin:0px; padding:0px;}
+ul{ list-style:none;}
+a{ color:#333; text-decoration:none;}
+a:hover{ color:#f60;}
+a img{ border:none;}
+input{ vertical-align:middle;}
+.clear{ clear:both; height:1px; line-height:1px;}
 </style>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/Members.css">
 
+<style>
+
+</style>
 
 </head>
 <body>
-<h1 style="color: red;">ç‰©æµè¨­å®š</h1>
-<table id="myTable">
-	<tr>
-		<td>
-			 <h4><a href='${pageContext.request.contextPath}/MemberCentre.jsp' class="green-button">æœƒå“¡ä¸­å¿ƒ</a></h4>
-		</td>
-	</tr>
-</table>
+<div id="header">
 
-<table id="myTable">
+<div class="menu">
+<ul>
+<li ><a href='${pageContext.request.contextPath}/index.jsp'>¦^­º­¶</a></li>
+<li class="menu_selected"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">­Ó¤H¸ê°T</a></li>
+<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder&buyMbrId=${user.mbrId}">¶R®a­q³æ</a></li>
+<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder&sellMbrId=${user.mbrId}">½æ®a­q³æ</a></li>
+</ul>
+</div>
+</div>
+<div id="hy_con">
+<div id="con_lf">
+<h2>ª«¬y³]©w</h2>
+<ul>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">­Ó¤H¸ê°T</a></li>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">ª«¬y³]©w</a></li>
+</ul>
+</div>
+<div id="con_rh">
+<div class="con_rh_con"><br></br>
+<p class="rh_title">ª«¬y³]©w</p>
+<table id="myTable"class="rh_tab2">
 <thead>
     <tr>
-        <th>æ”¶ä»¶äººå§“å</th>
-        <th>æ”¶ä»¶äººæ‰‹æ©Ÿ</th>
-        <th>æ”¶ä»¶äººåœ°å€</th>
-        <th>ä¿®æ”¹</th>
-        <th>åˆªé™¤</th>
+        <th width="25%">¦¬¥ó¤H©m¦W</th>
+        <th>¦¬¥ó¤H¤â¾÷</th>
+        <th>¦¬¥ó¤H¦a§}</th>
+        <th>­×§ï</th>
+        <th>§R°£</th>
     </tr>
-    </thead>
+</thead>
 <c:choose>
     <c:when test="${not empty ShipSetting}">
         <c:forEach var="ShipSetting" items="${ShipSetting}">
             <tr>
-                <td>${ShipSetting.receiveName}</td>
-                <td>${ShipSetting.receivePhone}</td>
-                <td>${ShipSetting.receiveAddress}</td>
-                <td>
+                <td width="25%">${ShipSetting.receiveName}</td>
+                <td width="25%">${ShipSetting.receivePhone}</td>
+                <td width="25%">${ShipSetting.receiveAddress}</td>
+                <td width="25%">
                     <form method="post" action="<%=request.getContextPath()%>/shipsetting/Shipsetting.do" style="margin-bottom: 0px;">
-                        <input type="submit" value="ä¿®æ”¹">
+                        <input type="submit" value="­×§ï">
                         <input type="hidden" name="shipId"  value="${ShipSetting.shipId}">
                         <input type="hidden" name="mbrId"  value="${ShipSetting.mbrId}">
                         <input type="hidden" name="action" value="getOne_For_Update">
                     </form>
                 </td>
-                <td>
+                <td width="25%">
                     <form method="post" action="<%=request.getContextPath()%>/shipsetting/Shipsetting.do" style="margin-bottom: 0px;">
-                        <input type="submit" value="åˆªé™¤">
+                        <input type="submit" value="§R°£">
                         <input type="hidden" name="mbrId"  value="${ShipSetting.mbrId}">
                         <input type="hidden" name="shipId"  value="${ShipSetting.shipId}">
                         <input type="hidden" name="action" value="delete">
@@ -124,26 +91,17 @@ h1 {
 </c:choose>
 </table>
     <form method="post" action="<%=request.getContextPath()%>/front_end/shipsetting/addShipSetting.jsp" style="margin-bottom: 0px;">
-         <input type="submit" value="æ–°å¢">
+         <input type="submit" value="·s¼W">
          <input type="hidden" name="action" value="insert">
      </form>
-     <script type="text/javascript"
-		src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script type="text/javascript"
-		src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#myTable').DataTable({
 
-				columnDefs: [
-        		    {
-        		        targets: -1,
-        		        className: 'dt-body-right'
-        		    }
-        		  ]
-			});
+</div>
+</div>
+</div>
 
-		});
-	</script>
+<div class="clear"></div>
+<div id="footer">
+
+</div>
 </body>
 </html>
