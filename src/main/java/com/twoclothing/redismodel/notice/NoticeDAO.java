@@ -7,4 +7,6 @@ public interface NoticeDAO {
     void insert(Notice notice, Integer mbrId);
 
     List<Notice> getAllByMbrId(Integer mbrId);
+
+
 }

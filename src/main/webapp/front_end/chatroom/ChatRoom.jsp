@@ -139,6 +139,7 @@
         .chat-list .mbrAvatar {
             position: relative; /* 相對定位 */
             height: 65px; /* 高度 */
+            width: 65px;
             border-radius: 50%; /* 圓形邊框 */
             object-fit: cover; /* 圖片填充方式 */
         }

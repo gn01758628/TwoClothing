@@ -395,7 +395,7 @@ function show_hide() {
 							if(response.location !== null && response.location !== undefined){
 								window.location.href = response.location ;
  								}else{
- 									window.location.href = contextPath + "/index.jsp";}
+ 									window.location.href = contextPath + "/headerTest.html";}
 //					}
 					}else{
 						if (response.mbrStatus === 0) {
