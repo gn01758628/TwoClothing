@@ -20,7 +20,7 @@ $(document).ready(function () {
 
     // 視窗滾動決定導覽列收縮
     let prevScrollPos = $(window).scrollTop();
-    const scrollPositionThreshold = 400;
+    const scrollPositionThreshold = 50;
     let isNavCollapsed = false;
 
     $(window).scroll(function () {

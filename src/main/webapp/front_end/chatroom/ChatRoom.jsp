@@ -22,7 +22,7 @@
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
     <!--Sweet Alert-->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
-
+    <!--此頁面的css-->
     <style>
         ul, li {
             margin: 0;
@@ -550,8 +550,15 @@
             }
         }
     </style>
+    <!--導覽列css-->
+    <link rel="stylesheet" href="/TwoClothing/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="/TwoClothing/css/chengHan/footer.css">
+
 </head>
 <body>
+
+<div class="headerHTML"></div>
 
 <!-- char-area -->
 <section class="message-area">
@@ -652,6 +659,9 @@
     </div>
 </section>
 <!-- char-area -->
+
+<div class="footerHTML"></div>
+
 <!--bootstrap5 js-->
 <script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
@@ -659,7 +669,16 @@
 <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
 <!--Sweet Alert-->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
+<script>
+    $(".headerHTML").load("/TwoClothing/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("/TwoClothing/js/chengHan/header.js");
+    });
 
+    $(".footerHTML").load("/TwoClothing/footerHTML.html");
+</script>
+<!--此頁面的js-->
 <script>
     // servlet的註冊地址
     let myPoint = "/front/chatRoomWS/${mbrId}/${targetId}"
@@ -802,6 +821,7 @@
             let senderId = userId;
             let timestamp = Date.now();
             let mbrBigName = $("#mbrBigName").text();
+            let id = "#chatList" + currentChatBoxId;
 
             if (mbrBigName === "") {
                 Swal.fire({
@@ -825,8 +845,13 @@
                 "timestamp": timestamp
             };
 
-            // 自己的畫面也要更新
+            // 當前畫面也要更新
             addChatBoxSingleMsg(jsonObj, true);
+
+            // 當前畫面對話列表的最後一條訊息也要更新
+            $(id + " .last-message").text("你:" + messageInput.val());
+            $(id + " .message-time").text(convertToHourAndMinutes());
+
 
             // 傳送訊息標籤:chat
             // 傳遞資料:訊息內容的JSON
@@ -1189,6 +1214,16 @@
         minutes = minutes < 10 ? '0' + minutes : minutes;
         let strTime = ampm + ' ' + hours + ':' + minutes;
         return strTime;
+    }
+
+    // 毫秒數轉 hh:mm
+    function convertToHourAndMinutes() {
+        let currentDatetime = new Date();
+        let hours = currentDatetime.getHours();
+        let minutes = currentDatetime.getMinutes();
+        hours = hours < 10 ? '0' + hours : hours;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        return hours + ':' + minutes;
     }
 
     // 毫秒數轉 MM月DD日 週幾

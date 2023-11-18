@@ -2,8 +2,14 @@ body {
     margin-top: 92px;
 }
 
+/*頁首視覺化效果*/
 header {
-    background-color: #fff8fb;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid #ccc;
+}
+
+header {
+    background-color: #f9edf2;
 }
 
 header .linkText, header .linkIcon {

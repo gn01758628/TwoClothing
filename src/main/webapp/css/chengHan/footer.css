@@ -1,5 +1,11 @@
+/*頁尾視覺化效果*/
 footer {
-    background-color: #fff8fb;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid #ccc;
+}
+
+footer {
+    background-color: #f9edf2;
 }
 
 /*假的分享連結按鈕*/
@@ -336,6 +342,7 @@ footer #stars::before {
         box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
     }
 }
+
 /*專案名稱*/
 
 /*Icon動畫*/
@@ -350,4 +357,5 @@ footer #stars::before {
 .homeA:active .mainIcon {
     transform: scale(1.2) translateY(5px);
 }
+
 /*Icon動畫*/
