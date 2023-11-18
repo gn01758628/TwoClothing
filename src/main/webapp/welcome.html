@@ -24,12 +24,12 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <!--導覽列css-->
     <link rel="stylesheet" href="/TwoClothing/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="/TwoClothing/css/chengHan/footer.css">
 </head>
 <body>
 
-<div class="headerHTML">
-
-</div>
+<div class="headerHTML"></div>
 
 <!--輪播圖-->
 <div id="carouselDiv" class="carousel slide carousel-fade" data-bs-ride="carousel">
@@ -79,6 +79,7 @@
 <div class="test-div" style="height: 1000px; background-color: #3498db;">
 </div>
 
+<div class="footerHTML"></div>
 
 <!--bootstrap5-->
 <script src="/TwoClothing/js/bootstrap5/popper.min.js"></script>
@@ -93,6 +94,8 @@
         // 保證headerHTML加載完才載入header.js
         $.getScript("/TwoClothing/js/chengHan/header.js");
     });
+
+    $(".footerHTML").load("/TwoClothing/footerHTML.html");
 </script>
 
 

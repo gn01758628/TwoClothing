@@ -1,0 +1,353 @@
+footer {
+    background-color: #fff8fb;
+}
+
+/*假的分享連結按鈕*/
+footer .parent {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer .parent .child {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+    transition: all 0.5s ease-in-out;
+    border-radius: 50%;
+    margin: 0 5px;
+}
+
+footer .parent .child:hover {
+    background-color: white;
+    background-position: -100px 100px, -100px 100px;
+    transform: rotate3d(0.5, 1, 0, 30deg);
+    transform: perspective(180px) rotateX(60deg) translateY(2px);
+    box-shadow: 0px 10px 10px rgb(1, 49, 182);
+}
+
+footer .parent button {
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+}
+
+footer .parent .button:hover {
+    width: inherit;
+    height: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate3d(0px, 0px, 15px) perspective(180px) rotateX(-35deg) translateY(2px);
+    border-radius: 50%;
+}
+
+/*假的分享連結按鈕*/
+
+/*組員按鈕*/
+footer .bestTeam {
+    height: 50px;
+    width: 110px;
+    background: linear-gradient(135deg, #14ffe9, #ffeb3b, #ff00e0);
+    border-radius: 25px;
+    animation: animate 1.5s linear infinite;
+    border: none;
+    cursor: pointer;
+}
+
+footer .bestTeam, .display, .msg {
+    transition: 0.3s;
+}
+
+footer .bestTeam:active .display {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+footer .bestTeam:active .display .msg {
+    -webkit-text-fill-color: #1b1b1b;
+}
+
+footer .bestTeam:hover {
+    scale: 1;
+    animation: animate 0.7s linear infinite;
+    transform: translateY(-10px);
+}
+
+footer .bestTeam .display, .button span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+footer .bestTeam .display {
+    z-index: 1;
+    background-color: #1b1b1b;
+    height: 40px;
+    width: 100px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+footer .bestTeam .display .msg {
+    line-height: 42.5px;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, #14ffe9, #ffeb3b, #ff00e0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes animate {
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+footer .bestTeam span {
+    height: 100%;
+    width: 100%;
+    background: inherit;
+    border-radius: 25px;
+}
+
+footer .bestTeam span:first-child {
+    filter: blur(15px);
+}
+
+footer .bestTeam span:last-child {
+    filter: blur(15px);
+    transition: 0.3s;
+}
+
+footer .bestTeam:hover span:last-child {
+    width: 110%;
+    height: 120%;
+}
+
+/*組員按鈕*/
+
+/*gitHub連結按鈕*/
+footer .gitLink {
+    display: grid;
+    place-items: center;
+    background: #e3edf7;
+    padding: 1em;
+    border-radius: 10px;
+    box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, 0.15),
+    -6px -6px 10px -1px rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0);
+    cursor: pointer;
+    transition: transform 0.5s;
+}
+
+footer .gitLink:hover {
+    box-shadow: inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2),
+    inset -4px -4px 6px -1px rgba(255, 255, 255, 0.7),
+    -0.5px -0.5px 0px rgba(255, 255, 255, 1),
+    0.5px 0.5px 0px rgba(0, 0, 0, 0.15),
+    0px 12px 10px -10px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transform: translateY(0.5em);
+}
+
+footer .gitLink svg {
+    transition: transform 0.5s;
+}
+
+footer .gitLink:hover svg {
+    transform: scale(0.9);
+    fill: #333333;
+}
+
+/*gitHub連結按鈕*/
+/*專案名稱*/
+footer .projectName {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 13rem;
+    overflow: hidden;
+    height: 3rem;
+    background-size: 300% 300%;
+    backdrop-filter: blur(1rem);
+    border-radius: 5rem;
+    transition: 0.5s;
+    animation: gradient_301 5s ease infinite;
+    border: double 4px transparent;
+    background-image: linear-gradient(#212121, #212121), linear-gradient(137.48deg, #ffdb3b 10%, #FE53BB 45%, #8F51EA 67%, #0044ff 87%);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+}
+
+footer #container-stars {
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    transition: 0.5s;
+    backdrop-filter: blur(1rem);
+    border-radius: 5rem;
+}
+
+footer .projectName strong {
+    z-index: 2;
+    font-family: 'Avalors Personal Use';
+    font-size: 18x;
+    letter-spacing: 6px;
+    color: #FFFFFF;
+    text-shadow: 0 0 4px white;
+}
+
+footer #glow {
+    position: absolute;
+    display: flex;
+    width: 12rem;
+}
+
+footer .circle {
+    width: 100%;
+    height: 30px;
+    filter: blur(2rem);
+    animation: pulse_3011 4s infinite;
+    z-index: -1;
+}
+
+footer .circle:nth-of-type(1) {
+    background: rgba(254, 83, 186, 0.636);
+}
+
+footer .circle:nth-of-type(2) {
+    background: rgba(142, 81, 234, 0.704);
+}
+
+footer .projectName:hover #container-stars {
+    z-index: 1;
+    background-color: #212121;
+}
+
+footer .projectName:hover {
+    transform: scale(1.1)
+}
+
+footer .projectName:active {
+    border: double 4px #FE53BB;
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    animation: none;
+}
+
+footer .projectName:active .circle {
+    background: #FE53BB;
+}
+
+footer #stars {
+    position: relative;
+    background: transparent;
+    width: 200rem;
+    height: 200rem;
+}
+
+footer #stars::after {
+    content: "";
+    position: absolute;
+    top: -10rem;
+    left: -100rem;
+    width: 100%;
+    height: 100%;
+    animation: animStarRotate 90s linear infinite;
+}
+
+footer #stars::after {
+    background-image: radial-gradient(#ffffff 1px, transparent 1%);
+    background-size: 50px 50px;
+}
+
+footer #stars::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 170%;
+    height: 500%;
+    animation: animStar 60s linear infinite;
+}
+
+footer #stars::before {
+    background-image: radial-gradient(#ffffff 1px, transparent 1%);
+    background-size: 50px 50px;
+    opacity: 0.5;
+}
+
+@keyframes animStar {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-135rem);
+    }
+}
+
+@keyframes animStarRotate {
+    from {
+        transform: rotate(360deg);
+    }
+
+    to {
+        transform: rotate(0);
+    }
+}
+
+@keyframes gradient_301 {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes pulse_3011 {
+    0% {
+        transform: scale(0.75);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+    }
+
+    100% {
+        transform: scale(0.75);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+}
+/*專案名稱*/
+
+/*Icon動畫*/
+.homeA .mainIcon {
+    transition: transform 0.3s ease;
+}
+
+.homeA:hover .mainIcon {
+    transform: scale(1.2) translateY(-5px);
+}
+
+.homeA:active .mainIcon {
+    transform: scale(1.2) translateY(5px);
+}
+/*Icon動畫*/

@@ -24,7 +24,6 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
 
     <style>
-
         ul, li {
             margin: 0;
             padding: 0;
