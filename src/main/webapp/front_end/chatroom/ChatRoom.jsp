@@ -7,6 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>聊天室</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
     <!--bootstrap5 css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
     <!-- google fonts -->
@@ -551,9 +553,9 @@
         }
     </style>
     <!--導覽列css-->
-    <link rel="stylesheet" href="/TwoClothing/css/chengHan/header.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
     <!--頁尾css-->
-    <link rel="stylesheet" href="/TwoClothing/css/chengHan/footer.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
 
 </head>
 <body>
@@ -671,12 +673,12 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 <!--JS loader-->
 <script>
-    $(".headerHTML").load("/TwoClothing/headerHTML.html", function () {
+    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
         // 保證headerHTML加載完才載入header.js
-        $.getScript("/TwoClothing/js/chengHan/header.js");
+        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
     });
 
-    $(".footerHTML").load("/TwoClothing/footerHTML.html");
+    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
 </script>
 <!--此頁面的js-->
 <script>
