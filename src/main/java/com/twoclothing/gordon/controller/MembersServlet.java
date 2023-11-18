@@ -41,7 +41,7 @@ public class MembersServlet extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
-        System.out.println("action="+action);
+
         //pk查詢
         if ("getOne_For_Display".equals(action)) { 
 
@@ -256,12 +256,6 @@ public class MembersServlet extends HttpServlet {
             session.setAttribute("mbrId", members.getMbrId());
             session.setAttribute("mbrStatus", members.getMbrStatus());
 
-            // 儲存上一頁的路徑
-            if (location != null) {
-                session.removeAttribute("location");
-                response.put("location", location);
-            }
-
             // 修改最後登入時間
             Timestamp loginDate = new Timestamp(System.currentTimeMillis());
             members.setLastLogin(loginDate);
@@ -289,7 +283,7 @@ public class MembersServlet extends HttpServlet {
             session.removeAttribute("location");
             session.removeAttribute("mbrId");
             session.removeAttribute("mbrStatus");
-            res.sendRedirect(req.getContextPath() + "/index.jsp");
+            res.sendRedirect(req.getContextPath() + "/headerTest.html");
         }
         // 會員的個人資訊
         if ("memberProfile".equals(action)) {

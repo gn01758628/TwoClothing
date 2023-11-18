@@ -34,16 +34,16 @@ CREATE TABLE members
 -- 表格：會員 插入假資料
 INSERT INTO members (mbrname, email, pswdhash, mbrstatus, sellscore, buyscore)
 VALUES
-('Michael', 'email1@example.com', 'af316ecb91a8ee7ae99210702b2d4758f30cdde3bf61e3d8e787d74681f90a6e', 0, 10, 4),
-('Mike', 'email2@example.com', 'e7bf382f6e5915b3f88619b866223ebf1d51c4c5321cccde2e9ff700a3259086', 1, 4, 10),
-('Devil', 'email4@example.com', '42caa4abb7b60f8f914e5bfb8e6511d7d9bd9817de719b74251755d97fe97bf1', 1, 10, 4),
-('Angel', 'email5@example.com', '1c27099b3b84b13d0e3fbd299ba93ae7853ec1d0d3a4e5daa89e68b7ad59d7cb', 0, 10, 10),
-('Water', 'email6@example.com', '7da450ab64a26820e56dd73cd346950d656e60a20dba00bd4be9ced75ba7cdef', 0, 3, 10),
-('Fire', 'email7@example.com', 'f1a378f474d1b799d77111258db6989a9a1e1a8cdfe047ca64a78dc2a7e6a6f2', 1, 10, 2),
-('Sky', 'email8@example.com', '840963230e9a00f8062884ead549f7786fdaac65f832d0f50f3559bb25eb44c4', 0, 1, 10),
-('Apple', 'email9@example.com', 'd6f693d2eb42c624e596b7c4a08a54632e9674db5820b9bf21968e94203443e2', 0, 10, 3),
-('Banana', 'email10@example.com', '8b497a90fdfd0deb9a3c254f73e2a40e6b59cfab39b5372d8995d01041a8c892', 1, 2, 10),
-('John', 'email11@example.com', '9d1bb9a72cd7b11f6753e82f9fdf379bb1beb4c4fa4773f571bdbe0e23cde569', 0, 1, 7);
+('Michael', 'email1@example.com', '$2a$12$e5CLbQ8r4jzDTQT6h9u.du4mwEM3HHaxlanlucVfO2i2hqQkQK1ke', 1, 10, 4),
+('Mike', 'email2@example.com', '$2a$12$8fhjN/SuV4L/luQYQurF2uN/3IIg1NSjevfFUEKPEJJAjwnt83kJy', 1, 4, 10),
+('Devil', 'email3@example.com', '$2a$12$Q.1PI/LSraLNS7gLNcS5y.0nAdv4GesHhBBZ1gJfkYiYr7Q8/Ia92', 1, 10, 4),
+('Angel', 'email4@example.com', '$2a$12$6MgEzHeb5rxKVQ/e.V/emOt4GkFNAh3Ew5itTYVS1RFXlx3QShdjC', 0, 10, 10),
+('Water', 'email5@example.com', '$2a$12$hKYPF0XYTkuE5ivLQkaOVe1S7NCgovGs1EujF/H4LvdCkO5uvk6ue', 0, 3, 10),
+('Fire', 'email6@example.com', '$2a$12$mg7cnyiO6BgVnZwUDxrgbOjk6iAWCPj6QEAfd/Kv19KCUL9VFIAoK', 1, 10, 2),
+('Sky', 'email7@example.com', '$2a$12$ho93cpKczWNVyWQnpt7R/uh66yNSH.HHW5haONW1lZ73a5j8VgKGW', 0, 1, 10),
+('Apple', 'email8@example.com', '$2a$12$WzxCmLKfAB3LCDzmGtCNFeGMnjLzYiCa.xvrxLFteHjGu.gv0t64W', 0, 10, 3),
+('Banana', 'email9@example.com', '$2a$12$19b7DEnLMXMjAYi.m8lwMuMnlZy/KgaKDHP3HYZGpA17zto6di3Ze', 1, 2, 10),
+('John', 'email10@example.com', '$2a$12$/J1o6tKA8PC/X70t5MoaGejVpL3NkaoXvl8i0.iZj5l6qh2bJ582q', 0, 1, 7);
 
 -- 表格：會員 檢查
 -- SELECT * FROM Members;

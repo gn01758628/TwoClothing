@@ -22,6 +22,33 @@
 
     <style>
 
+        header {
+            background-color: #fff8fb;
+        }
+
+        header .linkText, header .linkIcon {
+            color: #561729;
+            cursor: pointer;
+        }
+
+        header .linkText:hover, header .linkIcon:hover {
+            color: #00302e;
+        }
+
+        header .titleName {
+            color: #561729;
+        }
+
+        header .navbar-brand {
+            transition: transform 0.3s;
+        }
+
+        header .navbar-brand:hover {
+            transform: scale(1.2);
+            z-index: 1000;
+        }
+
+
         /*scrollbar*/
         body {
             margin-top: 92px;
@@ -203,6 +230,39 @@
                 margin-top: 184px;
             }
         }
+
+        /* 選項下拉式選單 */
+        header .nav-item .dropdown-menu {
+            display: none;
+            position: absolute;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header .dropdown-menu {
+            width: auto;
+            min-width: 200px;
+        }
+
+
+        header .nav-item:hover .dropdown-menu {
+            display: block;
+        }
+
+
+        header .dropdown-item {
+            font-size: 14px;
+            display: block;
+            padding: 8px;
+            color: #000000;
+            text-decoration: none;
+        }
+
+        header .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+
+
     </style>
 </head>
 <body>
@@ -215,7 +275,7 @@
             <div class="container">
                 <a class="navbar-brand" href="#">
                     <img src="images/Mainicon.png" style="height: 50px">
-                    <strong>TwoClothing</strong>
+                    <strong class="titleName">TwoClothing</strong>
                 </a>
                 <!--漢堡選單按鈕-->
                 <button class="navbar-toggler menu"
@@ -320,6 +380,55 @@
 
                     <ul class="navbar-nav ms-auto ">
                         <li class="nav-item">
+                            <a class="nav-link mx-2">
+                                <i class="fa-solid fa-circle-user linkIcon">
+                                    <span class="linkText HeadMbrStatus">會員中心</span>
+                                </i>
+                            </a>
+                            <div class="dropdown-menu text-center HeadMemberDrop">
+                                <div class="member-profile">
+                                    <img src="" alt="你的大頭貼" class="avatar"
+                                         style="height: 50px; width: 50px ;border-radius: 50%; object-fit:cover">
+                                    <span class="HeadMbrAccount">會員帳號</span>
+                                </div>
+                                <hr class="dropdown-divider">
+                                <a class="dropdown-item" href="#">錢包餘額：<span class="HeadBalance"></span></a>
+                                <a class="dropdown-item" href="#">點數餘額：<span class="HeadMbrPoint"></span></a>
+                                <div>
+                                    <hr class="dropdown-divider">
+                                </div>
+                                <a class="dropdown-item" href="#">會員中心</a>
+                                <a class="dropdown-item" href="#">訂單查詢</a>
+                                <a class="dropdown-item" href="#">我的收藏</a>
+                                <a class="dropdown-item" href="#">競標中</a>
+                                <div>
+                                    <hr class="dropdown-divider">
+                                </div>
+                                <form action="/TwoClothing/members/Members.do" method="post">
+                                    <input type="hidden" name="action" value="logout">
+                                    <button class="dropdown-item" type="submit">登出</button>
+                                </form>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 shoppingCar position-relative">
+                                <span class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger carNum">
+                                </span>
+                                <i class="fa-solid fa-cart-shopping linkIcon">
+                                    <span class="linkText">購物車</span>
+                                </i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 notice position-relative">
+                                <span class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger noticeNum">
+                                </span>
+                                <i class="fa-solid fa-bell linkIcon">
+                                    <span class="linkText">系統通知</span>
+                                </i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link mx-2" href="#">
                                 <i class="fa-solid fa-shirt linkIcon">
                                     <span class="linkText">商品</span>
@@ -332,7 +441,6 @@
                                 <i class="fa-solid fa-sack-dollar linkIcon">
                                     <span class="linkText">賣東西</span>
                                 </i>
-
                             </a>
                         </li>
                         <li class="nav-item">
@@ -344,33 +452,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-2" href="#">
+                            <a class="nav-link mx-2" href="/TwoClothing/front/chatroom/0.check">
                                 <i class="fa-solid fa-comments linkIcon">
                                     <span class="linkText">即時通</span>
-                                </i>
-
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link mx-2" href="#">
-                                <i class="fa-solid fa-bell linkIcon">
-                                    <span class="linkText">系統通知</span>
-                                </i>
-
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link mx-2" href="#">
-                                <i class="fa-solid fa-cart-shopping linkIcon">
-                                    <span class="linkText">購物車</span>
-                                </i>
-
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link mx-2" href="#">
-                                <i class="fa-solid fa-circle-user linkIcon">
-                                    <span class="linkText">會員中心</span>
                                 </i>
                             </a>
                         </li>
@@ -397,6 +481,7 @@
 
 
 <script>
+    // 頁面動畫
     $(document).ready(function () {
         // 頁面進度條
         $(document).scroll(function () {
@@ -446,6 +531,95 @@
         })
 
     });
+
+    // 頁面Ajax
+    $(document).ready(function () {
+        confirmLogin();
+    })
+
+    // 防止上一頁下一頁緩存 (pageshow = 頁面導航事件)
+    $(window).on("pageshow", function (event) {
+        if (event.originalEvent.persisted) {
+            confirmLogin();
+        }
+    });
+
+    // 確認是否有登入
+    function confirmLogin() {
+        const mbrStatus = $(".HeadMbrStatus");
+        const mbrStatus_A = mbrStatus.closest("a");
+        const memberDrop = $(".HeadMemberDrop");
+        // 判斷有沒有登入,動態改變會員下拉式選單的內容
+        // jQuery Ajax Get request
+        $.post('/TwoClothing/headerHelper/loginValidate', function (data) {
+            if (!data.isLogin) {
+                // 沒有登入
+                memberDrop.remove();
+                mbrStatus.text(data.mbrStatus)
+                mbrStatus_A.attr("href", "/TwoClothing/front_end/members/registerLogin.jsp")
+                // 沒登入移除緩存資料
+                notLogin();
+                return;
+            }
+            if (data.isLogin) {
+                // 有登入
+                const mbrPoint = $(".HeadMbrPoint");
+                const balance = $(".HeadBalance");
+                const mbrAccount = $(".HeadMbrAccount");
+                const avatar = $(".avatar");
+                mbrStatus.text(data.mbrStatus);
+                mbrPoint.text(data.mbrPoint);
+                balance.text(formatToMoney(data.balance));
+                mbrAccount.text(data.mbrAccount);
+                avatar.attr("src", "/TwoClothing/DBGifReader5?mbrid=" + data.mbrId + "&imgType=avatar");
+                // 有登入才去抓其他資料
+                alreadyLogin(data.mbrId);
+                return;
+            }
+        })
+    }
+
+    // 登入後Ajax請求會員資料
+    function alreadyLogin(mbrId) {
+        // 購物車相關節點
+        const shoppingCar_A = $(".shoppingCar");
+        shoppingCar_A.attr("href", "/TwoClothing/ItemCart/cartlist?goto=cart&mbrId=" + mbrId);
+        const carNum_Span = $(".carNum");
+        // 系統通知相關節點
+        const notice_A = $(".notice");
+        notice_A.attr("href", "/TwoClothing/ItemCart/cartlist?goto=cart&mbrId=" + mbrId);
+        const noticeNum_Span = $(".noticeNum");
+        //
+        $.post("/TwoClothing/headerHelper/search", function (data) {
+            // 購物車數量
+            if (data.carNum > 0) {
+                carNum_Span.text(data.carNum);
+                carNum_Span.show();
+            } else {
+                carNum_Span.text("");
+                carNum_Span.hide();
+            }
+            // 系統通知數量
+        });
+    }
+
+    // 移除緩存資料
+    function notLogin() {
+        // 購物車連結與數量
+        const shoppingCar_A = $(".shoppingCar");
+        const carNum_Span = $(".carNum");
+        shoppingCar_A.removeAttr("href");
+        carNum_Span.text("");
+        carNum_Span.hide();
+    }
+
+    // 數字轉 $xxx,xxx,xxx
+    function formatToMoney(number) {
+        const formatter = new Intl.NumberFormat('zh-TW', {
+            maximumFractionDigits: 0,
+        });
+        return '$' + formatter.format(number);
+    }
 </script>
 
 </body>
