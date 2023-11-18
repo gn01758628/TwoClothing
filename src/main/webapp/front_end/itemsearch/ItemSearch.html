@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>員工登入畫面</title>
+	
+		
+	<!-- 引入 jQuery -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<!-- 引入 jQuery 表單驗證 -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+
+</head>
+
+<body>
+
+	<aside>
+		
+	</aside>
+	<main>
+	</main>
+	<div id="output"></div>
+
+<script>
+    $(document).ready(function() {
+        $.get('/TwoClothing/front_end/itemsearch?action=getCategoryTags', function(data) {
+            displayNames(data);
+        }, 'json');
+    });
+
+    function displayNames(data) {
+        // 清空output區域
+        $('#output').empty();
+
+        // 遍歷物件List，顯示名字
+        $.each(data, function(index, item) {
+            $('#output').append('<p>' + item.categoryName + '</p>');
+        });
+    }
+</script>
+</body>
+
+</html>

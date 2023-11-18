@@ -104,7 +104,7 @@
         </li>
         
         <li>
-          <a href="/back_end/servlet/biditem/search" class="drop-down-menu"><i class="ion-ios-analytics-outline"></i> <span class="">競標管理</span></a>
+          <a href="${pageContext.request.contextPath}/back_end/servlet/biditem/search" class="drop-down-menu"><i class="ion-ios-analytics-outline"></i> <span class="">競標管理</span></a>
           
 <!--           <ul class="nav-flyout"> -->
 <!--             <li> -->
@@ -131,7 +131,7 @@
           
           <ul class="nav-flyout">
             <li>
-              <a href="/back_end/servlet/categoryTags/list"><i class="ion-ios-filing-outline"></i>商品類別標籤管理</a>
+              <a href="${pageContext.request.contextPath}/back_end/servlet/categoryTags/list"><i class="ion-ios-filing-outline"></i>商品類別標籤管理</a>
             </li>
             <li>
               <a href=""><i class="ion-ios-information-outline"></i></a>
