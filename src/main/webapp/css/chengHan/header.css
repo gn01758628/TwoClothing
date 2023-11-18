@@ -1,6 +1,36 @@
-/*scrollbar*/
 body {
     margin-top: 92px;
+}
+
+header {
+    background-color: #fff8fb;
+}
+
+header .linkText, header .linkIcon {
+    color: #561729;
+    cursor: pointer;
+}
+
+header .linkText:hover, header .linkIcon:hover {
+    color: #00302e;
+}
+
+header .titleName {
+    color: #561729;
+}
+
+header .navbar-brand {
+    transition: transform 0.3s;
+}
+
+header .navbar-brand:hover {
+    transform: scale(1.2);
+    z-index: 1000;
+}
+
+
+/*scrollbar*/
+body {
     --sb-track-color: #76d3d3;
     --sb-thumb-color: #117f7c;
     --sb-size: 10px;
@@ -85,7 +115,6 @@ header .searchInput {
 /*搜尋框*/
 
 /*漢堡按鈕*/
-
 header .menu {
     background-color: transparent;
     border: none;
@@ -165,6 +194,7 @@ header .form-control {
 
     .linkIcon {
         font-size: 20px;
+        margin-right: 10px;
     }
 }
 
@@ -172,10 +202,55 @@ header .form-control {
     body {
         margin-top: 124px;
     }
+
+    .linkIcon {
+        margin-bottom: 10px;
+    }
 }
 
 @media screen and (max-width: 767.2px) {
     body {
         margin-top: 184px;
     }
+
+    .linkIcon {
+        margin-bottom: 10px;
+    }
+}
+
+/*RWD*/
+
+/* 選項下拉式選單 */
+header .nav-item .dropdown-menu {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header .dropdown-menu {
+    width: auto;
+    min-width: 200px;
+}
+
+header .beSellerDrop {
+    width: auto;
+    min-width: 100px;
+}
+
+header .nav-item:hover .dropdown-menu {
+    display: block;
+}
+
+
+header .dropdown-item {
+    font-size: 14px;
+    display: block;
+    padding: 8px;
+    color: #000000;
+    text-decoration: none;
+}
+
+header .dropdown-item:hover {
+    background-color: #f8f9fa;
 }

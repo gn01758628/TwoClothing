@@ -20,6 +20,8 @@
     </style>
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
 
     <style>
 
@@ -656,6 +658,8 @@
 <script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
 <!--jQuery-->
 <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
 <script>
     // servlet的註冊地址
@@ -798,7 +802,17 @@
             let receiverId = $("#currentPartnerId").val();
             let senderId = userId;
             let timestamp = Date.now();
+            let mbrBigName = $("#mbrBigName").text();
 
+            if (mbrBigName === "") {
+                Swal.fire({
+                    title: "不存在聊天對象",
+                    text: "請選擇聊天對象",
+                    icon: "question"
+                });
+                messageInput.val("");
+                return;
+            }
             if (content === "") {
                 messageInput.focus();
                 return;

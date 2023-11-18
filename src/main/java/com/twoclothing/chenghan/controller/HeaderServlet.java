@@ -4,6 +4,10 @@ import com.google.gson.Gson;
 import com.twoclothing.chenghan.IsLoginDTO;
 import com.twoclothing.chenghan.MemberInfoDTO;
 import com.twoclothing.model.members.Members;
+import com.twoclothing.redismodel.memberMessage.MemberMessageDAO;
+import com.twoclothing.redismodel.memberMessage.MemberMessageJedisDAO;
+import com.twoclothing.redismodel.notice.NoticeDAO;
+import com.twoclothing.redismodel.notice.NoticeJedisDAO;
 import com.twoclothing.utils.HibernateUtil;
 import com.twoclothing.utils.JedisPoolUtil;
 import org.hibernate.SessionFactory;
@@ -25,6 +29,10 @@ public class HeaderServlet extends HttpServlet {
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     private final JedisPool jedisPool = JedisPoolUtil.getJedisPool();
+
+    private final NoticeDAO noticeDAO = new NoticeJedisDAO();
+
+    private final MemberMessageDAO memberMessageDAO = new MemberMessageJedisDAO();
 
     private final Gson gson = new Gson();
 
@@ -69,15 +77,24 @@ public class HeaderServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         Members user = (Members) request.getSession().getAttribute("user");
+        Integer mbrId = user.getMbrId();
         PrintWriter out = response.getWriter();
         MemberInfoDTO memberInfoDTO = new MemberInfoDTO();
 
         // 購物車數量
         try(Jedis jedis = jedisPool.getResource()) {
             jedis.select(13);
-            Long carNum = jedis.hlen(String.valueOf(user.getMbrId()));
+            Long carNum = jedis.hlen(String.valueOf(mbrId));
             memberInfoDTO.setCarNum(carNum.intValue());
         }
+
+        // 系統通知未讀數量
+        int unreadNoticeCount = noticeDAO.getUnreadCountByMbrId(mbrId);
+        memberInfoDTO.setNoticeNum(unreadNoticeCount);
+
+        // 聊天室未讀訊息數量
+        int unreadMessageCount = memberMessageDAO.getTotalUnreadMessageCount(mbrId);
+        memberInfoDTO.setMessageNum(unreadMessageCount);
 
         // 傳送MemberInfoDTO
         out.write(gson.toJson(memberInfoDTO));
