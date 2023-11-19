@@ -8,6 +8,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>itemSellerSearch</title>
+    	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    
     <style>
         *{
             box-sizing: border-box;
@@ -67,6 +69,7 @@
 
         div.up_area>*{
             flex: 1;
+    		width: 100%; 
 
         }
 
@@ -80,6 +83,11 @@
             width: 100%;
             padding: 5px 0;
 
+        }
+         div.up_area div.tagarea{
+        	margin-top: 15px;
+            width: 100%;
+            padding: 5px 0;
         }
 
         div.up_area div.pricearea {
@@ -96,7 +104,7 @@
         }
 
         div.up_area label{
-            width: 100%;
+/*             width: 100%; */
             text-align: left;
         }
 
@@ -169,7 +177,8 @@
         input{
             margin: 10px 0;
             padding: 7px;
-            border-width: 1px;
+/*             border-width: 1px; */
+            border: 1px solid black !important;
         }
 
         input.btn_submit{
@@ -184,7 +193,17 @@
             background: linear-gradient(to right, #4daff0, #ffffff);
 
         }
-        label{
+        div.up_area label{
+/*          display:inline-block;  */
+/*         width:90px; */
+            padding: 7px;
+            border-radius: 15px;
+            background-color: #61abdd;
+            color: #ffffff;
+        }
+        div.under_area label{
+/*          display:inline-block;  */
+/*         width:90px; */
             padding: 7px;
             border-radius: 15px;
             background-color: #61abdd;
@@ -216,6 +235,34 @@
                             <input type="text" name="itemPriceSearchStart"><span>~</span><input type="text" name="itemPriceSearchEnd">
                         </div>
                     </div>
+                    
+                    <div class="tagarea">
+                    	<label>商品類別</label>
+                    	<div class="mb-3">
+<!--                         <label for="categorySelect" class="form-label" ></label> -->
+                        <!-- 顯示選擇的完整結構,但不往後傳 -->
+                        <input type="text" class="form-control" id="categorySelect"
+                               aria-describedby="categorySelectHelp" readonly >
+                        <!--儲存標籤的id傳給後端-->
+                        <input type="hidden" id="selectedCategoryId" name="tagId">
+<!--                         <div id="categorySelectHelp" class="form-text">選擇適當的標籤，讓更多人能找到您的商品</div> -->
+                    </div>
+                    <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog"
+                         aria-labelledby="categoryModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="categoryModalLabel">選擇商品類別標籤</h5>
+                                </div>
+                                <div class="modal-body" id="categoryTree">
+                                    <!-- 類別標籤樹狀結構在這裡生成 -->
+                                </div>
+                            </div>
+                        </div>
+                    	</div>
+                    </div>
+                    
                 </div>
                 <div class="under_area">
                     <div class="under_up">
@@ -267,8 +314,10 @@
                                 <option value="0">上架中</option>
                                 <option value="1">下架中</option>
                             </select>
-                        </div>
+                        </div>                        
                     </div>
+                    
+
                 </div>
                 <input type="hidden" name="choice" value="searchCondition">
                 <input class="btn_submit" type="submit" value="查詢">
@@ -276,10 +325,28 @@
             </form>
         </div>
     </main>
+	<!--bootstrap5 js-->
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+	<!--jQuery-->
 	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
     <script>
-    
-    </script>
+    const categoryData = [
+    	
+        {id:2, name: '上衣', parentId:1},
+        {id:3, name: '庫子', parentId:1},
+        {id:4, name: '長袖', parentId:2},
+        {id:5, name: '長褲', parentId:3},
+    	
+    	
+//         <c:forEach var="tags" items="${categoryTags}" begin="1">
+//         {id:${tags.tagId}, name: '${tags.categoryName}', parentId:${tags.superTagId}},
+//         </c:forEach>
+    ];
+</script>
+
+<!--商品類別標籤的js-->
+<script src="${pageContext.request.contextPath}/js/chengHan/addBidCategoryTags.js"></script>
 
     
 </body>

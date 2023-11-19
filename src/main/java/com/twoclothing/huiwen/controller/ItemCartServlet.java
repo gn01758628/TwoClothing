@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.twoclothing.huiwen.service.ItemService;
 import com.twoclothing.huiwen.service.ItemServiceImpl;
@@ -59,7 +60,8 @@ public class ItemCartServlet extends HttpServlet {
 			String quantity = req.getParameter("quantity");
 			System.out.println("quantity" + quantity);
 
-			String mbrId = req.getParameter("mbrId");
+			HttpSession session = req.getSession();
+			String mbrId = (String) session.getAttribute("mbrId");
 
 			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 			Jedis jedis = jedisPool.getResource();
@@ -90,17 +92,14 @@ public class ItemCartServlet extends HttpServlet {
 			//抓商品的數量
 			List<String> quantities = new ArrayList<>();
 			
-			String mbrIdStr = req.getParameter("mbrId");
+			HttpSession session = req.getSession();
+			String mbrIdStr = (String) session.getAttribute("mbrId");
 			
 			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 			Jedis jedis = jedisPool.getResource();
 			
 			try {
 				jedis.select(13);
-				
-				System.out.println("mbrId:" + req.getParameter("mbrId"));
-				
-				
 				Set<String> itemIds = jedis.hkeys(mbrIdStr);
 				
 				
@@ -161,7 +160,8 @@ public class ItemCartServlet extends HttpServlet {
 		//使用者刪除購物車某商品(Redis刪除)
 		if ("delCart".equals(req.getParameter("delCart"))) {
 			String itemId = req.getParameter("itemId");
-			String mbrId = req.getParameter("mbrId");
+			HttpSession session = req.getSession();
+			String mbrId = (String) session.getAttribute("mbrId");
 			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 			Jedis jedis = jedisPool.getResource();
 			try {
@@ -178,7 +178,8 @@ public class ItemCartServlet extends HttpServlet {
 		if("updateCart".equals(req.getParameter("updateCart"))) {
 			String itemId = req.getParameter("itemId");
 			String quantity = req.getParameter("quantity");
-			String mbrId = req.getParameter("mbrId");
+			HttpSession session = req.getSession();
+			String mbrId = (String) session.getAttribute("mbrId");
 			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 			Jedis jedis = jedisPool.getResource();
 			try {
@@ -199,7 +200,8 @@ public class ItemCartServlet extends HttpServlet {
 			List<Item> itemList = new ArrayList<>();
 			List<String> quantities = new ArrayList<>();
 			//之後從session取mbrId
-			String mbrId = "2";
+			HttpSession session = req.getSession();
+			String mbrId = (String) session.getAttribute("mbrId");
 			try {
 				jedis.select(13);
 			

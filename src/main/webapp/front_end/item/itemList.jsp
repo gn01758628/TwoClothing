@@ -29,8 +29,7 @@
             width: calc(100% - var(--aside-width));
             margin-left: var(--aside-width);
             min-height: calc(100vh - var(--header-height));
-            padding: 20px;
-            height:100%; 
+            padding: 20px; 
         }
 
         main.main ul.itemList {
@@ -54,7 +53,8 @@
             position: relative;
             display: flex;
             flex-direction: column;
-            height: calc(50% - 20px);;
+/*             height: calc(50% - 20px);; */
+			height:296px;
         }
 
         main.main ul.itemList > li:nth-child(4n) {
@@ -65,7 +65,7 @@
             display: block;
             border: 1px solid wheat;
             text-decoration: none;
-            width: 100%;
+/*             width: 100%; */
             height: 100%;
         }
 
@@ -85,18 +85,18 @@
         	align-items: baseline;
         	color:black;
         }
-        div.down_area{
-        	height:32px;
-        	border:1px solid black;
-        	text-align:center; 
-        }
-        div.down_area span{
-        	font-size:20px;
-        	margin:0 4px;
-        }
-		a.pagearea span{
-			font-size:28px;
-		}
+/*         div.down_area{ */
+/*         	height:32px; */
+/*         	border:1px solid black; */
+/*         	text-align:center;  */
+/*         } */
+/*         div.down_area span{ */
+/*         	font-size:20px; */
+/*         	margin:0 4px; */
+/*         } */
+/* 		a.pagearea span{ */
+/* 			font-size:28px; */
+/* 		} */
 
 
         img {
@@ -127,24 +127,33 @@
                </a> 
             </li>
          </c:forEach>
-
-
         </ul>
-	<div class="down_area">      
-	    <c:if test="${pageNow > 1}">
-			<a class="pagearea" href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=1"><span>&#171;</span></a>&nbsp;
-		</c:if>
-		<c:if test="${pageNow - 1 != 0}">
-			<a class="pagearea" href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=${pageNow - 1}"><span>&#8249;</span></a>&nbsp;
-		</c:if>
-		<span>${pageNow}</span>
-		<c:if test="${pageNow + 1 <= itemPageQty}">
-			<a class="pagearea" href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=${pageNow + 1}"><span>&#8250;</span></a>&nbsp;
-		</c:if>
-		<c:if test="${pageNow != itemPageQty}">
-			<a class="pagearea" href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=${itemPageQty}"><span>&#187;</span></a>&nbsp;
-		</c:if>
-	</div>  
+        
+        
+        <div class="down_area">
+        	
+        </div>
+        
+        
+        
+        
+        
+        
+<!-- 	<div class="down_area">       -->
+<%-- 	    <c:if test="${pageNow > 1}"> --%>
+<%-- 			<a class="pagearea" href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=1"><span>&#171;</span></a>&nbsp; --%>
+<%-- 		</c:if> --%>
+<%-- 		<c:if test="${pageNow - 1 != 0}"> --%>
+<%-- 			<a class="pagearea" href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=${pageNow - 1}"><span>&#8249;</span></a>&nbsp; --%>
+<%-- 		</c:if> --%>
+<%-- 		<span>${pageNow}</span> --%>
+<%-- 		<c:if test="${pageNow + 1 <= itemPageQty}"> --%>
+<%-- 			<a class="pagearea" href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=${pageNow + 1}"><span>&#8250;</span></a>&nbsp; --%>
+<%-- 		</c:if> --%>
+<%-- 		<c:if test="${pageNow != itemPageQty}"> --%>
+<%-- 			<a class="pagearea" href="${pageContext.request.contextPath}/Item/search?choice=getAllList&page=${itemPageQty}"><span>&#187;</span></a>&nbsp; --%>
+<%-- 		</c:if> --%>
+<!-- 	</div>   -->
     </main>
 </body>
 </html>

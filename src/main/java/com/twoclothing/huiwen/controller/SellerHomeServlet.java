@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.twoclothing.huiwen.service.ItemService;
 import com.twoclothing.huiwen.service.ItemServiceImpl;
@@ -43,11 +44,11 @@ public class SellerHomeServlet extends HttpServlet{
 		res.setContentType("text; charset=UTF-8");
 		
 		//取商品列表
-		Integer mbrId = Integer.valueOf(req.getParameter("mbrId"));
-		System.out.println("seller"+mbrId);
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer) session.getAttribute("mbrId");
+		
 		List<Item> itemList = new ArrayList<>();
 		itemList = itemService.getItemBymbrIdAndStatus(mbrId);
-		System.out.println(itemList);
 		
 		//取會員頭貼與圖片
 		Members mem = itemService.getMembersByPK(mbrId);

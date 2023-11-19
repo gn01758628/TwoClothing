@@ -10,6 +10,9 @@
 	<link rel="stylesheet" href="">
 	<title>itemSellerUpload</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<!--     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script> -->
+    
+<%--     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/addBid.css"> --%>
 
 		<style>
 		*{
@@ -192,6 +195,34 @@
 			width:430px;
 		}
 		
+/*		.modal-content {
+    background-color: rgb(249, 237, 242);
+    color: #00302e;
+}
+
+.text-danger {
+    margin-left: 5px;
+    font-size: 20px;
+}
+
+.selectable::before {
+    content: "🌟";
+    padding-right: 5px;
+}
+
+.selectable:hover::before, .selectable:hover {
+    content: "🔯";
+    cursor: pointer;
+}
+
+.non-selectable::before {
+    content: "🢂";
+    padding-right: 5px;
+    color: #561729;
+}*/
+		
+		
+		
 	</style>
 </head>
 <body>
@@ -212,18 +243,19 @@
 	<form class="form_add" method="post" action="${pageContext.request.contextPath}/Item/add" enctype="multipart/form-data">
 		<div class="main_container">
 			<div class="main_left">
+<%-- value="${empty empVO ? 'MANAGER' : empVO.job}" --%>
 
-				<input class="input_name" type="text" placeholder="商品名稱" name="itemName" maxlength = 20>
+				<input class="input_name" type="text" placeholder="商品名稱" name="itemName" maxlength = 20 value="${empty item ? '' : item.itemName}">
 
 
 					<div class="mb-3">
                         <label for="categorySelect" class="form-label" ></label>
                         <!-- 顯示選擇的完整結構,但不往後傳 -->
                         <input type="text" class="form-control" id="categorySelect"
-                               aria-describedby="categorySelectHelp" readonly placeholder="商品類別標籤">
+                               aria-describedby="categorySelectHelp" readonly placeholder="商品類別標籤" >
                         <!--儲存標籤的id傳給後端-->
                         <input type="hidden" id="selectedCategoryId" name="tagId">
-<!--                         <div id="categorySelectHelp" class="form-text">選擇適當的標籤，讓更多人能找到您的商品</div> -->
+                        <div id="categorySelectHelp" class="form-text"></div>
                     </div>
                     <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog"
                          aria-labelledby="categoryModalLabel"
@@ -261,34 +293,35 @@
 
 				<div class="inner_sel">
 					<select class="sel_grade" name="grade">
-						<option value="" disabled selected>請選擇商品新舊程度</option>
-						<option value="0">全新(沒使用過且包裝未拆,吊牌未剪)</option>
-						<option value="1">9成5新(沒有使用痕跡,但包裝已拆,吊牌已剪)</option>
-						<option value="2">9成新(有使用痕跡,但沒有瑕疵)</option>
-						<option value="3">8成新(有使用痕跡,少量瑕疵)</option>
-						<option value="4">5成新(有使用痕跡,明顯瑕疵)</option>
-						<option value="5">破損商品(需要修補)</option>
+						<option value="" disabled selected hidden>請選擇商品新舊程度</option>
+<!-- 						<option value="0" >全新(沒使用過且包裝未拆,吊牌未剪)</option> -->
+					    <option value="0" ${item.grade == 0 ? 'selected' : ''}>全新(沒使用過且包裝未拆,吊牌未剪)</option>						
+						<option value="1" ${item.grade == 1 ? 'selected' : ''}>9成5新(沒有使用痕跡,但包裝已拆,吊牌已剪)</option>
+						<option value="2" ${item.grade == 2 ? 'selected' : ''}>9成新(有使用痕跡,但沒有瑕疵)</option>
+						<option value="3" ${item.grade == 3 ? 'selected' : ''}>8成新(有使用痕跡,少量瑕疵)</option>
+						<option value="4" ${item.grade == 4 ? 'selected' : ''}>5成新(有使用痕跡,明顯瑕疵)</option>
+						<option value="5" ${item.grade == 5 ? 'selected' : ''}>破損商品(需要修補)</option>
 					</select>
 
 					<select class="sel_size" name="size"> 
-						<option value="" disabled selected>尺寸</option>
-						<option value="8">其他</option>
-						<option value="0">XS(含)以下</option>
-						<option value="1">S</option>
-						<option value="2">M</option>
-						<option value="3">L</option>
-						<option value="4">XL</option>
-						<option value="5">2XL</option>
-						<option value="6">3XL</option>
-						<option value="7">4XL(含)以上</option>
+						<option value="" disabled selected hidden>尺寸</option>
+						<option value="0" ${item.size == 0 ? 'selected' : ''}>XS(含)以下</option>
+						<option value="1" ${item.size == 1 ? 'selected' : ''}>S</option>
+						<option value="2" ${item.size == 2 ? 'selected' : ''}>M</option>
+						<option value="3" ${item.size == 3 ? 'selected' : ''}>L</option>
+						<option value="4" ${item.size == 4 ? 'selected' : ''}>XL</option>
+						<option value="5" ${item.size == 5 ? 'selected' : ''}>2XL</option>
+						<option value="6" ${item.size == 6 ? 'selected' : ''}>3XL</option>
+						<option value="7" ${item.size == 7 ? 'selected' : ''}>4XL(含)以上</option>
+						<option value="8" ${item.size == 8 ? 'selected' : ''}>其他</option>
 					</select>
 				</div>
 				<div class="input_inner">
-					<input class="input_price" type="text" placeholder="價格" name="price" autocomplete="on">
+					<input class="input_price" type="text" placeholder="價格" name="price" autocomplete="on" value="${empty item ? '' : item.price}">
 
-					<input class="input_num" type="number" placeholder="數量" name="quantity"  min="1">
+					<input class="input_num" type="number" placeholder="數量" name="quantity"  min="1" value="${empty item ? '' : item.quantity}">
 				</div>
-				<textarea placeholder="商品描述" name="detail"></textarea>
+				<textarea placeholder="商品描述" name="detail"  ></textarea>
 
 			</div>
 			<div class="main_right">
@@ -326,26 +359,19 @@
 <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
 <!--輸入錯誤訊息的資料(必須在引用標籤js檔之前宣告)-->
 <script>
-    const messages = [];
-    <c:forEach var="errorMsgs" items="${errorMsgs}">
-    messages.push("${errorMsgs}");
-    </c:forEach>
+//     const messages = [];
+//     <c:forEach var="errorMsgs" items="${errorMsgs}">
+//     messages.push("${errorMsgs}");
+//     </c:forEach>
 </script>
 <!--此頁面的js-->
 <%-- <script src="${pageContext.request.contextPath}/js/chengHan/addBid.js" type="text/javascript"></script> --%>
 <script>
-    const categoryData = [
-    	
-        {id:2, name: '上衣', parentId:1},
-        {id:3, name: '庫子', parentId:1},
-        {id:4, name: '長袖', parentId:2},
-        {id:5, name: '長褲', parentId:3},
-    	
-    	
-//         <c:forEach var="tags" items="${categoryTags}" begin="1">
-//         {id:${tags.tagId}, name: '${tags.categoryName}', parentId:${tags.superTagId}},
-//         </c:forEach>
-    ];
+const categoryData = [
+    <c:forEach var="tags" items="${applicationScope.categoryTags}" begin="1">
+    {id:${tags.tagId}, name: '${tags.categoryName}', parentId:${tags.superTagId}},
+    </c:forEach>
+];
 </script>
 
 <!--商品類別標籤的js-->

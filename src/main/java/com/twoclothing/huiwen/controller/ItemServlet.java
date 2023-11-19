@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,14 +18,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import com.google.gson.Gson;
 import com.twoclothing.huiwen.service.ItemImageService;
 import com.twoclothing.huiwen.service.ItemImageServiceImpl;
 import com.twoclothing.huiwen.service.ItemService;
 import com.twoclothing.huiwen.service.ItemServiceImpl;
 import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.aproduct.itemimage.ItemImage;
+import com.twoclothing.model.categorytags.CategoryTags;
 
 import redis.clients.jedis.JedisPool;
 
@@ -64,24 +66,22 @@ public class ItemServlet extends HttpServlet {
 		if (choice != null) {
 			switch (choice) {
 			case "search":
-				System.out.println("拿到search路徑");
 				forwardPath = "/front_end/item/itemSellerSearch.jsp";
 				break;
-
 			case "searchCondition":
-				System.out.println("拿到searchCondition路徑");
 				forwardPath = getCompositeItemQuery(req, res);
 				break;
 
 			case "SearchItems":
-				System.out.println("拿到SearchItems路徑");
 				forwardPath = "/front_end/item/itemSellerSearch.jsp";
 				break;
 			case "getAllList":
 				forwardPath = getAllList(req, res);
 				break;
+			case "getAllListNoPage":
+				forwardPath = getAllListNoPage(req, res);
+				break;
 			case "addItem":
-				System.out.println("拿到addItem路徑");
 				forwardPath = "/front_end/item/itemSellerUpload.jsp";
 				break;
 			default:
@@ -100,15 +100,37 @@ public class ItemServlet extends HttpServlet {
 
 			String itemName = req.getParameter("itemName");
 			if (itemName == null || itemName.trim().isEmpty()) {
+
 				errorMsgs.add("商品標題不可以空白");
 			}
-			String grade = req.getParameter("grade");
-			if (grade == null || grade.trim().isEmpty() || !grade.matches("^[0-5]$"))
-				errorMsgs.add("請正確選擇商品新舊程度");
 
-			String size = req.getParameter("size");
-			if (size == null || size.trim().isEmpty() || !size.matches("^[0-9]$"))
-				errorMsgs.add("請正確選擇商品品尺寸");
+			Integer grade = null;
+			String gradeStr = req.getParameter("grade");
+			if (!(gradeStr == null || gradeStr.trim().isEmpty())) {
+				String regex = "^[0-5]$"; // 此為一位數的數字正則表達式
+				
+				if (gradeStr.matches(regex)) {
+					grade = Integer.valueOf(gradeStr);
+				} else {
+					errorMsgs.add("請正確選擇商品新舊程度");
+				}
+			} else {
+				errorMsgs.add("商品新舊程度不可以空白");
+			}				
+
+			Integer size = null;
+			String sizeStr = req.getParameter("size");
+			if (!(sizeStr == null || sizeStr.trim().isEmpty())) {
+				String regex = "^[0-9]$"; // 此為一位數的數字正則表達式
+				
+				if (sizeStr.matches(regex)) {
+					size = Integer.valueOf(sizeStr);
+				} else {
+					errorMsgs.add("請正確選擇商品尺寸");
+				}
+			} else {
+				errorMsgs.add("商品尺寸不可以空白");
+			}	
 
 			String detail = req.getParameter("detail");
 			if (detail == null || detail.trim().isEmpty()) {
@@ -117,40 +139,60 @@ public class ItemServlet extends HttpServlet {
 				if (detail.replace("<br>", " ").length() > 250)
 					errorMsgs.add("商品簡述不可以超過250個字");
 			}
-
-			String tagId = req.getParameter("tagId");
-			System.out.println("tagId:" + tagId);
+			Integer tagId = null;
+			String tagIdStr = req.getParameter("tagId");
 			List<Integer> allSelectableTagsId = itemService.getAllSelectableTagsId();
-			System.out.println("列表" + allSelectableTagsId);
-			if (tagId == null || tagId.trim().isEmpty()) {
+			if (tagIdStr == null || tagIdStr.trim().isEmpty()) {
 				errorMsgs.add("請正確選擇商品類別標籤");
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front_end/item/itemSellerUpload.jsp");
-				failureView.forward(req, res);
-			} else if (!allSelectableTagsId.contains(Integer.parseInt(tagId))) {
-				errorMsgs.add("您選擇的類別標籤並非是可選標籤");
-			}
-
-			String quantity = req.getParameter("quantity");
-			if (quantity == null) {
-				errorMsgs.add("請正確填寫數量");
 			} else {
-				if (!quantity.isEmpty()) {
-					if (!quantity.matches("[1-9][0-9]*")) {
-						errorMsgs.add("數量必須是有效的正整数，且大於0");
-					}
-				}
+			    try {
+			        int parsedTagId = Integer.parseInt(tagIdStr);
+			        if (!allSelectableTagsId.contains(parsedTagId)) {
+			            errorMsgs.add("您選擇的類別標籤並非是可選標籤");
+			        } else {
+			            tagId = parsedTagId; // Assign the parsed value only if it's valid
+			        }
+			    } catch (NumberFormatException e) {
+			        errorMsgs.add("請輸入有效的商品類別標籤");
+			    }
 			}
-			String price = req.getParameter("price");
-			if (price == null) {
-				errorMsgs.add("請正確填寫價格");
-			} else {
-				if (!price.isEmpty()) {
-					if (!price.matches("[1-9][0-9]*"))
-						errorMsgs.add("價格必須是有效的正整数，且大於0");
-				}
+			
+			if(!(tagIdStr == null || tagIdStr.trim().isEmpty())) {
+				CategoryTags categoryTag = itemService.getByPrimaryKey(Integer.parseInt(tagIdStr));		
+				Gson gson = new Gson();
+				String jsonTag = gson.toJson(categoryTag);
+				req.setAttribute("jsonTag", jsonTag);
 			}
+			
+			Integer quantity = null;
+			String quantityStr = req.getParameter("quantity");
+			if (!(quantityStr == null || quantityStr.trim().isEmpty())) {
+			    String regex = "[1-9][0-9]*";
 
+			    if (quantityStr.matches(regex)) {
+			    	quantity = Integer.valueOf(quantityStr);
+			    } else {
+			        errorMsgs.add("數量必須是有效的正整数，且大於0");
+			    }
+			} else {
+			    errorMsgs.add("請正確填寫數量");
+			}
+			
+			
+			Integer price = null;
+			String priceStr = req.getParameter("price");
+			if (!(priceStr == null || priceStr.trim().isEmpty())) {
+			    String regex = "[1-9][0-9]*";
+
+			    if (priceStr.matches(regex)) {
+			    	price = Integer.valueOf(priceStr);
+			    } else {
+			        errorMsgs.add("價格必須是有效的正整数，且大於0");
+			    }
+			} else {
+			    errorMsgs.add("請正確填寫價格");
+			}
+			
 			Part imgPart1 = null, imgPart2 = null;
 			try {
 				Collection<Part> parts = req.getParts();
@@ -191,19 +233,18 @@ public class ItemServlet extends HttpServlet {
 
 			Item item = new Item();
 			item.setItemName(itemName);
-			item.setGrade(Integer.parseInt(grade));
+			item.setGrade(grade);
 			item.setDetail(detail);
-			item.setTagId(Integer.parseInt(tagId));
-			item.setPrice(Integer.parseInt(price));
-			item.setQuantity(Integer.parseInt(quantity));
+			item.setTagId(tagId);
+			item.setPrice(price);
+			item.setQuantity(quantity);
 			item.setItemStatus(0);
-			Integer mbrId = 1;
+			item.setSize(size);
+			
+			HttpSession session = req.getSession();
+			Integer mbrId = (Integer) session.getAttribute("mbrId");
+
 			item.setMbrId(mbrId);
-			if ("8".equals(size)) {
-				item.setSize(null);
-			} else {
-				item.setSize(Integer.parseInt(size));
-			}
 			
 			// 如果錯誤訊系不為空則轉發回新增頁面
 			if (!errorMsgs.isEmpty()) {
@@ -227,6 +268,7 @@ public class ItemServlet extends HttpServlet {
 				itemImage02.setImage(image02);
 				itemService.addItemImage(itemImage02);
 			}
+			
 			req.setAttribute("item", item);
 
 			String url = "/front_end/item/itemSellerUpdateOne.jsp";
@@ -243,7 +285,14 @@ public class ItemServlet extends HttpServlet {
 
 			Item item = itemService.getItemByItemId(itemId);
 
+			Integer tagId = item.getTagId();
+
+			CategoryTags categoryTag = itemService.getByPrimaryKey(tagId);		
+			Gson gson = new Gson();
+			String jsonTag = gson.toJson(categoryTag);
+			
 			req.setAttribute("item", item);
+			req.setAttribute("jsonTag", jsonTag);
 			String url = "/front_end/item/itemSellerUpdate.jsp";
 			RequestDispatcher dispatcher1 = req.getRequestDispatcher(url);
 			dispatcher1.forward(req, res);
@@ -260,8 +309,8 @@ public class ItemServlet extends HttpServlet {
 			Integer size = Integer.valueOf(req.getParameter("size"));
 			Integer itemStatus = Integer.valueOf(req.getParameter("itemStatus"));
 			Integer quantity = Integer.valueOf(req.getParameter("quantity"));
-			String detail = req.getParameter("detail");
-			
+			Integer tagId = Integer.valueOf(req.getParameter("tagId"));
+			String detail = req.getParameter("detail");		
 			
 			Part imgPart1 = null, imgPart2 = null;
 			try {
@@ -284,7 +333,6 @@ public class ItemServlet extends HttpServlet {
 				image02 = in.readAllBytes();
 				in.close();
 			}
-			System.out.println(image01);
 			List<ItemImage> itemImageList = itemImageService.getByItemId(itemId);
 			if (image01.length != 0) {
 			    itemImageList.get(0).setImage(image01);
@@ -318,16 +366,20 @@ public class ItemServlet extends HttpServlet {
 			item.setItemStatus(itemStatus);
 			item.setQuantity(quantity);
 			item.setDetail(detail);
-			
-			
-			
-			
+			item.setTagId(tagId);
+
 			int itemUpdate = itemService.updateItem(item);
-			System.out.println(itemUpdate);
+
 			if (itemUpdate == 1) {
+				
+				CategoryTags categoryTag = itemService.getByPrimaryKey(tagId);		
+				Gson gson = new Gson();
+				String jsonTag = gson.toJson(categoryTag);
+				
 				
 				item = itemService.getItemByItemId(itemId);
 				req.setAttribute("item", item);
+				req.setAttribute("jsonTag", jsonTag);
 
 				String url = "/front_end/item/itemSellerUpdateOne.jsp";
 				RequestDispatcher dispatcher = req.getRequestDispatcher(url);
@@ -346,7 +398,6 @@ public class ItemServlet extends HttpServlet {
 	// 查全部，商品列表
 	public String getAllList(HttpServletRequest req, HttpServletResponse res) {
 		String page = req.getParameter("page");
-		System.out.println("page+" + page);
 
 		int pageNow = (page == null) ? 1 : Integer.parseInt(page);
 
@@ -360,6 +411,14 @@ public class ItemServlet extends HttpServlet {
 		req.setAttribute("itemList", itemList);
 		req.setAttribute("pageNow", pageNow);
 
+		return "/front_end/item/itemList.jsp";
+	}
+	
+	
+	//查全部不分頁
+	public String getAllListNoPage(HttpServletRequest req, HttpServletResponse res) {
+		List<Item> itemList = itemService.getAllByStatus(0);
+		req.setAttribute("itemList", itemList);
 		return "/front_end/item/itemList.jsp";
 	}
 
@@ -388,6 +447,9 @@ public class ItemServlet extends HttpServlet {
 			String itemSize = req.getParameter("itemSize");
 			req.getSession().setAttribute("itemSize", itemSize);
 			
+			String tagId = req.getParameter("tagId");
+			req.getSession().setAttribute("tagId", tagId);
+			
 			
 			String itemQuantity = req.getParameter("itemQuantity");
 
@@ -399,7 +461,7 @@ public class ItemServlet extends HttpServlet {
 		                break;
 		            case "3":
 		                req.getSession().setAttribute("itemQuantityStart", "6");
-		                req.getSession().removeAttribute("itemQuantityEnd"); // 设置为null表示不设上限
+		                req.getSession().removeAttribute("itemQuantityEnd"); 
 		                break;
 		            default:
 		                req.getSession().removeAttribute("itemQuantityStart");
@@ -447,11 +509,21 @@ public class ItemServlet extends HttpServlet {
 			if (itemStatus != null) {
 				map.put("itemStatus", new String[] { itemStatus });
 			}
+			String tagId = (String) req.getSession().getAttribute("tagId");
+			if (tagId != null) {
+				map.put("tagId", new String[] { tagId });
+			}
 		}
 
 		if (map.size() != 0) {
 
 			List<Item> itemList = itemService.getItemByCompositeQuery(map, pageNow);
+			
+			//取類別標籤
+			List<CategoryTags> tagList = itemService.getAllCategoryTags();		
+			Gson gson = new Gson();
+			String jsonTagList = gson.toJson(tagList);
+			
 			int total = itemService.getResultTotalCondition(map);
 
 			if (req.getAttribute("itemPageQty") == null) {
@@ -459,6 +531,7 @@ public class ItemServlet extends HttpServlet {
 						: (total / ITEM_PAGE_MAX_RESULT + 1));
 				req.setAttribute("itemPageQty", pageQty);
 			}
+			req.setAttribute("jsonTagList", jsonTagList);
 			req.setAttribute("pageNow", pageNow);
 			req.setAttribute("itemList", itemList);
 		} else {

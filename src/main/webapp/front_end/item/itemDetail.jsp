@@ -47,6 +47,7 @@
             height: 100px;
             table-layout: fixed;
             border-spacing: 20px;
+            border-collapse: separate;
         }
 
         div.downarea table tr td, th{
@@ -279,7 +280,7 @@
                     <p class="price" name="price">$${item.price}</p>
                 </li>
                 <li class="li_num">
-                    <p>數量：</p><input type="number" name="quantity" id="input_num" min="1" value="1" max="${item.quantity}">
+                    <p>數量：</p><input type="number" name="quantities" id="input_num" min="1" value="1" max="${item.quantity}">
                 </li>
                 <li class="li_quantity">
                     <p class="p_quantity">剩餘件數</p><p>${item.quantity}</p>
@@ -374,8 +375,14 @@
 					}
 				});
 	        });
+	    	var quantityValue;
+	    	$("#input_num").on("blur", function() {
+	    		quantityValue = $("#input_num").val();
+	    		
+	    	});
+	    	console.log(quantityValue);
 			 $(".buy-button").on("click",function(){
-			    let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&mbrId=2&quantity=${item.quantity}&gotoCart=gotoCart";
+			    let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&mbrId=2&quantity="+quantityValue+"&gotoCart=gotoCart";
 			    console.log(url);
 			    fetch(url)
 	            .then(function(response){

@@ -56,4 +56,6 @@ public interface ItemService {
     List<Item> getItemBymbrIdAndStatus(Integer mbrId);
 
     public Members getMembersByPK(Integer mbrId);
+    
+    public List<Item> getAllByStatus(Integer itemStatus);
 }
