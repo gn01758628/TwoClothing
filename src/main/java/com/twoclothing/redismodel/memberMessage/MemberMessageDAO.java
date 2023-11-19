@@ -35,4 +35,9 @@ public interface MemberMessageDAO {
      * 將會話裡所有接收者是自己的訊息標示為已讀
      */
     void updateMessagesAsRead(Integer receiverId, Integer senderId);
+
+    /**
+     * @return 全部未讀的訊息數量
+     */
+    int getTotalUnreadMessageCount(Integer mbrId);
 }

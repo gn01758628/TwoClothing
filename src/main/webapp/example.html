@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HTML套用範例</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="/TwoClothing/images/Mainicon.png" type="image/png">
+    <!--bootstrap5-->
+    <link rel="stylesheet" href="/TwoClothing/css/bootstrap5/bootstrap.min.css">
+    <!--google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!--Font Awesome-->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--你們自己的css-->
+    <!--不是外部檔案也無所謂-->
+
+
+    <!--導覽列css-->
+    <link rel="stylesheet" href="/TwoClothing/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="/TwoClothing/css/chengHan/footer.css">
+</head>
+<body>
+<!--放在最前面-->
+<div class="headerHTML"></div>
+
+<!--測試用色塊不用加上-->
+<div class="test-div" style="height: 1000px; background-color: #3498db;"></div>
+
+<!--放在最後面-->
+<div class="footerHTML"></div>
+
+<!--bootstrap5-->
+<script src="/TwoClothing/js/bootstrap5/popper.min.js"></script>
+<script src="/TwoClothing/js/bootstrap5/bootstrap.min.js"></script>
+<!--jQuery-->
+<script src="/TwoClothing/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
+<script>
+    $(".headerHTML").load("/TwoClothing/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("/TwoClothing/js/chengHan/header.js");
+    });
+
+    $(".footerHTML").load("/TwoClothing/footerHTML.html");
+</script>
+
+<!--你們自己的js-->
+<!--不是外部檔案也無所謂-->
+</body>
+</html>

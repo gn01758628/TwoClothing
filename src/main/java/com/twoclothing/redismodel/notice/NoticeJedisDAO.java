@@ -33,7 +33,7 @@ public class NoticeJedisDAO implements NoticeDAO {
             jedis.select(REDIS_NUMBER);
             // List儲存 (Key:會員ID,value:通知自增主鍵)
             String value = NOTICE_PREFIX + jedis.incr("noticeId");
-            jedis.rpush(MBR_PREFIX + mbrId + MBR_SUFFIX, value);
+            jedis.lpush(MBR_PREFIX + mbrId + MBR_SUFFIX, value);
 
             // Hash儲存 (Key:通知的自增主鍵)
             jedis.hset(value, "type", notice.getType());
@@ -63,6 +63,7 @@ public class NoticeJedisDAO implements NoticeDAO {
                     notice.setLink(noticeData.get("link"));
                     notice.setImageLink(noticeData.get("imageLink"));
                     notice.setRead(Boolean.parseBoolean(noticeData.get("read")));
+                    notice.setNoticeId(noticeId);
                     noticeList.add(notice);
                 }
             }
@@ -70,5 +71,67 @@ public class NoticeJedisDAO implements NoticeDAO {
         }
     }
 
+    @Override
+    public List<Notice> getNoticesByMbrIdAndRead(Integer mbrId, boolean read) {
+        List<Notice> noticeList = new ArrayList<>();
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(REDIS_NUMBER);
 
+            List<String> noticeIdList = jedis.lrange(MBR_PREFIX + mbrId + MBR_SUFFIX, 0, -1);
+
+            for (String noticeId : noticeIdList) {
+                Map<String, String> noticeData = jedis.hgetAll(noticeId);
+                boolean isRead = Boolean.parseBoolean(noticeData.get("read"));
+
+                // 只添加符合指定阅读状态的通知
+                if (isRead == read) {
+                    Notice notice = new Notice();
+                    notice.setType(noticeData.get("type"));
+                    notice.setHead(noticeData.get("head"));
+                    notice.setContent(noticeData.get("content"));
+                    notice.setLink(noticeData.get("link"));
+                    notice.setImageLink(noticeData.get("imageLink"));
+                    notice.setRead(isRead);
+                    notice.setNoticeId(noticeId);
+                    noticeList.add(notice);
+                }
+            }
+        }
+        return noticeList;
+    }
+
+    @Override
+    public int getUnreadCountByMbrId(Integer mbrId) {
+        int unreadCount = 0;
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(REDIS_NUMBER);
+
+            List<String> noticeKeys = jedis.lrange(MBR_PREFIX + mbrId + MBR_SUFFIX, 0, -1);
+
+            for (String noticeKey : noticeKeys) {
+                String readStatus = jedis.hget(noticeKey, "read");
+                if ("false".equals(readStatus)) {
+                    unreadCount++;
+                }
+            }
+        }
+        return unreadCount;
+    }
+
+    @Override
+    public void markNoticesAsRead(String... noticeIds) {
+        if (noticeIds == null || noticeIds.length == 0) {
+            return;
+        }
+
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(REDIS_NUMBER);
+
+            for (String noticeId : noticeIds) {
+                if (noticeId != null && !noticeId.isEmpty()) {
+                    jedis.hset(noticeId, "read", "true");
+                }
+            }
+        }
+    }
 }

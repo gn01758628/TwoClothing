@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TwoClothing</title>
     <!--頁籤icon-->
-    <link rel="icon" href="/images/Mainicon.png" type="image/png">
+    <link rel="icon" href="/TwoClothing/images/Mainicon.png" type="image/png">
     <!--bootstrap5-->
     <link rel="stylesheet" href="/TwoClothing/css/bootstrap5/bootstrap.min.css">
     <!--google fonts-->
@@ -20,14 +20,16 @@
     </style>
     <!--Font Awesome-->
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
-    <!--header-->
-    <link rel="stylesheet" href="TwoClothing/css/chengHan/header.css">
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--導覽列css-->
+    <link rel="stylesheet" href="/TwoClothing/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="/TwoClothing/css/chengHan/footer.css">
 </head>
 <body>
 
-<div class="headerHTML">
-
-</div>
+<div class="headerHTML"></div>
 
 <!--輪播圖-->
 <div id="carouselDiv" class="carousel slide carousel-fade" data-bs-ride="carousel">
@@ -41,13 +43,13 @@
     </div>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="/TwoClothing/images/Carousel01.jpeg" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
             <img src="/TwoClothing/images/Carousel02.jpg" class="d-block w-100" alt="...">
         </div>
         <div class="carousel-item">
             <img src="/TwoClothing/images/Carousel03.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="/TwoClothing/images/Carousel04.jpg" class="d-block w-100" alt="...">
         </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselDiv"
@@ -74,16 +76,28 @@
     </button>
 </div>
 
-<div class="test-div" style="height: 1000px; background-color: #3498db;"></div>
+<div class="test-div" style="height: 1000px; background-color: #3498db;">
+</div>
 
+<div class="footerHTML"></div>
 
 <!--bootstrap5-->
 <script src="/TwoClothing/js/bootstrap5/popper.min.js"></script>
 <script src="/TwoClothing/js/bootstrap5/bootstrap.min.js"></script>
 <!--jQuery-->
 <script src="/TwoClothing/js/jQuery/jquery-3.7.1.min.js"></script>
-<!--header-->
-<script src="/TwoClothing/js/chengHan/header.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
+<script>
+    $(".headerHTML").load("/TwoClothing/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("/TwoClothing/js/chengHan/header.js");
+    });
+
+    $(".footerHTML").load("/TwoClothing/footerHTML.html");
+</script>
+
 
 <script>
 

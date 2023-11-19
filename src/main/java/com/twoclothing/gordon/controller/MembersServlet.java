@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -26,8 +25,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.twoclothing.gordon.service.MembersServiceImpl;
 import com.twoclothing.model.members.Members;
-
-import at.favre.lib.crypto.bcrypt.BCrypt;
 @WebServlet("/members/Members.do")
 @MultipartConfig(
 	    fileSizeThreshold = 1024 * 1024 * 2,  // 2 MB
@@ -44,21 +41,7 @@ public class MembersServlet extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
-        System.out.println("action="+action);
-        
-        if ("getAll".equals(action)) { 
-        	 MembersServiceImpl mbrServiceHibernate = new MembersServiceImpl();
-             List<Members> members = mbrServiceHibernate.getAll();
 
-             req.setAttribute("Members", members); 
-             String url = "/back_end/members/AllMembers.jsp";
-             RequestDispatcher successView = req.getRequestDispatcher(url); 
-             successView.forward(req, res);
-        	
-        }
-        
-        
-        
         //pk查詢
         if ("getOne_For_Display".equals(action)) { 
 
@@ -146,26 +129,9 @@ public class MembersServlet extends HttpServlet {
             Map<String, String> errorMsgs = new LinkedHashMap<>();
             req.setAttribute("errorMsgs", errorMsgs);
             Integer mbrId = Integer.valueOf(req.getParameter("mbrId"));
-            
-            Integer mbrStatus = null;
-            try {
-            	mbrStatus = Integer.valueOf(req.getParameter("mbrStatus").trim());
-            	if(mbrStatus<0 ||mbrStatus>2){
-            		errorMsgs.put("mbrStatus", "賣家分數應該在 0 到 2 之間");
-            	}
-            } catch (NumberFormatException e) {
-            	errorMsgs.put("mbrStatus", "帳號狀態請填數字");
-            }
-            
-            
-            
             Integer sellScore = null;
             try {
                 sellScore = Integer.valueOf(req.getParameter("sellScore").trim());
-                if(sellScore<0 ||sellScore>10){
-                	errorMsgs.put("sellScore", "賣家分數應該在 0 到 10 之間");
-                }
-                
             } catch (NumberFormatException e) {
                 errorMsgs.put("sellScore", "賣家分數請填數字");
             }
@@ -173,11 +139,8 @@ public class MembersServlet extends HttpServlet {
             Integer buyScore = null;
             try {
                 buyScore = Integer.valueOf(req.getParameter("buyScore").trim());
-                if(buyScore<0 ||buyScore>10){
-                	errorMsgs.put("buyScore", "賣家分數應該在 0 到 10 之間");
-                }
             } catch (NumberFormatException e) {
-                errorMsgs.put("buyScore", "買家分數請填數字");
+                errorMsgs.put("buyScore", "賣家分數請填數字");
             }
 
             if (!errorMsgs.isEmpty()) {
@@ -188,13 +151,7 @@ public class MembersServlet extends HttpServlet {
 
             // 2.開始修改資料
             MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
-            
-            Members members = membersServiceImpl.getByPrimaryKey(mbrId);
-            members.setMbrStatus(mbrStatus);
-            members.setBuyScore(buyScore);
-            members.setSellScore(sellScore);
-            membersServiceImpl.updateMembers(members);
-
+            Members members = membersServiceImpl.updateMembers(mbrId, sellScore, buyScore);
 
             // 3.修改完成,準備轉交(Send the Success view)
             req.setAttribute("Members", members); // 資料庫update成功後
@@ -211,14 +168,12 @@ public class MembersServlet extends HttpServlet {
             Map<String, String> errors = new HashMap<>();
             PrintWriter out = res.getWriter();
             boolean success = false;
+
             // 1.接收請求參數 - 輸入格式的錯誤處理
             String email = req.getParameter("email");
-            String pswdHash = BCrypt.withDefaults().hashToString(12, req.getParameter("pswdHash").toCharArray()); //加密
-            
-            
-            
+            String pswdHash = PasswordHashing.hashPassword(req.getParameter("pswdHash")); //加密
             String userInputCode = req.getParameter("VerificationCode");
-  
+
             // 驗證碼圖片的資料
             HttpSession session = req.getSession();
             String sessionCode = (String) session.getAttribute("randStr");
@@ -253,18 +208,16 @@ public class MembersServlet extends HttpServlet {
         }
 
         // 登入
-        //TODO
         if ("login".equals(action)) {
             Map<String, String> errorMsgs = new LinkedHashMap<>();
             req.setAttribute("errorMsgs", errorMsgs);
             
             //記住我
 //            boolean rememberMeCheckboxIsChecked = req.getParameter("rememberMe") != null;
-            
-            
+
             // 接收请求参数
             String email = req.getParameter("email2");
-            String pswdHash = req.getParameter("pswdHash2");  //加密
+            String pswdHash = PasswordHashing.hashPassword(req.getParameter("pswdHash2"));  //加密
             res.setContentType("application/json");
             res.setCharacterEncoding("UTF-8");
             Map<String, Object> response = new HashMap<>();
@@ -283,8 +236,8 @@ public class MembersServlet extends HttpServlet {
                 sendResponse(res, response, errorMsgs, false);
                 return;
             }
-            BCrypt.Result result = BCrypt.verifyer().verify(pswdHash.toCharArray(), members.getPswdHash());
-            if (!result.verified) {
+
+            if (!members.getPswdHash().equals(pswdHash)) {
                 errorMsgs.put("error", "帳號密碼不正確");
                 sendResponse(res, response, errorMsgs, false);
                 return;
@@ -297,23 +250,11 @@ public class MembersServlet extends HttpServlet {
                 sendResponse(res, response, errorMsgs, false);
                 return;
             }
-            // 帳號停權
-            if (members.getMbrStatus() == 2) {
-            	response.put("mbrStatus", 2);
-            	errorMsgs.put("error", "帳號停權");
-            	sendResponse(res, response, errorMsgs, false);
-            	return;
-            }
 
             // 會員已驗證
             session.setAttribute("user", members);
             session.setAttribute("mbrId", members.getMbrId());
             session.setAttribute("mbrStatus", members.getMbrStatus());
-
-            // 儲存上一頁的路徑
-            if (location != null) {
-                response.put("location", location);
-            }
 
             // 修改最後登入時間
             Timestamp loginDate = new Timestamp(System.currentTimeMillis());
@@ -342,7 +283,7 @@ public class MembersServlet extends HttpServlet {
             session.removeAttribute("location");
             session.removeAttribute("mbrId");
             session.removeAttribute("mbrStatus");
-            res.sendRedirect(req.getContextPath() + "/headerTest.html");
+            res.sendRedirect(req.getContextPath() + "/welcome.html");
         }
         // 會員的個人資訊
         if ("memberProfile".equals(action)) {
@@ -354,9 +295,7 @@ public class MembersServlet extends HttpServlet {
 
         	//查詢完成 準備轉交
         	req.setAttribute("Members", members); 
-//TODO
             String url = "/front_end/members/memberProfile.jsp";
-           
             RequestDispatcher successView = req.getRequestDispatcher(url); 
             successView.forward(req, res);
         
@@ -400,9 +339,8 @@ public class MembersServlet extends HttpServlet {
         if ("forgotPassword".equals(action)) {
         	
             String email = req.getParameter("email");
-//            String pswdHash = PasswordHashing.hashPassword(req.getParameter("pswdHash"));  //加密
-            String pswdHash = BCrypt.withDefaults().hashToString(12, req.getParameter("pswdHash").toCharArray());
-            System.out.println("email="+email);
+            String pswdHash = PasswordHashing.hashPassword(req.getParameter("pswdHash"));  //加密
+        	System.out.println("email="+email);
         	System.out.println(pswdHash);
         	
       
@@ -423,7 +361,7 @@ public class MembersServlet extends HttpServlet {
         if ("members_UpdateName".equals(action)) {
             // 讀取請求的body部分
         	Integer mbrId = Integer.valueOf(req.getParameter("mbrId"));
-
+        	
             BufferedReader reader = req.getReader();
             StringBuilder sb = new StringBuilder();
             String line;
@@ -436,8 +374,8 @@ public class MembersServlet extends HttpServlet {
             
             String field = json.has("field") && !json.get("field").isJsonNull() ? json.get("field").getAsString() : null;
             String newValue = json.has("newValue") && !json.get("newValue").isJsonNull() ? json.get("newValue").getAsString() : null;
-
-
+        
+           
             
             MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
             Members members = membersServiceImpl.getByPrimaryKey(mbrId);
@@ -460,8 +398,8 @@ public class MembersServlet extends HttpServlet {
             
             
         }
-        //會員改大頭貼 商場照片01,02
         if ("members_UpdateImage".equals(action)) {
+
         	Integer mbrId = Integer.valueOf(req.getParameter("mbrId"));
         	Part imagePart = null;
         	
@@ -487,81 +425,29 @@ public class MembersServlet extends HttpServlet {
         		}
         	
         		membersServiceImpl.updateMembers(members);
-
-       		
+        		
         		
         	req.setAttribute("Members", members); 
- //TODO        	 String url = "/members/Members.do?action=memberProfile&mbrId"+mbrId;
-       	String url = "/front_end/members/memberProfile.jsp";
+        	String url = "/front_end/members/memberProfile.jsp";
         	RequestDispatcher successView = req.getRequestDispatcher(url); 
         	successView.forward(req, res);
         
         
         
         }
-        //更改密碼
-        //TODO
-        if ("members_UpdatePswdHash_1".equals(action)) {
-        	Map<String, String> errorMsgs = new LinkedHashMap<>();
-            req.setAttribute("errorMsgs", errorMsgs);
-            
-            // 接收请求参数
-            Integer mbrId = Integer.valueOf(req.getParameter("mbrId")) ;
-            String pswdHash = req.getParameter("pswdHash");  //加密
-            
-            System.out.println(mbrId);
-            System.out.println(pswdHash);
-            
-            res.setContentType("application/json");
-            res.setCharacterEncoding("UTF-8");
-            Map<String, Object> response = new HashMap<>();
 
-            // 利用email尋找會員
-            MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
-            Members members = membersServiceImpl.getByPrimaryKey(mbrId);
-            
-
-            BCrypt.Result result = BCrypt.verifyer().verify(pswdHash.toCharArray(), members.getPswdHash());
-            if (!result.verified) {
-            	System.out.println("aaaaa");
-                errorMsgs.put("error", "帳號密碼不正確");
-                sendResponse(res, response, errorMsgs, false);
-                return;
-            }
-            System.out.println("cccccc");
-            sendResponse(res, response, errorMsgs, true);
-
-            
-            
-        }
-        if ("members_UpdatePswdHash_2".equals(action)) {
-            Integer mbrId = Integer.valueOf(req.getParameter("mbrId"));
-          String pswdHash = BCrypt.withDefaults().hashToString(12, req.getParameter("pswdHash").toCharArray());
-
-      	
-    
-          
-          MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
-          Members members = membersServiceImpl.getByPrimaryKey(mbrId);
-          
-          members.setPswdHash(pswdHash);
-          membersServiceImpl.updateMembers(members);
-          
-          String url = "/members/Members.do?action=memberProfile&mbrId"+mbrId;
-       	RequestDispatcher successView = req.getRequestDispatcher(url); 
-       	successView.forward(req, res);
-          
-        	
-        }
-        
             
         
         	
         
     }
     
-
-
+//	private byte[] readImageData(Part imagePart) throws IOException {
+//        InputStream inputStream = imagePart.getInputStream();
+//        byte[] imageData = new byte[(int) imagePart.getSize()];
+//        inputStream.read(imageData);
+//        return imageData;
+//    }
 	private byte[] readImageData(Part imagePart) throws IOException {
 	    InputStream inputStream = imagePart.getInputStream();
 	    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
