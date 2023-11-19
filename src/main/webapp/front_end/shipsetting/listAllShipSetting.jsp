@@ -10,18 +10,8 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>會員中心-帳戶資訊 www.bootstrapmb.com</title>
-<style type="">
-*,body{ margin:0px; padding:0px; font-size:12px; font-family:Arial; color:#333;}
-body{ background-color:#f5f5f5;}
-ul,dl,dt,dd,p,h1,h2,h3,h4,h5,h6{ margin:0px; padding:0px;}
-ul{ list-style:none;}
-a{ color:#333; text-decoration:none;}
-a:hover{ color:#f60;}
-a img{ border:none;}
-input{ vertical-align:middle;}
-.clear{ clear:both; height:1px; line-height:1px;}
-</style>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/Members.css">
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
 
 <style>
 
@@ -29,14 +19,14 @@ input{ vertical-align:middle;}
 
 </head>
 <body>
-<div id="header">
+<div id="head">
 
 <div class="menu">
 <ul>
 <li ><a href='${pageContext.request.contextPath}/index.jsp'>回首頁</a></li>
 <li class="menu_selected"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>
-<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder&buyMbrId=${user.mbrId}">買家訂單</a></li>
-<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder&sellMbrId=${user.mbrId}">賣家訂單</a></li>
+<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">買家訂單</a></li>
+<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">賣家訂單</a></li>
 </ul>
 </div>
 </div>

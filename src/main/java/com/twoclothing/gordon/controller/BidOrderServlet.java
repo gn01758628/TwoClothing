@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +19,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import com.twoclothing.chenghan.service.BidItemServiceImpl;
 import com.twoclothing.gordon.service.BidOrderRatingImageServiceImpl;
 import com.twoclothing.gordon.service.BidOrderServiceImpl;
 import com.twoclothing.gordon.service.MembersServiceImpl;
 import com.twoclothing.gordon.service.ShipSettingServiceImpl;
 import com.twoclothing.huiwen.service.BalanceHistoryServiceImpl;
+import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.abid.bidorder.BidOrder;
 import com.twoclothing.model.balancehistory.BalanceHistory;
 import com.twoclothing.model.members.Members;
@@ -45,6 +48,8 @@ public class BidOrderServlet extends HttpServlet {
 		MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
 		ShipSettingServiceImpl shipSettingServiceImpl = new ShipSettingServiceImpl();
 		BalanceHistoryServiceImpl balanceHistoryServiceImpl = new BalanceHistoryServiceImpl();
+		BidItemServiceImpl bidItemServiceImpl = new BidItemServiceImpl();
+
 		/*********************** 新增訂單 *************************/
 		/*********************** 新增訂單 *************************/
 		/*********************** 新增訂單 *************************/
@@ -425,11 +430,25 @@ public class BidOrderServlet extends HttpServlet {
 			Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
 			Integer OrderStatus = 0;
 			/*************************** 2.開始查詢資料 ****************************************/
-
 			List<BidOrder> bidOrder = bidOrderServiceImpl.getAllOrderStatusAndBuyer(OrderStatus, buyMbrId);
+			
+
+//			Map<Integer, String> bidOrderMap = new HashMap<>();
+//
+//		    for (BidOrder bidOrder1 : bidOrder) {
+//		        Integer bidItemId = bidOrder1.getBidItemId();
+//		        Integer bidOrderId = bidOrder1.getBidOrderId();
+//		        BidItem bidItem = bidItemServiceImpl.getBidItemByBidItemId(bidItemId);
+//		        String bidName = bidItem.getBidName();
+//		        
+//		        bidOrderMap.put(bidOrderId, bidName);
+//		    }
+//		    req.setAttribute("BidOrderMap", bidOrderMap);
+
+			
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
-			req.setAttribute("BidOrder", bidOrder);
+		    req.setAttribute("BidOrder", bidOrder);
 			String url = "/front_end/bidorder/buyBidorder0.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);

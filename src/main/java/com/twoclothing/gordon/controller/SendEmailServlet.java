@@ -82,7 +82,7 @@ public class SendEmailServlet extends HttpServlet {
     		 
 //		        res.setContentType("text/plain");
 //		        res.getWriter().write("123");
-//		        res.sendRedirect(req.getContextPath() + "/front_end/members/verificationEmail.jsp");
+	        res.sendRedirect(req.getContextPath() + "/front_end/members/verificationEmail.jsp");
     	}
 //		===============================驗證================================
 //		===============================驗證================================
