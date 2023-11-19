@@ -197,6 +197,17 @@ public class MemberMessageJedisDAO implements MemberMessageDAO {
         }
     }
 
+    @Override
+    public int getTotalUnreadMessageCount(Integer mbrId) {
+        int totalUnreadCount = 0;
+        List<Integer> partnerIdList = getAllPartnerIdByMbrId(mbrId);
+        for (Integer senderId : partnerIdList) {
+            int unreadCount = getUnreadMessageCount(mbrId, senderId);
+            totalUnreadCount += unreadCount;
+        }
+        return totalUnreadCount;
+    }
+
     private String getSessionKey(Integer memberId1, Integer memberId2) {
         return (memberId1 < memberId2) ? SESSION_PREFIX + memberId1 + "_" + memberId2 : SESSION_PREFIX + memberId2 + "_" + memberId1;
     }

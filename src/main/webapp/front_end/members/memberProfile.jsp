@@ -1,193 +1,281 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.twoclothing.gordon.service.*"%>
-<%-- æ­¤é æš«ç·´ç¿’æ¡ç”¨ Script çš„å¯«æ³•å–å€¼ --%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="BIG5"%>
 
-<%
-//   Members members = (Members) request.getAttribute("members"); //EmpServlet.java(Concroller), å­˜å…¥reqçš„empVOç‰©ä»¶
-%>
 
-<html>
+
+<!DOCTYPE html>
+<html >
 <head>
-<title>å€‹äººè³‡æ–™</title>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>·|­û¤¤¤ß-±b¤á¸ê°T www.bootstrapmb.com</title>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
 
 <style>
+	#avatarContainer {
+        position: relative;
+        top: -730px; 
+        left: 400px;
+        
+    }
+	#shopImage02Container {
+	    position: relative;
+	    top: -155px;
+	    left: 400px;
+	}
+    #avataruploadFormContainer {
+        margin-top: 0px; 
+    }
 
-  h4 {
+    #avatarsubmitButton,#shopImage01submitButton,#shopImage02submitButton {
+        background-color: #4CAF50; 
+        color: white; 
+        padding: 10px; 
+        border: none; 
+        cursor: pointer; 
+    }
+    
+#passwordPopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    text-align: center;
+}
+
+#pswdHashForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#pswdHash {
+    margin: 10px 0;
+    padding: 8px;
+    width: 200px;
+}
+
+#pswdHashError {
     color: red;
-    display: inline;
-  }
-</style>
+    margin-bottom: 10px;
+}
 
-<style>
-  table {
-    width: 50%; /* è®“è¡¨æ ¼å¯¬åº¦å¡«æ»¿çˆ¶å…ƒç´  */
-    border-collapse: collapse; /* åˆä½µè¡¨æ ¼é‚Šæ¡† */
-    margin-top: 5px;
-    margin-bottom: 5px;
-    margin: 0 auto; /* æ°´å¹³ç½®ä¸­ */
-  }
-  th, td {
-    border: 1px solid #CCCCFF;
-    padding: 10px; /* èª¿æ•´å…§é‚Šè· */
-    text-align: center; /* æ–‡æœ¬ç½®ä¸­ */
-  }
-  th {
-    background-color: #CCCCFF; /* æ¨™é¡ŒèƒŒæ™¯é¡è‰² */
-    font-weight: bold; /* åŠ ç²—å­—é«” */
-  }
-  img {
-    max-width: 100px;
-    max-height: 100px;
-  }
-   table#table-1 {
-    width: 50%; /* èˆ‡ä¸‹é¢çš„è¡¨æ ¼å¤§å°ç›¸åŒ¹é… */
-  }
+#pswdHashFormCancel {
+    background-color: #ccc;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+}
+
+#pswdHashFormCancel:hover {
+    background-color: #ddd;
+}
+
+#pswdHashForm input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+}
+
+#pswdHashForm input[type="submit"]:hover {
+    background-color: #45a049;
+}
 </style>
 
 </head>
-<body bgcolor='white'>
+<body>
 
-<table id="table-1">
 
-	<tr><td>
-		 
-		 <h4><a href="${pageContext.request.contextPath}/MemberCentre.jsp">æœƒå“¡ä¸­å¿ƒ</a></h4>
-	</td></tr>
-</table>
+<div id="head">
 
-<table>
-  <tr style="display: none;">
-    <th >æœƒå“¡ç·¨è™Ÿ</th>
-    <td id="mbrId">${user.mbrId}</td>
-	</tr>
+<div class="menu">
+<ul>
+<li ><a href='${pageContext.request.contextPath}/index.jsp'>¦^­º­¶</a></li>
+<li class="menu_selected"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">­Ó¤H¸ê°T</a></li>
+<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">¶R®a­q³æ</a></li>
+<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">½æ®a­q³æ</a></li>
+</ul>
+</div>
+</div>
+<div id="hy_con">
+<div id="con_lf">
+<h2>±b¤áºŞ²z</h2>
+<ul>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">­Ó¤H¸ê°T</a></li>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">ª«¬y³]©w</a></li>
 
-  <tr>
-    <th>æœƒå“¡å§“å</th>
-    <td id="mbrName">${user.mbrName}</td>
-    <td><button class="editButton" onclick="editMemberData('mbrName')">ä¿®æ”¹</button></td>
-  </tr>
-  <tr>
-    <th>æœƒå“¡ä¿¡ç®±(å¸³è™Ÿ)</th>
-    <td>${user.email}</td>
-  </tr>
-  <tr>
-    <th>æœƒå“¡å¯†ç¢¼</th>
-    <td>**********</td>
-  </tr>
-  <tr>
-    <th>æœƒå“¡å¤§é ­è²¼</th>
-    <td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${user.mbrId}&imgType=avatar" width=100px height=100px  >
-  	</td>
-  	<td>
-  		<form METHOD="post" action="${pageContext.request.contextPath}/members/Members.do" id="avatarForm" enctype="multipart/form-data"  style="display: none;">
-            
-            <input type="file" id="avatar" name="avatar" accept="image/*">
-            <input type="hidden" name="mbrId" value="${user.mbrId}">
-            <input type="hidden" name="action" value="members_UpdateImage"  >
-            <input type="submit"  value="ä¿®æ”¹å¤§é ­è²¼"  >
-        </form>
-  		<button id="avatarFormA"onclick="showUploadAvatarForm()">ä¿®æ”¹å¤§é ­è²¼</button>
-  		<button id="avatarFormCancel"onclick="cancelImage1Form()" style="display: none;">å–æ¶ˆ</button>
-  	</td>
-  </tr>
-  <tr>
-    <th>æœƒå“¡è³£å®¶å•†å ´åœ–ç‰‡01</th>
-    <td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${user.mbrId}&imgType=shopimg01" width=100px height=100px >
-    
-    </td>
-    <td>
-    	<form METHOD="post" action="${pageContext.request.contextPath}/members/Members.do" id="shopImage1Form" enctype="multipart/form-data"  style="display: none;">
-		    <input type="file" name="shopImage01" accept="image/*">
-		    
+</ul>
+</div>
+<div id="con_rh">
+<div class="con_rh_con"><br></br>
+
+<p class="rh_title">±b¤á¸ê°T</p>
+<div class="zh_num">¿ú¥]¾lÃB¡G<span>${Members.balance}</span>¤¸</div> 
+<div class="zh_num">§ÚªºÂI¼Æ¡G<span>${Members.mbrPoint}</span>ÂI</div>
+<br></br><br></br>
+<p class="rh_title">·|­û¸ê°T</p>
+<ul class="ul_zhxx">
+<li class="li_bj">·|­û½s¸¹¡G<span id="mbrId">${user.mbrId}</span></li>
+<li  class="li_bj">¥Î¤á¦W¡G<span id="mbrName">${Members.mbrName}</span>
+<button class="editButton" onclick="editMemberData('mbrName')">­×§ï</button></li>
+
+<li  class="li_bj">Email¡G<span id="mbrName">${user.email}</span>
+<li style="
+    height: 35px;" class="li_bj">·|­û±K½X¡G<span id="mbrName">******</span>
+	    <button id="pswdHashFormA">§ó§ï±K½X</button>
+	
+	    <!-- ¼u¥Xªºµ¡¤f -->
+	    <div id="passwordPopup">
+	        <form method="post" id="pswdHashForm" class="UpdatePswdHash" >
+	            <input type="password" id="pswdHash" name="pswdHash" placeholder="±K½X">
+	            <input type="hidden" id="mbrId" name="mbrId" value="1">
+	            <span id="pswdHashError" style="color: red;"></span>
+	            <input type="hidden" name="action" value="members_UpdatePswdHash_1">
+	            <input type="submit" value="½T©w">
+	        </form>
+	        <button id="pswdHashFormCancel">¨ú®ø</button>
+	    </div>
+<br></br>
+<li  class="li_bj">¶R®aµû»ù¡G
+		<span>
+		<script>
+// 	            document.write('<img style="width: 10px !important; height: 10px !important; margin-right: 0;" src="${pageContext.request.contextPath}/images/Snipaste.png" alt="Snipaste Image">'.repeat(buyStar) );
+		   var buyStar = ${Members.buyStar};
+        var buyRating = ${Members.buyRating};
+        if (buyStar > 0) {
+            var formattedStars = '¡¸'.repeat(buyRating > 0 ? (buyStar / buyRating) : 0);
+            if (buyRating > 0) {
+                var formattedNumber = (buyStar / buyRating).toFixed(1);
+                formattedStars += ' (' + formattedNumber + ')';
+            }
+            document.write(formattedStars);
+        } else {
+            document.write('µLµû»ù');
+        }
+        </script>
+        </span>
+<!-- 		<span >
+		<script> 
+             var buyStar = ${Members.buyStar};
+             var buyRating = ${Members.buyRating};
+          	 if (buyStar > 0) {
+                var formattedNumber = (buyStar / buyRating).toFixed(1);
+                 document.write(formattedNumber);
+             } else {
+                 document.write('µLµû»ù');
+             }
+        </script> 
+        </span>-->
+<li  class="li_bj">½æ®aµû»ù¡G
+		<span >
+		<script>
+		 var sellStar = ${Members.sellStar};
+	        var sellRating = ${Members.sellRating};
+	        if (sellStar > 0) {
+	            var formattedStars = '¡¸'.repeat(sellRating > 0 ? (sellStar / sellRating) : 0);
+	            if (sellRating > 0) {
+	                var formattedNumber = (sellStar / sellRating).toFixed(1);
+	                formattedStars += ' (' + formattedNumber + ')';
+	            }
+	            document.write(formattedStars);
+	        } else {
+	            document.write('µLµû»ù');
+	        }
+        </script>
+        </span>
+<!-- 		<span > 
+		<script>
+			var sellStar = ${Members.sellStar};
+	        var sellRating = ${Members.sellRating};
+	        if (sellStar > 0) {
+	            var formattedNumber = (sellStar / sellRating).toFixed(1);
+	            document.write(formattedNumber);
+	        } else {
+	            document.write('µLµû»ù');
+	        }
+        </script>
+        </span>-->
+</ul>
+
+
+<br></br><br></br><br></br><br></br><br></br>
+<div id="shopImage01Container"> 		
+<p class="rh_title">°Ó³õ·Ó¤ù</p>
+	<label for="shopImage01Input">
+		<img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg01" width="150px" height="150px" >
+	</label>	
+	<div id="shopImage01uploadFormContainer" style="display: none;">	
+		<form METHOD="post" action="${pageContext.request.contextPath}/members/Members.do" id="shopImage01Form" enctype="multipart/form-data"  >
+			<input type="file" id="shopImage01Input" name="shopImage01" accept="image/*" style="display: none;">
 		    <input type="hidden" name="mbrId" value="${user.mbrId}">
 		    <input type="hidden" name="action" value="members_UpdateImage"  >
-		    <input type="submit" value="ä¿®æ”¹å•†å ´åœ–ç‰‡01" >
+		     <input id="shopImage01submitButton" type="submit" value="­×§ï°Ó³õ¹Ï¤ù01" >
 		</form>
-  		<button id="shopImage1FormA" onclick="showUploadAhopImage1Form()">ä¿®æ”¹å•†å ´åœ–ç‰‡01</button>
-  		<button id="shopImage1FormCancel"  onclick="cancelImage1Form()" style="display: none;">å–æ¶ˆ</button>
-  	</td>
-  </tr>
-  <tr>
-    <th>æœƒå“¡è³£å®¶å•†å ´åœ–ç‰‡02</th>
-    <td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${user.mbrId}&imgType=shopimg02" width=100px height=100px >
-    
-    </td>
-    <td>
-	    <form METHOD="post" action="${pageContext.request.contextPath}/members/Members.do" id="shopImage2Form" enctype="multipart/form-data"  style="display: none;"> 
-		    <input type="file" name="shopImage02" accept="image/*">
+		   
+	</div>
+</div>
+<div id="shopImage02Container"style="
+    width: 150px;"> 		
+
+	<label for="shopImage02Input">
+		<img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg02" width="150px" height="150px" >
+	</label>	
+	<div id="shopImage02uploadFormContainer" style="display: none;">	
+		<form METHOD="post" action="${pageContext.request.contextPath}/members/Members.do" id="shopImage02Form" enctype="multipart/form-data"  > 
+		    <input type="file" id="shopImage02Input" name="shopImage02" accept="image/*" style="display: none;">
 		    <input type="hidden" name="mbrId" value="${user.mbrId}">
 			<input type="hidden" name="action" value="members_UpdateImage"  >
-		    <input type="submit" value="ä¿®æ”¹å•†å ´åœ–ç‰‡02">
+		    <input id="shopImage02submitButton" type="submit" value="­×§ï°Ó³õ¹Ï¤ù02">
 		</form>
-  		<button id="shopImage2FormA" onclick="showUploadShopImage2Form()">ä¿®æ”¹å•†å ´åœ–ç‰‡02</button>
-  		<button id="shopImage2FormCancel" onclick="cancelImage1Form()" style="display: none;">å–æ¶ˆ</button>
-  	</td>
-  </tr>
+	</div>
+</div>
+<div id="avatarContainer" style="
+    width: 150px;">
+    <p class="rh_title" style="
+    width: 150px;">¤jÀY¶K</p>
+    <label for="avatarInput">
+        <img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=avatar" width="150px" height="150px" />
+    </label>
+    <div id="avataruploadFormContainer" style="display: none;">
+        <form METHOD="post" action="${pageContext.request.contextPath}/members/Members.do" id="avatarForm" enctype="multipart/form-data">
+            <input type="file" id="avatarInput" name="avatar" accept="image/*" style="display: none;">
+            <input type="hidden" name="mbrId" value="${user.mbrId}">
+            <input type="hidden" name="action" value="members_UpdateImage">
+            <input id="avatarsubmitButton" type="submit"  value="­×§ï¤jÀY¶K"  >
+        </form>
+    </div>
+     
+</div>
+ 		
+<br></br><br></br>
 
 
-</table> 
 
+</div>
+</div>
+</div>
+
+<div class="clear"></div>
+<div id="footer">
+
+</div>
 <script>
-	var contextPath = "${pageContext.request.contextPath}";	
-	
-	
-	function showUploadAvatarForm() {
-	    var form = document.getElementById('avatarForm');
-	    var avatarFormA = document.getElementById('avatarFormA');
-	    var avatar = document.getElementById('avatarFormCancel');
-	    form.style.display = 'block';  
-	    avatar.style.display = 'block';  
-	    avatarFormA.style.display = 'none';  
-	}
-	function showUploadAhopImage1Form() {
-	    var form = document.getElementById('shopImage1Form');
-	    var shopImage1FormA = document.getElementById('shopImage1FormA');
-	    var shopImage1 = document.getElementById('shopImage1FormCancel');
-	    form.style.display = 'block';  
-	    shopImage1.style.display = 'block';  
-	    shopImage1FormA.style.display = 'none';  
-	}
-	function showUploadShopImage2Form() {
-	    var form = document.getElementById('shopImage2Form');
-	    var shopImage1FormA = document.getElementById('shopImage2FormA');
-	    var shopImage2 = document.getElementById('shopImage2FormCancel');
-	    form.style.display = 'block';  
-	    shopImage2.style.display = 'block';  
-	    shopImage1FormA.style.display = 'none';  
-	}
-	
-	function cancelImage1Form() {
-	    var form = document.getElementById('avatarForm');
-	    form.style.display = 'none';  
-	    var form = document.getElementById('shopImage1Form');
-	    form.style.display = 'none';  
-	    var form = document.getElementById('shopImage2Form');
-	    form.style.display = 'none';
-	    var avatar = document.getElementById('avatarFormCancel');
-	    avatar.style.display = 'none';
-	    var shopImage1 = document.getElementById('shopImage1FormCancel');
-	    shopImage1.style.display = 'none';
-	    var shopImage2 = document.getElementById('shopImage2FormCancel');
-	    shopImage2.style.display = 'none';
-	    var avatarFormA = document.getElementById('avatarFormA');
-	    avatarFormA.style.display = 'block'; 
-	    var shopImage1FormA = document.getElementById('shopImage1FormA');
-	    shopImage1FormA.style.display = 'block'; 
-	    var shopImage1FormA = document.getElementById('shopImage2FormA');
-	    shopImage1FormA.style.display = 'block'; 
-
-
-
-
-	}
-
-
-
+var contextPath = "${pageContext.request.contextPath}";	
 
   function editMemberData(field) {
-    var currentValue = document.getElementById(field).innerText;
-    var newValue = prompt('è«‹è¼¸å…¥æ–°çš„å€¼ï¼š', currentValue);
-    var mbrId = document.getElementById("mbrId").innerText;
+    var currentValue = document.getElementById(field).innerHTML;
+    var newValue = prompt('½Ğ¿é¤J·sªº­È¡G', currentValue);
+    var mbrId = document.getElementById("mbrId").innerHTML;
     var action ='members_UpdateName';
     if (newValue !== null && newValue !== currentValue) {
     	
@@ -206,41 +294,110 @@
       xhr.send(JSON.stringify(data));
       
       document.getElementById(field).innerText = newValue;
-      alert('ä½ è¼¸å…¥çš„æ–°å€¼ç‚ºï¼š' + newValue);
-      // åœ¨é€™è£¡æ·»åŠ å°‡æ–°å€¼æäº¤çµ¦å¾Œç«¯çš„é‚è¼¯
+//       alert('§A¿é¤Jªº·s­È¬°¡G' + newValue);
+      // ¦b³o¸Ì²K¥[±N·s­È´£¥æµ¹«áºİªºÅŞ¿è
     }
   }
-  
-//   function uploadImage(formId, imageType) {
-// 	    var formData = new FormData();
-// 	    var fileInput = document.querySelector(`#${formId} [name=${imageType}]`);
 
-// 	    var mbrId = document.getElementById("mbrId").innerText;
-// 	    var file = fileInput.files[0];
-// 	    var action = 'members_UpdateImage';
+	document.getElementById('avatarInput').addEventListener('change', function() {
+	    // ³B²z¿ï¾ÜÀÉ®×«áªºÅŞ¿è¡A¨Ò¦pÅã¥ÜÀÉ®×¦WºÙ©Î¹wÄı¹Ï¤ù
+	    var fileName = this.files[0].name;
+	    console.log('¿ï¾ÜªºÀÉ®×¡G', fileName);
 
-// 	    if (file) {
-// 	        formData.append('imageType', imageType);
-// 	        formData.append('image', file);
+	    // Åã¥Ü¤W¶Çªí³æ
+	    document.getElementById('avataruploadFormContainer').style.display = 'block';
+	});
 
-// 	        var xhr = new XMLHttpRequest();
-// 	        xhr.open('POST', contextPath + "/members/Members.do?action=" + action + "&mbrId=" + mbrId + "&fileInput=" + imageType, true);
-// 	        xhr.onload = function () {
-// 	            if (xhr.status === 200) {
-// 	                alert('åœ–ç‰‡ä¸Šå‚³æˆåŠŸï¼');
-// 	            } else {
-// 	                alert('åœ–ç‰‡ä¸Šå‚³å¤±æ•—ï¼');
-// 	            }
-// 	        };
+	document.getElementById('avatarsubmitButton').addEventListener('click', function() {
+	    // Ä²µoªí³æ´£¥æ
+	    document.getElementById('avatarForm').submit();
+	});
 
-// 	        xhr.send(formData);
-// 	    } else {
-// 	        alert('è«‹é¸æ“‡ä¸€å¼µåœ–ç‰‡ï¼');
-// 	    }
-// 	}
+	    document.getElementById('shopImage01Input').addEventListener('change', function() {
+	        var fileName = this.files[0].name;
+	        console.log('¿ï¾ÜªºÀÉ®×¡G', fileName);
 
-</script>
+	        document.getElementById('shopImage01uploadFormContainer').style.display = 'block';
+	    });
 
+	    document.getElementById('shopImage01submitButton').addEventListener('click', function() {
+	        document.getElementById('shopImage01Form').submit();
+	    });
+
+	
+	
+	document.getElementById('shopImage02Input').addEventListener('change', function() {
+	    // ³B²z¿ï¾ÜÀÉ®×«áªºÅŞ¿è¡A¨Ò¦pÅã¥ÜÀÉ®×¦WºÙ©Î¹wÄı¹Ï¤ù
+	    var fileName = this.files[0].name;
+	    console.log('¿ï¾ÜªºÀÉ®×¡G', fileName);
+
+	    // Åã¥Ü¤W¶Çªí³æ
+	    document.getElementById('shopImage02uploadFormContainer').style.display = 'block';
+	});
+
+	document.getElementById('shopImage02submitButton').addEventListener('click', function() {
+	    // Ä²µoªí³æ´£¥æ
+	    document.getElementById('shopImage02Form').submit();
+	});
+
+
+
+	
+    
+    $(document).ready(function () {
+        // ÂIÀ»§ó§ï±K½X«ö¶s®ÉÄ²µoªº¨Æ¥ó
+        $('#pswdHashFormA').click(function () {
+            // Åã¥Ü¼u¥Xµ¡¤f
+            $('#passwordPopup').show();
+        });
+
+        // ÂIÀ»¨ú®ø«ö¶s®ÉÄ²µoªº¨Æ¥ó
+        $('#pswdHashFormCancel').click(function () {
+            // ÁôÂÃ¼u¥Xµ¡¤f
+            $('#passwordPopup').hide();
+            // ²MªÅ¿é¤Jªº±K½X
+            $('#pswdHash').val('');
+            // ²MªÅ¿ù»~®ø®§
+            $('#pswdHashError').text('');
+        });
+
+    	
+    	    
+        // ´£¥æªí³æ®ÉÄ²µoªº¨Æ¥ó
+        $('#pswdHashForm').submit(function (event) {
+            event.preventDefault();
+            // Àò¨úªí³æ¼Æ¾Ú
+            var formData = $(this).serialize();
+
+            // µo°eAjax½Ğ¨D
+            $.ajax({
+                type: 'POST',
+                url: '${pageContext.request.contextPath}/members/Members.do',
+                data: formData,
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        if (response.location !== null && response.location !== undefined) {
+                            window.location.href = response.location;
+                        } else {
+                            window.location.href = '${pageContext.request.contextPath}/front_end/members/UpdatePswdHash.jsp';
+                        }
+                    } else {
+                        $('#pswdHashError').text(response.errors.error);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('AJAX ¿ù»~¡G' + errorThrown);
+                    console.error('AJAX ¿ù»~:', textStatus, errorThrown);
+                    console.log('ÅTÀ³:', jqXHR.responseText);
+                }
+            });
+        });
+    });
+
+
+	</script>
 
 </body>
 </html>
+

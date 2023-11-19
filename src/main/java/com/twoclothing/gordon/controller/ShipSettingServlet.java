@@ -130,7 +130,8 @@ public class ShipSettingServlet extends HttpServlet{
 			shipSettingServiceImpl.updateShipSetting(shipSetting);
 /***************************3.修改完成,準備轉交(Send the Success view)*************/
 			req.setAttribute("ShipSetting", shipSetting); 
-			String url = "/front_end/shipsetting/listOneShipSetting.jsp";
+//			String url = "/front_end/shipsetting/listOneShipSetting.jsp";
+			String url = "/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId="+mbrId;
 			RequestDispatcher successView = req.getRequestDispatcher(url); 
 			successView.forward(req, res);
 		

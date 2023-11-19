@@ -98,9 +98,9 @@
 
 </head>
 <body>
-  <button onclick="location.href='${pageContext.request.contextPath}/index.jsp'">回首頁</button>
-  <button onclick="location.href='${pageContext.request.contextPath}/MemberCentre.jsp'">會員中心</button>
-  <button onclick="location.href='${pageContext.request.contextPath}/back_end/bidorder/testBidorder.jsp'">測試新增訂單</button>
+  	<button onclick="location.href='${pageContext.request.contextPath}/index.jsp'">回首頁</button>
+	<a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}"><button>會員中心</button></a>    
+ 	 <button onclick="location.href='${pageContext.request.contextPath}/back_end/bidorder/testBidorder.jsp'">測試新增訂單</button>
 <div class="form-container">
 	
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do">

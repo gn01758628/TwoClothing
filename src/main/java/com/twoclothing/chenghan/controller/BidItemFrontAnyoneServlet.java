@@ -81,7 +81,6 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
                 bidItemService.addBidItemViewHistory(history);
             }
         }
-        request.getSession().setAttribute("currentBidItemId", bidItemId);
         request.getRequestDispatcher("/front_end/biditem/BidItemDetail.jsp").forward(request, response);
     }
 
@@ -91,12 +90,6 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         Integer mbrId = (Integer) request.getSession().getAttribute("mbrId");
         String bidItemId = request.getParameter("bidItemId");
-        // 處理Ajax請求重定向
-        if (bidItemId == null) {
-            Integer currentBidItemId = (Integer) request.getSession().getAttribute("currentBidItemId");
-            response.sendRedirect(request.getContextPath() + "/front/biditem/anyone/detail?bidItemId=" + currentBidItemId);
-            return;
-        }
         BidItem bidItem = bidItemService.getBidItemByBidItemId(Integer.parseInt(bidItemId));
         LocalDateTime endTime = bidItem.getEndTime().toLocalDateTime();
         String bidAmount = request.getParameter("bidAmount");

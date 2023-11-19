@@ -58,8 +58,6 @@ input:disabled {
 	com.twoclothing.model.members.Members user = (com.twoclothing.model.members.Members) session.getAttribute("user");
  	%> 
 	<a href='${pageContext.request.contextPath}/index.jsp'>回首頁</a>
-<a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a>
-<a href="<%=request.getContextPath()%>/members/Members.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">個人資訊</a>
     <h1>会员中心</h1>
 
     <h2>个人信息</h2>

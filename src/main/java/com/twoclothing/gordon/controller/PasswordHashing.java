@@ -3,6 +3,8 @@ package com.twoclothing.gordon.controller;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 public class PasswordHashing {
 
     public static String hashPassword(String password) {
@@ -28,9 +30,14 @@ public class PasswordHashing {
     }
 
     public static void main(String[] args) {
-        String password = "hash10";
-        String hashedPassword = hashPassword(password);
-        System.out.println("Original Password: " + password);
-        System.out.println("Hashed Password: " + hashedPassword);
+//        String password = "hash10";
+//        String hashedPassword = hashPassword(password);
+//        System.out.println("Original Password: " + password);
+//        System.out.println("Hashed Password: " + hashedPassword);
+    	for( int i = 1  ; i <=10 ; i++ ) {
+        	String pw= "hash"+i;
+        	String pswd = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
+        	System.out.println(pswd);
+        }
     }
 }

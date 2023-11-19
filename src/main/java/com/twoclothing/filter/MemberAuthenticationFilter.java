@@ -22,8 +22,6 @@ public class MemberAuthenticationFilter implements Filter {
         Object user = session.getAttribute("user");
         // 物件不存在等於沒登入
         if (user == null) {
-            // 綁定發起請求的URI(保存上一頁)
-            session.setAttribute("location", request.getRequestURI());
             // 判斷是不是Ajax請求
             //  獲得請求頭部中X-Requested-With的值
             //  當前端發起AJAX請求時,瀏覽器會自動在HTTP請求頭部添加"X-Requested-With: XMLHttpRequest"

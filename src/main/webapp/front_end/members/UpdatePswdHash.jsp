@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <style>
 </style>
-<title>forgotPassword</title>
+<title>Insert title here</title>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -20,7 +20,7 @@ body {
 }
 
 #email3, #pswdHash, h3, #mbrName, #comfirm_password, #email, #pswdHash,
-	#VerificationCode, #imgValidate {
+	#VerificationCode {
 	width: 200px;
 	height: 20px;
 	margin: 10px;
@@ -114,13 +114,10 @@ input {
 	<div id="forgotPasswordModal" class="modal">
 		<div class="modal-content">
 			<h3>更改密碼</h3>
-			<!--  
-			<form id="form" action="${pageContext.request.contextPath}/members/Members.do"
-				method="post" onsubmit="sendForgotPasswordEmail(); return false;" >
-			-->	
 			<form id="form" action="${pageContext.request.contextPath}/members/Members.do"
 				method="post"  >
-
+<!-- 				<label for="email3">輸入你的EMAIL:</label> <input type="text" -->
+<!-- 				id="email3" name="email3">  -->
 				<input type="password"id="pswdHash" name="pswdHash" placeholder="密碼" required> 
 				<span id="togglePassword1" onclick="togglePasswordVisibility()">🔒</span>
 				<input type="password" id="comfirm_password" name="comfirm_password"placeholder="確認密碼" required>
@@ -128,8 +125,8 @@ input {
 				<span id="registerPpswdHashError" style="color: red;"></span>
 				<br>
 				<span id="comfirm_passwordError" style="color: red;"></span>
-				<input type="hidden" name="email" value='<%= request.getParameter("email") %>' />
-				<input type="hidden" name="action" value="forgotPassword" />
+				<input type="hidden" name="mbrId" value="${user.mbrId}" />
+				<input type="hidden" name="action" value="members_UpdatePswdHash_2" />
 				<input type="submit" value="更改密碼" class="submit">
 				
 			</form>

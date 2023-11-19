@@ -20,9 +20,56 @@
     </style>
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
-    <!--我的css-->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/addBid.css">
-    <base>
+
+    <style>
+        ul, ul li {
+            list-style: none;
+        }
+
+        ul {
+            margin-top: 10px;
+        }
+
+        .selectable::before {
+            content: "🌟";
+            padding-right: 5px;
+        }
+
+        .selectable:hover::before, .selectable:hover {
+            content: "🔯";
+            cursor: pointer;
+        }
+
+        .non-selectable::before {
+            content: "🢂";
+            padding-right: 5px;
+            color: #561729;
+        }
+
+        .non-selectable:hover::before, .non-selectable:hover {
+            content: "🢆";
+            padding-right: 0;
+            cursor: not-allowed;
+        }
+
+        .modal-content {
+            background-color: rgb(249, 237, 242);
+            color: #00302e;
+        }
+
+        .fixed-button {
+            position: sticky;
+            bottom: 20px;
+            right: 10px;
+            float: right;
+            z-index: 1000;
+        }
+
+        .text-danger {
+            margin-left: 5px;
+            font-size: 20px;
+        }
+    </style>
 </head>
 
 <body style="background-color:#fff8fb">
@@ -137,12 +184,18 @@
                         <input class="form-control" type="file" id="image01" name="image01"
                                accept="image/jpeg, image/png" required aria-describedby="image01Help">
                         <div id="image01Help" class="form-text">每個商品都必須要有主圖片</div>
+                        <img id="previewImage01" src="#" alt="主圖片預覽"
+                             style="display: none; max-width: 25%; height: auto;margin-top: 10px"/>
+                        <button type="button" id="cancelImage01" class="btn btn-danger btn-sm" style="display: none; margin-top: 10px;">取消圖片</button>
                     </div>
 
                     <div class="mb-3">
                         <label for="image02" class="form-label">上傳商品的補充圖片</label>
                         <input class="form-control" type="file" id="image02" name="image02"
                                accept="image/jpeg, image/png">
+                        <img id="previewImage02" src="#" alt="補充圖片預覽"
+                             style="display: none; max-width: 25%; height: auto; margin-top: 10px"/>
+                        <button type="button" id="cancelImage02" class="btn btn-danger btn-sm" style="display: none; margin-top: 10px;">取消圖片</button>
                     </div>
 
                 </div>
@@ -213,6 +266,49 @@
 </script>
 <!--此頁面的js-->
 <script src="${pageContext.request.contextPath}/js/chengHan/addBid.js" type="text/javascript"></script>
+<script>
+    // 圖片預覽
+    $(document).ready(function() {
+        function readURL(input, previewId, cancelBtnId) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $(previewId).attr('src', e.target.result).show();
+                    $(cancelBtnId).show();
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                $(previewId).hide();
+                $(cancelBtnId).hide();
+            }
+        }
+
+        function clearImage(inputId, previewId, cancelBtnId) {
+            $(inputId).val(''); // 清除输入字段的值
+            $(previewId).hide();
+            $(cancelBtnId).hide();
+        }
+
+        $("#image01").change(function() {
+            readURL(this, '#previewImage01', '#cancelImage01');
+        });
+
+        $("#cancelImage01").click(function() {
+            clearImage('#image01', '#previewImage01', '#cancelImage01');
+        });
+
+        $("#image02").change(function() {
+            readURL(this, '#previewImage02', '#cancelImage02');
+        });
+
+        $("#cancelImage02").click(function() {
+            clearImage('#image02', '#previewImage02', '#cancelImage02');
+        });
+    });
+
+</script>
 
 
 <!--輸入類別標籤的資料結構(必須在引用標籤js檔之前宣告)-->

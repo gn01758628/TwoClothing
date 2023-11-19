@@ -40,9 +40,7 @@ public class DBGifReader5 extends HttpServlet {
 	        	
 	        }
 	        
-	        System.out.println("imageid="+ imageid);
-	        System.out.println("mbrid="+mbrid);
-	        System.out.println("imgType="+imgType);
+
 	        ResultSet rs = null;
 	        
 		res.setContentType("image/gif");

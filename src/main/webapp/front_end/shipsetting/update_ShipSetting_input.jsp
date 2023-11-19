@@ -1,27 +1,53 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="BIG5"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.*"%>
 
-
-
-<html>
-<head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-
+<!DOCTYPE html>
+<html >
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/bootstrap5/bootstrap.min.css" />
+<head>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>會員中心-帳戶資訊 www.bootstrapmb.com</title>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
+
+<style>
+
+</style>
+
 </head>
-<body >
+<body>
 
 <script src="<%=request.getContextPath()%>/js/bootstrap5/bootstrap.bundle.min.js"></script>
-
+					
 <script src="<%=request.getContextPath()%>/js/gordon/twzipcode.js"></script>
-<table id="table-1">
-	<tr><td>
-		 <h3>物流資料修改</h3>
-		 <h4><a href='${pageContext.request.contextPath}/MemberCentre.jsp'>會員中心</a></h4>
-	</td></tr>
-</table>
+<script src="<%=request.getContextPath()%>/js/gordon/memberArea.js"></script>
 
-<h3>資料修改:</h3>
+<div id="head">
+
+<div class="menu">
+<ul>
+<li ><a href='${pageContext.request.contextPath}/index.jsp'>回首頁</a></li>
+<li class="menu_selected"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>
+<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">買家訂單</a></li>
+<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">賣家訂單</a></li>
+</ul>
+</div>
+</div>
+<div id="hy_con">
+<div id="con_lf">
+<h2>物流設定</h2>
+<ul>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">物流設定</a></li>
+</ul>
+</div>
+<div id="con_rh">
+<div class="con_rh_con"><br></br>
+<p class="rh_title">物流設定</p>
 
 
 
@@ -66,30 +92,67 @@
 <input type="hidden" name="mbrId" value="${user.mbrId}">
 <input type="submit" value="送出修改">
 </FORM>
+
+
+
+
+
+</div>
+</div>
+</div>
+
+<div class="clear"></div>
+<div id="footer">
+
+</div>
+
+
 </body>
-
-
-<script>
-let twzipcode = new TWzipcode({
-	"district" : {
-		onChange : function(id) {
-			console.log(this.nth(id).get());
-		}
-	}
-});
-
-
-var county = $(selector).twzipcode('get', 'county');
-
-// 取得縣市 county 以及鄉鎮市區 district（返回陣列）
-var result = $(selector).twzipcode('get', 'county,district'); // 以 , 字串傳入
-var result = $(selector).twzipcode('get', [ 'county', 'district' ]); // 以陣列傳入
-
-// Callback
-$(selector).twzipcode('get', function(county, district, zipcode) {
-	console.log(county); // 縣市
-	console.log(district); // 鄉鎮市區
-	console.log(zipcode); // 郵遞區號
-});
-</script>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

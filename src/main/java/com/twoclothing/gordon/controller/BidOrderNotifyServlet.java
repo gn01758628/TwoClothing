@@ -88,7 +88,7 @@ public class BidOrderNotifyServlet extends HttpServlet {
 				notice.setImageLink("/images/Mainicon.jpg");
 				noticeJedisDAO.insert(notice, buyMbrId);
 				
-				String sellurl = "/bidorder/BidOrder.do?action=buyBidOrder0&sellMbrId="+sellMbrId;
+				String sellurl = "/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId="+sellMbrId;
 				notice.setType(Type);
 				notice.setHead(title);
 				notice.setContent(sellContent);
