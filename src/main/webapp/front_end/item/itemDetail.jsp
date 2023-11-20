@@ -15,6 +15,7 @@
             margin: 0;
             padding: 0;
         }
+        
         form {
             padding: 10px;
             width: 100%;
@@ -47,7 +48,6 @@
             height: 100px;
             table-layout: fixed;
             border-spacing: 20px;
-            border-collapse: separate;      
         }
 
         div.downarea table tr td, th {
@@ -104,15 +104,10 @@
             padding: 5px;
         }
         
-
         div.container div.product-info ul li h1 {
             font-size: 24px;
             margin: 0;
-        }        
-        
-        div.container div.product-info ul li h1 span {
-    		margin-right: 50px;
-		}
+        }
 
         div.container div.product-info ul li p {
             font-size: 16px;
@@ -123,12 +118,13 @@
         /* 收藏 */ 
         .heart-container {
         	--heart-color: rgb(255, 91, 137);
-  			position: relative;
+  			position: absolute;
+  			left: 160px;
 		  	width: 20px;
 		  	height: 20px;
 		  	transition: .3s;
 		}
-		
+
 		.heart-container .checkbox {
 			position: absolute;
 			width: 100%;
@@ -167,13 +163,13 @@
 		}
 
 		.heart-container .checkbox:checked~.svg-container .svg-filled {
-  			display: block
+  			display: block;
 		}
 
 		.heart-container .checkbox:checked~.svg-container .svg-celebrate {
-  			display: block
+  			display: block;
 		}
-		
+
 		@keyframes keyframes-svg-filled {
   			0% {
     			transform: scale(0);
@@ -207,29 +203,30 @@
 		}
 		
 		.message {
-			display: none;
-            color: gray;
-            position: relative;
-    		top: 100%; /* 設置相對於父元素的垂直位置，你可以調整這個數值 */
-    		transform: translateY(-50%); /* 垂直置中 */
-    		margin-left: auto;
+ 			display: none;
+			font-size: 14px;
+			position: absolute;
+			padding-top: 55px;
+    		transform: translateX(169%);
         }
 
-        div.container div.product-info ul li.li_num{
+        div.container div.product-info ul li.li_num {
             margin-bottom: 0px;
             padding-bottom: 0px;
         }
-        div.container div.product-info ul li.li_quantity{
+        
+        div.container div.product-info ul li.li_quantity {
             display: inline-block;
             margin-top: 0px;
             padding-top: 0px;
 
         }
-        div.container div.product-info ul li p.p_quantity{
+        
+        div.container div.product-info ul li p.p_quantity {
             font-size: 12px;
-
         }
-        div.container div.product-info ul li.li_quantity p:nth-child(2){
+        
+        div.container div.product-info ul li.li_quantity p:nth-child(2) {
             margin-left: 5px;
         }
 
@@ -237,14 +234,14 @@
             font-size: 20px;
         }
 
-        li.li_num{
+        li.li_num {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
 
-        li.li_num input{
+        li.li_num input {
             max-width: 73px;
             border-radius: 15px;
             padding: 4px 7px;
@@ -269,7 +266,7 @@
             background-color: #6e6b71;
         }
         
-        div.toSeller{
+        div.toSeller {
             width: 0;
             height: 0;
             border-top: 100px solid transparent;
@@ -279,17 +276,15 @@
             margin-left: auto;
         }
         
-        div.toSeller:hover{
+        div.toSeller:hover {
             border-right-color: rgb(249, 194, 145);
-
         }
         
-        div.toSeller:hover a{
+        div.toSeller:hover a {
             color: white;
-
         }
         
-        div.toSeller a{
+        div.toSeller a {
             position: absolute;
             bottom: 5px;
             right: 5px;
@@ -301,130 +296,35 @@
         }
         
 /*         項目條 */
-        button.carousel-indicators [data-bs-target]{
+        button.carousel-indicators [data-bs-target] {
         	background-color: gray;
         }
         
-        .carousel-inner{
+        .carousel-inner {
         	height: 100%;
 /*         	width:0; */
         }
 
 /*         圖片容器 */ 
-        .carousel-item{
+        .carousel-item {
         	height: 100%; 
 /*   			width: 400px;  */
          }
          
-         .carousel-item active{ 
+         .carousel-item active { 
          	height: 100%; 
 /* 	  		width: 400px;  */
-         } 
-    </style>
+         }
+	</style>
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
-<form class="form_detail" method="post" action="${pageContext.request.contextPath}/ItemCart/cart" enctype="multipart/form-data">
-
-    <div class="container">
-        <div class="product-image">
-<%--             <img id="slider_img" src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="Product Image"> --%>
-<!--         	<button type="button" onclick="nextImg()">按</button> -->
-        	
-        	
-        	
-        	
-        	
-			  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-			  <div class="carousel-indicators">
-			    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-			    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-<!-- 			    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button> -->
-			  </div>
-			  <div class="carousel-inner">
-			    <div class="carousel-item active">
-			      <img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" class="d-block w-100" alt="...">
-			    </div>
-			    <div class="carousel-item">
-			      <img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=2" class="d-block w-100" alt="...">
-			    </div>
-			  </div>
-			  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-			    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			    <span class="visually-hidden">Previous</span>
-			  </button>
-			  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-			    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-			    <span class="visually-hidden">Next</span>
-			  </button>
-			</div>
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        </div>
-        <div class="product-info">
-            <ul>
-                    <input type="hidden" name="itemId" value="${item.itemId}"></h1>
-                <li>
-                    <h1 name="itemName" value="${item.itemName}">${item.itemName}</h1>
-                </li>
-                <li>
-                    <p class="price" name="price">$${item.price}</p>
-                </li>
-                <li class="li_num">
-                    <p>數量：</p><input type="number" name="quantity" id="input_num" min="1" value="1" max="${item.quantity}">
-                </li>
-                <li class="li_quantity">
-                    <p class="p_quantity">剩餘件數</p><p>${item.quantity}</p>
-                </li>
-				<input type="hidden" name="mbrId"  value="2">
-            	<input type="hidden" name="itemId"  value="${item.itemId}">
-				<input type="hidden" name="gotoCart" value="gotoCart">
-                <input type="button" class="buy-button" value="加入購物車">
-            </ul>
-            <div class="toSeller">
-                    <a href="${pageContext.request.contextPath}/SellerHome/home?mbrId=${item.mbrId}">查看賣場</a>
-            </div>
-        </div>
-    </div>
-     <div class="downarea">
-            <table>
-                <tr>
-                    <th>Description</th>
-                    <th>Size</th>
-                    <th>Grade</th>
-                </tr>
-                <tr>
-                    <td>${item.detail}</td>
-                    <td class="size" >${item.size}</td>
-                    <td class="grade" >${item.grade}</td>
-                </tr>
-            </table>
-        </div>
-        
-       	<span class="message" id="successMessage">移除成功</span>
 	<form class="form_detail" method="post" action="${pageContext.request.contextPath}/ItemCart/cart" enctype="multipart/form-data">
 	    <div class="container">
 	        <div class="product-image">
 	<%--             <img id="slider_img" src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="Product Image"> --%>
 	<!--         	<button type="button" onclick="nextImg()">按</button> -->
-	        	
-	        	
-	        	
-	        	
 	        	
 				  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
 				  <div class="carousel-indicators">
@@ -453,13 +353,11 @@
 	        </div>
 	        <div class="product-info">
 	            <ul>
-	                    <input type="hidden" name="itemId" value="${item.itemId}"></h1>
-	                <li style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 10px 4px; padding: 5px;">
-	                    <h1 name="itemName" value="${item.itemName}">
-	                    	<span>${item.itemName}</span>
-	                    </h1>
+	                <input type="hidden" name="itemId" value="${item.itemId}">
+	                <li style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 10px 4px; padding: 5px; position: relative; width: 150px;">
+		                <h1 name="itemName" value="${item.itemName}">${item.itemName}</h1>
 	                    
-	                    <div class="heart-container" title="Like">
+	                    <div class="heart-container">
 					        <input type="checkbox" class="checkbox" id="Give-It-An-Id">
 				            <div class="svg-container">
 				                <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
@@ -480,6 +378,7 @@
 				                </svg>
 				            </div>
 				        </div>
+				        <span class="message" id="successMessage">移除成功</span>
 	                </li>
 	                <li>
 	                    <p class="price" name="price">$${item.price}</p>
@@ -516,109 +415,107 @@
 	    </div>
 	</form>
 	<a href="${pageContext.request.contextPath}/ItemCart/cartlist?goto=cart&mbrId=2">查看購物車</a>
-		
+	
     <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>	
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    	<script>
-	    	$(document).ready(function() {
-				$(".size").each(function () {
-					let status = $(this).text();
-					switch(status){
-						case "0":
-							$(this).text("XS(含以下)");
+    
+    <script>
+	    $(document).ready(function() {
+			$(".size").each(function () {
+				let status = $(this).text();
+				switch(status){
+					case "0":
+						$(this).text("XS(含以下)");
 						break;
-						case "1":
-							$(this).text("S");
+					case "1":
+						$(this).text("S");
 						break;
-						case "2":
-							$(this).text("M");
+					case "2":
+						$(this).text("M");
 						break;
-						case "3":
-							$(this).text("L");
+					case "3":
+						$(this).text("L");
 						break;
-						case "4":
-							$(this).text("XL");
+					case "4":
+						$(this).text("XL");
 						break;
-						case "5":
-							$(this).text("2XL");
+					case "5":
+						$(this).text("2XL");
 						break;
-						case "6":
-							$(this).text("3XL");
+					case "6":
+						$(this).text("3XL");
 						break;
-						case "7":
-							$(this).text("4XL含以上");
+					case "7":
+						$(this).text("4XL含以上");
 						break;
-						case "":
-							$(this).text("其他");
+					case "":
+						$(this).text("其他");
 						break;
-					}
-				});
+				}
+			});
 	
-				$(".grade").each(function () {
-					let status = $(this).text();
-					switch(status){
-						case "0":
-							$(this).text("全新");
+			$(".grade").each(function () {
+				let status = $(this).text();
+				switch(status){
+					case "0":
+						$(this).text("全新");
 						break;
-						case "1":
-							$(this).text("9成5新(未使用，但包裝已拆，吊牌已剪)");
+					case "1":
+						$(this).text("9成5新(未使用，但包裝已拆，吊牌已剪)");
 						break;
-						case "2":
-							$(this).text("9成新(已使用過，但無瑕疵)");
+					case "2":
+						$(this).text("9成新(已使用過，但無瑕疵)");
 						break;
-						case "3":
-							$(this).text("8成新(已使用。少量瑕疵)");
+					case "3":
+						$(this).text("8成新(已使用。少量瑕疵)");
 						break;
-						case "4":
-							$(this).text("5成新(明顯瑕疵)");
+					case "4":
+						$(this).text("5成新(明顯瑕疵)");
 						break;
-						case "5":
-							$(this).text("破損商品(需要修補)");
+					case "5":
+						$(this).text("破損商品(需要修補)");
 						break;
-	
-					}
-				});
-	        });
-	        var quantityValue;
-	    	$("#input_num").on("blur", function() {
-	    		quantityValue = $("#input_num").val();
-	    		
-	    	});
-	    	console.log(quantityValue);
-			 $(".buy-button").on("click",function(){
-			    let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&mbrId=2&quantity="+quantityValue+"&gotoCart=gotoCart";
-			    console.log(url);
-			    fetch(url)
+				}
+			});
+		});
+	    
+		$(".buy-button").on("click",function(){
+			let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&mbrId=2&quantity=${item.quantity}&gotoCart=gotoCart";
+			console.log(url);
+			fetch(url)
 	            .then(function(response){
-	            return response.text();
+	            	return response.text();
 	            })
 	            .then(function(data){
-	            console.log(data);
+	            	console.log(data);
 	            })
 	            .catch(function(error){
-	            console.log(error);
+	            	console.log(error);
 	            })
 		})
 		
+		let isTracked = ${isItemTracked};
+		if (isTracked) {
+			$(".heart-container .checkbox").prop("checked", true);
+    	}
+
 		$("#Give-It-An-Id").on("click", function () {
-		    $(this).toggleClass("active");
-		    
-		    if ($(this).hasClass("active")) {
-	            insertItem();
-	        } else {
-	            deleteItem();
-	        }
+			if (!isTracked) {
+				insertItem();
+            } else {
+            	deleteItem();
+            }
 		});
-			 
+
 		function insertItem() {
-			var itemId = "${item.itemId}";
-			var url = "${pageContext.request.contextPath}/itemtrackinglist.check?action=insert&itemId=" + itemId;
+			var url = "${pageContext.request.contextPath}/itemtrackinglist.check?action=insert&itemId=${item.itemId}";
 			
 			$.ajax({
 		        type: "POST",
 		        url: url,
 		        success: function (data) {
-		            console.log(data);
+		        	console.log(data);
+		        	isTracked = true;
 		        },
 		        error: function (xhr) {
 		            if (xhr.status === 403) {
@@ -629,16 +526,18 @@
 		        }
 		    });
 		}
-		
+
 		function deleteItem() {
-			var itemId = "${item.itemId}";
-			var url = "${pageContext.request.contextPath}/itemtrackinglist.check?action=delete&itemId=" + itemId;
+			var url = "${pageContext.request.contextPath}/itemtrackinglist.check?action=delete&itemId=${item.itemId}";
 			
 			$.ajax({
 		        type: "POST",
 		        url: url,
 		        success: function (data) {
-		        	$("#successMessage").show().delay(2000).fadeOut();
+		        	if (window.innerWidth > 600) {
+		        		$("#successMessage").show().delay(2000).fadeOut();
+		        	}
+		            isTracked = false;
 		        },
 		        error: function (xhr) {
 		        	console.log(xhr);

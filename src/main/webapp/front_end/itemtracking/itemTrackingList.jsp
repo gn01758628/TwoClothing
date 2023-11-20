@@ -7,84 +7,106 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="">
-<title>ItemTracking</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/chi/list.css">
+	<title>ItemTracking</title>
+	
+	<style>    	
+    	.delete {
+    		background-color: transparent;
+		  	border: none;
+		  	transform: scale(1.1);
+		  	transition: .2s linear;
+		}
+		
+		.delete:hover > .icon {
+		  	transform: scale(1.2);
+		}
+		
+		.delete:hover > .icon path {
+		  	fill: rgb(168, 7, 7);
+		}
+    
+		.btn {
+		    border: none;
+		    padding: 0;
+		    margin: 0;
+		    height: 30px;
+		    width: 50px;
+		    font-size: 14px;
+		    line-height: 30px;
+		    text-align: center;
+	    }
+	    
+	    .btn:hover, .btn:focus, .btn:active, .btn:visited {
+	    	outline: none;
+	    	box-shadow: none !important;
+	    }
+	    
+	    .btn.page {
+	    	color: black;
+	    	width: 40px;
+	    }
+	    
+	    .btn.page:hover {
+	    	color: red;
+	    }
+	</style>
 </head>
 <body>
-	<h1>商品追蹤清單</h1>
-	
-	<c:if test="${not empty errorMsgs}">
-		<font style="color: red">請重新確認</font>
-		<ul>
-			<c:forEach var="message" items="${errorMsgs}">
-				<li style="color: red">${message}</li>
-			</c:forEach>
-		</ul>
-	</c:if>
-	
 	<a href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId">查詢所有商品追蹤</a>
 
-	<form method="post" action="${pageContext.request.contextPath}/itemtrackinglist.check">
-		<h3>商品追蹤新增</h3>
-		<h4>到時應刪除，變同移除作法 > 帶商品及會員編號，轉回商品頁，放一顆愛心按鈕放在商品頁，已追蹤成紅色，反之無色</h4>
-		<label>商品編號</label>
-		<input type="text" name="itemId" maxlength=20>
-		<br>
-		<label>會員編號</label>
-		<input type="text" name="mbrId">
-		<br>
-		<input type="hidden" name="action" value="insert">
-		<input type="submit" value="新增">
-	</form>
-	<hr>
+	<main class="main">
+		<ul class="list">
+			<c:forEach var="item" items="${itemTrackingList}">
+				<li>
+					<a href="${pageContext.request.contextPath}/Itemfront/itemlist?goto=${item.itemId}">
+						<div class="image-container">
+					    	<img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" class="img">
+				    	</div>
+				    	
+	    				<div class="product-info">
+						    <span class="name">${item.itemName}</span>
+						    <span class="price">${item.price}</span>
+						    <form method="post" action="${pageContext.request.contextPath}/itemtrackinglist.check">
+						        <button class="delete" type="submit">
+						        	<svg viewBox="0 0 15 17.5" height="16" width="14" xmlns="http://www.w3.org/2000/svg" class="icon">
+						        		<path transform="translate(-2.5 -1.25)" d="M15,18.75H5A1.251,1.251,0,0,1,3.75,17.5V5H2.5V3.75h15V5H16.25V17.5A1.251,1.251,0,0,1,15,18.75ZM5,5V17.5H15V5Zm7.5,10H11.25V7.5H12.5V15ZM8.75,15H7.5V7.5H8.75V15ZM12.5,2.5h-5V1.25h5V2.5Z" id="Fill"></path>
+						        	</svg>
+						        </button>
+						        <input type="hidden" name="itemId" value="${item.itemId}">
+						        <input type="hidden" name="mbrId" value="${sessionScope.mbrId}">
+						        <input type="hidden" name="action" value="delete">
+						    </form>
+						</div>
+					</a>
+				</li>
+			</c:forEach>
+		</ul>
+		
+		<div class="pagination justify-content-center mt-3">
+			<a class="btn page" href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=1">&lt;&lt;</a>
+			    
+			<c:forEach var="i" begin="1" end="${itemTrackingPageQty}">
+			    <c:choose>
+			        <c:when test="${currentPage eq i}">
+			            <a class="btn page" href="#">${i}</a>
+			        </c:when>
+			        <c:otherwise>
+			            <a class="btn page" href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=${i}">${i}</a>
+			        </c:otherwise>
+			    </c:choose>
+			</c:forEach>
+			    
+			<a class="btn page" href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=${itemTrackingPageQty}">&gt;&gt;</a>
+		</div>
+	</main>
 	
-	<div class="page">
-		<c:if test="${itemTrackingPageQty > 0}">
-			<b><font color=red>第${currentPage}/${itemTrackingPageQty}頁</font></b>
-		</c:if>
-	</div>
-
-	<table style="width: 80%; text-align: center;">
-		<tr>
-			<th>商品圖片</th>
-			<th>商品名稱</th>
-			<th>價格</th>
-		</tr>
-		<c:forEach var="item" items="${itemTrackingList}">
-			<tr>
-				<td><img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" class="img"></td>
-				<td>${item.itemName}</td>
-				<td>${item.price}</td>
-				<td>
-					<form method="post" action="${pageContext.request.contextPath}/itemtrackinglist.check">
-						<button class="btn_delete" type="submit">移除</button>
-						<input type="hidden" name="itemId" value="${item.itemId}">
-						<input type="hidden" name="mbrId" value="${sessionScope.mbrId}">
-						<input type="hidden" name="action" value="delete">
-					</form>
-				</td>
-			</tr>
-		</c:forEach>
-	</table>
-
-	<c:if test="${currentPage > 1}">
-		<a href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=1">至第一頁</a>&nbsp;
-	</c:if>
-	<c:if test="${currentPage - 1 != 0}">
-		<a href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=${currentPage - 1}">上一頁</a>&nbsp;
-	</c:if>
-	<c:if test="${currentPage + 1 <= itemTrackingPageQty}">
-		<a href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=${currentPage + 1}">下一頁</a>&nbsp;
-	</c:if>
-	<c:if test="${currentPage != itemTrackingPageQty}">
-		<a href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=${itemTrackingPageQty}">至最後一頁</a>&nbsp;
-	</c:if>
-
-	<a href="${pageContext.request.contextPath}">回首頁</a>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
-	<script src="js/jQquery/jquery-3.7.1.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 </body>
 </html>
