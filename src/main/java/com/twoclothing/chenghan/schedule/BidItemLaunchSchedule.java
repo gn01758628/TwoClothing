@@ -56,8 +56,7 @@ public class BidItemLaunchSchedule extends HttpServlet {
                         notice.setType("競標商品");
                         notice.setHead("競標商品已上架");
                         notice.setContent("您的競標商品：" + bidItem.getBidName() + " 已經上架了");
-                        // TODO 設置點擊連結
-                        notice.setLink("/xxx/ooo");
+                        notice.setLink("/front/biditem/anyone/detail?bidItemId=" + bidItem.getBidItemId());
                         notice.setImageLink("/ReadItemIMG/biditem?id=" + bidItem.getBidItemId() + "&position=1");
                         noticeDAO.insert(notice, bidItem.getMbrId());
                     }

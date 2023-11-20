@@ -84,7 +84,22 @@ public class BidItemEndingSchedule extends HttpServlet {
                             bidOrder.setAmount(FormatUtil.parseFormattedNumber(record.getBidAmount()));
                             bidOrder.setOrderStatus(0);
                             bidOrderDAO.insert(bidOrder);
-                            // TODO 發送訂單成立通知(通知買賣雙方)
+
+                            // 發送訂單成立通知(通知買賣雙方)
+                            String imageLink = "/images/Mainicon.png";
+                            Notice notice3 = new Notice();
+                            // 買方
+                            notice3.setType("競標訂單通知");
+                            notice3.setHead("訂單已成立");
+                            notice3.setContent("請完成訂單付款");
+                            notice3.setLink("/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=" + record.getMbrId());
+                            notice3.setImageLink(imageLink);
+                            noticeDAO.insert(notice3, record.getMbrId());
+                            // 賣方
+                            notice3.setContent("等待買家付款");
+                            notice3.setLink("/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=" + mbrId);
+                            noticeDAO.insert(notice3,mbrId);
+
                         } else {
                             // 競標失敗-流標
                             bidItem.setBidStatus(3);

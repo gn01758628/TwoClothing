@@ -176,8 +176,13 @@
                                 </i>
                             </a>
                             <div class="dropdown-menu text-center beSellerDrop">
-                                <a class="dropdown-item sellItem">一般商品</a>
-                                <a class="dropdown-item sellBidItem">競標商品</a>
+                                <a href="/TwoClothing/Item/item.check?choice=addItem" class="dropdown-item sellItem">新增商品</a>
+                                <a href="/TwoClothing/front/biditem/personal/add.check" class="dropdown-item sellBidItem">申請競標案</a>
+                                <div>
+                                    <hr class="dropdown-divider">
+                                    <a href="/TwoClothing/Item/item.check?choice=search" class="dropdown-item itemCenter">商品管理</a>
+                                    <a href="/TwoClothing/front/biditem/personal/list.check" class="dropdown-item bidItemCenter">競標管理</a>
+                                </div>
                             </div>
                         </li>
                         <li class="nav-item">
@@ -191,7 +196,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="/TwoClothing/front_end/members/registerLogin.jsp"
-                               class="nav-link mx-2 notice position-relative">
+                               class="nav-link mx-2 notice position-relative noticeList">
                                 <span class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger noticeNum">
                                 </span>
                                 <i class="fa-solid fa-bell linkIcon">
