@@ -30,11 +30,6 @@
      *{ 
          box-sizing: border-box; 
      } 
-/*     body{ */
-/*         display: flex; */
-/*         justify-content: center; */
-/*         align-items: center; */
-/*     } */
     main.container{
         /* border: 1px solid black; */
         background-color:  rgba(230, 192, 192, 0.726);
