@@ -46,7 +46,7 @@
         th,td{
             text-align: center;
             padding: 5px;
-            width: 150px;
+            width: 100px;
         }
         tr{
             height: 50px;
@@ -149,6 +149,7 @@
                 <th>尺寸</th>
                 <th>商品狀態</th>
                 <th>數量</th>
+                <th>類別</th>                
                 <th>修改</th>
             </tr>
 
@@ -164,6 +165,7 @@
                     <td name="size">${item.size}</td>
                     <td name="itemStatus">${item.itemStatus}</td>
                     <td name="quantity">${item.quantity}</td>
+                    <td name="tagId">${item.tagId}</td>
                     
                     
                     <td>
@@ -176,43 +178,6 @@
                     
                 </tr>
             </c:forEach>
-            
-<!--             <tr class="tr_data"> -->
-<%--                 <td><img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="product" ></td> --%>
-<!--                 <td>123</td> -->
-<!--                 <td>123</td> -->
-<!--                 <td name="grade">2</td> -->
-<!--                 <td name="size">3</td> -->
-<!--                 <td name="size">3</td> -->
-<!--                 <td name="size">2</td> -->
-                
-<!--                 <td> -->
-<%--                 <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/Item/Update"> --%>
-<!--                     <input class="input_submit" type="submit" value="修改"> -->
-<%--                     <input type="hidden" name="itemId"  value="${item.itemId}"> --%>
-<!--                     <input type="hidden" name="getOneForUpdate"	value="getOne"> -->
-<!--                 </FORM> -->
-<!--                 </td> -->
-                
-<!--             </tr> -->
-<!--             <tr class="tr_data"> -->
-<%--                 <td><img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="product" ></td> --%>
-<!--                 <td>123</td> -->
-<!--                 <td>123</td> -->
-<!--                 <td name="grade">2</td> -->
-<!--                 <td name="size">3</td> -->
-<!--                 <td name="size">3</td> -->
-<!--                 <td name="size">2</td> -->
-                
-<!--                 <td> -->
-<%--                 <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/Item/Update"> --%>
-<!--                     <input class="input_submit" type="submit" value="修改"> -->
-<%--                     <input type="hidden" name="itemId"  value="${item.itemId}"> --%>
-<!--                     <input type="hidden" name="getOneForUpdate"	value="getOne"> -->
-<!--                 </FORM> -->
-<!--                 </td> -->
-                
-<!--             </tr> -->
             
         </table>  
         <div class="page_area">
@@ -278,7 +243,7 @@
 			});
 			
 			$("td[name='grade']").each(function () {
-				console.log($("td[name='grade']"));
+// 				console.log($("td[name='grade']"));
 				let status = $(this).text();
 				switch(status){
 					case "0":
@@ -320,6 +285,16 @@
 				}
 			});
 			
+			var tagList = ${jsonTagList};
+		    var tagIdElements = $("td[name='tagId']");
+			tagList.forEach(function(tag) {
+			    tagIdElements.each(function() {
+			        if ($(this).text() == tag.tagId) {
+			            $(this).text(tag.categoryName);
+			        }
+			    });
+			});
+
 		});
 		
 	

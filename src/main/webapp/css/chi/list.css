@@ -1,0 +1,95 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 100vh;
+    height: 100%; 
+}
+
+html {
+	--header-height: 92px;
+	--aside-width: 224px;
+	min-height: 100vh;
+    height: 100%;
+}
+
+main.main {
+	border: 1px solid red;
+	width: calc(100% - var(--aside-width));
+	margin-left: var(--aside-width);
+	min-height: calc(100vh - var(--header-height));
+	padding: 20px;
+	height: 100%; 
+}
+
+main.main ul.list {
+	border: 1px solid orange;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	height: 98%;
+}
+
+main.main ul.list > li {
+	border: 1px solid black;
+	width: calc(25% - 20px);
+	margin-right: 20px;
+	padding: 10px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	height: calc(50% - 20px);
+}
+
+main.main ul.list > li:nth-child(4n) {
+	border: 1px solid gray;
+	margin-right: 0;
+}
+
+main.main ul.list > li a {
+	border: 1px solid red;
+	display: block;
+	text-decoration: none;
+	width: 100%;
+	height: 100%;
+}
+
+main.main ul.list > li a div.image-container {
+	border: 1px solid blue;
+	width: 100%;
+	height: calc(100% - 30px);
+	font-size: 0;
+	text-align: center;
+	position: relative;
+}
+
+img {
+	border: 1px solid lightblue;
+	max-width: 100%;
+	max-height: 100%;
+}
+
+main.main ul.list > li a div.product-info {
+	border: 1px solid green;
+	display: flex;
+	padding: 2px 4px;
+	align-items: baseline;
+	color: black;
+}
+
+main.main ul.list > li a div.product-info span {
+	border: 1px solid lightgreen;
+	padding-right: 20px;
+}
+
+main.main ul.list > li a div.product-info form {
+	border: 1px solid yellow;
+	position: absolute;
+	right: 0;
+ 	padding-right: 15px;
+}

@@ -292,5 +292,9 @@ public class ItemServiceImpl implements ItemService{
 	public CategoryTags getByPrimaryKey(Integer tagId) {
 		return categoryTagsDAO.getByPrimaryKey(tagId);
 	}
+	
+	public List<Item> getAllByStatus(Integer itemStatus) {
+		return dao.getAllByItemStatus(itemStatus);
+	}
 
 }

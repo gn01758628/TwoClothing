@@ -149,6 +149,9 @@ System.out.println("map///"+map);
 				if(!map.containsKey("itemQuantityend"))
 					predicates.add(builder.greaterThanOrEqualTo(root.get("quantity"), new BigDecimal(row.getValue())));
 			}
+			if("tagId".equals(row.getKey())) {
+				predicates.add(builder.equal(root.get("tagId"), new BigDecimal(row.getValue())));
+		}
 		}	
 
 		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
@@ -218,6 +221,9 @@ System.out.println("map///"+map);
 				if(!map.containsKey("itemQuantityend"))
 					predicates.add(builder.greaterThanOrEqualTo(root.get("quantity"), new BigDecimal(row.getValue())));
 			}
+			if("tagId".equals(row.getKey())) {
+				predicates.add(builder.equal(root.get("tagId"), new BigDecimal(row.getValue())));
+		}
 		}
 		
 		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
