@@ -67,17 +67,18 @@ public class ItemHibernateDAO implements ItemDAO {
 	@Override
 	public List<Item> getAllSubByTagId(Integer tagId){
 		String sql ="WITH RECURSIVE tahhierarchy AS ( "
-					+"SELECT tagid "
-					+"FROM categorytags "
-					+"WHERE tagid = :tagId "
-					+"UNION ALL "
-					+"SELECT ct.tagid "
-					+"FROM categorytags ct "
-					+"INNER JOIN tahhierarchy th ON ct.supertagid = th.tagid "
-					+") "
-					+"SELECT DISTINCT it.* "
-					+"FROM tahhierarchy th "
-					+"INNER JOIN item it ON th.tagid = it.tagid; ";
+                + "SELECT tagid "
+                + "FROM categorytags "
+                + "WHERE tagid = :tagId "
+                + "UNION ALL "
+                + "SELECT ct.tagid "
+                + "FROM categorytags ct "
+                + "INNER JOIN tahhierarchy th ON ct.supertagid = th.tagid "
+                + ") "
+                + "SELECT DISTINCT it.* "
+                + "FROM tahhierarchy th "
+                + "INNER JOIN item it ON th.tagid = it.tagid "
+                + "WHERE it.itemstatus = 0;";
 		
         return getSession().createNativeQuery(sql, Item.class)
                 .setParameter("tagId", tagId)

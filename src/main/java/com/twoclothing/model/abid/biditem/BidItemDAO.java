@@ -21,6 +21,8 @@ public interface BidItemDAO {
 
     List<BidItem> getAllByBidStatus(Integer bidStatus);
 
+    List<BidItem> getAllSubByTagId(Integer tagId);
+
     /**
      * @return 狀態不是5或6的全部商品
      */
