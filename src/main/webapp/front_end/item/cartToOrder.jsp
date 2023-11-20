@@ -43,8 +43,7 @@
     }
 
     div.container div.item_check table{
-        flex-grow: 2;
-        
+        flex-grow: 2;       
     }
     
     div.container div.item_check table tr.trtd td{
@@ -85,7 +84,7 @@
         position: absolute;
         bottom: 10px;
         right: 0px;
-        width: 50%;
+        width: 30%;
     }
     div.under_detail div.underRight table.under_table {
         border: 1px solid orchid;
@@ -98,9 +97,9 @@
     div.under_detail div.underRight table.under_table tbody{
         display: flex;
         flex-direction: row;
-        margin-left: auto;
-        margin-right: 0; 
-        width: 40%;
+        /* margin-left: auto;
+        margin-right: 0;  */
+        width: 100%;
     }
 
     div.under_detail div.underRight table.under_table tr{
@@ -108,16 +107,24 @@
         flex-direction: column;
         justify-content: center;
         width: 100%;
-    }
-
-    div.under_detail div.underRight div, button{
-        margin: 5px 0;
-        font-size: 16px;
+        text-align: right;
     }
 
     div.under_detail div.underRight button{
-        width: 50%;
+        width: 83%;
         margin-top: 20px;
+        margin: 5px 0;
+        font-size: 16px;
+        background-color: royalblue;
+        color: white;
+        border: 1px solid black;
+        height: 30px;
+        cursor: pointer;
+    }
+
+    div.under_detail div.underRight button:hover{
+        background-color: white;
+        color: black;
     }
 
 
