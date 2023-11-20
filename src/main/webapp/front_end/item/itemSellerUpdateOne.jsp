@@ -156,6 +156,7 @@
                 <th>尺寸</th>
                 <th>商品狀態</th>
                 <th>數量</th>
+                <th>類別</th>  
                 <th>修改</th>
             </tr>
 
@@ -169,6 +170,7 @@
                     <td class="size">${item.size}</td>
                     <td class="itemStatus">${item.itemStatus}</td>
                     <td class="quantity">${item.quantity}</td>
+                    <td class="tagId">${item.tagId}</td>
                     
                     
                     <td>
@@ -291,6 +293,10 @@
 				}
 			});
 			
+			var tagList = ${jsonTag};
+			$(".tagId").text(tagList.categoryName);
+
+		
 		});
 		
 	

@@ -183,12 +183,15 @@
 		 	switch(data.message){
 		 		case "ok":
 		 			window.alert("審核成功！");
+		 			location.reload();
 		 			break;
 		 		case "out_of_e_wallet":
 		 			window.alert("審核失敗");
+		 			location.reload();
 		 			break;
 		 		default:
 		 			window.alert(data.message);
+		 		location.reload();
 		 			break;
 		 	}
 		 });
@@ -197,6 +200,8 @@
 				btnElement.closest("tr").hide();
 					console.log($(".status").text());
 				}
+	        
+
 	});
 	
 	$(document).ready(function() {

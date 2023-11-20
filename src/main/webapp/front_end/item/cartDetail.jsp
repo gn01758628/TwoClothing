@@ -68,8 +68,8 @@
 		}
 		
 		div.detailBox img.itemImg {
-			width: 150px;
-		    height: 100px;
+			width: 120px;
+/* 		    height: 100px; */
 		    margin-left: 30px;
 		}
 		

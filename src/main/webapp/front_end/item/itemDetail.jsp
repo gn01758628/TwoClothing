@@ -108,6 +108,10 @@
             font-size: 24px;
             margin: 0;
         }
+        
+        div.container div.product-info ul li h1 span {
+    		margin-right: 50px;
+		}
 
         div.container div.product-info ul li p {
             font-size: 16px;
@@ -133,7 +137,7 @@
 			z-index: 20;
 			cursor: pointer;
 		}
-		
+
 		.heart-container .svg-container {
   			width: 100%;
   			height: 100%;
@@ -203,7 +207,7 @@
 		}
 		
 		.message {
- 			display: none;
+			display: none;
 			font-size: 14px;
 			position: absolute;
 			padding-top: 55px;
@@ -325,7 +329,7 @@
 	        <div class="product-image">
 	<%--             <img id="slider_img" src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="Product Image"> --%>
 	<!--         	<button type="button" onclick="nextImg()">按</button> -->
-	        	
+	        	     	
 				  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
 				  <div class="carousel-indicators">
 				    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -353,9 +357,9 @@
 	        </div>
 	        <div class="product-info">
 	            <ul>
-	                <input type="hidden" name="itemId" value="${item.itemId}">
-	                <li style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 10px 4px; padding: 5px; position: relative; width: 150px;">
-		                <h1 name="itemName" value="${item.itemName}">${item.itemName}</h1>
+	                    <input type="hidden" name="itemId" value="${item.itemId}"></h1>
+	                <li style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 10px 4px; padding: 5px;">
+	                    <h1 name="itemName" value="${item.itemName}">${item.itemName}</h1>
 	                    
 	                    <div class="heart-container">
 					        <input type="checkbox" class="checkbox" id="Give-It-An-Id">
@@ -478,7 +482,7 @@
 				}
 			});
 		});
-	    
+		
 		$(".buy-button").on("click",function(){
 			let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&mbrId=2&quantity=${item.quantity}&gotoCart=gotoCart";
 			console.log(url);
@@ -498,15 +502,15 @@
 		if (isTracked) {
 			$(".heart-container .checkbox").prop("checked", true);
     	}
-
+		
 		$("#Give-It-An-Id").on("click", function () {
-			if (!isTracked) {
-				insertItem();
-            } else {
-            	deleteItem();
-            }
+		    if (!isTracked) {
+	            insertItem();
+	        } else {
+	            deleteItem();
+	        }
 		});
-
+			 
 		function insertItem() {
 			var url = "${pageContext.request.contextPath}/itemtrackinglist.check?action=insert&itemId=${item.itemId}";
 			
@@ -514,8 +518,8 @@
 		        type: "POST",
 		        url: url,
 		        success: function (data) {
-		        	console.log(data);
-		        	isTracked = true;
+		            console.log(data);
+		            isTracked = true;
 		        },
 		        error: function (xhr) {
 		            if (xhr.status === 403) {
@@ -526,7 +530,7 @@
 		        }
 		    });
 		}
-
+		
 		function deleteItem() {
 			var url = "${pageContext.request.contextPath}/itemtrackinglist.check?action=delete&itemId=${item.itemId}";
 			
