@@ -1,8 +1,8 @@
 package com.twoclothing.chenghan.controller;
 
 import com.google.gson.Gson;
-import com.twoclothing.chenghan.IsLoginDTO;
-import com.twoclothing.chenghan.MemberInfoDTO;
+import com.twoclothing.chenghan.dto.IsLoginDTO;
+import com.twoclothing.chenghan.dto.MemberInfoDTO;
 import com.twoclothing.model.members.Members;
 import com.twoclothing.redismodel.memberMessage.MemberMessageDAO;
 import com.twoclothing.redismodel.memberMessage.MemberMessageJedisDAO;
@@ -44,7 +44,6 @@ public class HeaderServlet extends HttpServlet {
         switch (pathInfo) {
             case "/loginValidate" -> doLoginValidate(request, response);
             case "/search" -> doSearch(request, response);
-//            case "/vent" -> doVent(request, response);
         }
     }
 
