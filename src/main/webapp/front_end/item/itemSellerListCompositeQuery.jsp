@@ -7,6 +7,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seller Item List</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     
     <style>
         *{
@@ -75,7 +92,7 @@
             padding: 5px;
             color: white;
             text-decoration: none;
-            color:darkblue;
+            color:#561729;
             font-weight: bolder;
             margin: 2px 5px;
         }
@@ -90,10 +107,13 @@
         div.page_area span{
             margin: 5px 0;
             font-size: 13px;
-            color: darkblue;
+            color: #561729;
         }
         div.pagination{
             margin: 5px 0;
+            display: flex;
+		    justify-content: center;
+		    align-items: center;
 
         }
 
@@ -102,18 +122,17 @@
             width: 25px;
             height: 25px;
             text-align: center;
-            font-size: 18px;
+            font-size: 15px;
             color:rgb(48, 87, 184);
             font-weight: 550;
             border: 1px solid rgb(255, 255, 255);
-            padding: 2px;
             margin: 4px;
             border-radius: 50%;
-            background-color: darkblue;
+            background-color: #561729;
             color: white;
         }
         input.input_submit{
-            background-color: darkblue;
+            background-color: #561729;
             color: white;
             border: 0px;
             padding: 5px;
@@ -123,6 +142,8 @@
         }
         input.input_submit:hover{
             cursor: pointer;
+            background-color: #f9edf2;
+            color:black;
         }
 		img {
    			height: 50px;
@@ -131,9 +152,14 @@
 			color:#CD5C5C;
 		}
 	</style>
+    <!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
 	
 </head>
 <body>
+	<div class="headerHTML"></div>
     <main class="main">
         <h2>商品列表</h2>
         
@@ -204,8 +230,25 @@
         </div>
         
     </main>
+	<div class="footerHTML"></div>
 	
-	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>	
+	<!--bootstrap5 js-->
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+	<!--jQuery-->
+	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+	<!--Sweet Alert-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+	<!--JS loader-->
+	<script>
+	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+	        // 保證headerHTML加載完才載入header.js
+	        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+	    });
+	
+	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	</script>
+
 	<script>
 	
 		$(document).ready(function() {

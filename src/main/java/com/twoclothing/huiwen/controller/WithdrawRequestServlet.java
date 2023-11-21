@@ -43,12 +43,23 @@ public class WithdrawRequestServlet extends HttpServlet {
 		res.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
 		String choice = req.getParameter("choice");
-		System.out.println("choice:" + choice);
+
 		// 連去新增
 		if ("add".equals(choice)) {
 			//會員編號從登入取
-			Integer balance = withdrawSvc.getBalanceByMbrId(1);
+			HttpSession session = req.getSession();
+			Integer mbrId = (Integer) session.getAttribute("mbrId");
+			Integer balance = withdrawSvc.getBalanceByMbrId(mbrId);
+			//取得申請中的總額
+			List<WithdrawRequest> WithdrawRequestList = withdrawSvc.getByMbrReqing(mbrId);
+			Integer reqing = 0;
+			for(WithdrawRequest wr : WithdrawRequestList) {
+				reqing += wr.getAmount();
+			}
+//			reqing = WithdrawRequestList.getAmount();
+			System.out.println("reqing"+reqing);
 			req.setAttribute("balance", balance);
+			req.setAttribute("reqing", reqing);
 			String url = "/front_end/withdrawRequest/WRAdd.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
@@ -58,9 +69,11 @@ public class WithdrawRequestServlet extends HttpServlet {
 		if ("search".equals(choice)) {			
 			HttpSession session = req.getSession();
 			Integer mbrId = (Integer) session.getAttribute("mbrId");
+
 			List<WithdrawRequest> withdrawRequestList = withdrawSvc.getAllWRByMbrId(mbrId);
+
 			req.setAttribute("WRList", withdrawRequestList);
-			
+
 			String url = "/front_end/withdrawRequest/WRMbrSearchList.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
@@ -115,8 +128,9 @@ public class WithdrawRequestServlet extends HttpServlet {
 			if (req.getParameter("note").length() != 0) {
 				note = req.getParameter("note");
 			}
-
-			withdrawRequest.setMbrId(1);// 從登入資訊取
+			HttpSession session = req.getSession();
+			Integer mbrId = (Integer) session.getAttribute("mbrId");
+			withdrawRequest.setMbrId(mbrId);// 從登入資訊取
 			withdrawRequest.setAmount(amount);
 			withdrawRequest.setMbrAccount(mbrAccount);
 			withdrawRequest.setReqDate(reqDate);
@@ -126,7 +140,7 @@ public class WithdrawRequestServlet extends HttpServlet {
 			withdrawRequest.setNote(note);
 
 			int withdrawRequestPK = withdrawSvc.addWR(withdrawRequest);
-			System.out.println(withdrawRequest);
+
 
 			req.setAttribute("withdrawRequest", withdrawRequest);
 		    res.setContentType("application/json;charset=UTF-8");
@@ -221,14 +235,14 @@ public class WithdrawRequestServlet extends HttpServlet {
 				//修改會員balance金額，申請通過的才改
 	            if(reqStatus == 1) {
 	            	Integer withdrawAmount = withdrawRequest.getAmount();
-	            	Integer balance = withdrawSvc.getBalanceByMbrId(1);
+	    			HttpSession session = req.getSession();
+	    			Integer mbrId = (Integer) session.getAttribute("mbrId");
+	            	Integer balance = withdrawSvc.getBalanceByMbrId(mbrId);
 	            	Integer newAmount = balance - withdrawAmount;
 	            	
-	            	Members mem=memSvc.getByPrimaryKey(1);
+	            	Members mem=memSvc.getByPrimaryKey(mbrId);
 	            	mem.setBalance(newAmount);
 	            	memSvc.updateMembers(mem);
-	            	System.out.println(mem);
-	            	System.out.println(newAmount);
 	            	
 	            }
 	            

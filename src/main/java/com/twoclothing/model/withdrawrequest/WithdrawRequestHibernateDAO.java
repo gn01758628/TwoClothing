@@ -59,6 +59,14 @@ public class WithdrawRequestHibernateDAO implements WithdrawRequestDAO {
 				.setParameter("reqstatus", reqstatus).list();
 
 	}
+	
+	@Override
+	public List<WithdrawRequest> getByMbrReqing(Integer mbrId) {
+	    return getSession()
+	            .createQuery("from WithdrawRequest where mbrId = :mbrId and reqstatus = 0", WithdrawRequest.class)
+	            .setParameter("mbrId", mbrId)
+	            .list();
+	}
 
 	@Override
 	public int update(List<WithdrawRequest> withdrawRequest) {

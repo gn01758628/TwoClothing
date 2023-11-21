@@ -1,6 +1,7 @@
 package com.twoclothing.huiwen.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,21 +62,14 @@ public class ItemCartServlet extends HttpServlet {
 			System.out.println("quantity" + quantity);
 
 			HttpSession session = req.getSession();
-			String mbrId = (String) session.getAttribute("mbrId");
+			String mbrId = String.valueOf(session.getAttribute("mbrId"));
 
 			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 			Jedis jedis = jedisPool.getResource();
 			try {
-				jedis.select(13);
-				
-				String[] itemIds = { itemId };
-				String[] quantities = { quantity };
-				
-				for (int i = 0; i < itemIds.length; i++) {
-					jedis.hset(mbrId, itemIds[i], quantities[i]);
-				}
-				
-//				Map<String, String> productInfo = jedis.hgetAll(mbrId);
+			    jedis.select(13);
+
+			    jedis.hset(mbrId, itemId, quantity); 
 		
 				req.setAttribute("item", itemList);
 			}catch(Exception e) {
@@ -83,6 +77,12 @@ public class ItemCartServlet extends HttpServlet {
 			}finally {
 				jedis.close();	
 			}
+			
+		    String responseData = "加入成功！"; // 這裡是要回傳的訊息
+
+		    PrintWriter out = res.getWriter();
+		    out.print(responseData);
+		    out.flush();
 
 		}
 		//查看購物車
@@ -93,7 +93,7 @@ public class ItemCartServlet extends HttpServlet {
 			List<String> quantities = new ArrayList<>();
 			
 			HttpSession session = req.getSession();
-			String mbrIdStr = (String) session.getAttribute("mbrId");
+			String mbrIdStr = String.valueOf(session.getAttribute("mbrId"));
 			
 			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 			Jedis jedis = jedisPool.getResource();
@@ -161,7 +161,7 @@ public class ItemCartServlet extends HttpServlet {
 		if ("delCart".equals(req.getParameter("delCart"))) {
 			String itemId = req.getParameter("itemId");
 			HttpSession session = req.getSession();
-			String mbrId = (String) session.getAttribute("mbrId");
+			String mbrId = String.valueOf(session.getAttribute("mbrId"));
 			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 			Jedis jedis = jedisPool.getResource();
 			try {
@@ -179,7 +179,7 @@ public class ItemCartServlet extends HttpServlet {
 			String itemId = req.getParameter("itemId");
 			String quantity = req.getParameter("quantity");
 			HttpSession session = req.getSession();
-			String mbrId = (String) session.getAttribute("mbrId");
+			String mbrId = String.valueOf(session.getAttribute("mbrId"));
 			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 			Jedis jedis = jedisPool.getResource();
 			try {
@@ -201,7 +201,7 @@ public class ItemCartServlet extends HttpServlet {
 			List<String> quantities = new ArrayList<>();
 			//之後從session取mbrId
 			HttpSession session = req.getSession();
-			String mbrId = (String) session.getAttribute("mbrId");
+			String mbrId = String.valueOf(session.getAttribute("mbrId"));
 			try {
 				jedis.select(13);
 			
@@ -224,7 +224,9 @@ public class ItemCartServlet extends HttpServlet {
 			//取得會員物流資訊
 			List<ShipSetting> shipSettingList = itemService.getSettingByMbrId(Integer.valueOf(mbrId));
 			ShipSetting shipSetting = shipSettingList.get(0);
-
+			
+			//取得會員錢包餘額
+			Integer balanceEableUse = itemService.getMbrBalanceByMbrId(Integer.valueOf(mbrId));
 			
 			//取得折扣金額
 			Integer cartCount = Integer.valueOf(req.getParameter("cartCount"));
@@ -233,6 +235,7 @@ public class ItemCartServlet extends HttpServlet {
 			req.setAttribute("quantities", quantities);
 			req.setAttribute("shipSetting", shipSetting);
 			req.setAttribute("cartCount", cartCount);
+			req.setAttribute("balanceEableUse", balanceEableUse);
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/cartToOrder.jsp");
 			dispatcher.forward(req, res);
 			return;

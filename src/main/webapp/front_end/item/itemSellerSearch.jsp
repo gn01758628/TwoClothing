@@ -8,7 +8,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>itemSellerSearch</title>
-    	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     
     <style>
         *{
@@ -39,10 +55,10 @@
             padding: 20px;
         }
         div.main_inner h2{
-            border: 2px solid #134f77;
+/*             border: 2px solid #134f77; */
             border-radius: 20px;
             padding: 5px;
-            background: linear-gradient(to right, #4daff0, #ffffff);
+            background: var(--gradient-2, linear-gradient(90deg, #2AF598 0%, #009EFD 100%));
             color: #393939;
             width: 180px;
             text-align: center;
@@ -106,6 +122,7 @@
         div.up_area label{
 /*             width: 100%; */
             text-align: left;
+            background-color: #2f3640;
         }
 
         div.up_area input{
@@ -174,31 +191,34 @@
             border-radius: 15px;
         }
 
-        input{
+        form.form_search div.up_area input{
             margin: 10px 0;
             padding: 7px;
 /*             border-width: 1px; */
             border: 1px solid black !important;
         }
 
-        input.btn_submit{
+        form.form_search input.btn_submit{
             width: 180px;
             border-radius: 20px;
-            border:2px solid #134f77;
             background-color: white;
             font-size: 16px;
+            margin: 10px 0;
+            padding: 7px;
+            border: 1px solid black !important;
+            
         }
-        input.btn_submit:hover{
+        form.form_search input.btn_submit:hover{
             cursor:pointer;
-            background: linear-gradient(to right, #4daff0, #ffffff);
-
+            background: var(--gradient-2, linear-gradient(90deg, #2AF598 0%, #009EFD 100%));
+        	boder:none;
         }
         div.up_area label{
 /*          display:inline-block;  */
 /*         width:90px; */
             padding: 7px;
             border-radius: 15px;
-            background-color: #61abdd;
+            background-color: #2f3640;
             color: #ffffff;
         }
         div.under_area label{
@@ -206,7 +226,7 @@
 /*         width:90px; */
             padding: 7px;
             border-radius: 15px;
-            background-color: #61abdd;
+            background-color: #2f3640;
             color: #ffffff;
         }
         select{
@@ -216,9 +236,18 @@
             border-radius: 15px;
             width: 100%;
         }
+        #categorySelect{
+        	background-color:white;
+        }
     </style>
+    <!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
+    
 </head>
 <body>
+	<div class="headerHTML"></div>
     <main class="main">
         <div class="main_inner">
             <h2>商品查詢</h2>
@@ -325,23 +354,29 @@
             </form>
         </div>
     </main>
+    <div class="footerHTML"></div>
+    
 	<!--bootstrap5 js-->
 	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
 	<!--jQuery-->
 	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+	<!--Sweet Alert-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+	<!--JS loader-->
+	<script>
+	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+	        // 保證headerHTML加載完才載入header.js
+	        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+	    });
+	
+	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	</script>
     <script>
     const categoryData = [
-    	
-        {id:2, name: '上衣', parentId:1},
-        {id:3, name: '庫子', parentId:1},
-        {id:4, name: '長袖', parentId:2},
-        {id:5, name: '長褲', parentId:3},
-    	
-    	
-//         <c:forEach var="tags" items="${categoryTags}" begin="1">
-//         {id:${tags.tagId}, name: '${tags.categoryName}', parentId:${tags.superTagId}},
-//         </c:forEach>
+        <c:forEach var="tags" items="${applicationScope.categoryTags}" begin="1">
+        {id:${tags.tagId}, name: '${tags.categoryName}', parentId:${tags.superTagId}},
+        </c:forEach>
     ];
 </script>
 

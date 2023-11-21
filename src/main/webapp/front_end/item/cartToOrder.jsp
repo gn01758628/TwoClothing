@@ -7,133 +7,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商品確認</title>
+    <title>購買商品資訊確認</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
    
 
-<style>
-    *{
-        box-sizing: border-box;
-    }
+	<style>
+	    *{
+	        box-sizing: border-box;
+	    }
+		h2#itemConfirm{
+			text-align:center;
+			padding-top: 25px;
+		}
+	    div.body_container{
+	        display: flex;
+	        flex-direction: column;
+	        justify-content: center;
+	        margin: 30px;
+	        margin-top:10px;
+	        width: calc(100% - 80px);
+	    }
+	
+	    div.body_container div.item_check{
+	        border:none;
+	        display: flex;
+	        flex-direction: row;
+	        justify-content: space-between;
+	        padding: 18px;
+	        margin:10px 0px;
+	        background-color: #f9edf2;
+		    border-radius:60px;
+	    }
+	
+	    div.body_container div.item_check div.imgContainer{
+	        height: 50px;
+	        width: 50px;
+	        margin-left: 20px;
+	    }
+	
+	    img.itemImg{
+	        height: 100%;
+	        width: 100%;
+	    }
+	    
+	    div.body_container div.item_check div.info{
+	    	display: flex;
+		    justify-content: center;
+		    align-items: center;
+	    }
+	    
+	    div.body_container div.item_check div.info p.item-name{
+	    	margin: 15px;
+   			margin-left: 22px;
+	    }
+	
+	    div.body_container div.item_check table{
+	        flex-grow: 2;       
+	    }
+	    
+	    div.body_container div.item_check table tr.trtd td{
+	        text-align: center;
+	    }
+	    
+	    div.body_container div.item_check table tbody tr.trth{
+	    	text-align: center;
+	    }
+	
+	    div.under_detail{
+ 	        border: 1px solid black; 
+	        display: flex;
+	        flex-direction: row;
+	        justify-content: center;
+	        justify-content: space-between;
+	        margin-top: 50px;
+	        position: relative;
+	        padding: 15px 30px;
+	        border-radius: 38px;
+	        
+	        
+	    }
+	
+	    div.under_detail div.underLeft{
+	        width: 40%;
+	        padding: 0 10px;
+	    }
+	
+	    div.under_detail div.underLeft p{
+	        /* border: 1px solid yellowgreen; */
+	        display: flex;
+	        flex-direction: column;
+	        margin: 10px 0px;
+	    }
+	
+	    div.under_detail div.underLeft p label{
+	        margin: 10px 0px;
+	    }
+	
+	    div.under_detail div.underRight{
+/* 	        border: 1px solid orange; */
+	        text-align:right;
+	        padding-right: 60px;
+	        position: absolute;
+	        bottom: 10px;
+	        right: 0px;
+	        width: 30%;
+	    }
+	    div.under_detail div.underRight table.under_table {
+/* 	        border: 1px solid orchid; */
+	        display: flex;
+	        flex-direction: row;
+	
+	        
+	    }
+	
+	    div.under_detail div.underRight table.under_table tbody{
+	        display: flex;
+	        flex-direction: row;
+	        /* margin-left: auto;
+	        margin-right: 0;  */
+	        width: 100%;
+	    }
+	    
 
-    div.container{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: 40px;
-        width: calc(100% - 80px);
-    }
-
-    div.container div.item_check{
-        border: 1px solid black;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 10px;
-        margin:10px 0px;
-    }
-
-    div.container div.item_check div.imgContainer{
-        height: 50px;
-        width: 50px;
-    }
-
-    img.itemImg{
-        height: 100%;
-        width: 100%;
-    }
-
-    div.container div.item_check table{
-        flex-grow: 2;       
-    }
-    
-    div.container div.item_check table tr.trtd td{
-        text-align: center;
-    }
-
-    div.under_detail{
-        border: 1px solid blue;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        justify-content: space-between;
-        margin-top: 50px;
-        position: relative;
-        
-    }
-
-    div.under_detail div.underLeft{
-        width: 40%;
-        padding: 0 10px;
-    }
-
-    div.under_detail div.underLeft p{
-        /* border: 1px solid yellowgreen; */
-        display: flex;
-        flex-direction: column;
-        margin: 10px 0px;
-    }
-
-    div.under_detail div.underLeft p label{
-        margin: 10px 0px;
-    }
-
-    div.under_detail div.underRight{
-        border: 1px solid orange;
-        text-align:right;
-        padding-right: 60px;
-        position: absolute;
-        bottom: 10px;
-        right: 0px;
-        width: 30%;
-    }
-    div.under_detail div.underRight table.under_table {
-        border: 1px solid orchid;
-        display: flex;
-        flex-direction: row;
-
-        
-    }
-
-    div.under_detail div.underRight table.under_table tbody{
-        display: flex;
-        flex-direction: row;
-        /* margin-left: auto;
-        margin-right: 0;  */
-        width: 100%;
-    }
-
-    div.under_detail div.underRight table.under_table tr{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: 100%;
-        text-align: right;
-    }
-
-    div.under_detail div.underRight button{
-        width: 83%;
-        margin-top: 20px;
-        margin: 5px 0;
-        font-size: 16px;
-        background-color: royalblue;
-        color: white;
-        border: 1px solid black;
-        height: 30px;
-        cursor: pointer;
-    }
-
-    div.under_detail div.underRight button:hover{
-        background-color: white;
-        color: black;
-    }
-
-
-</style>
+	
+	    div.under_detail div.underRight table.under_table tr{
+	        display: flex;
+	        flex-direction: column;
+	        justify-content: center;
+	        width: 100%;
+	        text-align: right;
+	    }
+	
+	    div.under_detail div.underRight button{
+	        width: 83%;
+	        margin: 25px 0;
+	        font-size: 16px;
+	        background-color: #561729;
+	        color: white;
+	        border: 1px solid black;
+	        height: 40px;
+	        cursor: pointer;
+	        border-radius: 32px;
+	    }
+	
+	    div.under_detail div.underRight button:hover{
+	        background-color: white;
+	        color: #561729;
+	    }
+	
+	
+	</style>
+    <!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
 
 </head>
 <body>
-    <h1>商品確認</h1>
-    <div class="container">
+	<div class="headerHTML"></div>
+    <h2 id="itemConfirm">商品確認</h1>
+    <div class="body_container">
     	<c:forEach var="item" items="${itemList}" varStatus="loop">
 	        <div class="item_check">
 	            <div class="imgContainer">
@@ -206,10 +255,24 @@
             </div>
         </div>
     </div>
-    
-    <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>	
-    
-    
+	<div class="footerHTML"></div>   
+	 
+	<!--bootstrap5 js-->
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+	<!--jQuery-->
+	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+	<!--Sweet Alert-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+	<!--JS loader-->
+	<script>
+	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+	        // 保證headerHTML加載完才載入header.js
+	        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+	    });
+	
+	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	</script>  
     <script>
     	//存商品id、購買數量
 		const eachitemId = [];
@@ -290,8 +353,21 @@
 	   		//取得付款方式
 		   	$('input[type="radio"]').change(function() {
 		        if ($(this).is(':checked')) {
+		        	if($(this).val() == 2){				   		
+		        		//判斷錢包是否足夠支付
+				   		var balanceEableUse = ${balanceEableUse};
+				   		var totalPaywithbalance = $('input[name="totalPay"]').val();				
+				   		if(balanceEableUse<totalPaywithbalance){
+				   			Swal.fire({
+				   			  icon: "error",
+				   			  title: "Oops...",
+				   			  text: "錢包餘額不足！請重新選擇付款方式",
+// 				   			  footer: '<a href="">去查看餘額</a>'
+				   			});
+				   							   			
+				   		}		
+		        	}
 		          selectedOption = $(this).val();
-		          console.log('已選中的付款方式：', selectedOption);
 		        }
 		   	});
 		   	 
@@ -305,6 +381,7 @@
 	   	    });	
 			
    		});
+   		
    		
    		//下訂單按鈕將資料傳輸
    		$(".order").click(function(){

@@ -44,7 +44,7 @@ public class ItemFrontServlet extends HttpServlet{
 		res.setContentType("text; charset=UTF-8");
 		
 		//商品列表 到 商品詳情頁
-		System.out.println(req.getParameter("goto"));
+		System.out.println("!!!"+req.getParameter("goto"));
 		String goTo = req.getParameter("goto");
 		int itemId = Integer.valueOf(goTo);
 		Item item = itemService.getItemByItemId(itemId);
@@ -58,6 +58,6 @@ public class ItemFrontServlet extends HttpServlet{
 		req.setAttribute("item", item);
 		req.setAttribute("isItemTracked", isItemTracked);
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/itemDetail.jsp");
-		dispatcher.forward(req, res);						
+		dispatcher.forward(req, res);
 	}	
 }

@@ -46,6 +46,12 @@ public class WithdrawRequestServiceImpl implements WithdrawRequestService{
 		return WRDAO.getAllByReqStatus(reqstatus);
 
 	}
+	@Override
+	public List<WithdrawRequest> getByMbrReqing(Integer mbrId) {
+		System.out.println(WRDAO.getByMbrReqing(mbrId));
+		return WRDAO.getByMbrReqing(mbrId);
+		
+	}
 
 	@Override
 	public int updateWR(List<WithdrawRequest> withdrawRequest) {

@@ -30,7 +30,7 @@
      *{ 
          box-sizing: border-box; 
      } 
-    main.container{
+    main.body_container{
         /* border: 1px solid black; */
         background-color:  rgba(230, 192, 192, 0.726);
         display: flex;
@@ -39,12 +39,12 @@
         flex-direction: column;
 /*         height: calc(100vh - 252px); */
         width: 100%;
-        margin-top: 150px;
+/*         margin-top: 150px; */
         padding: 20px;
-        margin-top:95px;
+/*         margin-top:95px; */
     }
     
-    form.form_add h1 span{
+    form.form_add h3 span{
     	background-color: lightgray;
     	color:rgb(232, 138, 107);
     	border-radius: 10px;
@@ -56,42 +56,56 @@
     form.form_add{
         /* border: 1px solid salmon; */
         height: 90%;
-        width: 60%;
+        width: 70%;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
     }
-
-    form.form_add div{
-        /* border: 1px solid blue; */
-        height: 50%;
-        width: 40%;
-        margin: 20px 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+    form.form_add h3{
+    	margin-bottom: 35px;
     }
+
     
-    form.form_add div div.overage{
+    form.form_add div.overage{
         border: 3px solid rgb(232, 138, 107);
-        width: 100%;
+        width: 200px;
         border-radius: 10px;
         background-color: white;
         color: rgb(232, 138, 107);
         text-align: center;
         font-size: 26px;
         font-weight: bold;
-        margin-bottom: 50px;
+		margin: 40px 0;
+        padding: 10px 0;
+        height: 50%;
+        margin: 20px 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    form.form_add div.div_main{
+    	display: flex;
+    	align-items: center;
+    	flex-direction: column;
+    }
+    form.form_add div.div_main div{
+        /* border: 1px solid blue; */
+        height: 50%;
+        width: 200px;
+        margin: 10px 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
-    form.form_add div span:nth-child(1){
+    form.form_add div.div_main div span:nth-child(1){
         /* border: 1px solid black; */
         padding: 10px 0;
         width: 100%;
     }
 
-    form.form_add div span div{
+    form.form_add div..div_main div span div{
         display: inline-block;
         width: 50px;
         height: 50px;
@@ -101,7 +115,7 @@
         
     }
 
-    form.form_add div span span:nth-child(2){
+    form.form_add div.div_main div span span:nth-child(2){
         border: 2px solid rgb(255, 255, 255);
         color: rgb(255, 255, 255);
         background-color: rgb(232, 138, 107);
@@ -111,29 +125,29 @@
 
     }
 
-    form.form_add div span span.star{
+    form.form_add div.div_main div span span.star{
         color: rgb(162, 29, 29);
     }
 
-    form.form_add div span div img{
-        width: 90%;
+    form.form_add div.div_main div span div img{
+        width: 40px;
 
     }
 
-    form.form_add div input{
+    form.form_add div.div_main div input{
         border-radius: 10px;
         border-color: rgb(223, 128, 128);
         background-color: rgb(245, 245, 245);
-        height: 30px;
+        height: 40px;;
         width: 100%;
-        margin: 20px 0;
+        padding: 8px;
     }
-    form.form_add div input:focus{
+    form.form_add div.div_main div input:focus{
         border-color: lightgray;
     }
 
     button#submit_form{
-        width: 40%;
+        width: 200px;
         height: 50px;
         background-color: rgb(243, 144, 144);
         border-radius: 10px;
@@ -155,38 +169,41 @@
 <body>
 <!--放在最前面-->
 <div class="headerHTML"></div>
-    <main class="container">
-<!--     <div class="err"> -->
-<!--     <span></span> -->
-<!--     </div> -->
+    <main class="body_container">
+    <div class="err">
+    <span></span>
+    </div>
         
         <form class="form_add">
-        	<h1>虛擬錢包<span>提款申請</span></h1>
-            <div>
-                <div class="overage">
-                    <span>餘額：$<span>${balance}</span></span>
-                </div>
-                <span>
-                    <div><img src="${pageContext.request.contextPath}/images/withdrawRequestIcon/dollar.png" alt=""></div>
-                    <span>提款金額：</span>
-                    <span class="star">*</span>
-                </span>
-                <input type="text" placeholder="輸入金額" name="amount" >
-            </div>
-            <div>
-                <span>
-                    <div><img src="${pageContext.request.contextPath}/images/withdrawRequestIcon/user.png" alt=""></div>
-                    <span>匯入帳號：</span>
-                    <span class="star">*</span>
-                </span>             
-                <input type="text" placeholder="輸入帳號" name="mbrAccount">
-            </div>
-            <div>
-                <span>
-                    <div><img src="${pageContext.request.contextPath}/images/withdrawRequestIcon/note.png" alt=""></div>
-                    <span>備註：</span>
-                </span>             
-                <input type="text" placeholder="備註" name="note">
+        	<h3>虛擬錢包<span>提款申請</span></h3>
+            
+             <div class="overage">
+                 <span>餘額：$<span>${balance}</span></span>
+             </div>
+             <div class="div_main">
+	             <div>
+	                <span>
+	                    <div><img src="${pageContext.request.contextPath}/images/withdrawRequestIcon/dollar.png" alt=""></div>
+	                    <span>提款金額：</span>
+	                    <span class="star">*</span>
+	                </span>
+	                <input type="text" placeholder="輸入金額" name="amount" >
+	             </div>
+	            <div>
+	                <span>
+	                    <div><img src="${pageContext.request.contextPath}/images/withdrawRequestIcon/user.png" alt=""></div>
+	                    <span>匯入帳號：</span>
+	                    <span class="star">*</span>
+	                </span>             
+	                <input type="text" placeholder="輸入帳號" name="mbrAccount">
+	            </div>
+	            <div>
+	                <span>
+	                    <div><img src="${pageContext.request.contextPath}/images/withdrawRequestIcon/note.png" alt=""></div>
+	                    <span>備註：</span>
+	                </span>             
+	                <input type="text" placeholder="備註" name="note">
+	            </div>
             </div>
 
 <!--             <input type="hidden"  name="choice" value="AddOne"> -->
@@ -219,24 +236,34 @@
 	</script>
 
     <script>
-  
+	    var balance=parseInt($(".overage span span").text());
+	    var newBalance;
+	    $(document).ready(function() {
+	        //目前餘額(要扣掉申請中的總額)
+	        var reqing =0;
+	        reqing=${reqing};
+	        console.log(reqing);
+	        newBalance = balance - reqing;
+	        $(".overage span span").text(newBalance);
+		
+		})
     	function form_add_submit(e){
         	
 //         	提款金額不可超過餘額
-        	let balance=$(".overage span span").text();
+//         	let balance=parseInt($(".overage span span").text());
         	console.log("/"+balance);
-        	let amount = $("input[name='amount']").val();
+        	let amount = parseInt($("input[name='amount']").val());
         	console.log("+"+amount);
 
-        	if(balance<amount){
+        	if(newBalance<amount){
         		alert("餘額不足");
-        		e.preventDefault();
+//         		e.preventDefault();
         		return;
         	}
         	
             if($("input[name='amount']").val() === "" || $("input[name='mbrAccount']").val() === ""){
                 alert("請填寫完整 !");
-        		e.preventDefault();
+//         		e.preventDefault();
                 return;
 
             }
@@ -257,6 +284,7 @@
 	         	switch(data.message){
 	         		case "ok":
 	         			window.alert("已成功申請！");
+	         			location.reload();
 	         			break;
 	         		case "out_of_e_wallet":
 	         			window.alert("申請失敗！\n提款金額大於虛擬錢包餘額，請重新輸入提款金額。");
@@ -266,12 +294,10 @@
 	         			break;
 	         	}
 	         });
-	         
-	        var newBalance = balance - parseFloat($("input[name='amount']").val());
-	      
-	        $(".overage span span").text(newBalance);
 
         };
+
+        
 
         
         
