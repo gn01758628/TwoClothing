@@ -15,6 +15,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebListener
 public class ServletContextInitializeListener implements ServletContextListener {
@@ -50,7 +51,7 @@ public class ServletContextInitializeListener implements ServletContextListener 
             sessionFactory.getCurrentSession().getTransaction().commit();
             servletContext.setAttribute("categoryTags", categoryTags);
             
-            servletContext.setAttribute("categoryTagsSortedList", CategoryTagsSorter.sortCategoryTags(categoryTags));
+            servletContext.setAttribute("categoryTagsSortedList", CategoryTagsSorter.sortCategoryTags(categoryTags.stream().collect(Collectors.toList())));
         } catch (Exception e) {
             sessionFactory.getCurrentSession().getTransaction().rollback();
             e.printStackTrace();
