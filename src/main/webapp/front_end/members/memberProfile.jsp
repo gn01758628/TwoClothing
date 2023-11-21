@@ -1,30 +1,48 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="BIG5"%>
-
-
-
-<!DOCTYPE html>
-<html >
+<%--suppress ALL --%>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!doctype html>
+<html lang="zh-hant" xmlns="http://www.w3.org/1999/html">
 <head>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>·|­û¤¤¤ß-±b¤á¸ê°T www.bootstrapmb.com</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>æœƒå“¡ä¸­å¿ƒ</title>
+    <!--é ç±¤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--ä½ å€‘è‡ªå·±çš„css-->
+    <!--ä¸æ˜¯å¤–éƒ¨æª”æ¡ˆä¹Ÿç„¡æ‰€è¬‚-->
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
+
 
 <style>
 	#avatarContainer {
         position: relative;
-        top: -730px; 
+        top: -793px; 
         left: 400px;
         
     }
-	#shopImage02Container {
-	    position: relative;
-	    top: -155px;
-	    left: 400px;
-	}
+/* 	#shopImage02Container { */
+/* 	    position: relative; */
+/* 	    top: -150px; */
+/* 	    left: 400px; */
+/* 	} */
+	
     #avataruploadFormContainer {
         margin-top: 0px; 
     }
@@ -35,6 +53,9 @@
         padding: 10px; 
         border: none; 
         cursor: pointer; 
+        position: relative;
+        top: -44px; 
+        left: 150px;
     }
     
 #passwordPopup {
@@ -82,7 +103,7 @@
 #pswdHashForm input[type="submit"] {
     background-color: #4CAF50;
     color: white;
-    padding: 8px 16px;
+    padding: 5px 10px;
     border: none;
     cursor: pointer;
 }
@@ -90,127 +111,115 @@
 #pswdHashForm input[type="submit"]:hover {
     background-color: #45a049;
 }
+.
 </style>
+    <!--å°è¦½åˆ—css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--é å°¾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
+
+
 
 </head>
 <body>
+<!--æ”¾åœ¨æœ€å‰é¢-->
+<div class="headerHTML"></div>
 
 
-<div id="head">
 
-<div class="menu">
-<ul>
-<li ><a href='${pageContext.request.contextPath}/index.jsp'>¦^­º­¶</a></li>
-<li class="menu_selected"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">­Ó¤H¸ê°T</a></li>
-<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">¶R®a­q³æ</a></li>
-<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">½æ®a­q³æ</a></li>
-</ul>
-</div>
-</div>
 <div id="hy_con">
 <div id="con_lf">
-<h2>±b¤áºŞ²z</h2>
+<br>
+<h2>å¸³æˆ¶ç®¡ç†</h2>
 <ul>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">­Ó¤H¸ê°T</a></li>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">ª«¬y³]©w</a></li>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">å€‹äººè³‡è¨Š</a></li>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">ç‰©æµè¨­å®š</a></li>
+</ul> 
 
+<h2>è¨‚å–®ç®¡ç†</h2>
+<ul>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">è²·å®¶è¨‚å–®</a></li>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">è³£å®¶è¨‚å–®</a></li>
 </ul>
+
 </div>
 <div id="con_rh">
 <div class="con_rh_con"><br></br>
 
-<p class="rh_title">±b¤á¸ê°T</p>
-<div class="zh_num">¿ú¥]¾lÃB¡G<span>${Members.balance}</span>¤¸</div> 
-<div class="zh_num">§ÚªºÂI¼Æ¡G<span>${Members.mbrPoint}</span>ÂI</div>
-<br></br><br></br>
-<p class="rh_title">·|­û¸ê°T</p>
-<ul class="ul_zhxx">
-<li class="li_bj">·|­û½s¸¹¡G<span id="mbrId">${user.mbrId}</span></li>
-<li  class="li_bj">¥Î¤á¦W¡G<span id="mbrName">${Members.mbrName}</span>
-<button class="editButton" onclick="editMemberData('mbrName')">­×§ï</button></li>
+<p class="rh_title">å¸³æˆ¶è³‡è¨Š</p>
 
-<li  class="li_bj">Email¡G<span id="mbrName">${user.email}</span>
-<li style="
-    height: 35px;" class="li_bj">·|­û±K½X¡G<span id="mbrName">******</span>
-	    <button id="pswdHashFormA">§ó§ï±K½X</button>
+
+
+
+
+<div class="zh_num">éŒ¢åŒ…é¤˜é¡ï¼š<span>${Members.balance}</span>å…ƒ</div> 
+<div class="zh_num">æˆ‘çš„é»æ•¸ï¼š<span>${Members.mbrPoint}</span>é»</div>
+<br></br>
+<p class="rh_title">æœƒå“¡è³‡è¨Š</p>
+<ul class="ul_zhxx">
+<li class="li_bj" style="height: 44px;">æœƒå“¡ç·¨è™Ÿï¼š<span id="mbrId">${user.mbrId}</span></li>
+<li  class="li_bj" style=" padding-bottom: 3px;">ç”¨æˆ¶åï¼š<span id="mbrName">${Members.mbrName}</span>
+<button class="editButton" onclick="editMemberData('mbrName')">ä¿®æ”¹</button></li>
+
+<li  class="li_bj" style="height: 44px;">Emailï¼š<span id="mbrName">${user.email}</span>
+<li style="height: 44px;" class="li_bj">æœƒå“¡å¯†ç¢¼ï¼š<span id="mbrName">******</span>
+	    <button id="pswdHashFormA">æ›´æ”¹å¯†ç¢¼</button>
 	
-	    <!-- ¼u¥Xªºµ¡¤f -->
+	    <!-- å½ˆå‡ºçš„çª—å£ -->
 	    <div id="passwordPopup">
 	        <form method="post" id="pswdHashForm" class="UpdatePswdHash" >
-	            <input type="password" id="pswdHash" name="pswdHash" placeholder="±K½X">
+	            <input type="password" id="pswdHash" name="pswdHash" placeholder="å¯†ç¢¼">
 	            <input type="hidden" id="mbrId" name="mbrId" value="1">
 	            <span id="pswdHashError" style="color: red;"></span>
 	            <input type="hidden" name="action" value="members_UpdatePswdHash_1">
-	            <input type="submit" value="½T©w">
+	            <input type="submit" value="ç¢ºå®š">
 	        </form>
-	        <button id="pswdHashFormCancel">¨ú®ø</button>
+	        <button id="pswdHashFormCancel">å–æ¶ˆ</button>
 	    </div>
 <br></br>
-<li  class="li_bj">¶R®aµû»ù¡G
+<li  class="li_bj" style="height: 44px;">è²·å®¶è©•åƒ¹ï¼š
 		<span>
 		<script>
 // 	            document.write('<img style="width: 10px !important; height: 10px !important; margin-right: 0;" src="${pageContext.request.contextPath}/images/Snipaste.png" alt="Snipaste Image">'.repeat(buyStar) );
 		   var buyStar = ${Members.buyStar};
         var buyRating = ${Members.buyRating};
         if (buyStar > 0) {
-            var formattedStars = '¡¸'.repeat(buyRating > 0 ? (buyStar / buyRating) : 0);
+            var formattedStars = 'â˜†'.repeat(buyRating > 0 ? (buyStar / buyRating) : 0);
             if (buyRating > 0) {
                 var formattedNumber = (buyStar / buyRating).toFixed(1);
                 formattedStars += ' (' + formattedNumber + ')';
             }
             document.write(formattedStars);
         } else {
-            document.write('µLµû»ù');
+            document.write('ç„¡è©•åƒ¹');
         }
         </script>
         </span>
-<!-- 		<span >
-		<script> 
-             var buyStar = ${Members.buyStar};
-             var buyRating = ${Members.buyRating};
-          	 if (buyStar > 0) {
-                var formattedNumber = (buyStar / buyRating).toFixed(1);
-                 document.write(formattedNumber);
-             } else {
-                 document.write('µLµû»ù');
-             }
-        </script> 
-        </span>-->
-<li  class="li_bj">½æ®aµû»ù¡G
+
+<li  class="li_bj" style="height: 44px;">è³£å®¶è©•åƒ¹ï¼š
 		<span >
 		<script>
 		 var sellStar = ${Members.sellStar};
 	        var sellRating = ${Members.sellRating};
 	        if (sellStar > 0) {
-	            var formattedStars = '¡¸'.repeat(sellRating > 0 ? (sellStar / sellRating) : 0);
+	            var formattedStars = 'â˜†'.repeat(sellRating > 0 ? (sellStar / sellRating) : 0);
 	            if (sellRating > 0) {
 	                var formattedNumber = (sellStar / sellRating).toFixed(1);
 	                formattedStars += ' (' + formattedNumber + ')';
 	            }
 	            document.write(formattedStars);
 	        } else {
-	            document.write('µLµû»ù');
+	            document.write('ç„¡è©•åƒ¹');
 	        }
         </script>
         </span>
-<!-- 		<span > 
-		<script>
-			var sellStar = ${Members.sellStar};
-	        var sellRating = ${Members.sellRating};
-	        if (sellStar > 0) {
-	            var formattedNumber = (sellStar / sellRating).toFixed(1);
-	            document.write(formattedNumber);
-	        } else {
-	            document.write('µLµû»ù');
-	        }
-        </script>
-        </span>-->
+
 </ul>
 
 
 <br></br><br></br><br></br><br></br><br></br>
 <div id="shopImage01Container"> 		
-<p class="rh_title">°Ó³õ·Ó¤ù</p>
+<p class="rh_title">å•†å ´ç…§ç‰‡</p>
 	<label for="shopImage01Input">
 		<img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg01" width="150px" height="150px" >
 	</label>	
@@ -219,13 +228,12 @@
 			<input type="file" id="shopImage01Input" name="shopImage01" accept="image/*" style="display: none;">
 		    <input type="hidden" name="mbrId" value="${user.mbrId}">
 		    <input type="hidden" name="action" value="members_UpdateImage"  >
-		     <input id="shopImage01submitButton" type="submit" value="­×§ï°Ó³õ¹Ï¤ù01" >
+		     <input id="shopImage01submitButton" type="submit" value="ä¿®æ”¹å•†å ´åœ–ç‰‡01" >
 		</form>
 		   
 	</div>
 </div>
-<div id="shopImage02Container"style="
-    width: 150px;"> 		
+<div id="shopImage02Container"style="width: 150px; display: inline-block;" > 		
 
 	<label for="shopImage02Input">
 		<img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg02" width="150px" height="150px" >
@@ -235,14 +243,14 @@
 		    <input type="file" id="shopImage02Input" name="shopImage02" accept="image/*" style="display: none;">
 		    <input type="hidden" name="mbrId" value="${user.mbrId}">
 			<input type="hidden" name="action" value="members_UpdateImage"  >
-		    <input id="shopImage02submitButton" type="submit" value="­×§ï°Ó³õ¹Ï¤ù02">
+		    <input id="shopImage02submitButton" type="submit" value="ä¿®æ”¹å•†å ´åœ–ç‰‡02">
 		</form>
 	</div>
 </div>
 <div id="avatarContainer" style="
     width: 150px;">
     <p class="rh_title" style="
-    width: 150px;">¤jÀY¶K</p>
+    width: 150px;">å¤§é ­è²¼</p>
     <label for="avatarInput">
         <img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=avatar" width="150px" height="150px" />
     </label>
@@ -251,7 +259,7 @@
             <input type="file" id="avatarInput" name="avatar" accept="image/*" style="display: none;">
             <input type="hidden" name="mbrId" value="${user.mbrId}">
             <input type="hidden" name="action" value="members_UpdateImage">
-            <input id="avatarsubmitButton" type="submit"  value="­×§ï¤jÀY¶K"  >
+            <input id="avatarsubmitButton" type="submit"  value="ä¿®æ”¹å¤§é ­è²¼"  >
         </form>
     </div>
      
@@ -269,12 +277,16 @@
 <div id="footer">
 
 </div>
+
+
+<!--æ”¾åœ¨æœ€å¾Œé¢-->
+<div class="footerHTML"></div>
 <script>
 var contextPath = "${pageContext.request.contextPath}";	
 
   function editMemberData(field) {
     var currentValue = document.getElementById(field).innerHTML;
-    var newValue = prompt('½Ğ¿é¤J·sªº­È¡G', currentValue);
+    var newValue = prompt('è«‹è¼¸å…¥æ–°çš„å€¼ï¼š', currentValue);
     var mbrId = document.getElementById("mbrId").innerHTML;
     var action ='members_UpdateName';
     if (newValue !== null && newValue !== currentValue) {
@@ -294,28 +306,28 @@ var contextPath = "${pageContext.request.contextPath}";
       xhr.send(JSON.stringify(data));
       
       document.getElementById(field).innerText = newValue;
-//       alert('§A¿é¤Jªº·s­È¬°¡G' + newValue);
-      // ¦b³o¸Ì²K¥[±N·s­È´£¥æµ¹«áºİªºÅŞ¿è
+//       alert('ä½ è¼¸å…¥çš„æ–°å€¼ç‚ºï¼š' + newValue);
+      // åœ¨é€™è£¡æ·»åŠ å°‡æ–°å€¼æäº¤çµ¦å¾Œç«¯çš„é‚è¼¯
     }
   }
 
 	document.getElementById('avatarInput').addEventListener('change', function() {
-	    // ³B²z¿ï¾ÜÀÉ®×«áªºÅŞ¿è¡A¨Ò¦pÅã¥ÜÀÉ®×¦WºÙ©Î¹wÄı¹Ï¤ù
+	    // è™•ç†é¸æ“‡æª”æ¡ˆå¾Œçš„é‚è¼¯ï¼Œä¾‹å¦‚é¡¯ç¤ºæª”æ¡ˆåç¨±æˆ–é è¦½åœ–ç‰‡
 	    var fileName = this.files[0].name;
-	    console.log('¿ï¾ÜªºÀÉ®×¡G', fileName);
+	    console.log('é¸æ“‡çš„æª”æ¡ˆï¼š', fileName);
 
-	    // Åã¥Ü¤W¶Çªí³æ
+	    // é¡¯ç¤ºä¸Šå‚³è¡¨å–®
 	    document.getElementById('avataruploadFormContainer').style.display = 'block';
 	});
 
 	document.getElementById('avatarsubmitButton').addEventListener('click', function() {
-	    // Ä²µoªí³æ´£¥æ
+	    // è§¸ç™¼è¡¨å–®æäº¤
 	    document.getElementById('avatarForm').submit();
 	});
 
 	    document.getElementById('shopImage01Input').addEventListener('change', function() {
 	        var fileName = this.files[0].name;
-	        console.log('¿ï¾ÜªºÀÉ®×¡G', fileName);
+	        console.log('é¸æ“‡çš„æª”æ¡ˆï¼š', fileName);
 
 	        document.getElementById('shopImage01uploadFormContainer').style.display = 'block';
 	    });
@@ -327,16 +339,16 @@ var contextPath = "${pageContext.request.contextPath}";
 	
 	
 	document.getElementById('shopImage02Input').addEventListener('change', function() {
-	    // ³B²z¿ï¾ÜÀÉ®×«áªºÅŞ¿è¡A¨Ò¦pÅã¥ÜÀÉ®×¦WºÙ©Î¹wÄı¹Ï¤ù
+	    // è™•ç†é¸æ“‡æª”æ¡ˆå¾Œçš„é‚è¼¯ï¼Œä¾‹å¦‚é¡¯ç¤ºæª”æ¡ˆåç¨±æˆ–é è¦½åœ–ç‰‡
 	    var fileName = this.files[0].name;
-	    console.log('¿ï¾ÜªºÀÉ®×¡G', fileName);
+	    console.log('é¸æ“‡çš„æª”æ¡ˆï¼š', fileName);
 
-	    // Åã¥Ü¤W¶Çªí³æ
+	    // é¡¯ç¤ºä¸Šå‚³è¡¨å–®
 	    document.getElementById('shopImage02uploadFormContainer').style.display = 'block';
 	});
 
 	document.getElementById('shopImage02submitButton').addEventListener('click', function() {
-	    // Ä²µoªí³æ´£¥æ
+	    // è§¸ç™¼è¡¨å–®æäº¤
 	    document.getElementById('shopImage02Form').submit();
 	});
 
@@ -345,31 +357,31 @@ var contextPath = "${pageContext.request.contextPath}";
 	
     
     $(document).ready(function () {
-        // ÂIÀ»§ó§ï±K½X«ö¶s®ÉÄ²µoªº¨Æ¥ó
+        // é»æ“Šæ›´æ”¹å¯†ç¢¼æŒ‰éˆ•æ™‚è§¸ç™¼çš„äº‹ä»¶
         $('#pswdHashFormA').click(function () {
-            // Åã¥Ü¼u¥Xµ¡¤f
+            // é¡¯ç¤ºå½ˆå‡ºçª—å£
             $('#passwordPopup').show();
         });
 
-        // ÂIÀ»¨ú®ø«ö¶s®ÉÄ²µoªº¨Æ¥ó
+        // é»æ“Šå–æ¶ˆæŒ‰éˆ•æ™‚è§¸ç™¼çš„äº‹ä»¶
         $('#pswdHashFormCancel').click(function () {
-            // ÁôÂÃ¼u¥Xµ¡¤f
+            // éš±è—å½ˆå‡ºçª—å£
             $('#passwordPopup').hide();
-            // ²MªÅ¿é¤Jªº±K½X
+            // æ¸…ç©ºè¼¸å…¥çš„å¯†ç¢¼
             $('#pswdHash').val('');
-            // ²MªÅ¿ù»~®ø®§
+            // æ¸…ç©ºéŒ¯èª¤æ¶ˆæ¯
             $('#pswdHashError').text('');
         });
 
     	
     	    
-        // ´£¥æªí³æ®ÉÄ²µoªº¨Æ¥ó
+        // æäº¤è¡¨å–®æ™‚è§¸ç™¼çš„äº‹ä»¶
         $('#pswdHashForm').submit(function (event) {
             event.preventDefault();
-            // Àò¨úªí³æ¼Æ¾Ú
+            // ç²å–è¡¨å–®æ•¸æ“š
             var formData = $(this).serialize();
 
-            // µo°eAjax½Ğ¨D
+            // ç™¼é€Ajaxè«‹æ±‚
             $.ajax({
                 type: 'POST',
                 url: '${pageContext.request.contextPath}/members/Members.do',
@@ -387,16 +399,35 @@ var contextPath = "${pageContext.request.contextPath}";
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    alert('AJAX ¿ù»~¡G' + errorThrown);
-                    console.error('AJAX ¿ù»~:', textStatus, errorThrown);
-                    console.log('ÅTÀ³:', jqXHR.responseText);
+                    alert('AJAX éŒ¯èª¤ï¼š' + errorThrown);
+                    console.error('AJAX éŒ¯èª¤:', textStatus, errorThrown);
+                    console.log('éŸ¿æ‡‰:', jqXHR.responseText);
                 }
             });
         });
     });
 
+    
+    
 
 	</script>
+	
+	<!--bootstrap5 js-->
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+	<!--jQuery-->
+	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+	<!--Sweet Alert-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+	<!--JS loader-->
+	<script>
+	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+	        // ä¿è­‰headerHTMLåŠ è¼‰å®Œæ‰è¼‰å…¥header.js
+	        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+	    });
+	
+	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+    </script>	
 
 </body>
 </html>
