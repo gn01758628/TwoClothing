@@ -85,7 +85,7 @@ public class BidOrderNotifyServlet extends HttpServlet {
 				notice.setHead(title);
 				notice.setContent(buyContent);
 				notice.setLink(buyUrl);
-				notice.setImageLink("/images/Mainicon.jpg");
+				notice.setImageLink("/images/Mainicon.png");
 				noticeJedisDAO.insert(notice, buyMbrId);
 				
 				String sellurl = "/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId="+sellMbrId;
@@ -93,7 +93,7 @@ public class BidOrderNotifyServlet extends HttpServlet {
 				notice.setHead(title);
 				notice.setContent(sellContent);
 				notice.setLink(sellurl);
-				notice.setImageLink("/images/Mainicon.jpg");
+				notice.setImageLink("/images/Mainicon.png");
 				noticeJedisDAO.insert(notice, sellMbrId);
 
 /////////////////////////////////////redis測試////////////////////	
@@ -146,7 +146,7 @@ public class BidOrderNotifyServlet extends HttpServlet {
 			notice.setHead(title);
 			notice.setContent(buyContent);
 			notice.setLink(buyUrl);
-			notice.setImageLink("/images/Mainicon.jpg");
+			notice.setImageLink("/images/Mainicon.png");
 			noticeJedisDAO.insert(notice, buyMbrId);
 			
 			String sellUrl = "/bidorder/BidOrder.do?action=buyBidOrder1&sellMbrId="+sellMbrId;
@@ -154,12 +154,12 @@ public class BidOrderNotifyServlet extends HttpServlet {
 			notice.setHead(title);
 			notice.setContent(sellContent);
 			notice.setLink(sellUrl);
-			notice.setImageLink("/images/Mainicon.jpg");
+			notice.setImageLink("/images/Mainicon.png");
 			noticeJedisDAO.insert(notice, sellMbrId);
 /////////////////////////////////////redis測試////////////////////	
 			/***************************去待出貨***************************************/
 
-			String url = "/bidorder/BidOrder.do?action=buyBidOrder1&buyMbrId="+buyMbrId;
+			String url = "/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId="+buyMbrId;
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 			successView.forward(req, res);
 		}
@@ -202,7 +202,7 @@ public class BidOrderNotifyServlet extends HttpServlet {
 		notice.setHead(title);
 		notice.setContent(buyContent);
 		notice.setLink(buyUrl);
-		notice.setImageLink("/images/Mainicon.jpg");
+		notice.setImageLink("/images/Mainicon.png");
 		noticeJedisDAO.insert(notice, buyMbrId);
 		
 		String sellUrl = "/bidorder/BidOrder.do?action=sellBidOrder3&sellMbrId="+sellMbrId;
@@ -210,7 +210,7 @@ public class BidOrderNotifyServlet extends HttpServlet {
 		notice.setHead(title);
 		notice.setContent(sellContent);
 		notice.setLink(sellUrl);
-		notice.setImageLink("/images/Mainicon.jpg");
+		notice.setImageLink("/images/Mainicon.png");
 		noticeJedisDAO.insert(notice, sellMbrId);
 		/////////////////////////////////////redis測試////////////////////	
 		/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
@@ -257,7 +257,7 @@ System.out.println("沒錢取消訂單1");
 			notice.setHead(title);
 			notice.setContent(buyContent);
 			notice.setLink(buyUrl);
-			notice.setImageLink("/images/Mainicon.jpg");
+			notice.setImageLink("/images/Mainicon.png");
 			noticeJedisDAO.insert(notice, buyMbrId);
 			
 			String sellUrl = "/bidorder/BidOrder.do?action=sellBidOrder4&sellMbrId="+sellMbrId;
@@ -265,7 +265,7 @@ System.out.println("沒錢取消訂單1");
 			notice.setHead(title);
 			notice.setContent(sellContent);
 			notice.setLink(sellUrl);
-			notice.setImageLink("/images/Mainicon.jpg");
+			notice.setImageLink("/images/Mainicon.png");
 			noticeJedisDAO.insert(notice, sellMbrId);
 			/////////////////////////////////////redis測試////////////////////	
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
@@ -313,7 +313,7 @@ System.out.println("沒錢取消訂單1");
 			notice.setHead(title);
 			notice.setContent(buyContent);
 			notice.setLink(buyUrl);
-			notice.setImageLink("/images/Mainicon.jpg");
+			notice.setImageLink("/images/Mainicon.png");
 			noticeJedisDAO.insert(notice, buyMbrId);
 			
 			String sellUrl = "/bidorder/BidOrder.do?action=sellBidOrder2&sellMbrId="+sellMbrId;
@@ -321,7 +321,7 @@ System.out.println("沒錢取消訂單1");
 			notice.setHead(title);
 			notice.setContent(sellContent);
 			notice.setLink(sellUrl);
-			notice.setImageLink("/images/Mainicon.jpg");
+			notice.setImageLink("/images/Mainicon.png");
 			noticeJedisDAO.insert(notice, sellMbrId);
 			/////////////////////////////////////redis測試////////////////////	
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
@@ -370,7 +370,7 @@ System.out.println("沒錢取消訂單1");
 			notice.setHead(title);
 			notice.setContent(buyContent);
 			notice.setLink(buyUrl);
-			notice.setImageLink("/images/Mainicon.jpg");
+			notice.setImageLink("/images/Mainicon.png");
 			noticeJedisDAO.insert(notice, buyMbrId);
 			
 			String sellUrl = "/bidorder/BidOrder.do?action=sellBidOrder4&sellMbrId="+sellMbrId;
@@ -378,7 +378,7 @@ System.out.println("沒錢取消訂單1");
 			notice.setHead(title);
 			notice.setContent(sellContent);
 			notice.setLink(sellUrl);
-			notice.setImageLink("/images/Mainicon.jpg");
+			notice.setImageLink("/images/Mainicon.png");
 			noticeJedisDAO.insert(notice, sellMbrId);
 			/////////////////////////////////////redis測試////////////////////	
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/

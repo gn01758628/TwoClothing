@@ -3,48 +3,61 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*"%>
 
-<!DOCTYPE html>
-<html >
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/bootstrap5/bootstrap.min.css" />
+<!doctype html>
+<html lang="zh-hant" xmlns="http://www.w3.org/1999/html">
 <head>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>聊天室</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
 
+<script src="<%=request.getContextPath()%>/js/gordon/twzipcode.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
+    <!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
+
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>會員中心-帳戶資訊 www.bootstrapmb.com</title>
-<style type="">
-
-</style>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
-
-<style>
-
-</style>
-
 </head>
+
 <body>
+<!--放在最前面-->
+<div class="headerHTML"></div>
 
-<script src="<%=request.getContextPath()%>/js/bootstrap5/bootstrap.bundle.min.js"></script>
-					
-<script src="<%=request.getContextPath()%>/js/gordon/twzipcode.js"></script>
-<script src="<%=request.getContextPath()%>/js/gordon/memberArea.js"></script>
 
-<div id="head">
 
-<div class="menu">
-<ul>
-<li ><a href='${pageContext.request.contextPath}/index.jsp'>回首頁</a></li>
-<li class="menu_selected"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>
-<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">買家訂單</a></li>
-<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">賣家訂單</a></li>
-</ul>
-</div>
-</div>
 <div id="hy_con">
 <div id="con_lf">
-<h2>物流設定</h2>
+<br>
+<h2>帳戶管理</h2>
 <ul>
 <li class="lf_li1"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>
 <li class="lf_li1"><a href="<%=request.getContextPath()%>/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">物流設定</a></li>
+</ul> 
+
+<h2>訂單管理</h2>
+<ul>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">買家訂單</a></li>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">賣家訂單</a></li>
 </ul>
 </div>
 <div id="con_rh">
@@ -101,8 +114,32 @@
 <div id="footer">
 
 </div>
+<!--放在最後面-->
+<div class="footerHTML"></div>
+<script>
+let twzipcode = new TWzipcode({
+	"district" : {
+		onChange : function(id) {
+			console.log(this.nth(id).get());
+		}
+	}
+});
+</script>
+<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+<!--jQuery-->
+<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
+<script>
+    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+    });
 
-
+    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+</script>
 </body>
 </html>
 
