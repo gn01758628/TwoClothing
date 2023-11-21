@@ -42,23 +42,13 @@ public class ItemSearchServlet extends HttpServlet{
 		
 		switch (action) {
 			case "getCategoryTags":
-				List<CategoryTags> categoryTagsList = new ArrayList<>((List<CategoryTags>) servletContext.getAttribute("categoryTags"));
+				List<CategoryTags> categoryTagsSortedList = new ArrayList<>((List<CategoryTags>) servletContext.getAttribute("categoryTagsSortedList"));
 				
-				for (CategoryTags categoryTags : categoryTagsList) {
-				    if (categoryTags.getSuperTagId() == null) {
-				        categoryTags.setSuperTagId(-1);
-				    }
-				}
+				System.out.println(categoryTagsSortedList);
 				
-				System.out.println(categoryTagsList);
-				
-				List<CategoryTags> sortedList = new ArrayList<CategoryTags>();
-				buildCategoryTree(sortedList, categoryTagsList, -1);
-				System.out.println("=======================");
-				System.out.println(sortedList);
 				// 使用Gson轉換List為JSON格式
 	            Gson gson = new GsonBuilder().create();
-	            String jsonString = gson.toJson(sortedList);
+	            String jsonString = gson.toJson(categoryTagsSortedList);
 
 	            // 將JSON格式的字串寫入 HttpServletResponse
 	            res.setContentType("application/json");
@@ -69,50 +59,6 @@ public class ItemSearchServlet extends HttpServlet{
 				
 				break;
 		}
-	}
-
-	//===========================================================================================
-	// 根據輸入的參數,動態生成樹狀結構
-//	public static void buildCategoryTree(List<CategoryTags> sortedList, List<CategoryTags> categoryTagsList, int parentId) {
-//        Iterator<CategoryTags> iterator = categoryTagsList.iterator();
-//
-//        while (iterator.hasNext()) {
-//        	CategoryTags category = iterator.next();
-//
-//            if (Objects.equals(category.getSuperTagId(), parentId)) {
-//                sortedList.add(category);
-////                iterator.remove(); // 移除已處理的元素
-//
-//                buildCategoryTree(sortedList, categoryTagsList, category.getTagId());
-//            }
-//        }
-//    }
-	
-	public static void buildCategoryTree(List<CategoryTags> sortedList, List<CategoryTags> categoryTagsList, int parentId) {
-	    Map<Integer, List<CategoryTags>> parentToChildrenMap = new HashMap<>();
-
-	    // 將標籤按照父標籤分組
-	    for (CategoryTags category : categoryTagsList) {
-	        parentToChildrenMap.computeIfAbsent(category.getSuperTagId(), k -> new ArrayList<>()).add(category);
-	    }
-
-	    buildCategoryTreeRecursive(sortedList, parentToChildrenMap, parentId);
-	}
-
-	private static void buildCategoryTreeRecursive(List<CategoryTags> sortedList, Map<Integer, List<CategoryTags>> parentToChildrenMap, int parentId) {
-	    List<CategoryTags> children = parentToChildrenMap.get(parentId);
-
-	    if (children != null) {
-	        // 排序子標籤，這部分可以根據實際需求修改
-	        children.sort(Comparator.comparingInt(CategoryTags::getTagId));
-
-	        for (CategoryTags category : children) {
-	            sortedList.add(category);
-
-	            // 遞迴處理子標籤
-	            buildCategoryTreeRecursive(sortedList, parentToChildrenMap, category.getTagId());
-	        }
-	    }
 	}
 
 	
