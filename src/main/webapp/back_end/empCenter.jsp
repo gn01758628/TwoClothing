@@ -61,23 +61,23 @@
         </li>
         
         <li>
-          <a href="" class="drop-down-menu"><i class="ion-ios-settings"></i> <span class="">會員管理</span></a>
-          
-          <ul class="nav-flyout">
-            <li>
-              <a href=""><i class="ion-ios-alarm-outline"></i>查看會員資料</a>
-            </li>
-            <li>
-              <a href=""><i class="ion-ios-camera-outline"></i></a>
-            </li>
-            <li>
-              <a href=""><i class="ion-ios-chatboxes-outline"></i></a>
-            </li>
-            <li>
-              <a href=""><i class="ion-ios-cog-outline"></i></a>
-            </li>
+          <a href="${pageContext.request.contextPath}/members/Members.do?action=getAll" class="drop-down-menu"><i class="ion-ios-settings"></i> <span class="">會員管理</span></a>
+<%--           <a href='${pageContext.request.contextPath}/members/Members.do?action=getAll'>後台會員列表()</a>  --%>
+<!--           <ul class="nav-flyout"> -->
+<!--             <li> -->
+<!--               <a href=""><i class="ion-ios-alarm-outline"></i>查看會員資料</a> -->
+<!--             </li> -->
+<!--             <li> -->
+<!--               <a href=""><i class="ion-ios-camera-outline"></i></a> -->
+<!--             </li> -->
+<!--             <li> -->
+<!--               <a href=""><i class="ion-ios-chatboxes-outline"></i></a> -->
+<!--             </li> -->
+<!--             <li> -->
+<!--               <a href=""><i class="ion-ios-cog-outline"></i></a> -->
+<!--             </li> -->
             
-          </ul>
+<!--           </ul> -->
         </li>
         
         <li>
@@ -174,7 +174,7 @@
         </li>
         
         <li>
-          <a href="" class="drop-down-menu"><i class="ion-ios-medical-outline"></i> <span class="">競標商品訂單管理</span></a>
+          <a href="${pageContext.request.contextPath}/bidorder/BidOrder.do?action=getAll" class="drop-down-menu"><i class="ion-ios-medical-outline"></i> <span class="">競標商品訂單管理</span></a>
         </li>
         
         <li>

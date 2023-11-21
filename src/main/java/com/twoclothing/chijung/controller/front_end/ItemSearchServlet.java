@@ -1,11 +1,11 @@
 package com.twoclothing.chijung.controller.front_end;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream;
-import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -42,16 +42,23 @@ public class ItemSearchServlet extends HttpServlet{
 		
 		switch (action) {
 			case "getCategoryTags":
-				List<CategoryTags> categoryTags = (List<CategoryTags>) servletContext.getAttribute("categoryTags");
-				System.out.println(categoryTags);
-				categoryTags = categoryTags.stream()
-				        .sorted(Comparator.comparingInt(
-				                category -> category.getSuperTagId() != null ? category.getSuperTagId() : Integer.MIN_VALUE
-				        ))
-				        .collect(Collectors.toList());
+				List<CategoryTags> categoryTagsList = new ArrayList<>((List<CategoryTags>) servletContext.getAttribute("categoryTags"));
+				
+				for (CategoryTags categoryTags : categoryTagsList) {
+				    if (categoryTags.getSuperTagId() == null) {
+				        categoryTags.setSuperTagId(-1);
+				    }
+				}
+				
+				System.out.println(categoryTagsList);
+				
+				List<CategoryTags> sortedList = new ArrayList<CategoryTags>();
+				buildCategoryTree(sortedList, categoryTagsList, -1);
+				System.out.println("=======================");
+				System.out.println(sortedList);
 				// 使用Gson轉換List為JSON格式
 	            Gson gson = new GsonBuilder().create();
-	            String jsonString = gson.toJson(categoryTags);
+	            String jsonString = gson.toJson(sortedList);
 
 	            // 將JSON格式的字串寫入 HttpServletResponse
 	            res.setContentType("application/json");
@@ -63,48 +70,53 @@ public class ItemSearchServlet extends HttpServlet{
 				break;
 		}
 	}
+
+	//===========================================================================================
+	// 根據輸入的參數,動態生成樹狀結構
+//	public static void buildCategoryTree(List<CategoryTags> sortedList, List<CategoryTags> categoryTagsList, int parentId) {
+//        Iterator<CategoryTags> iterator = categoryTagsList.iterator();
+//
+//        while (iterator.hasNext()) {
+//        	CategoryTags category = iterator.next();
+//
+//            if (Objects.equals(category.getSuperTagId(), parentId)) {
+//                sortedList.add(category);
+////                iterator.remove(); // 移除已處理的元素
+//
+//                buildCategoryTree(sortedList, categoryTagsList, category.getTagId());
+//            }
+//        }
+//    }
 	
-	private static List<CategoryTags> getYourCategoryTagsList() {
-        // 返回你的CategoryTags列表
-        return List.of(
-                new CategoryTags(1, null, "所有種類", 1),
-                new CategoryTags(2, 1, "上衣", 1),
-                new CategoryTags(3, 2, "短袖", 1),
-                new CategoryTags(4, 2, "長袖", 1),
-                new CategoryTags(5, 3, "男短袖", 1),
-                new CategoryTags(6, 3, "女短袖", 1),
-                new CategoryTags(7, 4, "毛衣長袖", 1),
-                // 其他CategoryTags
-                new CategoryTags(8, null, "其他種類", 1),
-                new CategoryTags(9, 8, "其他子節點", 1)
-        );
-    }
+	public static void buildCategoryTree(List<CategoryTags> sortedList, List<CategoryTags> categoryTagsList, int parentId) {
+	    Map<Integer, List<CategoryTags>> parentToChildrenMap = new HashMap<>();
+
+	    // 將標籤按照父標籤分組
+	    for (CategoryTags category : categoryTagsList) {
+	        parentToChildrenMap.computeIfAbsent(category.getSuperTagId(), k -> new ArrayList<>()).add(category);
+	    }
+
+	    buildCategoryTreeRecursive(sortedList, parentToChildrenMap, parentId);
+	}
+
+	private static void buildCategoryTreeRecursive(List<CategoryTags> sortedList, Map<Integer, List<CategoryTags>> parentToChildrenMap, int parentId) {
+	    List<CategoryTags> children = parentToChildrenMap.get(parentId);
+
+	    if (children != null) {
+	        // 排序子標籤，這部分可以根據實際需求修改
+	        children.sort(Comparator.comparingInt(CategoryTags::getTagId));
+
+	        for (CategoryTags category : children) {
+	            sortedList.add(category);
+
+	            // 遞迴處理子標籤
+	            buildCategoryTreeRecursive(sortedList, parentToChildrenMap, category.getTagId());
+	        }
+	    }
+	}
 
 	
-	
-	private static List<CategoryTags> sortByTreeStructure(List<CategoryTags> categoryTagsList) {
-        Map<Integer, List<CategoryTags>> tagIdGroupBySuperTagId = categoryTagsList.stream()
-                .collect(Collectors.groupingBy(CategoryTags::getSuperTagId));
-
-        return sortByTreeStructure(tagIdGroupBySuperTagId, null);
-    }
-
-    private static List<CategoryTags> sortByTreeStructure(Map<Integer, List<CategoryTags>> tagIdGroupBySuperTagId, Integer superTagId) {
-        List<CategoryTags> currentNodes = tagIdGroupBySuperTagId.get(superTagId);
-
-        if (currentNodes == null) {
-            return List.of();
-        }
-
-        return currentNodes.stream()
-                .sorted(Comparator.comparingInt(CategoryTags::getTagId))
-                .flatMap(node -> Stream.concat(Stream.of(node), sortByTreeStructure(tagIdGroupBySuperTagId, node.getTagId()).stream()))
-                .collect(Collectors.toList());
-    }
-	
-	
-	
-	
+	//===========================================================================================
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
