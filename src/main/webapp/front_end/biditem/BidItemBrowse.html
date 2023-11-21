@@ -168,7 +168,7 @@
         /*商品卡片*/
 
         /*筆數選擇*/
-        .radio-input {
+        .maxResult .radio-input {
             display: flex;
             flex-direction: row;
             font-size: 16px;
@@ -176,11 +176,11 @@
             color: white;
         }
 
-        .radio-input input[type="radio"] {
+        .maxResult .radio-input input[type="radio"] {
             display: none;
         }
 
-        .radio-input label {
+        .maxResult .radio-input label {
             display: flex;
             align-items: center;
             padding: 10px;
@@ -193,7 +193,7 @@
             transition: all 0.3s ease-in-out;
         }
 
-        .radio-input label:before {
+        .maxResult .radio-input label:before {
             content: "";
             display: block;
             position: absolute;
@@ -208,12 +208,12 @@
             transition: all 0.3s ease-in-out;
         }
 
-        .radio-input input[type="radio"]:checked + label:before {
+        .maxResult .radio-input input[type="radio"]:checked + label:before {
             background-color: green;
             top: 0;
         }
 
-        .radio-input input[type="radio"]:checked + label {
+        .maxResult .radio-input input[type="radio"]:checked + label {
             background-color: royalblue;
             color: #fff;
             border-color: rgb(129, 235, 129);
@@ -236,6 +236,68 @@
 
         /*筆數選擇*/
 
+        /*類別選單按紐*/
+        .openClose input {
+            opacity: 0;
+            cursor: pointer;
+            width: 0;
+            height: 0;
+        }
+
+        .openClose {
+            display: block;
+            position: relative;
+            left: 15px;
+            cursor: pointer;
+            font-size: 20px;
+            user-select: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            background: rgba(216, 216, 216, 0.603);
+        }
+
+        .openClose:hover {
+            background: rgba(197, 197, 197, 0.527);
+        }
+
+        .openClose .line {
+            width: calc(100% - 8px);
+            height: 3px;
+            left: 4px;
+            background: rgb(58, 58, 58);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: .7s transform cubic-bezier(0, 1, .33, 1.2), background .4s;
+        }
+
+        .openClose .line-indicator {
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        .openClose input:checked ~ .line-indicator {
+            transform: translateY(-50%);
+        }
+
+        /*類別選單按紐*/
+
+        .categoryTags {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .left-half:hover {
+            cursor: pointer;
+        }
+
     </style>
     <!--導覽列css-->
     <link rel="stylesheet" href="/TwoClothing/css/chengHan/header.css">
@@ -249,7 +311,7 @@
 <!--每頁最大筆數選擇-->
 <div class="container pt-4">
     <div class="row justify-content-start">
-        <div class="col-auto">
+        <div class="col-auto maxResult">
             <div class="radio-input">
                 <input value="4" name="pageMaxResult" id="value-1" type="radio">
                 <label for="value-1">每頁4筆</label>
@@ -267,33 +329,48 @@
 <div class="container mt-3 mb-3">
     <div class="row">
         <!--側邊欄-->
-        <div class="col-2 ChooseType">
+        <div class="col-2">
+            <div class="clickable-box">
+                <div class="row categoryTags" data-id="1">
+                    <div class="left-half col-8">全部總類</div>
+                </div>
 
+                <div class="row categoryTags" data-id="2" data-parent-id="1">
+                    <div class="left-half col-8">衣服</div>
+                    <div class="right-half col-4">
+                        <label class="openClose">
+                            <input type="checkbox" checked="checked">
+                            <div class="line"></div>
+                            <div class="line line-indicator"></div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="row categoryTags hidden" data-id="6" data-parent-id="2">
+                    <div class="left-half col-8">T-Shirt</div>
+                </div>
+                <div class="row categoryTags hidden" data-id="7" data-parent-id="2">
+                    <div class="left-half col-8">長袖</div>
+                </div>
+                <div class="row categoryTags" data-id="3" data-parent-id="1">
+                    <div class="left-half col-8">褲子</div>
+                    <div class="right-half col-4">
+                    </div>
+                </div>
+                <div class="row categoryTags hidden" data-id="8" data-parent-id="3">
+                    <div class="left-half col-8">牛仔褲</div>
+                </div>
+                <div class="row categoryTags hidden" data-id="9" data-parent-id="3">
+                    <div class="left-half col-8">休閒褲</div>
+                </div>
+            </div>
         </div>
 
         <!--商品陳列區-->
         <div class="col-10">
             <div class="container">
                 <div class="row justify-content-start showBidItem">
-                    <!-- 商品項目 -->
-                    <div class="card col-3">
-                        <div class="endDate">結標日期</div>
-                        <a class="img-card" href="#">
-                            <img src="/TwoClothing/images/clothing/clothing-1.jpg" alt="商品名稱">
-                        </a>
-                        <div class="card-content">
-                            <a href="#">
-                                <h4 class="itemName">商品名稱</h4>
-                                <p class="currentBid">目前出價：<span class="bidAmount">$9,900</span></p>
-                                <div class="countDown" data-end-time="結標時間戳">倒數計時</div>
-                            </a>
-                        </div>
-                        <div class="card-read-more">
-                            <a href="#">
-                                <button class="shopNow">我要出價</button>
-                            </a>
-                        </div>
-                    </div>
+                    <!-- 動態生成商品項目 -->
                 </div>
             </div>
 
@@ -302,25 +379,7 @@
                 <div class="row justify-content-center">
                     <div class="col-auto">
                         <ul class="pagination">
-                            <li class="page-item">
-                                <button class="page-link" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </button>
-                            </li>
-                            <li class="page-item">
-                                <button class="page-link">1</button>
-                            </li>
-                            <li class="page-item">
-                                <button class="page-link">2</button>
-                            </li>
-                            <li class="page-item">
-                                <button class="page-link">3</button>
-                            </li>
-                            <li class="page-item">
-                                <button class="page-link" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </button>
-                            </li>
+                            <!--動態生成分頁按紐-->
                         </ul>
                     </div>
                 </div>
@@ -352,7 +411,7 @@
 <!--此頁面的js-->
 <script>
     // 全局變數記錄(查詢種類,當前頁數,每頁最大筆數)
-    let tagId = 2;
+    let tagId = 1;
     let currentPage = 1;
     let pageMaxResult = 8;
     let prevMaxResult = null;
@@ -370,8 +429,6 @@
     })
 
     // function place
-
-
     // 根據tagId跟currentPage返回結果
     function generateCardDiv(parameterTagId, parameterCurrentPage, parameterPageMaxResult, isChange) {
         $.get("/TwoClothing/front/biditemBrowse", {
@@ -429,7 +486,6 @@
             showBidItem_Div.append(cardDiv);
         })
     }
-
 
     // 動態生成翻頁按鈕
     function generatePaginationButtons(totalPage) {
@@ -528,6 +584,96 @@
     function formatAsCurrency(num) {
         return '$' + num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
+
+
+    // 側邊類別選擇按紐
+    $(document).ready(function () {
+        // 請求商品類別標籤的數據
+        $.get("/TwoClothing/front/biditemBrowse/categoryTags", function (data) {
+            createTagsDiv(data);
+        })
+
+
+        $('.clickable-box').on('change', '.openClose input[type="checkbox"]', function () {
+            let parentId = $(this).closest('.categoryTags').data('id');
+            let isChecked = $(this).is(':checked');
+            toggleSubCategories(parentId, isChecked);
+        });
+    });
+
+    function toggleSubCategories(parentId, isChecked) {
+        if (isChecked) {
+            // 勾選，顯示該父標籤的直接子標籤
+            $('.categoryTags[data-parent-id="' + parentId + '"]').slideDown();
+        } else {
+            // 沒勾選，隱藏該父標籤的所有子孫標籤
+            hideSubCategories(parentId);
+        }
+    }
+
+    function hideSubCategories(parentId) {
+        $('.categoryTags[data-parent-id="' + parentId + '"]').each(function () {
+            $(this).slideUp();
+            const childId = $(this).data('id');
+            // 遞迴隱藏所有子孫標籤
+            hideSubCategories(childId);
+        });
+    }
+
+    function createTagsDiv(tagsList) {
+        let tagsDiv = $(".clickable-box");
+        tagsDiv.empty();
+
+        tagsList.forEach(function (tag) {
+
+            // 檢查該標籤有沒有子標籤
+            let hasChildren = tagsList.some(function (childTag) {
+                return childTag.superTagId === tag.tagId;
+            });
+
+            // 決定哪些要初始化隱藏
+            let rowClass = 'row categoryTags';
+            if (tag.superTagId !== 1 && tag.superTagId !== -1) {
+                rowClass += ' hidden';
+            }
+            // 生成節點
+            const rowDiv = $('<div>', {
+                'class': rowClass,
+                'data-id': tag.tagId,
+                'data-parent-id': tag.superTagId !== -1 ? tag.superTagId : -1
+            });
+
+            const leftHalfDiv = $('<div>', {
+                'class': 'left-half col-8',
+                'text': tag.categoryName
+            });
+            rowDiv.append(leftHalfDiv);
+
+            if (hasChildren && tag.superTagId !== -1) {
+                let rightHalfDiv = $('<div>', {'class': 'right-half col-4'});
+                let label = $('<label>', {'class': 'openClose'});
+                let checkbox = $('<input>', {
+                    'type': 'checkbox',
+                });
+                let lineDiv = $('<div>', {'class': 'line'});
+                let lineIndicatorDiv = $('<div>', {'class': 'line line-indicator'});
+
+                label.append(checkbox, lineDiv, lineIndicatorDiv);
+                rightHalfDiv.append(label);
+                rowDiv.append(rightHalfDiv);
+            }
+            tagsDiv.append(rowDiv);
+        })
+
+        // 綁定點擊類別名稱區域事件
+        $(".left-half").click(function (){
+            tagId = Number($(this).closest("div .categoryTags").data('id'));
+            currentPage = 1;
+            generateCardDiv(tagId, currentPage, pageMaxResult, true);
+        })
+    }
+
+
 </script>
 </body>
 </html>

@@ -5,6 +5,9 @@ import com.twoclothing.chenghan.dto.BidIItemDTO;
 import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.abid.biditem.BidItemDAO;
 import com.twoclothing.model.abid.biditem.BidItemHibernateDAO;
+import com.twoclothing.model.categorytags.CategoryTags;
+import com.twoclothing.model.categorytags.CategoryTagsDAO;
+import com.twoclothing.model.categorytags.CategoryTagsHibernateDAO;
 import com.twoclothing.redismodel.bidrecord.BidRecord;
 import com.twoclothing.redismodel.bidrecord.BidRecordDAO;
 import com.twoclothing.redismodel.bidrecord.BidRecordJedisDAO;
@@ -24,12 +27,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/front/biditemBrowse")
+@WebServlet("/front/biditemBrowse/*")
 public class BidItemBrowseServlet extends HttpServlet {
 
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     private final BidItemDAO bidItemDAO = new BidItemHibernateDAO(sessionFactory);
+
+    private final CategoryTagsDAO categoryTagsDAO = new CategoryTagsHibernateDAO(sessionFactory);
 
     private final static BidRecordDAO bidRecordDAO = new BidRecordJedisDAO();
 
@@ -38,6 +43,10 @@ public class BidItemBrowseServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if ("/categoryTags".equals(request.getPathInfo())) {
+            doTags(request, response);
+            return;
+        }
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
@@ -70,6 +79,15 @@ public class BidItemBrowseServlet extends HttpServlet {
         data.put("totalPage", String.valueOf(totalPage));
         data.put("bidIItemDTOList", gson.toJson(bidIItemDTOList));
         out.write(gson.toJson(data));
+    }
+
+    private void doTags(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        List<CategoryTags> tagsList = (List<CategoryTags>) getServletContext().getAttribute("categoryTagsSortedList");
+        out.write(gson.toJson(tagsList));
     }
 
     private static List<BidIItemDTO> getDTOList(List<BidItem> bidItemList) {
