@@ -207,6 +207,7 @@
     		let time = $(this).text().replace(/\.0$/, '');
     		$(this).text(time);
     	})
+    	
 		
     })
     </script>

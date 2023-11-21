@@ -1,6 +1,7 @@
 package com.twoclothing.redismodel.notice;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Notice implements Serializable {
 
@@ -22,6 +23,12 @@ public class Notice implements Serializable {
     // 是否讀過訊息,預設為false
     private boolean read = false;
 
+    // 儲存該通知在redis裡的Id
+    private String noticeId;
+
+    // 訊息發布的時間
+    private Long timestamp;
+
     public Notice() {
     }
 
@@ -34,7 +41,22 @@ public class Notice implements Serializable {
                 ", link='" + link + '\'' +
                 ", imageLink='" + imageLink + '\'' +
                 ", read=" + read +
+                ", noticeId='" + noticeId + '\'' +
+                ", timestamp=" + timestamp +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Notice notice = (Notice) o;
+        return read == notice.read && Objects.equals(type, notice.type) && Objects.equals(head, notice.head) && Objects.equals(content, notice.content) && Objects.equals(link, notice.link) && Objects.equals(imageLink, notice.imageLink) && Objects.equals(noticeId, notice.noticeId) && Objects.equals(timestamp, notice.timestamp);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, head, content, link, imageLink, read, noticeId, timestamp);
     }
 
     public String getType() {
@@ -83,5 +105,21 @@ public class Notice implements Serializable {
 
     public void setRead(boolean read) {
         this.read = read;
+    }
+
+    public String getNoticeId() {
+        return noticeId;
+    }
+
+    public void setNoticeId(String noticeId) {
+        this.noticeId = noticeId;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 }

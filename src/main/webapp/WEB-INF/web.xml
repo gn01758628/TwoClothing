@@ -6,7 +6,7 @@
     <display-name>TwoClothing</display-name>
 
     <welcome-file-list>
-        <welcome-file>headerTest.html</welcome-file>
+        <welcome-file>welcome.html</welcome-file>
     </welcome-file-list>
 
     <!--使用web.xml註冊Filter的優點-->

@@ -19,8 +19,13 @@
     </style>
     <!--Font Awesome-->
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
 
     <style>
+        body {
+            margin-top: 92px;
+        }
 
         header {
             background-color: #fff8fb;
@@ -51,7 +56,6 @@
 
         /*scrollbar*/
         body {
-            margin-top: 92px;
             --sb-track-color: #76d3d3;
             --sb-thumb-color: #117f7c;
             --sb-size: 10px;
@@ -136,7 +140,6 @@
         /*搜尋框*/
 
         /*漢堡按鈕*/
-
         header .menu {
             background-color: transparent;
             border: none;
@@ -216,6 +219,7 @@
 
             .linkIcon {
                 font-size: 20px;
+                margin-right: 10px;
             }
         }
 
@@ -223,13 +227,23 @@
             body {
                 margin-top: 124px;
             }
+
+            .linkIcon {
+                margin-bottom: 10px;
+            }
         }
 
         @media screen and (max-width: 767.2px) {
             body {
                 margin-top: 184px;
             }
+
+            .linkIcon {
+                margin-bottom: 10px;
+            }
         }
+
+        /*RWD*/
 
         /* 選項下拉式選單 */
         header .nav-item .dropdown-menu {
@@ -244,6 +258,10 @@
             min-width: 200px;
         }
 
+        header .beSellerDrop {
+            width: auto;
+            min-width: 100px;
+        }
 
         header .nav-item:hover .dropdown-menu {
             display: block;
@@ -261,8 +279,6 @@
         header .dropdown-item:hover {
             background-color: #f8f9fa;
         }
-
-
     </style>
 </head>
 <body>
@@ -273,8 +289,8 @@
     <div class="needSlide">
         <nav class="navbar navbar-expand-lg bg-white sticky-top navbar-light p-3 shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="#">
-                    <img src="images/Mainicon.png" style="height: 50px">
+                <a class="navbar-brand" href="/TwoClothing/welcome.html">
+                    <img src="images/Mainicon.png" style="height: 50px" alt="Icon">
                     <strong class="titleName">TwoClothing</strong>
                 </a>
                 <!--漢堡選單按鈕-->
@@ -295,8 +311,10 @@
                 <div class="mx-auto my-3 d-lg-none d-sm-block d-xs-block">
                     <!--SearchBar視窗縮小時-->
                     <div class="searchBox">
-                        <input class="searchInput" type="text" name="keyword" placeholder="關鍵字搜尋...">
-                        <button class="searchButton" href="#">
+                        <label>
+                            <input class="searchInput" type="text" name="keyword" placeholder="關鍵字搜尋...">
+                        </label>
+                        <button class="searchButton">
                             <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29"
                                  fill="none">
                                 <g clip-path="url(#clip0_2_17)">
@@ -338,8 +356,10 @@
                     <div class="ms-auto d-none d-lg-block">
                         <!--SearchBar-->
                         <div class="searchBox">
-                            <input class="searchInput" type="text" name="keyword" placeholder="關鍵字搜尋...">
-                            <button class="searchButton" href="#">
+                            <label>
+                                <input class="searchInput" type="text" name="keyword" placeholder="關鍵字搜尋...">
+                            </label>
+                            <button class="searchButton">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29"
                                      fill="none">
                                     <g clip-path="url(#clip0_2_17)">
@@ -392,26 +412,32 @@
                                     <span class="HeadMbrAccount">會員帳號</span>
                                 </div>
                                 <hr class="dropdown-divider">
-                                <a class="dropdown-item" href="#">錢包餘額：<span class="HeadBalance"></span></a>
-                                <a class="dropdown-item" href="#">點數餘額：<span class="HeadMbrPoint"></span></a>
+                                <a class="dropdown-item memberCenter" href="#">錢包餘額：<span
+                                        class="HeadBalance"></span></a>
+                                <a class="dropdown-item memberCenter" href="#">點數餘額：<span
+                                        class="HeadMbrPoint"></span></a>
                                 <div>
                                     <hr class="dropdown-divider">
                                 </div>
-                                <a class="dropdown-item" href="#">會員中心</a>
+                                <a class="dropdown-item memberCenter" href="#">會員中心</a>
+                                <!--TODO 補上訂單查詢連結-->
                                 <a class="dropdown-item" href="#">訂單查詢</a>
+                                <!--TODO 補上我的收藏連結-->
                                 <a class="dropdown-item" href="#">我的收藏</a>
+                                <!--TODO 補上競標中連結-->
                                 <a class="dropdown-item" href="#">競標中</a>
                                 <div>
                                     <hr class="dropdown-divider">
                                 </div>
                                 <form action="/TwoClothing/members/Members.do" method="post">
                                     <input type="hidden" name="action" value="logout">
-                                    <button class="dropdown-item" type="submit">登出</button>
+                                    <button class="dropdown-item" type="submit" id="logoutButton">登出</button>
                                 </form>
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-2 shoppingCar position-relative">
+                            <a href="/TwoClothing/front_end/members/registerLogin.jsp"
+                               class="nav-link mx-2 shoppingCar position-relative">
                                 <span class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger carNum">
                                 </span>
                                 <i class="fa-solid fa-cart-shopping linkIcon">
@@ -420,15 +446,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-2 notice position-relative">
-                                <span class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger noticeNum">
-                                </span>
-                                <i class="fa-solid fa-bell linkIcon">
-                                    <span class="linkText">系統通知</span>
-                                </i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
+                            <!--TODO 補上商品連結-->
                             <a class="nav-link mx-2" href="#">
                                 <i class="fa-solid fa-shirt linkIcon">
                                     <span class="linkText">商品</span>
@@ -437,13 +455,18 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-2" href="#">
+                            <a href="/TwoClothing/front_end/members/registerLogin.jsp" class="nav-link mx-2 beSeller">
                                 <i class="fa-solid fa-sack-dollar linkIcon">
                                     <span class="linkText">賣東西</span>
                                 </i>
                             </a>
+                            <div class="dropdown-menu text-center beSellerDrop">
+                                <a class="dropdown-item sellItem">一般商品</a>
+                                <a class="dropdown-item sellBidItem">競標商品</a>
+                            </div>
                         </li>
                         <li class="nav-item">
+                            <!--TODO 補上競標商品連結-->
                             <a class="nav-link mx-2" href="#">
                                 <i class="fa-solid fa-scale-balanced linkIcon">
                                     <span class="linkText">競標專區</span>
@@ -452,7 +475,19 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-2" href="/TwoClothing/front/chatroom/0.check">
+                            <a href="/TwoClothing/front_end/members/registerLogin.jsp"
+                               class="nav-link mx-2 notice position-relative">
+                                <span class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger noticeNum">
+                                </span>
+                                <i class="fa-solid fa-bell linkIcon">
+                                    <span class="linkText">系統通知</span>
+                                </i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 position-relative" href="/TwoClothing/front/chatroom/0.check">
+                                <span class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger messageNum">
+                                </span>
                                 <i class="fa-solid fa-comments linkIcon">
                                     <span class="linkText">即時通</span>
                                 </i>
@@ -476,12 +511,12 @@
 <script src="/TwoClothing/js/bootstrap5/bootstrap.min.js"></script>
 <!--jQuery-->
 <script src="/TwoClothing/js/jQuery/jquery-3.7.1.min.js"></script>
-<!--sweetalert-->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
 
 <script>
-    // 頁面動畫
+    // 頁面動畫,搜尋按鈕,登出警告
     $(document).ready(function () {
         // 頁面進度條
         $(document).scroll(function () {
@@ -530,11 +565,42 @@
             searchInput.val(value);
         })
 
+        // 綁定搜尋按鈕
+        const searchButton = $(".searchButton");
+        searchButton.click(function () {
+            const currentInput = $(this).prev();
+            // TODO 補上搜尋前往的地方
+        })
+
+        // 登出按鈕alert
+        $("#logoutButton").click(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: "您确定要登出吗？",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "登出",
+                cancelButtonText: "取消"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).closest("form").submit();
+                }
+            });
+        })
+
     });
 
     // 頁面Ajax
     $(document).ready(function () {
         confirmLogin();
+
+        // 5分鐘定期檢查
+        let checkInterval = 5 * 60 * 1000;
+        setInterval(function () {
+            confirmLogin();
+        }, checkInterval);
     })
 
     // 防止上一頁下一頁緩存 (pageshow = 頁面導航事件)
@@ -567,14 +633,15 @@
                 const balance = $(".HeadBalance");
                 const mbrAccount = $(".HeadMbrAccount");
                 const avatar = $(".avatar");
+                const memberCenter = $(".memberCenter");
                 mbrStatus.text(data.mbrStatus);
                 mbrPoint.text(data.mbrPoint);
                 balance.text(formatToMoney(data.balance));
                 mbrAccount.text(data.mbrAccount);
                 avatar.attr("src", "/TwoClothing/DBGifReader5?mbrid=" + data.mbrId + "&imgType=avatar");
+                memberCenter.attr("href", "/TwoClothing/members/Members.do?action=memberProfile&mbrId=" + data.mbrId);
                 // 有登入才去抓其他資料
                 alreadyLogin(data.mbrId);
-                return;
             }
         })
     }
@@ -583,13 +650,16 @@
     function alreadyLogin(mbrId) {
         // 購物車相關節點
         const shoppingCar_A = $(".shoppingCar");
-        shoppingCar_A.attr("href", "/TwoClothing/ItemCart/cartlist?goto=cart&mbrId=" + mbrId);
+        shoppingCar_A.attr("href", "/TwoClothing/ItemCart/cartlist.check?goto=cart&mbrId=" + mbrId);
         const carNum_Span = $(".carNum");
         // 系統通知相關節點
         const notice_A = $(".notice");
-        notice_A.attr("href", "/TwoClothing/ItemCart/cartlist?goto=cart&mbrId=" + mbrId);
+        // TODO 瀏覽系統通知畫面還沒做
+        notice_A.attr("href", "#");
         const noticeNum_Span = $(".noticeNum");
-        //
+        // 即時通相關節點
+        const messageNum_Span = $(".messageNum");
+        // Ajax請求會員相關數據
         $.post("/TwoClothing/headerHelper/search", function (data) {
             // 購物車數量
             if (data.carNum > 0) {
@@ -599,18 +669,53 @@
                 carNum_Span.text("");
                 carNum_Span.hide();
             }
-            // 系統通知數量
+            // 系統通知未讀數量
+            if (data.noticeNum > 0) {
+                noticeNum_Span.text(data.noticeNum);
+                noticeNum_Span.show();
+            } else {
+                noticeNum_Span.text("");
+                noticeNum_Span.hide();
+            }
+            // 即時通未讀數量
+            if (data.messageNum > 0) {
+                messageNum_Span.text(data.messageNum);
+                messageNum_Span.show();
+            } else {
+                messageNum_Span.text("");
+                messageNum_Span.hide();
+            }
         });
+        // 更新賣東西選項的連結
+        const beSeller_A = $(".beSeller");
+        beSeller_A.removeAttr("href");
+        const beSellerDrop = $(".beSellerDrop");
+        const sellItem_A = $(".sellItem");
+        const sellBidItem_A = $(".sellBidItem");
+        // TODO 新增一般商品的連結
+        notice_A.attr("href", "#");
+        sellBidItem_A.attr("href", "/TwoClothing/front/biditem/personal/add.check");
     }
 
     // 移除緩存資料
     function notLogin() {
-        // 購物車連結與數量
-        const shoppingCar_A = $(".shoppingCar");
+        // 購物車數量
         const carNum_Span = $(".carNum");
-        shoppingCar_A.removeAttr("href");
         carNum_Span.text("");
         carNum_Span.hide();
+        // 系統通知數量
+        const noticeNum_Span = $(".noticeNum");
+        noticeNum_Span.text("");
+        noticeNum_Span.hide();
+        // 即時通未讀數量
+        const messageNum_Span = $(".messageNum");
+        messageNum_Span.text("");
+        messageNum_Span.hide();
+        // 更新賣東西選項的連結
+        const beSeller_A = $(".beSeller");
+        beSeller_A.attr("href", "/TwoClothing/front_end/members/registerLogin.jsp");
+        const beSellerDrop = $(".beSellerDrop");
+        beSellerDrop.hide();
     }
 
     // 數字轉 $xxx,xxx,xxx

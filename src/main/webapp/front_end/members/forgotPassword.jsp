@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <style>
 </style>
-<title>Insert title here</title>
+<title>forgotPassword</title>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 

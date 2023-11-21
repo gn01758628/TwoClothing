@@ -2,6 +2,7 @@
     pageEncoding="BIG5"%>
 
 
+
 <!DOCTYPE html>
 <html >
 <head>
@@ -9,29 +10,19 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>會員中心-帳戶資訊 www.bootstrapmb.com</title>
-<style type="">
-*,body{ margin:0px; padding:0px; font-size:12px; font-family:Arial; color:#333;}
-body{ background-color:#f5f5f5;}
-ul,dl,dt,dd,p,h1,h2,h3,h4,h5,h6{ margin:0px; padding:0px;}
-ul{ list-style:none;}
-a{ color:#333; text-decoration:none;}
-a:hover{ color:#f60;}
-a img{ border:none;}
-input{ vertical-align:middle;}
-.clear{ clear:both; height:1px; line-height:1px;}
-</style>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/Members.css">
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
 
 <style>
 	#avatarContainer {
-        position: absolute;
-        top: 169px; 
-        left: 750px;
+        position: relative;
+        top: -730px; 
+        left: 400px;
         
     }
 	#shopImage02Container {
 	    position: relative;
-	    top: -189px;
+	    top: -155px;
 	    left: 400px;
 	}
     #avataruploadFormContainer {
@@ -105,14 +96,14 @@ input{ vertical-align:middle;}
 <body>
 
 
-<div id="header">
+<div id="head">
 
 <div class="menu">
 <ul>
 <li ><a href='${pageContext.request.contextPath}/index.jsp'>回首頁</a></li>
 <li class="menu_selected"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>
-<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder&buyMbrId=${user.mbrId}">買家訂單</a></li>
-<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder&sellMbrId=${user.mbrId}">賣家訂單</a></li>
+<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">買家訂單</a></li>
+<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">賣家訂單</a></li>
 </ul>
 </div>
 </div>
@@ -127,23 +118,7 @@ input{ vertical-align:middle;}
 </div>
 <div id="con_rh">
 <div class="con_rh_con"><br></br>
-<div id="avatarContainer" >
-    <p class="rh_title">大頭貼</p>
-    <label for="avatarInput">
-        <img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=avatar" width="150px" height="150px" />
-    </label>
-    <div id="avataruploadFormContainer" style="display: none;">
-        <form METHOD="post" action="${pageContext.request.contextPath}/members/Members.do" id="avatarForm" enctype="multipart/form-data">
-            <input type="file" id="avatarInput" name="avatar" accept="image/*" style="display: none;">
-            <input type="hidden" name="mbrId" value="${user.mbrId}">
-            <input type="hidden" name="action" value="members_UpdateImage">
-            <input id="avatarsubmitButton" type="submit"  value="修改大頭貼"  >
-        </form>
-    </div>
-     
-</div>
- 		
-<br></br><br></br>
+
 <p class="rh_title">帳戶資訊</p>
 <div class="zh_num">錢包餘額：<span>${Members.balance}</span>元</div> 
 <div class="zh_num">我的點數：<span>${Members.mbrPoint}</span>點</div>
@@ -155,7 +130,8 @@ input{ vertical-align:middle;}
 <button class="editButton" onclick="editMemberData('mbrName')">修改</button></li>
 
 <li  class="li_bj">Email：<span id="mbrName">${user.email}</span>
-<li  class="li_bj">會員密碼：<span id="mbrName">******</span>
+<li style="
+    height: 35px;" class="li_bj">會員密碼：<span id="mbrName">******</span>
 	    <button id="pswdHashFormA">更改密碼</button>
 	
 	    <!-- 彈出的窗口 -->
@@ -248,8 +224,9 @@ input{ vertical-align:middle;}
 		   
 	</div>
 </div>
-<div id="shopImage02Container"> 		
-<p class="rh_title">商場照片</p>
+<div id="shopImage02Container"style="
+    width: 150px;"> 		
+
 	<label for="shopImage02Input">
 		<img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg02" width="150px" height="150px" >
 	</label>	
@@ -262,6 +239,28 @@ input{ vertical-align:middle;}
 		</form>
 	</div>
 </div>
+<div id="avatarContainer" style="
+    width: 150px;">
+    <p class="rh_title" style="
+    width: 150px;">大頭貼</p>
+    <label for="avatarInput">
+        <img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=avatar" width="150px" height="150px" />
+    </label>
+    <div id="avataruploadFormContainer" style="display: none;">
+        <form METHOD="post" action="${pageContext.request.contextPath}/members/Members.do" id="avatarForm" enctype="multipart/form-data">
+            <input type="file" id="avatarInput" name="avatar" accept="image/*" style="display: none;">
+            <input type="hidden" name="mbrId" value="${user.mbrId}">
+            <input type="hidden" name="action" value="members_UpdateImage">
+            <input id="avatarsubmitButton" type="submit"  value="修改大頭貼"  >
+        </form>
+    </div>
+     
+</div>
+ 		
+<br></br><br></br>
+
+
+
 </div>
 </div>
 </div>

@@ -283,7 +283,7 @@ public class MembersServlet extends HttpServlet {
             session.removeAttribute("location");
             session.removeAttribute("mbrId");
             session.removeAttribute("mbrStatus");
-            res.sendRedirect(req.getContextPath() + "/headerTest.html");
+            res.sendRedirect(req.getContextPath() + "/welcome.html");
         }
         // 會員的個人資訊
         if ("memberProfile".equals(action)) {

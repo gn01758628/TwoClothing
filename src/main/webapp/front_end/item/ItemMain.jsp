@@ -18,7 +18,7 @@
     	<br>
     	<a href="${pageContext.request.contextPath}/Item/item?choice=search">賣家商品查詢</a>
     	<br>
-    	<a href="${pageContext.request.contextPath}/Item/item?choice=getAllList">前台商品列表</a>
+    	<a href="${pageContext.request.contextPath}/Item/item?choice=getAllListNoPage">前台商品列表</a>
 
     </div>
 

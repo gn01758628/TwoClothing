@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.twoclothing.huiwen.service.PointHistoryService;
 import com.twoclothing.huiwen.service.PointHistoryServiceImpl;
@@ -97,14 +98,15 @@ public class PointHistoryServlet extends HttpServlet {
 		//新增會員點數異動資訊
 		if("AddOne".equals(choice)) {
 			PointHistory pointHistory = new PointHistory();
-			int mbrId =Integer.parseInt(req.getParameter("mbrId"));
+			HttpSession session = req.getSession();
+			Integer mbrId = (Integer) session.getAttribute("mbrId");
 			if(!req.getParameter("orderId").trim().isEmpty() ) {
 				int orderId =Integer.parseInt(req.getParameter("orderId"));
 			}
 			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 			int changeValue =Integer.parseInt(req.getParameter("changeValue"));
 			
-			pointHistory.setMbrId(1);//從登入資訊取
+			pointHistory.setMbrId(mbrId);//從登入資訊取
 			pointHistory.setOrderId(1);//從訂單取
 			//異動時間1/訂單完成(+) 2/訂單確認(-)
 			pointHistory.setChangeDate(currentTime);			

@@ -57,6 +57,27 @@ public class BidItemHibernateDAO implements BidItemDAO {
     }
 
     @Override
+    public List<BidItem> getAllSubByTagId(Integer tagId) {
+        String sql ="WITH RECURSIVE tahhierarchy AS ( "
+                + "SELECT tagid "
+                + "FROM categorytags "
+                + "WHERE tagid = :tagId "
+                + "UNION ALL "
+                + "SELECT ct.tagid "
+                + "FROM categorytags ct "
+                + "INNER JOIN tahhierarchy th ON ct.supertagid = th.tagid "
+                + ") "
+                + "SELECT DISTINCT it.* "
+                + "FROM tahhierarchy th "
+                + "INNER JOIN biditem it ON th.tagid = it.tagid "
+                + "WHERE it.bidstatus = 4;";
+
+        return getSession().createNativeQuery(sql, BidItem.class)
+                .setParameter("tagId", tagId)
+                .list();
+    }
+
+    @Override
     public List<BidItem> getAllByBidStatus(Integer bidStatus) {
         return getSession().createQuery("from BidItem where bidStatus = :bidStatus", BidItem.class)
                 .setParameter("bidStatus", bidStatus)

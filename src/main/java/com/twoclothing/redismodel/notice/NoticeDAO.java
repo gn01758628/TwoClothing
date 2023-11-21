@@ -8,5 +8,11 @@ public interface NoticeDAO {
 
     List<Notice> getAllByMbrId(Integer mbrId);
 
+    List<Notice> getNoticesByMbrIdAndRead(Integer mbrId, boolean read);
 
+    int getUnreadCountByMbrId(Integer mbrId);
+
+    void markNoticesAsRead(String... noticeIds);
+
+    void deleteNotices(Integer mbrId,String...noticeIds);
 }

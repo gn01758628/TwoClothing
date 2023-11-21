@@ -7,6 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>聊天室</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
     <!--bootstrap5 css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
     <!-- google fonts -->
@@ -20,9 +22,10 @@
     </style>
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
-
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--此頁面的css-->
     <style>
-
         ul, li {
             margin: 0;
             padding: 0;
@@ -549,8 +552,15 @@
             }
         }
     </style>
+    <!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
+
 </head>
 <body>
+
+<div class="headerHTML"></div>
 
 <!-- char-area -->
 <section class="message-area">
@@ -651,12 +661,26 @@
     </div>
 </section>
 <!-- char-area -->
+
+<div class="footerHTML"></div>
+
 <!--bootstrap5 js-->
 <script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
 <!--jQuery-->
 <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
+<script>
+    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+    });
 
+    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+</script>
+<!--此頁面的js-->
 <script>
     // servlet的註冊地址
     let myPoint = "/front/chatRoomWS/${mbrId}/${targetId}"
@@ -798,7 +822,18 @@
             let receiverId = $("#currentPartnerId").val();
             let senderId = userId;
             let timestamp = Date.now();
+            let mbrBigName = $("#mbrBigName").text();
+            let id = "#chatList" + currentChatBoxId;
 
+            if (mbrBigName === "") {
+                Swal.fire({
+                    title: "不存在聊天對象",
+                    text: "請選擇聊天對象",
+                    icon: "question"
+                });
+                messageInput.val("");
+                return;
+            }
             if (content === "") {
                 messageInput.focus();
                 return;
@@ -812,8 +847,13 @@
                 "timestamp": timestamp
             };
 
-            // 自己的畫面也要更新
+            // 當前畫面也要更新
             addChatBoxSingleMsg(jsonObj, true);
+
+            // 當前畫面對話列表的最後一條訊息也要更新
+            $(id + " .last-message").text("你:" + messageInput.val());
+            $(id + " .message-time").text(convertToHourAndMinutes());
+
 
             // 傳送訊息標籤:chat
             // 傳遞資料:訊息內容的JSON
@@ -1176,6 +1216,16 @@
         minutes = minutes < 10 ? '0' + minutes : minutes;
         let strTime = ampm + ' ' + hours + ':' + minutes;
         return strTime;
+    }
+
+    // 毫秒數轉 hh:mm
+    function convertToHourAndMinutes() {
+        let currentDatetime = new Date();
+        let hours = currentDatetime.getHours();
+        let minutes = currentDatetime.getMinutes();
+        hours = hours < 10 ? '0' + hours : hours;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        return hours + ':' + minutes;
     }
 
     // 毫秒數轉 MM月DD日 週幾

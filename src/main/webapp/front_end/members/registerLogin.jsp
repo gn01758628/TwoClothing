@@ -390,7 +390,7 @@
                 if (response.success) {
                     // 登入成功跳轉到首頁
                     // TODO 目前是測試用首頁
-                    window.location.href = contextPath + "/headerTest.html";
+                    window.location.href = contextPath + "/welcome.html";
                 } else {
                     if (response.mbrStatus === 0) {
 

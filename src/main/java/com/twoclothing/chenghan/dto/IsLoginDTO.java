@@ -1,4 +1,4 @@
-package com.twoclothing.chenghan;
+package com.twoclothing.chenghan.dto;
 
 import java.io.Serializable;
 import java.util.Objects;

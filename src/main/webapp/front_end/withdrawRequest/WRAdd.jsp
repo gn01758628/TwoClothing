@@ -5,17 +5,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+    <title>虛擬錢包提款申請</title>
+
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--你們自己的css-->
+    <!--不是外部檔案也無所謂-->
 <style>
-    *{
-        box-sizing: border-box;
-    }
-    body{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+     *{ 
+         box-sizing: border-box; 
+     } 
     main.container{
         /* border: 1px solid black; */
         background-color:  rgba(230, 192, 192, 0.726);
@@ -23,19 +37,20 @@
         /* justify-content: center; */
         align-items: center;
         flex-direction: column;
-        height: 100%;
-        width: 60%;
+/*         height: calc(100vh - 252px); */
+        width: 100%;
         margin-top: 150px;
         padding: 20px;
+        margin-top:95px;
     }
     
-    h1 span{
+    form.form_add h1 span{
     	background-color: lightgray;
     	color:rgb(232, 138, 107);
     	border-radius: 10px;
     	border:3px solid white;
     	padding:3px;
-    	
+/*     	margin-top:50px; */
     }
 
     form.form_add{
@@ -117,7 +132,7 @@
         border-color: lightgray;
     }
 
-    button{
+    button#submit_form{
         width: 40%;
         height: 50px;
         background-color: rgb(243, 144, 144);
@@ -126,21 +141,27 @@
         margin: 70px 0;
         font-size:18px;
     }
-    button:hover{
+    button#submit_form:hover{
         cursor: pointer;
         box-shadow: 5px 5px 10px rgba(143, 129, 129, 0.829);
     }
 
 </style>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
+</head>
 <body>
+<!--放在最前面-->
+<div class="headerHTML"></div>
     <main class="container">
-    <div class="err">
-    <span></span>
-    </div>
-        <h1>虛擬錢包<span>提款申請</span></h1>
+<!--     <div class="err"> -->
+<!--     <span></span> -->
+<!--     </div> -->
+        
         <form class="form_add">
+        	<h1>虛擬錢包<span>提款申請</span></h1>
             <div>
                 <div class="overage">
                     <span>餘額：$<span>${balance}</span></span>
@@ -175,7 +196,27 @@
         </form>
 
     </main>
+    <!--放在最後面-->
+	<div class="footerHTML"></div>
 
+
+
+	<!--bootstrap5 js-->
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+	<!--jQuery-->
+	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+	<!--Sweet Alert-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+	<!--JS loader-->
+	<script>
+	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+	        // 保證headerHTML加載完才載入header.js
+	        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+	    });
+	
+	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	</script>
 
     <script>
   

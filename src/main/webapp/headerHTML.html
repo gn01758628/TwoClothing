@@ -1,0 +1,221 @@
+<header class="fixed-top">
+    <!-- 頁面進度條 -->
+    <div id="scroll-progress"></div>
+    <div class="needSlide">
+        <nav class="navbar navbar-expand-lg sticky-top navbar-light p-3 shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="/TwoClothing/welcome.html">
+                    <img src="/TwoClothing/images/Mainicon.png" style="height: 50px" alt="Icon">
+                    <strong class="titleName">TwoClothing</strong>
+                </a>
+                <!--漢堡選單按鈕-->
+                <button class="navbar-toggler menu"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavDropdown"
+                        onclick="this.classList.toggle('opened');this.setAttribute('aria-expanded', this.classList.contains('opened'))"
+                        aria-label="Main Menu">
+                    <svg width="50" height="50" viewBox="0 0 100 100">
+                        <path class="line line1"
+                              d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058"/>
+                        <path class="line line2" d="M 20,50 H 80"/>
+                        <path class="line line3"
+                              d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942"/>
+                    </svg>
+                </button>
+                <!--漢堡選單按鈕-->
+                <div class="mx-auto my-3 d-lg-none d-sm-block d-xs-block">
+                    <!--SearchBar視窗縮小時-->
+                    <div class="searchBox">
+                        <label>
+                            <input class="searchInput" type="text" name="keyword" placeholder="關鍵字搜尋...">
+                        </label>
+                        <button class="searchButton">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29"
+                                 fill="none">
+                                <g clip-path="url(#clip0_2_17)">
+                                    <g filter="url(#filter0_d_2_17)">
+                                        <path d="M23.7953 23.9182L19.0585 19.1814M19.0585 19.1814C19.8188 18.4211 20.4219 17.5185 20.8333 16.5251C21.2448 15.5318 21.4566 14.4671 21.4566 13.3919C21.4566 12.3167 21.2448 11.252 20.8333 10.2587C20.4219 9.2653 19.8188 8.36271 19.0585 7.60242C18.2982 6.84214 17.3956 6.23905 16.4022 5.82759C15.4089 5.41612 14.3442 5.20435 13.269 5.20435C12.1938 5.20435 11.1291 5.41612 10.1358 5.82759C9.1424 6.23905 8.23981 6.84214 7.47953 7.60242C5.94407 9.13789 5.08145 11.2204 5.08145 13.3919C5.08145 15.5634 5.94407 17.6459 7.47953 19.1814C9.01499 20.7168 11.0975 21.5794 13.269 21.5794C15.4405 21.5794 17.523 20.7168 19.0585 19.1814Z"
+                                              stroke="white" stroke-width="3" stroke-linecap="round"
+                                              stroke-linejoin="round" shape-rendering="crispEdges"></path>
+                                    </g>
+                                </g>
+                                <defs>
+                                    <filter id="filter0_d_2_17" x="-0.418549" y="3.70435" width="29.7139"
+                                            height="29.7139" filterUnits="userSpaceOnUse"
+                                            color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+                                        <feColorMatrix in="SourceAlpha" type="matrix"
+                                                       values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                                       result="hardAlpha"></feColorMatrix>
+                                        <feOffset dy="4"></feOffset>
+                                        <feGaussianBlur stdDeviation="2"></feGaussianBlur>
+                                        <feComposite in2="hardAlpha" operator="out"></feComposite>
+                                        <feColorMatrix type="matrix"
+                                                       values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix>
+                                        <feBlend mode="normal" in2="BackgroundImageFix"
+                                                 result="effect1_dropShadow_2_17"></feBlend>
+                                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2_17"
+                                                 result="shape"></feBlend>
+                                    </filter>
+                                    <clipPath id="clip0_2_17">
+                                        <rect width="28.0702" height="28.0702" fill="white"
+                                              transform="translate(0.403503 0.526367)"></rect>
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </button>
+                    </div>
+                    <!--SearchBar視窗縮小時-->
+                </div>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <div class="ms-auto d-none d-lg-block">
+                        <!--SearchBar-->
+                        <div class="searchBox">
+                            <label>
+                                <input class="searchInput" type="text" name="keyword" placeholder="關鍵字搜尋...">
+                            </label>
+                            <button class="searchButton">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29"
+                                     fill="none">
+                                    <g clip-path="url(#clip0_2_17)">
+                                        <g filter="url(#filter0_d_2_17)">
+                                            <path d="M23.7953 23.9182L19.0585 19.1814M19.0585 19.1814C19.8188 18.4211 20.4219 17.5185 20.8333 16.5251C21.2448 15.5318 21.4566 14.4671 21.4566 13.3919C21.4566 12.3167 21.2448 11.252 20.8333 10.2587C20.4219 9.2653 19.8188 8.36271 19.0585 7.60242C18.2982 6.84214 17.3956 6.23905 16.4022 5.82759C15.4089 5.41612 14.3442 5.20435 13.269 5.20435C12.1938 5.20435 11.1291 5.41612 10.1358 5.82759C9.1424 6.23905 8.23981 6.84214 7.47953 7.60242C5.94407 9.13789 5.08145 11.2204 5.08145 13.3919C5.08145 15.5634 5.94407 17.6459 7.47953 19.1814C9.01499 20.7168 11.0975 21.5794 13.269 21.5794C15.4405 21.5794 17.523 20.7168 19.0585 19.1814Z"
+                                                  stroke="white" stroke-width="3" stroke-linecap="round"
+                                                  stroke-linejoin="round" shape-rendering="crispEdges"></path>
+                                        </g>
+                                    </g>
+                                    <defs>
+                                        <filter id="filter0_d_2_17" x="-0.418549" y="3.70435" width="29.7139"
+                                                height="29.7139" filterUnits="userSpaceOnUse"
+                                                color-interpolation-filters="sRGB">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+                                            <feColorMatrix in="SourceAlpha" type="matrix"
+                                                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                                           result="hardAlpha"></feColorMatrix>
+                                            <feOffset dy="4"></feOffset>
+                                            <feGaussianBlur stdDeviation="2"></feGaussianBlur>
+                                            <feComposite in2="hardAlpha" operator="out"></feComposite>
+                                            <feColorMatrix type="matrix"
+                                                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix>
+                                            <feBlend mode="normal" in2="BackgroundImageFix"
+                                                     result="effect1_dropShadow_2_17"></feBlend>
+                                            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2_17"
+                                                     result="shape"></feBlend>
+                                        </filter>
+                                        <clipPath id="clip0_2_17">
+                                            <rect width="28.0702" height="28.0702" fill="white"
+                                                  transform="translate(0.403503 0.526367)"></rect>
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                            </button>
+                        </div>
+                        <!--SearchBar-->
+                    </div>
+
+                    <ul class="navbar-nav ms-auto ">
+                        <li class="nav-item">
+                            <a class="nav-link mx-2">
+                                <i class="fa-solid fa-circle-user linkIcon">
+                                    <span class="linkText HeadMbrStatus">會員中心</span>
+                                </i>
+                            </a>
+                            <div class="dropdown-menu text-center HeadMemberDrop">
+                                <div class="member-profile">
+                                    <img src="" alt="你的大頭貼" class="avatar"
+                                         style="height: 50px; width: 50px ;border-radius: 50%; object-fit:cover">
+                                    <span class="HeadMbrAccount">會員帳號</span>
+                                </div>
+                                <hr class="dropdown-divider">
+                                <a class="dropdown-item memberCenter" href="#">錢包餘額：<span
+                                        class="HeadBalance"></span></a>
+                                <a class="dropdown-item memberCenter" href="#">點數餘額：<span
+                                        class="HeadMbrPoint"></span></a>
+                                <div>
+                                    <hr class="dropdown-divider">
+                                </div>
+                                <a class="dropdown-item memberCenter" href="#">會員中心</a>
+                                <!--TODO 補上訂單查詢連結-->
+                                <a class="dropdown-item" href="#">訂單查詢</a>
+                                <!--TODO 補上我的收藏連結-->
+                                <a class="dropdown-item" href="/TwoClothing/itemtrackinglist.check?action=getAllByMbrId">我的收藏</a>
+                                <!--TODO 補上競標中連結-->
+                                <a class="dropdown-item" href="#">競標中</a>
+                                <div>
+                                    <hr class="dropdown-divider">
+                                </div>
+                                <form action="/TwoClothing/members/Members.do" method="post">
+                                    <input type="hidden" name="action" value="logout">
+                                    <button class="dropdown-item" type="submit" id="logoutButton">登出</button>
+                                </form>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/TwoClothing/front_end/members/registerLogin.jsp"
+                               class="nav-link mx-2 shoppingCar position-relative">
+                                <span class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger carNum">
+                                </span>
+                                <i class="fa-solid fa-cart-shopping linkIcon">
+                                    <span class="linkText">購物車</span>
+                                </i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <!--TODO 補上商品連結-->
+                            <a class="nav-link mx-2" href="#">
+                                <i class="fa-solid fa-shirt linkIcon">
+                                    <span class="linkText">商品</span>
+                                </i>
+
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/TwoClothing/front_end/members/registerLogin.jsp" class="nav-link mx-2 beSeller">
+                                <i class="fa-solid fa-sack-dollar linkIcon">
+                                    <span class="linkText">賣東西</span>
+                                </i>
+                            </a>
+                            <div class="dropdown-menu text-center beSellerDrop">
+                                <a href="/TwoClothing/Item/item.check?choice=addItem" class="dropdown-item sellItem">新增商品</a>
+                                <a href="/TwoClothing/front/biditem/personal/add.check" class="dropdown-item sellBidItem">申請競標案</a>
+                                <div>
+                                    <hr class="dropdown-divider">
+                                    <a href="/TwoClothing/Item/item.check?choice=search" class="dropdown-item itemCenter">商品管理</a>
+                                    <a href="/TwoClothing/front/biditem/personal/list.check" class="dropdown-item bidItemCenter">競標管理</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <!--TODO 補上競標商品連結-->
+                            <a class="nav-link mx-2" href="#">
+                                <i class="fa-solid fa-scale-balanced linkIcon">
+                                    <span class="linkText">競標專區</span>
+                                </i>
+
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/TwoClothing/front_end/members/registerLogin.jsp"
+                               class="nav-link mx-2 notice position-relative noticeList">
+                                <span class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger noticeNum">
+                                </span>
+                                <i class="fa-solid fa-bell linkIcon">
+                                    <span class="linkText">系統通知</span>
+                                </i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 position-relative" href="/TwoClothing/front/chatroom/0.check">
+                                <span class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger messageNum">
+                                </span>
+                                <i class="fa-solid fa-comments linkIcon">
+                                    <span class="linkText">即時通</span>
+                                </i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>

@@ -30,8 +30,7 @@ public class ItemImage implements Serializable {
 	public ItemImage() {
 	}
 
-	public ItemImage(Integer imgId, Integer itemId, byte[] image) {
-		this.imgId = imgId;
+	public ItemImage(Integer itemId, byte[] image) {
 		this.itemId = itemId;
 		this.image = image;
 	}

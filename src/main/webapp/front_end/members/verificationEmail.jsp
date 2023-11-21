@@ -3,42 +3,121 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<title>verificationEmail</title>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
+<style>
+* {
+	font-family: 微軟正黑體;
+}
+
+body {
+	background-color: white;
+}
+
+#email3, #pswdHash, h3, #mbrName, #comfirm_password, #email, #pswdHash,
+	#VerificationCode, #imgValidate {
+	width: 200px;
+	height: 20px;
+	margin: 10px;
+	color: #df5334;
+}
+
+h5 {
+	margin: 20px;
+	color: #a3a2a3;
+}
+
+h5:hover {
+	color: black;
+}
+
+#forgotPasswordModal {
+	margin: 50px;
+	padding: 10px;
+	width: 230px;
+	height: 250px;
+	background-color: white;
+	border-radius: 5px;
+	border-top: 10px solid #df5334;
+	box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1);
+	/*定位對齊*/
+	position: relative;
+	margin: auto;
+	top: 100px;
+	text-align: center;
+}
+
+.system_name {
+	/*定位對齊*/
+	position: relative;
+	margin: auto;
+	top: 100px;
+	text-align: center;
+}
+
+.submit {
+	color: white;
+	background: #df5334;
+	width: 200px;
+	height: 30px;
+	margin: 10px;
+	padding: 5px;
+	border-radius: 5px;
+	border: 0px;
+}
+
+.submit:hover {
+	background: #db6937;
+}
+
+#copyright {
+	text-align: center;
+	color: #a3a2a3;
+	margin: -200px 0px 0px 0px;
+	font-size: 14px;
+	
+	
+}
+
+input {
+	padding: 5px;
+	border: none;
+	border: solid 1px #ccc;
+	border-radius: 5px;
+}
+
+
+</style>
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/members/Members.do" method="post">
-		        <input type="hidden" name="action" value="logout">
-		        <button type="submit">登出</button>
-</form>
+			<form action="${pageContext.request.contextPath}/members/Members.do"
+				method="post">
+				<input type="hidden" name="action" value="logout">
+				<button type="submit">登出</button>
+			</form>
+	<div class="system_name">
+		<h2>TwoClothing歡迎您</h2>
+	</div>
+	<div id="forgotPasswordModal" class="modal">
+		<div class="modal-content">
+			<h3>驗證信</h3>
+			<form
+				action="${pageContext.request.contextPath}/members/SendEmailServlet"
+				method="post">
+				<input type="hidden" name="action" value="verificationEmail" />
+				<input type="text" name="email" value='${user.email}' >
+				
+				<input type="submit" value="寄出驗證信" class="submit" >
 
-<form action="${pageContext.request.contextPath}/members/SendEmailServlet" method="post">
-    <input type="hidden" name="action" value="verificationEmail"/>
-    <table align="center" width="30%">
-
-        <tr>
-            <td>郵箱</td>
-           <td><input id="email" type="text" name="email" value="<c:out value='${user.email}' />"/> </td>
-        </tr>
-        <tr>
-            <td align="center" >
-            <button id="action" name="action" value ="verificationEmail" type="submit">驗證</button> </td>
-      
-<!--            <td><button id="cancel_id" type="button">取消</button> </td> -->
-        </tr>
-    </table>
-</form>
+			</form>
+		</div>
+	</div>
 
 
-<script>
-//获取取消按钮元素
-//var cancelButton = document.getElementById("cancel_id");
 
-// 添加点击事件处理程序
-//cancelButton.addEventListener("click", function() {
-//    window.location.href = "/TwoClothing/index.jsp"; // 返回首页的 URL
-//});
-</script>
+
 </body>
 </html>

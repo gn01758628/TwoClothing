@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.twoclothing.gordon.service.MembersService;
 import com.twoclothing.gordon.service.MembersServiceImpl;
@@ -55,8 +56,8 @@ public class WithdrawRequestServlet extends HttpServlet {
 		}
 		// 連去搜尋，直接顯示查全部(會員用)
 		if ("search".equals(choice)) {			
-			//session取會員編號
-			Integer mbrId = 1;
+			HttpSession session = req.getSession();
+			Integer mbrId = (Integer) session.getAttribute("mbrId");
 			List<WithdrawRequest> withdrawRequestList = withdrawSvc.getAllWRByMbrId(mbrId);
 			req.setAttribute("WRList", withdrawRequestList);
 			
