@@ -1,5 +1,6 @@
 package com.twoclothing.listener;
 
+import com.twoclothing.chijung.controller.front_end.CategoryTagsSorter;
 import com.twoclothing.model.categorytags.CategoryTags;
 import com.twoclothing.model.categorytags.CategoryTagsDAO;
 import com.twoclothing.model.categorytags.CategoryTagsHibernateDAO;
@@ -48,6 +49,8 @@ public class ServletContextInitializeListener implements ServletContextListener 
             List<CategoryTags> categoryTags = categoryTagsDAO.getAll();
             sessionFactory.getCurrentSession().getTransaction().commit();
             servletContext.setAttribute("categoryTags", categoryTags);
+            
+            servletContext.setAttribute("categoryTagsSortedList", CategoryTagsSorter.sortCategoryTags(categoryTags));
         } catch (Exception e) {
             sessionFactory.getCurrentSession().getTransaction().rollback();
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package com.twoclothing.chenghan.controller;
 
+import com.twoclothing.chijung.controller.front_end.CategoryTagsSorter;
 import com.twoclothing.model.categorytags.CategoryTags;
 import com.twoclothing.model.categorytags.CategoryTagsDAO;
 import com.twoclothing.model.categorytags.CategoryTagsHibernateDAO;
@@ -81,6 +82,7 @@ public class CategoryTagsBackServlet extends HttpServlet {
         // 更新綁定在ServletContext的數據
         List<CategoryTags> categoryTags = categoryTagsDAO.getAll();
         servletContext.setAttribute("categoryTags", categoryTags);
+        servletContext.setAttribute("categoryTagsSortedList", CategoryTagsSorter.sortCategoryTags(categoryTags));
         response.sendRedirect(request.getContextPath() + "/back_end/servlet/categoryTags/list");
     }
 
@@ -109,6 +111,7 @@ public class CategoryTagsBackServlet extends HttpServlet {
         // 更新綁定在ServletContext的數據
         List<CategoryTags> categoryTags = categoryTagsDAO.getAll();
         servletContext.setAttribute("categoryTags", categoryTags);
+        servletContext.setAttribute("categoryTagsSortedList", CategoryTagsSorter.sortCategoryTags(categoryTags));
         response.sendRedirect(request.getContextPath() + "/back_end/servlet/categoryTags/list");
     }
 }
