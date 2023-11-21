@@ -42,6 +42,7 @@ public class NoticeJedisDAO implements NoticeDAO {
             jedis.hset(value, "link", notice.getLink());
             jedis.hset(value, "imageLink", notice.getImageLink());
             jedis.hset(value, "read", Boolean.toString(notice.isRead()));
+            jedis.hset(value, "timestamp", String.valueOf(System.currentTimeMillis()));
 
             jedis.expire(value, TTL);
         }
@@ -54,8 +55,15 @@ public class NoticeJedisDAO implements NoticeDAO {
             // 獲取所有與會員有關的通知ID
             List<String> noticeIdList = jedis.lrange(MBR_PREFIX + mbrId + MBR_SUFFIX, 0, -1);
             if (noticeIdList != null && !noticeIdList.isEmpty()) {
+
                 for (String noticeId : noticeIdList) {
                     Map<String, String> noticeData = jedis.hgetAll(noticeId);
+
+                    if (noticeData == null || noticeData.isEmpty()) {
+                        jedis.lrem(MBR_PREFIX + mbrId + MBR_SUFFIX, 0, noticeId);
+                        continue;
+                    }
+
                     Notice notice = new Notice();
                     notice.setType(noticeData.get("type"));
                     notice.setHead(noticeData.get("head"));
@@ -64,6 +72,7 @@ public class NoticeJedisDAO implements NoticeDAO {
                     notice.setImageLink(noticeData.get("imageLink"));
                     notice.setRead(Boolean.parseBoolean(noticeData.get("read")));
                     notice.setNoticeId(noticeId);
+                    notice.setTimestamp(Long.parseLong(noticeData.get("timestamp")));
                     noticeList.add(notice);
                 }
             }
@@ -81,9 +90,13 @@ public class NoticeJedisDAO implements NoticeDAO {
 
             for (String noticeId : noticeIdList) {
                 Map<String, String> noticeData = jedis.hgetAll(noticeId);
-                boolean isRead = Boolean.parseBoolean(noticeData.get("read"));
 
-                // 只添加符合指定阅读状态的通知
+                if (noticeData == null || noticeData.isEmpty()) {
+                    jedis.lrem(MBR_PREFIX + mbrId + MBR_SUFFIX, 0, noticeId);
+                    continue;
+                }
+
+                boolean isRead = Boolean.parseBoolean(noticeData.get("read"));
                 if (isRead == read) {
                     Notice notice = new Notice();
                     notice.setType(noticeData.get("type"));
@@ -93,6 +106,7 @@ public class NoticeJedisDAO implements NoticeDAO {
                     notice.setImageLink(noticeData.get("imageLink"));
                     notice.setRead(isRead);
                     notice.setNoticeId(noticeId);
+                    notice.setTimestamp(Long.parseLong(noticeData.get("timestamp")));
                     noticeList.add(notice);
                 }
             }
@@ -110,6 +124,12 @@ public class NoticeJedisDAO implements NoticeDAO {
 
             for (String noticeKey : noticeKeys) {
                 String readStatus = jedis.hget(noticeKey, "read");
+
+                if (readStatus == null) {
+                    jedis.lrem(MBR_PREFIX + mbrId + MBR_SUFFIX, 0, noticeKey);
+                    continue;
+                }
+
                 if ("false".equals(readStatus)) {
                     unreadCount++;
                 }
@@ -131,6 +151,17 @@ public class NoticeJedisDAO implements NoticeDAO {
                 if (noticeId != null && !noticeId.isEmpty()) {
                     jedis.hset(noticeId, "read", "true");
                 }
+            }
+        }
+    }
+
+    @Override
+    public void deleteNotices(Integer mbrId, String... noticeIds) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(REDIS_NUMBER);
+            for (String noticeId : noticeIds) {
+                jedis.lrem(MBR_PREFIX + mbrId + MBR_SUFFIX, 0, noticeId);
+                jedis.del(noticeId);
             }
         }
     }

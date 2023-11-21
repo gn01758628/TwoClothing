@@ -167,14 +167,10 @@ function alreadyLogin(mbrId) {
         }
     });
     // 更新賣東西選項的連結
-    const beSeller_A = $(".beSeller");
-    beSeller_A.removeAttr("href");
+    $(".beSeller").removeAttr("href");
     const beSellerDrop = $(".beSellerDrop");
-    const sellItem_A = $(".sellItem");
-    const sellBidItem_A = $(".sellBidItem");
-    // TODO 新增一般商品的連結
-    notice_A.attr("href", "#");
-    sellBidItem_A.attr("href", "/TwoClothing/front/biditem/personal/add.check");
+    // 更新系統通知的連結
+    $(".noticeList").attr("href", "/TwoClothing/front_end/notice/noticeList.html");
 }
 
 // 移除緩存資料
@@ -196,6 +192,9 @@ function notLogin() {
     beSeller_A.attr("href", "/TwoClothing/front_end/members/registerLogin.jsp");
     const beSellerDrop = $(".beSellerDrop");
     beSellerDrop.hide();
+    // 更新系統通知的連結
+    $(".noticeList").attr("href", "/TwoClothing/front_end/members/registerLogin.jsp");
+
 }
 
 // 數字轉 $xxx,xxx,xxx

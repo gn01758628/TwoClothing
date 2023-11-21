@@ -271,6 +271,22 @@
 
         /*大標題*/
 
+        /*圖片按鈕*/
+        .imgBtn img {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .imgBtn:hover img {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .imgBtn:active img {
+            transform: scale(0.95);
+        }
+
+        /*圖片按鈕*/
+
         /*類別選擇按鈕*/
         .pushable {
             position: relative;
@@ -419,6 +435,26 @@
     </button>
 </div>
 <!--</div>-->
+
+<div class="container text-center mt-3 mb-3">
+    <div class="row">
+        <div class="col text-center">
+            <h2 class="bigTitle">我要賣衣服</h2>
+        </div>
+    </div>
+    <div class="row justify-content-evenly mt-4">
+        <div class="col-6 col-md-4">
+            <a href="/TwoClothing/front/biditem/personal/add.check" class="imgBtn">
+                <img src="/TwoClothing/images/SellBid.png" class="img-fluid" alt="新增競標案">
+            </a>
+        </div>
+        <div class="col-6 col-md-4">
+            <a href="/TwoClothing/Item/item.check?choice=addItem" class="imgBtn">
+                <img src="/TwoClothing/images/SellItem.png" class="img-fluid" alt="新增商品">
+            </a>
+        </div>
+    </div>
+</div>
 
 <div class="container mt-3 mb-3">
     <div class="row">

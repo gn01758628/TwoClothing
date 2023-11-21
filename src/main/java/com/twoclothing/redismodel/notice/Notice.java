@@ -26,6 +26,9 @@ public class Notice implements Serializable {
     // 儲存該通知在redis裡的Id
     private String noticeId;
 
+    // 訊息發布的時間
+    private Long timestamp;
+
     public Notice() {
     }
 
@@ -39,6 +42,7 @@ public class Notice implements Serializable {
                 ", imageLink='" + imageLink + '\'' +
                 ", read=" + read +
                 ", noticeId='" + noticeId + '\'' +
+                ", timestamp=" + timestamp +
                 '}';
     }
 
@@ -47,12 +51,12 @@ public class Notice implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Notice notice = (Notice) o;
-        return read == notice.read && Objects.equals(type, notice.type) && Objects.equals(head, notice.head) && Objects.equals(content, notice.content) && Objects.equals(link, notice.link) && Objects.equals(imageLink, notice.imageLink) && Objects.equals(noticeId, notice.noticeId);
+        return read == notice.read && Objects.equals(type, notice.type) && Objects.equals(head, notice.head) && Objects.equals(content, notice.content) && Objects.equals(link, notice.link) && Objects.equals(imageLink, notice.imageLink) && Objects.equals(noticeId, notice.noticeId) && Objects.equals(timestamp, notice.timestamp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, head, content, link, imageLink, read, noticeId);
+        return Objects.hash(type, head, content, link, imageLink, read, noticeId, timestamp);
     }
 
     public String getType() {
@@ -109,5 +113,13 @@ public class Notice implements Serializable {
 
     public void setNoticeId(String noticeId) {
         this.noticeId = noticeId;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 }

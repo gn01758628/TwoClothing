@@ -303,7 +303,6 @@
         $("#commitBid").on("click", function () {
             const cancelBid = $("#cancelBid");
             // 金額正確,發送請求
-            console.log("發送請求");
             $.post('${pageContext.request.contextPath}/front/biditem/anyone/bid.check', {
                 bidItemId: bidItemId,
                 bidAmount: bidAmountInp.val(),
