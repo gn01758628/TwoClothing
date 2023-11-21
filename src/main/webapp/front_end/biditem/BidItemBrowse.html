@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>競標商品瀏覽</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="/TwoClothing/images/Mainicon.png" type="image/png">
+    <!--bootstrap5-->
+    <link rel="stylesheet" href="/TwoClothing/css/bootstrap5/bootstrap.min.css">
+    <!--google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!--Font Awesome-->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--此頁面css-->
+    <style>
+        /*購買按鈕*/
+        .shopNow {
+            padding: 1.1em 2em;
+            border: 2px solid #fff;
+            font-size: 15px;
+            color: #131313;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            border-radius: 12px;
+            background-color: #ecd448;
+            font-weight: bolder;
+            box-shadow: 0 2px 0 2px #000;
+        }
+
+        .shopNow:before {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 120%;
+            background-color: #ff6700;
+            top: 50%;
+            transform: skewX(30deg) translate(-150%, -50%);
+            transition: all 0.5s;
+        }
+
+        .shopNow:hover {
+            background-color: #4cc9f0;
+            color: #fff;
+            box-shadow: 0 2px 0 2px #0d3b66;
+        }
+
+        .shopNow:hover::before {
+            transform: skewX(30deg) translate(150%, -50%);
+            transition-delay: 0.1s;
+        }
+
+        .shopNow:active {
+            transform: scale(0.9);
+        }
+
+        /*購買按鈕*/
+        /*商品卡片*/
+        .card {
+            display: block;
+            margin-bottom: 20px;
+            line-height: 1.42857143;
+            background-color: #fff;
+            border-radius: 2px;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+            transition: box-shadow .25s;
+            height: 355px;
+            width: 240px;
+            overflow: hidden;
+            margin-right: 20px;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .img-card {
+            width: 100%;
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
+            display: block;
+            overflow: hidden;
+        }
+
+        .img-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: contain;
+            transition: all .25s ease;
+        }
+
+        .card-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .card .itemName {
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* 限制在兩行內 */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis; /* 文本溢出顯示省略號 */
+            line-height: 1.2em; /* 根據您的需求調整 */
+            max-height: 2.4em; /* line-height 的兩倍，以確保兩行 */
+            word-break: break-word; /* 防止單詞在行末分開 */
+            margin-top: 0px;
+            font-weight: 700;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .card-read-more {
+            border-top: 2px solid #D4D4D4;
+            text-align: center;
+        }
+
+        .card-content a {
+            color: #000;
+            text-decoration: none !important;
+        }
+
+        .card-read-more a {
+            text-decoration: none !important;
+            padding: 10px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .card .currentBid {
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 16px;
+            color: #000;
+        }
+
+        .card .bidAmount {
+            color: #ff3400;
+            font-size: 18px;
+        }
+
+        .card .endDate {
+            display: block;
+            background-color: #D50000;
+            color: white;
+            padding: 5px 0;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            border-radius: 10px;
+        }
+
+        /*商品卡片*/
+
+        /*筆數選擇*/
+        .radio-input {
+            display: flex;
+            flex-direction: row;
+            font-size: 16px;
+            font-weight: 200;
+            color: white;
+        }
+
+        .radio-input input[type="radio"] {
+            display: none;
+        }
+
+        .radio-input label {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #212121;
+            border-radius: 5px;
+            margin-right: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .radio-input label:before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .radio-input input[type="radio"]:checked + label:before {
+            background-color: green;
+            top: 0;
+        }
+
+        .radio-input input[type="radio"]:checked + label {
+            background-color: royalblue;
+            color: #fff;
+            border-color: rgb(129, 235, 129);
+            animation: radio-translate 0.5s ease-in-out;
+        }
+
+        @keyframes radio-translate {
+            0% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        /*筆數選擇*/
+
+    </style>
+    <!--導覽列css-->
+    <link rel="stylesheet" href="/TwoClothing/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="/TwoClothing/css/chengHan/footer.css">
+</head>
+<body>
+<!--放在最前面-->
+<div class="headerHTML"></div>
+
+<!--每頁最大筆數選擇-->
+<div class="container pt-4">
+    <div class="row justify-content-start">
+        <div class="col-auto">
+            <div class="radio-input">
+                <input value="4" name="pageMaxResult" id="value-1" type="radio">
+                <label for="value-1">每頁4筆</label>
+                <input value="8" name="pageMaxResult" id="value-2" type="radio" checked>
+                <label for="value-2">每頁8筆</label>
+                <input value="16" name="pageMaxResult" id="value-3" type="radio">
+                <label for="value-3">每頁16筆</label>
+                <input value="32" name="pageMaxResult" id="value-4" type="radio">
+                <label for="value-4">每頁32筆</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-3 mb-3">
+    <div class="row">
+        <!--側邊欄-->
+        <div class="col-2 ChooseType">
+
+        </div>
+
+        <!--商品陳列區-->
+        <div class="col-10">
+            <div class="container">
+                <div class="row justify-content-start showBidItem">
+                    <!-- 商品項目 -->
+                    <div class="card col-3">
+                        <div class="endDate">結標日期</div>
+                        <a class="img-card" href="#">
+                            <img src="/TwoClothing/images/clothing/clothing-1.jpg" alt="商品名稱">
+                        </a>
+                        <div class="card-content">
+                            <a href="#">
+                                <h4 class="itemName">商品名稱</h4>
+                                <p class="currentBid">目前出價：<span class="bidAmount">$9,900</span></p>
+                                <div class="countDown" data-end-time="結標時間戳">倒數計時</div>
+                            </a>
+                        </div>
+                        <div class="card-read-more">
+                            <a href="#">
+                                <button class="shopNow">我要出價</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--分頁按鈕-->
+            <div class="container mt-3">
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <button class="page-link" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </button>
+                            </li>
+                            <li class="page-item">
+                                <button class="page-link">1</button>
+                            </li>
+                            <li class="page-item">
+                                <button class="page-link">2</button>
+                            </li>
+                            <li class="page-item">
+                                <button class="page-link">3</button>
+                            </li>
+                            <li class="page-item">
+                                <button class="page-link" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--放在最後面-->
+<div class="footerHTML"></div>
+
+<!--bootstrap5-->
+<script src="/TwoClothing/js/bootstrap5/popper.min.js"></script>
+<script src="/TwoClothing/js/bootstrap5/bootstrap.min.js"></script>
+<!--jQuery-->
+<script src="/TwoClothing/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
+<script>
+    $(".headerHTML").load("/TwoClothing/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("/TwoClothing/js/chengHan/header.js");
+    });
+
+    $(".footerHTML").load("/TwoClothing/footerHTML.html");
+</script>
+
+<!--此頁面的js-->
+<script>
+    // 全局變數記錄(查詢種類,當前頁數,每頁最大筆數)
+    let tagId = 2;
+    let currentPage = 1;
+    let pageMaxResult = 8;
+    let prevMaxResult = null;
+
+    $(document).ready(function () {
+        // 直接進來瀏覽頁面查全部
+        generateCardDiv(tagId, currentPage, pageMaxResult, true);
+        // 監聽最大顯示筆數選擇按紐
+        $('input[name="pageMaxResult"]').change(function () {
+            if (currentPage != 1) prevMaxResult = pageMaxResult;
+            console.log(prevMaxResult);
+            pageMaxResult = Number($(this).val());
+            generateCardDiv(tagId, currentPage, pageMaxResult, true);
+        });
+    })
+
+    // function place
+
+
+    // 根據tagId跟currentPage返回結果
+    function generateCardDiv(parameterTagId, parameterCurrentPage, parameterPageMaxResult, isChange) {
+        $.get("/TwoClothing/front/biditemBrowse", {
+            tagId: parameterTagId,
+            currentPage: parameterCurrentPage,
+            pageMaxResult: parameterPageMaxResult
+        }, function (data) {
+            let totalPage = data.totalPage;
+            if (isChange) {
+                generatePaginationButtons(totalPage);
+            }
+            const bidIItemDTOList = JSON.parse(data.bidIItemDTOList);
+            createCardDiv(bidIItemDTOList);
+            // 倒數計時
+            updateCountdowns();
+            setInterval(updateCountdowns, 1000);
+        })
+    }
+
+    // 動態生成商品項目
+    function createCardDiv(bidItemDTOList) {
+        const showBidItem_Div = $(".showBidItem");
+        showBidItem_Div.empty();
+        bidItemDTOList.forEach(function (bidItem) {
+            // 取得變數
+            let endDate = formatMillisToString(bidItem.endTime);
+            let linkUrl = "/TwoClothing/front/biditem/anyone/detail?bidItemId=" + bidItem.bidItemId;
+            let imgUrl = "/TwoClothing/ReadItemIMG/biditem?id=" + bidItem.bidItemId + "&position=1";
+            let itemName = bidItem.itemName;
+            let bidAmountType = bidItem.bidAmountType;
+            let bidAmount = formatAsCurrency(bidItem.currentBid);
+            let countDown = bidItem.endTime;
+            // 生成節點
+            const cardDiv = $('<div>', {class: 'card col-3'});
+            cardDiv.append($('<div>', {class: 'endDate'}).text(endDate));
+
+            const link = $('<a>', {href: linkUrl, class: 'img-card'});
+            link.append($('<img>', {src: imgUrl, alt: itemName}));
+            cardDiv.append(link);
+
+            const cardContent = $('<div>', {class: 'card-content'});
+            const contentLink = $('<a>', {href: linkUrl});
+            contentLink.append($('<h4>', {class: 'itemName'}).text(itemName));
+            contentLink.append($('<p>', {class: 'currentBid'}).text(bidAmountType).append($('<span>', {class: 'bidAmount'}).text(bidAmount)));
+            contentLink.append($('<div>', {class: 'countDown', 'data-end-time': countDown}).text(countDown));
+            cardContent.append(contentLink);
+            cardDiv.append(cardContent);
+
+            const cardReadMore = $('<div>', {class: 'card-read-more'});
+            const buttonLink = $('<a>', {href: linkUrl});
+            buttonLink.append($('<button>', {class: 'shopNow'}).text('我要出價'));
+            cardReadMore.append(buttonLink);
+            cardDiv.append(cardReadMore);
+
+            showBidItem_Div.append(cardDiv);
+        })
+    }
+
+
+    // 動態生成翻頁按鈕
+    function generatePaginationButtons(totalPage) {
+        const pagination_Ul = $('.pagination');
+        pagination_Ul.empty();
+
+        let prevDisabled = currentPage == 1 ? 'disabled' : '';
+        pagination_Ul.append('<li class="page-item ' + prevDisabled + '">' +
+            '<button class="page-link" aria-label="Previous" data-page="prev">' +
+            '<span aria-hidden="true">上一頁</span>' +
+            '</button>' +
+            '</li>');
+
+        for (let i = 1; i <= totalPage; i++) {
+            let pageItemClass = currentPage == i ? 'active' : '';
+            pagination_Ul.append('<li class="page-item ' + pageItemClass + '">' +
+                '<button class="page-link ' + 'PAGE' + i + '"' + ' data-page="' + i + '">' + i + '</button>' +
+                '</li>');
+        }
+
+        let nextDisabled = currentPage == totalPage ? 'disabled' : '';
+        pagination_Ul.append('<li class="page-item ' + nextDisabled + '">' +
+            '<button class="page-link" aria-label="Next" data-page="next">' +
+            '<span aria-hidden="true">下一頁</span>' +
+            '</button>' +
+            '</li>');
+
+        // 綁定按鈕
+        pagination_Ul.off();
+        pagination_Ul.on('click', '.page-link', function () {
+            // 獲取點擊的頁碼,currentPage為全局變數
+            let newPage = $(this).data('page');
+            // 判斷點擊
+            if (newPage === 'prev' && currentPage > 1) {
+                currentPage -= 1; // 移動到上一頁
+            } else if (newPage === 'next' && currentPage < totalPage) {
+                currentPage += 1; // 移動到下一頁
+            } else if (newPage !== 'prev' && newPage !== 'next') {
+                currentPage = newPage; // 設置為點擊的頁碼
+            }
+
+            // 更新按鈕的選取狀態
+            $('.pagination .page-item').removeClass('active');
+            $('.pagination .page-link[data-page="' + currentPage + '"]').parent().addClass('active');
+
+            // 更新上一頁與下一頁的禁用狀態
+            $('.pagination .page-link[data-page="prev"]').parent().toggleClass('disabled', currentPage == 1);
+            $('.pagination .page-link[data-page="next"]').parent().toggleClass('disabled', currentPage == totalPage);
+
+            // 生成翻頁內容
+            generateCardDiv(tagId, currentPage, pageMaxResult, false);
+
+        });
+
+        // 切換最大顯示筆數,自動點擊對應的頁數按紐
+        if (prevMaxResult != null) {
+            let firstPosition = (prevMaxResult * (currentPage - 1)) + 1;
+            let pageShouldClick = Math.ceil(firstPosition / pageMaxResult);
+            $(".PAGE" + pageShouldClick).click();
+            prevMaxResult = null;
+        }
+    }
+
+    // 結束時間倒數計時
+    function updateCountdowns() {
+        $('.countDown').each(function () {
+            let endTime = $(this).data('endTime');
+            let now = new Date();
+            let timeLeft = endTime - now;
+
+            if (timeLeft > 0) {
+                let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                let countdownText = days + "天" + hours + "時" + minutes + "分" + seconds + "秒结束";
+                $(this).text(countdownText);
+            } else {
+                $(this).text('競標已結束');
+            }
+        });
+    }
+
+    // 毫秒數格式化 mm/dd結標
+    function formatMillisToString(milliseconds) {
+        let date = new Date(milliseconds);
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+        let paddedMonth = month < 10 ? '0' + month : month;
+        let paddedDay = day < 10 ? '0' + day : day;
+        return paddedMonth + '/' + paddedDay + '結標';
+    }
+
+    // 金額格式化
+    function formatAsCurrency(num) {
+        return '$' + num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+</script>
+</body>
+</html>
