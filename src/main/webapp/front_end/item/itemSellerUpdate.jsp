@@ -8,9 +8,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商品資料修改</title>
 
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>商品資料修改</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
 
 	<style>
         *{
@@ -155,18 +169,12 @@
         }
         tr.main_right td label{
             width: 60px;
+            border: 0px;
         }
         
         tfoot td:last-child{
             position: relative;
         }
-        
-         /* div.imgtr01 td input{
-         	width:150px;
-         }
-         div.imgtr02 td input{
-         	width:150px;
-         } */
 
         table div tr td:nth-child(1){
             color: #fff;
@@ -182,20 +190,20 @@
 	        text-align: left;
 	    }
 	
-	    input[type="text"], select, input[type="file"] {
+	    input.tbody_input, select.tbody_input, input[type="file"] {
 	        width: 100%;
 	        padding: 8px;
             width: 300px;
             border-radius: 10px;
             height: 40px;
             border: 0px solid rgb(101, 101, 101);
-            background-color: whitesmoke;
+            background-color: whitesmoke !important;
 	    }
 		input[type="file"]{
 			border:none;
 		}
 	
-	    input[type="submit"] {
+	  	main.main form table tfoot tr td input#tfoot_sub {
 	        background-color: #9bc1e7;
 	        color: #fff;
 	        padding: 10px 20px;
@@ -207,7 +215,7 @@
             bottom: 12px;
 	    }
 	
-	    input[type="submit"]:hover {
+	    main.main form table tfoot tr td input#tfoot_sub:hover {
 	        background-color: steelblue;
             
 	    }
@@ -255,10 +263,25 @@
 		div.mb-3{
 /* 			height:49px; */
 		}
+		#categorySelect{
+			background-color: whitesmoke;
+			border-radius: 10px;
+			padding: 8px;
+			border:0px;
+			color:black;
+		}
 
 	</style>
+	
+    <!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
+	
+<!-- 	<link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css' rel='stylesheet'></link> -->
 </head>
 <body>
+	<div class="headerHTML"></div>
     <main class="main">
         <h3>商品資料修改</h3>
         
@@ -271,9 +294,9 @@
                 
                 <tr class="main_left">
                     <td>商品名稱</td>
-                    <td><input type="text" name="itemName" value="${item.itemName}" size="20"/></td>
+                    <td><input type="text" class="tbody_input" name="itemName" value="${item.itemName}" size="20"/></td>
                     <td>商品價格</td>
-                    <td><input type="text" name="price" value="${item.price}"></td>
+                    <td><input type="text" class="tbody_input" name="price" value="${item.price}"></td>
 
                     <td>描述</td>
                     <td><textarea name="detail" >${item.detail}</textarea></td>
@@ -282,7 +305,7 @@
                 <tr class="main_middle">
                     <td>新舊</td>
                     <td>
-                    <select  name="grade">
+                    <select class="tbody_input" name="grade">
     <!-- <%--                     <option value="${item.grade}" selected>${item.grade}</option><span>請選擇商品新舊程度</span> --%> -->
                         <option value="0">全新(沒使用過且包裝未拆,吊牌未剪)</option>
                         <option value="1">9成5新(沒有使用痕跡,但包裝已拆,吊牌已剪)</option>
@@ -294,7 +317,7 @@
         
                     <td>尺寸</td>
                     <td>
-                        <select  name="size">
+                        <select class="tbody_input" name="size">
     <!-- <%--                         <option value="${item.size}" selected>${item.size}</option>  --%> -->
                             <option value="8">其他</option>
                             <option value="0">XS(含)以下</option>
@@ -310,7 +333,7 @@
                 
                     <td>商品狀態</td>
                     <td>
-                        <select name="itemStatus">
+                        <select class="tbody_input" name="itemStatus">
     <!-- <%--                         <option value="${item.itemStatus}"></option> --%> -->
                             <option value="0">上架</option>
                             <option value="1">下架</option>
@@ -319,11 +342,11 @@
                     </td>
                 
                     <td>數量</td>
-                    <td><input type="text" name="quantity"  value="${item.quantity}"></td>
+                    <td><input type="text" class="tbody_input" name="quantity"  value="${item.quantity}"></td>
                 
                     <td>商品類別</td>
                     <td>
-						<div class="mb-3">
+						<div class="mb-3 tbody_input">
 <!-- 	                        <label for="categorySelect" class="form-label" ></label> -->
 	                        <!-- 顯示選擇的完整結構,但不往後傳 -->
 	                        <input type="text" class="form-control" id="categorySelect"
@@ -358,15 +381,10 @@
                             <div id="preview_img01"></div>
                         </div>
                         <div>
-        <!--                 <td><input class="form-control" type="file" id="image01" name="image01" -->
-        <!-- 							accept="image/jpeg, image/png"> -->
-                                    
                             <label class="btn btn-info form-control">
                                 <input id="image01" style="display:none;" type="file" name="image01">
-                                <i class="fa fa-photo"></i> 上傳圖片
-                            </label>
-                                    
-                                    
+                                <i class="fa-regular fa-image"></i> 上傳圖片
+                            </label>      
                         </div>
                     </td>
 
@@ -378,13 +396,10 @@
                             <div id="preview_img02"></div>
                         </div>
                         <div>
-        <!--                 <input class="form-control" type="file" id="image02" name="image02" -->
-        <!-- 							accept="image/jpeg, image/png"> -->
                             <label class="btn btn-info form-control">
                                 <input id="image02" style="display:none;" type="file" name="image02">
-                                <i class="fa fa-photo"></i> 上傳圖片
+                                <i class="fa-regular fa-image"></i> 上傳圖片
                             </label>
-                                    
                         </div>
                     </td>
                 
@@ -395,7 +410,7 @@
                     <td>
                         <input type="hidden" name="forUpdate" value="update">
                         <input type="hidden" name="itemId" value="${item.itemId}">
-                        <input type="submit" value="送出修改">
+                        <input type="submit" id="tfoot_sub" value="送出修改">
                     </td>
                 </tr>
 
@@ -405,12 +420,25 @@
 
         </form>
     </main>
+ 	<div class="footerHTML"></div>
     
-    <!--bootstrap5 js-->
+	<!--bootstrap5 js-->
 	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
-    
-    <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+	<!--jQuery-->
+	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+	<!--Sweet Alert-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+	<!--JS loader-->
+	<script>
+	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+	        // 保證headerHTML加載完才載入header.js
+	        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+	    });
+	
+	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	</script>
+	
     <script>
     const categoryData = [
         <c:forEach var="tags" items="${applicationScope.categoryTags}" begin="1">

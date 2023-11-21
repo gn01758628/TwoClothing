@@ -48,7 +48,10 @@ public class PointHistoryServlet extends HttpServlet {
 		
 		//連去搜尋，直接顯示查全部
 		if("search".equals(choice)) {
-			List<PointHistory> PHList = PHSvc.getAllPH();
+//			List<PointHistory> PHList = PHSvc.getAllPH();
+			HttpSession session = req.getSession();
+			Integer mbrId = (Integer) session.getAttribute("mbrId");
+			List<PointHistory> PHList = PHSvc.getAllPHByMbrId(mbrId);
 			req.setAttribute("PHList", PHList);
 			
 			
@@ -72,7 +75,8 @@ public class PointHistoryServlet extends HttpServlet {
 		
 		//會員id搜尋
 		if ("searchMbrId".equals(choice)) {
-			Integer mbrId=Integer.parseInt(req.getParameter("mbrId"));
+			HttpSession session = req.getSession();
+			Integer mbrId = (Integer) session.getAttribute("mbrId");
 			PointHistory pointHistory = PHSvc.getPHById(mbrId);
 			req.setAttribute("pointHistory", pointHistory);
 			System.out.println("pointHistory:"+pointHistory);

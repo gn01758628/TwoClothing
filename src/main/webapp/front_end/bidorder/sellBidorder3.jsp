@@ -1,52 +1,55 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.*"%>
-
-<%@ include file="buyBidorderBanner.jsp"%>
-
-
-<!DOCTYPE html>
-<html>
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/bootstrap5/bootstrap.min.css" />
+<%--suppress ALL --%>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!doctype html>
+<html lang="zh-hant" xmlns="http://www.w3.org/1999/html">
 <head>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>會員中心-帳戶資訊 www.bootstrapmb.com</title>
-<style type="">
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>聊天室</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--你們自己的css-->
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
 
-<style>
-</style>
+
+    <!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
 
 </head>
 <body>
-	<script
-		src="<%=request.getContextPath()%>/js/bootstrap5/bootstrap.bundle.min.js"></script>
 
-	<script src="<%=request.getContextPath()%>/js/gordon/twzipcode.js"></script>
+<!--放在最前面-->
+<div class="headerHTML"></div>
 	<script src="<%=request.getContextPath()%>/js/gordon/memberArea.js"></script>
 
-	<div id="head">
 
-		<div class="menu">
-			<ul>
-				<li><a href='${pageContext.request.contextPath}/index.jsp'>回首頁</a></li>
-				<li><a
-					href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>
-				<li><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">買家訂單</a></li>
-				<li class="menu_selected"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">賣家訂單</a></li>
-			</ul>
-		</div>
-	</div>
 	<div id="hy_con">
 		<div id="con_lf">
+		<br>
+			<h2>帳戶管理</h2>
+				<ul>
+					<li class="lf_li1"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>
+					<li class="lf_li1"><a href="<%=request.getContextPath()%>/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">物流設定</a></li>
+				</ul> 
 			<h2>賣家競標商品訂單</h2>
 			<ul>
 				<li class="lf_li1"><a
@@ -77,19 +80,11 @@
 				<th>競標商品訂單編號</th>
 				<th>買家</th>
 				<th>商品圖片</th>
-				<th>買家評價星數</th>
-				<th>買家評價內容</th>
-				<th>賣家評價星數</th>
-				<th>賣家評價內容</th>
 				<th>訂單日期</th>
-				<th>付款方式</th>
-				<th>付款資料</th>
 				<th>訂單金額</th>
 				<th>訂單狀態</th>
-				<th>收件地址</th>
-				<th>收件人姓名</th>
-				<th>收件人手機</th>
-				<th>備註</th>
+				<th>訂單詳情</th>
+				<th>評價訂單</th>  	
 			</tr>
 		<thead>
 			<c:choose>
@@ -100,20 +95,10 @@
 						<tr>
 							<td>${BidOrder.bidOrderId}</td>
 							<td>${BidOrder.buyMbrId}</td>
-							<td><img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${BidOrder.bidItemId}&position=1"alt="競標商品編號1的第一張圖片" class="img-fluid mx-auto" width="50"height="50"></td>
-							<td>${BidOrder.buyStar}</td>
-							<td>${BidOrder.buyerRatingDesc}</td>
-							<td>${BidOrder.sellStar}</td>
-							<td>${BidOrder.sellerRatingDesc}</td>
+							<td><a href="${pageContext.request.contextPath}/front/biditem/anyone/detail?bidItemId=${BidOrder.bidItemId}" target="_blank">
+							    <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${BidOrder.bidItemId}&position=1" alt="競標商品編號1的第一張圖片" class="img-fluid mx-auto" width="50" height="50">
+							</a></td>
 							<td>${BidOrder.orderDate}</td>
-							<td>
-							    <c:choose>
-							        <c:when test="${BidOrder.payType eq 0}">信用卡</c:when>
-							        <c:when test="${BidOrder.payType eq 1}">轉帳</c:when>
-							        <c:when test="${BidOrder.payType eq 2}">虛擬錢包</c:when>
-							        <c:otherwise>未知支付方式</c:otherwise>
-							    </c:choose>
-							</td>
 							<td>${BidOrder.amount}</td>
 							<td>
 								<c:choose>
@@ -124,23 +109,29 @@
 							        <c:when test="${BidOrder.orderStatus eq 4}">訂單不成立</c:when>
 							    </c:choose>
 							</td>
-							<td>${BidOrder.receiveAddress}</td>
-							<td>${BidOrder.receiveName}</td>
-							<td>${BidOrder.receivePhone}</td>
-							<td>${BidOrder.remarks}</td>
 							<td>
-							  <c:choose>
-			                        <c:when test="${empty BidOrder.sellStar and empty BidOrder.sellerRatingDesc}">
+								<FORM METHOD="post"
+									ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do"
+									style="margin-bottom: 0px;">
+									<input type="submit" value="訂單詳情"> 
+									<input type="hidden" name="bidOrderId"value="${BidOrder.bidOrderId}"> 
+									<input type="hidden" name="bidItemId" value="${BidOrder.bidItemId}">
+									<input type="hidden" name="buyMbrId" value="${user.mbrId}">
+									<input type="hidden" name="action" value="bidOrderBidItem">
+								</FORM>
+							</td>
+						  	<c:choose>
+		                        <c:when test="${empty BidOrder.sellStar and empty BidOrder.sellerRatingDesc}">
+									<td>
 			                            <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
 			                                <input type="submit" value="訂單評價"> 
 			                                <input type="hidden" name="bidOrderId" value="${BidOrder.bidOrderId}">
 			                                <input type="hidden" name="sellMbrId" value="${user.mbrId}"> 
 			                                <input type="hidden" name="action" value="sell_Bidorder_Rating">
 			                            </FORM>
-			                        </c:when>
-			                      
-			                    </c:choose>
-							</td>
+									</td>
+		                        </c:when>
+		                    </c:choose>
 
 						</tr>
 
@@ -155,5 +146,23 @@
 
 	<div class="clear"></div>
 	<div id="footer"></div>
+	<!--放在最後面-->
+<div class="footerHTML"></div>
+	<!--bootstrap5 js-->
+<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+<!--jQuery-->
+<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
+<script>
+    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+    });
+
+    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+</script>
 </body>
 </html>

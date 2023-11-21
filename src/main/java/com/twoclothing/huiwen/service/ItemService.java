@@ -40,6 +40,8 @@ public interface ItemService {
     void addItemImage(ItemImage itemImage);
     
     Integer getMbrPointByMbrId(Integer mbrId);
+    
+    Integer getMbrBalanceByMbrId(Integer mbrId);
 
 //    public MembersCoupon getMemCouponByPK(Integer mbrId, Integer cpnId);
     

@@ -56,7 +56,7 @@ public class ItemServlet extends HttpServlet {
 
 		res.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
-		res.setContentType("text; charset=UTF-8");
+		res.setContentType("text/html; charset=UTF-8");
 
 		PrintWriter out = res.getWriter();
 
@@ -418,6 +418,7 @@ public class ItemServlet extends HttpServlet {
 	//查全部不分頁
 	public String getAllListNoPage(HttpServletRequest req, HttpServletResponse res) {
 		List<Item> itemList = itemService.getAllByStatus(0);
+		System.out.println("...."+itemList);
 		req.setAttribute("itemList", itemList);
 		return "/front_end/item/itemList.jsp";
 	}

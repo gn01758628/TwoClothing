@@ -6,52 +6,70 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
-<!--bootstrap5 css-->
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+<title>購物車</title>
+
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+	
 	<style>
 		* {
 			box-sizing: border-box;
 		}
 		
-		body {
+/*		body {
 			display: flex;
 			justify-content: center;
 			flex-direction: row;
 			margin: 10px;
 			height: calc(100vh - 20px);
-		}
+		}*/
 		
 		form.form_cart{
 			display:flex;
 			flex-direction: row;
 		    justify-content: center;
-		    max-width: 1300px;
-		    width: 1300px;
+		    max-width: 1280px;
+/* 		    width: 1300px; */
 		    border: 1px solid;
 		}
 		
 		div.leftMain {
-			height: 100%;
+			height: 477px;
 			max-height: 100%;
 			overflow: auto;
-			padding: 0px 10px;
-			border:1px solid red; 
-			width:875px;
+			padding: 10px 10px;
+/* 			border:1px solid red;  */
+			width:870px;
 			display:flex;
 			flex-direction: column;
 /* 		    justify-content: center; */
 		    align-items: center;
+		    padding-bottom: 0px;
+		    overflow-y: scroll;
 		}
 		
 		div.detailBox {
-			/* border: 1px solid black; */
+			border: 1px solid #561729; 
 			/* height: 150px; */
 			border-radius: 1rem;
-			background-color: lightgrey;
+/* 			background-color: lightgrey; */
 			max-width:850px;
-			width: 850px;
+			width: 830px;
 			padding: 30px 35px;
 			display: flex;
 			justify-content: space-around;
@@ -98,7 +116,7 @@
 		div.detailBox table {
 			border-collapse: separate;
 			border-spacing: 10px;
-			width: 50%;
+			width: 65%;
 		}
 		
 		div.detailBox table tr.trth th {
@@ -133,15 +151,15 @@
 		}
 		
 		div.rightMain {
-			border: 1px solid black;
+/* 			border: 1px solid black; */
 			padding: 25px;
 			margin-left: 40px;
 			width: 300px;
 			display: flex;
 			justify-content: center;
-			background-color: lightgrey;
-			border-radius: 0.5rem;
-			margin-bottom: 10px;
+			background-color: #f9edf2;
+			border-radius: 1rem;
+			margin: 10px 10px;
 			position: sticky;
 			top: 8px;
 			align-items: center;
@@ -156,7 +174,7 @@
 		
 		div.rightMain div.rightInner>label {
 			/*             border: 1px solid blue; */
-			font-size: 20px;
+			font-size: 16px;
 			display: inline-block;
 			margin-bottom: 20px;
 			border-bottom: 1px solid gray;
@@ -166,39 +184,52 @@
 		
 		div.rightMain div.rightInner>div {
 			border: 1px solid black;
-			font-size: 20px;
+			font-size: 16px;
 			text-align: center;
 			margin: 20px 0px;
 			margin-bottom: 34px;
+			border-radius:1rem;
+			display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    height:35px;
 		}
 		
-		div.rightMain div.rightInner button {
+		div.rightMain div.rightInner button#countBtn {
 			width: 100%;
 			height: 35px;
+			font-size: 16px;
+		    border: none;
+		    outline: none;
+		    background-color: #561729;
+		    color: white;
+		    border:none;
+		    border-radius:1rem;
+		    margin-bottom: 14px;
 		
+		}
+		
+		div.rightMain div.rightInner button#countBtn:hover{
+			background-color: white;
+			color:#561729;
 		}
 		
 		
 		div.rightMain div.rightInner input.btn-primary{
 			width: 100%;
 			height: 35px;
-		}
-		
-		
-		.btn-primary {
-			background-color: gray;
+			font-size: 18px;
+			background-color: #561729;
 			border-color: black;
+			border:none;
+			border-radius:1rem;
 		}
+
 		
-		.btn-primary:hover {
-			background-color: black;
+		div.rightMain div.rightInner input.btn-primary:hover {
+			background-color: white;
+			color:#561729;
 		}
-		
-		.btn-primary:focus {
-			background-color: gray;
-			border-color: black;
-		}
-		
 		
 		label.Coupon input.coupon_radio:disabled+span {
 			background-color: #FFFFFF;
@@ -212,13 +243,26 @@
 		.display_none{
 			display: block;
 		}
+		/*優惠券跳窗的btn*/
+		button.btn-secondary{
+			background-color: #561729;
+			color:white;
+		}
+		button.btn-secondary:hover{
+			background-color:white;
+			color:#561729;
+		}
 	
 	</style>
+	<!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
 </head>
 <body>
-	<form class="form_cart" method="post" action="${pageContext.request.contextPath}/ItemCart/toPay" enctype="multipart/form-data">
+	<div class="headerHTML"></div>
+	<form class="form_cart" method="post" action="${pageContext.request.contextPath}/ItemCart/toPay.check" enctype="multipart/form-data">
 		<div class="leftMain">
-<!-- 			<div>您的購物車是空的!</div> -->
 			<c:forEach var="item" items="${itemList}" varStatus="loop">
 				<div class="detailBox">
 					<input type="checkbox" name="itemIdCheck" class="checkboxLeft" checked
@@ -263,7 +307,7 @@
 					<input type="checkbox" name="mbrPoint" id="point" onchange="countEverything()">
 					使用會員點數 <span>${mbrPoint}</span>點
 				</label>
-				<button class="choice_cou" type="button" class="btn btn-primary"
+				<button id="countBtn" class="choice_cou" type="button" class="btn btn-primary"
 					data-bs-toggle="modal" data-bs-target="#exampleModal">選取優惠券</button>
 				<div class="count">
 					本次訂單折$<span>0</span>
@@ -309,15 +353,23 @@
 			</div>
 		</div>
 	</div>
+	<div class="footerHTML"></div>
+<!--bootstrap5 js-->
+<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+<!--jQuery-->
+<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
+<script>
+    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+    });
 
-
-	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>	
-
-	<!--bootstrap5 js-->
-	<script
-		src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+</script>
 		
 	<script>
 		$(document).ready(function() {
@@ -392,7 +444,7 @@
 				} else {
 				    leftMain.find('.cart_empty').hide();
 				}
-  
+				countEverything();
 				
 			});
 			

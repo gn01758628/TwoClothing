@@ -7,51 +7,85 @@
 <%@ page import="com.twoclothing.gordon.service.*"%>
 
 
-
-
-
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="zh-hant" xmlns="http://www.w3.org/1999/html">
 <head>
-<meta charset="UTF-8">
-<title>填寫付款信息</title>
-
-   <script>
-        function updatePayInfoFields() {
-            var payTypeSelect = document.getElementById("payType");
-            var virtualWalletFields = document.getElementById("virtualWalletFields");
-            var balanceField = document.getElementById("balance");
-            var errorMsgsBalance = document.getElementById("errorMsgsBalance");
-
-            var selectedPayType = payTypeSelect.value;
-
-            // 隐藏所有的付款方式字段
-            errorMsgsBalance.textContent = ""; // 清空錯誤消息
-
-          
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>聊天室</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
         }
-    </script>
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--你們自己的css-->
+<link rel="stylesheet" type="text/css"href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
+
+
+			    <!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
+					
 </head>
 <body>
-    <h2>填写付款信息</h2>
+<!--放在最前面-->
+<div class="headerHTML"></div>
+<script src="<%=request.getContextPath()%>/js/bootstrap5/bootstrap.bundle.min.js"></script>
+
+<div id="hy_con">
+<div id="con_lf">
+<br>
+<h2>買家競標商品訂單</h2>
+			<ul>
+				<li class="lf_li1"><a
+					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">待付款</a></li>
+				<li class="lf_li1"><a
+					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder1&buyMbrId=${user.mbrId}">未出貨</a></li>
+				<li class="lf_li1"><a
+					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder2&buyMbrId=${user.mbrId}">待收貨</a></li>
+				<li class="lf_li1"><a
+					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder3&buyMbrId=${user.mbrId}">訂單完成</a></li>
+				<li class="lf_li1"><a
+					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder4&buyMbrId=${user.mbrId}">訂單不成立</a></li>
+			</ul>
+</div>
+<div id="con_rh">
+<div class="con_rh_con"><br></br>
+<p class="rh_title">結帳</p>
+    
+    
+    
+   
+<div style="color: red;" >付款金額：<span>${param.amount}</span>元</div> <br>
     <form action="<%=request.getContextPath()%>/bidorder/BidOrder.do" method="post" onsubmit="return validateForm()">
-        <!-- 付款方式下拉选择框 -->
         <label for="payType">付款方式：</label> 
         <select name="payType" id="payType" onchange="updatePayInfoFields()" required>
             <option value="">請選擇付款方式</option>
-            <!-- 預設選項 -->
             <option value="0">信用卡</option>
             <option value="1">轉帳</option>
             <option value="2">虛擬錢包</option>
         </select>
         <br> <br>
-		
-		 <label>信用卡資料</label><input type="text"
-			id="creditCard">
+        
+		<div id="creditCardInfo" style="display: none;">
+		<h2>信用卡資料：</h2>
+		<input type="text" name="creditCard" id="creditCard">
+		</div>
 
-
-		<!-- 转帐输入字段 -->
-		<div id="bankAccountInfo">
+		<div id="bankAccountInfo" style="display: none;">
 			<h2>商家銀行帳戶信息：</h2>
 			<p>銀行名稱：ABC銀行</p>
 			<p>帳號：123-456-789</p>
@@ -60,47 +94,46 @@
 
 		</div>
 
-
-		<div id="virtualWalletFields">
-		    <label for="balance">钱包余额：(${user.balance})元</label>
-		    <input type="text" name="balance" id="balance" value="${param.amount}" readonly>
+		
+		<div id="virtualWalletFields" style="display: none;">
+		<h2>錢包：</h2>
+		    <label for="balance">錢包餘額：(${user.balance})元</label>
+		    <input type="text" name="balance" id="balance" value="${param.amount}" disabled>
 		    <span id="errorMsgsBalance" style="color: deeppink;">${errorMsgs.balance}</span>
 		    <br>
 		    <br>
 		</div>
-
+		<br> <br>
+		<p class="rh_title">物流方式</p><br>
         <select name="shipSettingId">
             <option value="">請選擇物流方式或自行填寫</option>
-            <!-- 預設選項 -->
             <c:forEach var="setting" items="${shipSetting}">
                 <option>收件人:${setting.receiveName},電話:${setting.receivePhone},地址:${setting.receiveAddress}</option>
             </c:forEach>
         </select>
-        <br>
-        <!-- 收件地址 -->
+        <br><br><br>
         <label for="receiveAddress">收件地址：</label>
-        <input type="text" name="receiveAddress" id="receiveAddress" size="100" required>
+        <input type="text" name="receiveAddress" id="receiveAddress" size="80" required>
         <span style="color: deeppink;">${errorMsgs.receiveAddress}</span>
         <br> <br>
 
-        <!-- 收件人姓名 -->
         <label for="receiveName">收件人姓名：</label>
         <input type="text" name="receiveName" id="receiveName" size="20" required>
         <span style="color: deeppink;">${errorMsgs.receiveName}</span>
         <br>
         <br>
 
-        <!-- 收件人手机号码 -->
-        <label for="receivePhone">收件人手機號碼：</label>
+        <div style=" position: relative; left: 400px; bottom:55px;">
+        <label  for="receivePhone">收件人手機號碼：</label>
         <input type="text" name="receivePhone" id="receivePhone" size="10" required>
         <span style="color: deeppink;">${errorMsgs.receivePhone}</span>
+        </div>
         <br><br>
-
-        <!-- 备注 -->
-        <label for="remarks">備註：</label>
-        <input type="text" name="remarks" id="remarks" size="200">
+		<div style=" position: relative; bottom:55px;">
+        <label  for="remarks">備註：</label>
+       <textarea name="remarks" id="remarks" rows="4" cols="50"></textarea>
+        </div>
         <br> <br>
-        <!-- 提交按钮 -->
     
         <input type="hidden" name=amount value="${param.amount}">
         <input type="hidden" name=bidOrderId value="${param.bidOrderId}">
@@ -112,17 +145,34 @@
         
 
         
-        
-     </form>  
-        
-        
-        
-        
-        
-        
-        
-        
+     </div>
+</div>
+</div>
 
+<div class="clear"></div>
+<div id="footer">
+
+</div>   
+        
+<!--放在最後面-->
+<div class="footerHTML"></div>
+
+<!--bootstrap5 js-->
+<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+<!--jQuery-->
+<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
+<script>
+    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+    });
+
+    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+</script>
 
     <script type="text/javascript">
         // 獲得下拉選單元素
@@ -167,7 +217,33 @@
         });
         
         
+        
+        function updatePayInfoFields() {
+            var payTypeSelect = document.getElementById("payType");
+            var virtualWalletFields = document.getElementById("virtualWalletFields");
+            var bankAccountInfo = document.getElementById("bankAccountInfo");
+            var creditCardInfo = document.getElementById("creditCardInfo");
+            var errorMsgsBalance = document.getElementById("errorMsgsBalance");
 
+            var selectedPayType = payTypeSelect.value;
+
+            errorMsgsBalance.textContent = ""; 
+            if (selectedPayType === "0") {
+            	bankAccountInfo.style.display = "none";
+            	virtualWalletFields.style.display = "none";
+            	creditCardInfo.style.display = "block";
+            } else if (selectedPayType === "1") {
+            	virtualWalletFields.style.display = "none";
+            	creditCardInfo.style.display = "none";
+                bankAccountInfo.style.display = "block";
+            } else if (selectedPayType === "2") {
+            	creditCardInfo.style.display = "none";
+                bankAccountInfo.style.display = "none";
+                virtualWalletFields.style.display = "block";
+            }
+          
+        }
+   
         
         
         
@@ -180,16 +256,23 @@
                 var errorMsgsBalance = document.getElementById("errorMsgsBalance");
                 var balanceValue = balanceField.value;
 
-                if (balanceValue === "" || isNaN(balanceValue)) {
-                    errorMsgsBalance.textContent = "請輸入有效的數字";
+                if (balanceValue > parseFloat("${user.balance}")) {
+                    errorMsgsBalance.textContent = "付款金額不能大於您的餘額";
                     balanceField.focus();
                     return false; // 防止表單提交
                 }
             }
 
-            // 如果所有檢查通過，允許表單提交
             return true;
         }
-    </script>
+
+let twzipcode = new TWzipcode({
+	"district" : {
+		onChange : function(id) {
+			console.log(this.nth(id).get());
+		}
+	}
+});
+</script>
 </body>
 </html>

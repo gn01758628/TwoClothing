@@ -251,6 +251,10 @@ public class ItemServiceImpl implements ItemService{
 	public Integer getMbrPointByMbrId(Integer mbrId) {
 		return dao.getPointByMbrId(mbrId);
 	}
+	@Override
+	public Integer getMbrBalanceByMbrId(Integer mbrId) {
+		return dao.	getbalanceByMbrId(mbrId);
+	}
 	
 	@Override
 	public List<MembersCoupon> getMemCouponByMbrId(String mbrId, Integer value) {
@@ -277,6 +281,8 @@ public class ItemServiceImpl implements ItemService{
 	public Integer getMbrIdByItemId(Integer itemId) {
 		return dao.getMbrIdById(itemId);
 	}
+	
+
 
 	@Override
 	public List<Item> getItemBymbrIdAndStatus(Integer mbrId) {

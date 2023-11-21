@@ -96,15 +96,7 @@ public class ItemHibernateDAO implements ItemDAO {
 	}
 
 	@Override
-	public List<Item> getByCompositeQuery(Map<String, String> map, int page) {
-		System.out.println("***map***"+map);
-		
-
-//		if(map.size()==0) { 
-//			System.out.println("map:沒資料"+map);
-////			return getAll(page);
-//		}	
-
+	public List<Item> getByCompositeQuery(Map<String, String> map, int page) {		
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
 		CriteriaQuery<Item> criteria = builder.createQuery(Item.class);
 		Root<Item> root = criteria.from(Item.class);
@@ -116,8 +108,10 @@ public class ItemHibernateDAO implements ItemDAO {
 		
 		if (map.containsKey("itemQuantityStart") && map.containsKey("itemQuantityEnd")) {
 			predicates.add(builder.between(root.get("quantity"), new BigDecimal(map.get("itemQuantityStart")), new BigDecimal(map.get("itemQuantityEnd"))));	
-System.out.println("map///"+map);
 		}
+		
+		boolean hasItemStatusCondition = false; // 用來檢查是否已經有添加 itemStatus 的條件
+
 		for (Map.Entry<String, String> row : map.entrySet()) {
 
 			if("itemNameSearch".equals(row.getKey())){
@@ -138,7 +132,8 @@ System.out.println("map///"+map);
 					predicates.add(builder.equal(root.get("size"), new BigDecimal(row.getValue())));
 			}
 			if("itemStatus".equals(row.getKey())) {
-					predicates.add(builder.equal(root.get("itemStatus"), new BigDecimal(row.getValue())));
+				predicates.add(builder.equal(root.get("itemStatus"), new BigDecimal(row.getValue())));
+			    hasItemStatusCondition = true; 
 			}
 			
 			if("itemQuantityEnd".equals(row.getKey())) {
@@ -151,9 +146,13 @@ System.out.println("map///"+map);
 			}
 			if("tagId".equals(row.getKey())) {
 				predicates.add(builder.equal(root.get("tagId"), new BigDecimal(row.getValue())));
-		}
+			}
+			
 		}	
-
+		// 如果沒有添加 itemStatus 的條件，則添加一個不等於 2 的條件
+		if (!hasItemStatusCondition) {
+		    predicates.add(builder.notEqual(root.get("itemStatus"), new BigDecimal(2)));
+		}
 		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
 		criteria.orderBy(builder.asc(root.get("itemId")));
 		TypedQuery<Item> query = getSession().createQuery(criteria);
@@ -164,7 +163,6 @@ System.out.println("map///"+map);
 	    List<Item> resultList = query.getResultList();
 
 	    int total = resultList.size();
-	    System.out.println(predicates);
 
 		return (query.setFirstResult(first)
 				.setMaxResults(ITEM_PAGE_MAX_RESULT)
@@ -173,12 +171,6 @@ System.out.println("map///"+map);
 
 	@Override
 	public int getResultTotal(Map<String, String> map) {
-//		System.out.println("map:"+map);
-
-//		if(map.size()==0) { 
-//			System.out.println("map:沒資料"+map);
-//		}	
-
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
 		CriteriaQuery<Item> criteria = builder.createQuery(Item.class);
 		Root<Item> root = criteria.from(Item.class);
@@ -188,9 +180,11 @@ System.out.println("map///"+map);
 		if (map.containsKey("itemPriceSearchStart") && map.containsKey("itemPriceSearchEnd"))
 			predicates.add(builder.between(root.get("price"), new BigDecimal(map.get("itemPriceSearchStart")), new BigDecimal(map.get("itemPriceSearchEnd"))));
 		
-		if (map.containsKey("itemQuantityStart") && map.containsKey("itemQuantityEnd"))
+		if (map.containsKey("itemQuantityStart") && map.containsKey("itemQuantityEnd")) {
 			predicates.add(builder.between(root.get("quantity"), new BigDecimal(map.get("itemQuantityStart")), new BigDecimal(map.get("itemQuantityEnd"))));
-	
+		}
+		boolean hasItemStatusCondition = false; // 用來檢查是否已經有添加 itemStatus 的條件
+
 		for (Map.Entry<String, String> row : map.entrySet()) {
 
 			if("itemNameSearch".equals(row.getKey())){
@@ -212,6 +206,7 @@ System.out.println("map///"+map);
 			}
 			if("itemStatus".equals(row.getKey())) {
 					predicates.add(builder.equal(root.get("itemStatus"), new BigDecimal(row.getValue())));
+					hasItemStatusCondition = true; 
 			}
 			if("itemQuantityEnd".equals(row.getKey())) {
 				if(!map.containsKey("itemQuantityStart"))
@@ -223,7 +218,10 @@ System.out.println("map///"+map);
 			}
 			if("tagId".equals(row.getKey())) {
 				predicates.add(builder.equal(root.get("tagId"), new BigDecimal(row.getValue())));
+			}
 		}
+		if (!hasItemStatusCondition) {
+		    predicates.add(builder.notEqual(root.get("itemStatus"), new BigDecimal(2)));
 		}
 		
 		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
@@ -239,7 +237,6 @@ System.out.println("map///"+map);
 
 	@Override
 	public List<Item> getAll(int page) {
-		System.out.println("dao.page"+page);
 		
 		int first = (page - 1) * ITEM_PAGE_MAX_RESULT;
 
@@ -257,6 +254,10 @@ System.out.println("map///"+map);
 	@Override
 	public Integer getPointByMbrId(Integer mbrId) {
 		return (Integer) getSession().createQuery("select m.mbrPoint from Members m where m.mbrId = :mbrId").setParameter("mbrId", mbrId).uniqueResult();
+	}
+	@Override
+	public Integer getbalanceByMbrId(Integer mbrId) {
+		return (Integer) getSession().createQuery("select m.balance from Members m where m.mbrId = :mbrId").setParameter("mbrId", mbrId).uniqueResult();
 	}
 
 	@Override

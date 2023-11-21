@@ -112,7 +112,7 @@ body {
 <script>
 	$(function(){
 		let servletPath = '<%= servletPath %>';
-	    $('#change_Password_btn').click(function(){
+	    $('#change_Password_btn').click(async function(){
 	    	// 找到最近的 tr 元素
 	        let tr = $(this).closest('tr');
 	        // 在 tr 元素中找到名為 empId 的 input 元素
@@ -120,7 +120,7 @@ body {
 	        // 獲取 empId 的值
 	        let empId = empIdInput.val();
 	    	
-	    	Swal.fire({
+	        const { value: pswdhash, isConfirmed } = await Swal.fire({
 	    		  title: "請輸入新密碼",
 	    		  input: "text",
 	    		  inputAttributes: {
@@ -131,9 +131,8 @@ body {
 	    		  cancelButtonText: "取消",
 	    		  showLoaderOnConfirm: true,
 	    		  preConfirm: async (pswdhash) => {
-	    	            const inputPassword = Swal.getInput().value;
 
-	    	            if (!inputPassword) {
+	    	            if (!pswdhash) {
 	    	                Swal.showValidationMessage("密碼不能為空");
 	    	                return false;
 	    	            }
@@ -149,11 +148,11 @@ body {
 
 	    	            if (!response.ok) {
 	    	                const errorText = await response.text();
-	    	                Swal.showValidationMessage(`密碼驗證失敗: ${errorText}`);
+	    	                Swal.showValidationMessage('密碼驗證失敗:'+errorText);
 	    	                return false;
 	    	            }
-
-	    	            return inputPassword;
+	    	            
+	    	            return pswdhash;
 	    	        },
 	    	        allowOutsideClick: () => !Swal.isLoading()
 	    	    });
@@ -162,7 +161,7 @@ body {
 	    	        // 在這裡處理密碼驗證成功後的操作
 	    	        Swal.fire({
 	    	            title: "密碼驗證成功",
-	    	            text: `你輸入的密碼是：${password}`,
+	    	            text: '你輸入的密碼是：'+pswdhash,
 	    	            icon: "success"
 	    	        });
 	    	    }
