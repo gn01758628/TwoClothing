@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>通知列表</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="/TwoClothing/images/Mainicon.png" type="image/png">
+    <!--bootstrap5-->
+    <link rel="stylesheet" href="/TwoClothing/css/bootstrap5/bootstrap.min.css">
+    <!--google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!--Font Awesome-->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--此頁面的css-->
+    <style>
+
+        .btnContainer {
+            padding-top: 50px;
+            margin-bottom: 10px;
+        }
+
+        .noticeContainer {
+            margin-bottom: 200px;
+        }
+
+        .noticeContainer a {
+            color: inherit;
+        }
+
+        .btnAndTime {
+            min-width: 130px;
+            flex-shrink: 0;
+        }
+
+        .btnAndTime button, .btnAndTime p {
+            width: 100%;
+        }
+
+        .noticeTime {
+            color: #6c757d;
+        }
+
+
+        .noticeDIV {
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .noticeDIV > div:first-child {
+            flex: 1; /* 讓左側的內容占據大部分空間 */
+            min-width: 0; /* 防止溢出 */
+        }
+
+        .noticeDIV:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .noticeDIV .img-fluid {
+            border-radius: 0.3rem;
+            height: 120px;
+        }
+
+        .noticeDIV .noticeTitle {
+            font-size: 18px;
+        }
+
+        .topBoxLabel:hover {
+            cursor: pointer;
+        }
+
+        /*checkBox按鈕*/
+        .CHECKBOX {
+            --input-focus: #2d8cf0;
+            --input-out-of-focus: #ccc;
+            --bg-color: #fff;
+            --bg-color-alt: #666;
+            --main-color: #323232;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .CHECKBOX input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .checkmark {
+            width: 30px;
+            height: 30px;
+            position: relative;
+            top: 0;
+            left: 0;
+            border: 2px solid var(--main-color);
+            border-radius: 5px;
+            box-shadow: 4px 4px var(--main-color);
+            background-color: var(--input-out-of-focus);
+            transition: all 0.3s;
+        }
+
+        #topBox .checkmark {
+            top: 10px;
+        }
+
+        .CHECKBOX input:checked ~ .checkmark {
+            background-color: var(--input-focus);
+        }
+
+        .checkmark:after {
+            content: "";
+            width: 7px;
+            height: 15px;
+            position: absolute;
+            top: 3px;
+            left: 10px;
+            display: none;
+            border: solid var(--bg-color);
+            border-width: 0 2.5px 2.5px 0;
+            transform: rotate(45deg);
+        }
+
+        .CHECKBOX input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        /*checkBox按鈕*/
+
+        /*連結按鈕*/
+        .gotoBtn {
+            position: relative;
+            border: none;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+            outline-offset: 4px;
+            transition: filter 250ms;
+            user-select: none;
+            touch-action: manipulation;
+            margin-bottom: 5px;
+        }
+
+        .shadow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            background: hsl(0deg 0% 0% / 0.25);
+            will-change: transform;
+            transform: translateY(2px);
+            transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+        }
+
+        .edge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            background: linear-gradient(
+                    to left,
+                    hsl(340deg 100% 16%) 0%,
+                    hsl(340deg 100% 32%) 8%,
+                    hsl(340deg 100% 32%) 92%,
+                    hsl(340deg 100% 16%) 100%
+            );
+        }
+
+        .front {
+            display: block;
+            position: relative;
+            padding: 12px 27px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            color: white;
+            background: hsl(345deg 100% 47%);
+            will-change: transform;
+            transform: translateY(-4px);
+            transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+        }
+
+        .gotoBtn:hover {
+            filter: brightness(110%);
+        }
+
+        .gotoBtn:hover .front {
+            transform: translateY(-6px);
+            transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
+        }
+
+        .gotoBtn:active .front {
+            transform: translateY(-2px);
+            transition: transform 34ms;
+        }
+
+        .gotoBtn:hover .shadow {
+            transform: translateY(4px);
+            transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
+        }
+
+        .gotoBtn:active .shadow {
+            transform: translateY(1px);
+            transition: transform 34ms;
+        }
+
+        .gotoBtn:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        /*連結按鈕*/
+    </style>
+    <!--導覽列css-->
+    <link rel="stylesheet" href="/TwoClothing/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="/TwoClothing/css/chengHan/footer.css">
+</head>
+<body>
+<!--放在最前面-->
+<div class="headerHTML"></div>
+
+<div class="container btnContainer">
+    <div class="row justify-content-between align-items-center">
+        <div class="col-auto">
+            <button type="button" id="showUnRead" class="btn btn-primary me-2">未讀訊息</button>
+            <button type="button" id="showRead" class="btn btn-primary">已讀訊息</button>
+        </div>
+
+        <div class="col-auto">
+            <label for="topBoxInput"><strong class="topBoxLabel">全選</strong></label>
+            <label class="CHECKBOX me-3" id="topBox">
+                <input type="checkbox" id="topBoxInput">
+                <div class="checkmark"></div>
+            </label>
+            <button type="button" id="markAsRead" class="btn btn-info me-2">標記已讀</button>
+            <button type="button" id="delete" class="btn btn-danger">刪除通知</button>
+        </div>
+    </div>
+</div>
+
+<div class="container noticeContainer">
+    <!--動態生成內容-->
+</div>
+
+
+<!--放在最後面-->
+<div class="footerHTML"></div>
+
+<!--bootstrap5-->
+<script src="/TwoClothing/js/bootstrap5/popper.min.js"></script>
+<script src="/TwoClothing/js/bootstrap5/bootstrap.min.js"></script>
+<!--jQuery-->
+<script src="/TwoClothing/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
+<script>
+    $(".headerHTML").load("/TwoClothing/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("/TwoClothing/js/chengHan/header.js");
+    });
+
+    $(".footerHTML").load("/TwoClothing/footerHTML.html");
+</script>
+<!--此頁面的js-->
+<script>
+    // 全局變數儲存現在畫面是顯示已讀還未讀
+    let currentRead = false;
+
+    $(document).ready(function () {
+        // 進入畫面優先顯示未讀
+        getUnReadNoticeDOM();
+        // 點擊未讀訊息按鈕
+        $("#showUnRead").click(function () {
+            if (!currentRead) return;
+            getUnReadNoticeDOM();
+        })
+        // 點擊已讀訊息按鈕
+        $("#showRead").click(function () {
+            if (currentRead) return;
+            getReadNoticeDOM();
+        })
+    })
+
+    // 更改已讀未讀,刪除通知
+    $(document).ready(function () {
+        // 標記為已讀
+        $("#markAsRead").click(function () {
+            if (currentRead) return;
+            const idList = getCheckedNoticeIds();
+            $.post('/TwoClothing/noticeHelper/update', {idList: JSON.stringify(idList)});
+            let count = 0;
+            idList.forEach(function (id) {
+                let currentId = "#" + id.replace(":", "");
+                $(currentId).slideUp(300, function () {
+                    $(this).remove();
+                });
+                count++;
+            })
+            // 即時更新header的數字
+            const noticeNum_Span = $(".noticeNum");
+            let currentNum = noticeNum_Span.text();
+            noticeNum_Span.text(currentNum - count);
+            if (noticeNum_Span.text() == 0) noticeNum_Span.hide();
+        })
+        // 刪除通知
+        $("#delete").click(function () {
+            const idList = getCheckedNoticeIds();
+            $.post('/TwoClothing/noticeHelper/delete', {idList: JSON.stringify(idList)});
+            let count = 0;
+            idList.forEach(function (id) {
+                let currentId = "#" + id.replace(":", "");
+                $(currentId).slideUp(300, function () {
+                    $(this).remove();
+                });
+                count++;
+            })
+            if (currentRead) return;
+            // 即時更新header的數字
+            const noticeNum_Span = $(".noticeNum");
+            let currentNum = noticeNum_Span.text();
+            noticeNum_Span.text(currentNum - count);
+            if (noticeNum_Span.text() == 0) noticeNum_Span.hide();
+        })
+    })
+
+
+    // function place
+    function getUnReadNoticeDOM() {
+        $.get('/TwoClothing/noticeHelper/unRead', function (data) {
+            createNoticeDiv(data);
+            addEventListener();
+            currentRead = false;
+        })
+    }
+
+    function getReadNoticeDOM() {
+        $.get('/TwoClothing/noticeHelper/read', function (data) {
+            console.log(data);
+            createNoticeDiv(data);
+            addEventListener();
+            currentRead = true;
+        })
+    }
+
+    function createNoticeDiv(noticeList) {
+        const noticeContainer = $(".noticeContainer");
+        noticeContainer.empty();
+        let noticeId, href, imgSrc, titleText, detailText, timeText;
+        let noticeDivHtml;
+        noticeList.forEach(function (notice) {
+            noticeId = notice.noticeId;
+            let noticeDIVId = noticeId.replace(":", "");
+            href = "/TwoClothing" + notice.link;
+            imgSrc = "/TwoClothing" + notice.imageLink;
+            titleText = notice.type;
+            detailText = notice.content;
+            timeText = formatMillisToDate(notice.timestamp);
+
+            noticeDivHtml =
+                '<div class="noticeDIV d-flex align-items-center" id="' + noticeDIVId + '">' +
+                '<div class="d-flex align-items-center">' +
+                '<label class="CHECKBOX me-4">' +
+                '<input type="checkbox" class="witchId" data-notice-id="' + noticeId + '">' +
+                '<div class="checkmark"></div>' +
+                '</label>' +
+                '<a href="' + href + '" class="d-flex align-items-center text-decoration-none">' +
+                '<img src="' + imgSrc + '" alt="通知圖片" class="img-fluid me-3">' +
+                '<div class="flex-grow-1">' +
+                '<p class="noticeTitle mb-0"><strong>' + titleText + '</strong></p>' +
+                '<p class="noticeDetail">' + detailText + '</p>' +
+                '</div>' +
+                '</a>' +
+                '</div>' +
+                '<div class="ms-3 btnAndTime">' +
+                '<a href="' + href + '">' +
+                '<button class="gotoBtn">' +
+                '<span class="shadow"></span>' +
+                '<span class="edge"></span>' +
+                '<span class="front text"> 查看更多</span>' +
+                '</button>' +
+                '</a>' +
+                '<p class="noticeTime mb-0">' + timeText + '</p>' +
+                '</div>' +
+                '</div>';
+
+            noticeContainer.append(noticeDivHtml);
+        })
+    }
+
+    function addEventListener() {
+        // 全選按鈕
+        const topBox_input = $("#topBox input");
+        const witchId_checkbox = $(".witchId");
+        topBox_input.change(function () {
+            if ($(this).is(":checked")) {
+                witchId_checkbox.prop('checked', true);
+            } else {
+                witchId_checkbox.prop('checked', false);
+            }
+        })
+        // 點擊連結查看訊息,標記為已讀
+        $(".noticeDIV").click(function (e) {
+            if (!currentRead) {
+                let currentId = $(this).attr("id").replace(/(\d+)/, ':$1');
+                $.post('/TwoClothing/noticeHelper/update', {id: currentId});
+            }
+        })
+    }
+
+    function updateHeaderNoticeNum(idList) {
+        let count = 0;
+        idList.forEach(function (id) {
+            let currentId = "#" + id.replace(":", "");
+            $(currentId).slideUp(300, function () {
+                $(this).remove();
+            });
+            count++;
+        })
+        // 即時更新header的數字
+        const noticeNum_Span = $(".noticeNum");
+        let currentNum = noticeNum_Span.text();
+        noticeNum_Span.text(currentNum - count);
+        if (noticeNum_Span.text() == 0) noticeNum_Span.hide();
+    }
+
+    function formatMillisToDate(milliseconds) {
+        let date = new Date(milliseconds);
+        let year = date.getFullYear();
+        let month = (date.getMonth() + 1).toString().padStart(2, '0');
+        let day = date.getDate().toString().padStart(2, '0');
+        let hours = date.getHours().toString().padStart(2, '0');
+        let minutes = date.getMinutes().toString().padStart(2, '0');
+        return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes;
+    }
+
+    function getCheckedNoticeIds() {
+        return $(".witchId:checked").map(function () {
+            return $(this).data('notice-id');
+        }).get();
+    }
+</script>
+</body>
+</html>

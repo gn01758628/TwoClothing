@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.twoclothing.huiwen.service.BalanceHistoryService;
 import com.twoclothing.huiwen.service.BalanceHistoryServiceImpl;
@@ -68,7 +69,9 @@ public class BalanceHistoryServlet extends HttpServlet{
 		
 		//會員id搜尋
 		if("searchMbrId".equals(choice)){
-			Integer mbrId = Integer.parseInt(req.getParameter("mbrId"));
+			HttpSession session = req.getSession();
+			Integer mbrId = (Integer) session.getAttribute("mbrId");
+			
 			List<BalanceHistory> balanceHistoryList = BHSvc.getAllBHByMbrId(mbrId);
 			req.setAttribute("BHList", balanceHistoryList);
 			
@@ -90,7 +93,9 @@ public class BalanceHistoryServlet extends HttpServlet{
 		//新增虛擬錢包異動資訊
 		if("AddOne".equals(choice)) {
 			BalanceHistory balanceHistory = new BalanceHistory();
-			int mbrId =Integer.parseInt(req.getParameter("mbrId"));
+			HttpSession session = req.getSession();
+			Integer mbrId = (Integer) session.getAttribute("mbrId");
+			
 			if(!req.getParameter("orderId").trim().isEmpty() ) {
 				int orderId =Integer.parseInt(req.getParameter("orderId"));
 			}
@@ -103,7 +108,7 @@ public class BalanceHistoryServlet extends HttpServlet{
 			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 			int changeValue =Integer.parseInt(req.getParameter("changeValue"));
 			
-			balanceHistory.setMbrId(1);//從登入資訊取
+			balanceHistory.setMbrId(mbrId);//從登入資訊取
 			balanceHistory.setOrderId(1);//從訂單取
 //			balanceHistory.setBidOrderId(1);//與一般訂單2選1
 			balanceHistory.setWrId(1);//從提款編號取，不一定有

@@ -29,6 +29,20 @@ public class InsertBidItemImage extends HttpServlet {
             dao.insert(bidItemImage);
             in.close();
         }
+        for (int i = 21; i <= 40; i++) {
+            InputStream in = getServletContext().getResourceAsStream(filepathHead + (i - 20) + filepathTail);
+            byte[] bytes = in.readAllBytes();
+            BidItemImage bidItemImage = new BidItemImage(i, bytes);
+            dao.insert(bidItemImage);
+            in.close();
+        }
+        for (int i = 41; i <= 50; i++) {
+            InputStream in = getServletContext().getResourceAsStream(filepathHead + (i - 40) + filepathTail);
+            byte[] bytes = in.readAllBytes();
+            BidItemImage bidItemImage = new BidItemImage(i, bytes);
+            dao.insert(bidItemImage);
+            in.close();
+        }
         String filepathHead2 = "/images/clothing/clothing-";
         String filepathTail2 = "-2.jpg";
         for (int i = 1; i <= 2; i++) {

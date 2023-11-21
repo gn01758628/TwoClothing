@@ -15,6 +15,7 @@
             margin: 0;
             padding: 0;
         }
+        
         form {
             padding: 10px;
             width: 100%;
@@ -103,15 +104,10 @@
             padding: 5px;
         }
         
-
         div.container div.product-info ul li h1 {
             font-size: 24px;
             margin: 0;
         }
-        
-        div.container div.product-info ul li h1 span {
-    		margin-right: 50px;
-		}
 
         div.container div.product-info ul li p {
             font-size: 16px;
@@ -122,7 +118,8 @@
         /* 收藏 */ 
         .heart-container {
         	--heart-color: rgb(255, 91, 137);
-  			position: relative;
+  			position: absolute;
+  			left: 160px;
 		  	width: 20px;
 		  	height: 20px;
 		  	transition: .3s;
@@ -166,11 +163,11 @@
 		}
 
 		.heart-container .checkbox:checked~.svg-container .svg-filled {
-  			display: block
+  			display: block;
 		}
 
 		.heart-container .checkbox:checked~.svg-container .svg-celebrate {
-  			display: block
+  			display: block;
 		}
 
 		@keyframes keyframes-svg-filled {
@@ -206,12 +203,11 @@
 		}
 		
 		.message {
-			display: none;
-            color: gray;
-            position: relative;
-    		top: 100%; /* 設置相對於父元素的垂直位置，你可以調整這個數值 */
-    		transform: translateY(-50%); /* 垂直置中 */
-    		margin-left: auto;
+ 			display: none;
+			font-size: 14px;
+			position: absolute;
+			padding-top: 55px;
+    		transform: translateX(169%);
         }
 
         div.container div.product-info ul li.li_num {
@@ -270,7 +266,7 @@
             background-color: #6e6b71;
         }
         
-        div.toSeller{
+        div.toSeller {
             width: 0;
             height: 0;
             border-top: 100px solid transparent;
@@ -280,15 +276,15 @@
             margin-left: auto;
         }
         
-        div.toSeller:hover{
+        div.toSeller:hover {
             border-right-color: rgb(249, 194, 145);
         }
         
-        div.toSeller:hover a{
+        div.toSeller:hover a {
             color: white;
         }
         
-        div.toSeller a{
+        div.toSeller a {
             position: absolute;
             bottom: 5px;
             right: 5px;
@@ -300,22 +296,22 @@
         }
         
 /*         項目條 */
-        button.carousel-indicators [data-bs-target]{
+        button.carousel-indicators [data-bs-target] {
         	background-color: gray;
         }
         
-        .carousel-inner{
+        .carousel-inner {
         	height: 100%;
 /*         	width:0; */
         }
 
 /*         圖片容器 */ 
-        .carousel-item{
+        .carousel-item {
         	height: 100%; 
 /*   			width: 400px;  */
          }
          
-         .carousel-item active{ 
+         .carousel-item active { 
          	height: 100%; 
 /* 	  		width: 400px;  */
          }
@@ -324,16 +320,11 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
-	<span class="message" id="successMessage">移除成功</span>
 	<form class="form_detail" method="post" action="${pageContext.request.contextPath}/ItemCart/cart" enctype="multipart/form-data">
 	    <div class="container">
 	        <div class="product-image">
 	<%--             <img id="slider_img" src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="Product Image"> --%>
 	<!--         	<button type="button" onclick="nextImg()">按</button> -->
-	        	
-	        	
-	        	
-	        	
 	        	
 				  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
 				  <div class="carousel-indicators">
@@ -362,13 +353,11 @@
 	        </div>
 	        <div class="product-info">
 	            <ul>
-	                    <input type="hidden" name="itemId" value="${item.itemId}"></h1>
-	                <li style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 10px 4px; padding: 5px;">
-	                    <h1 name="itemName" value="${item.itemName}">
-	                    	<span>${item.itemName}</span>
-	                    </h1>
+	                <input type="hidden" name="itemId" value="${item.itemId}">
+	                <li style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 10px 4px; padding: 5px; position: relative; width: 150px;">
+		                <h1 name="itemName" value="${item.itemName}">${item.itemName}</h1>
 	                    
-	                    <div class="heart-container" title="Like">
+	                    <div class="heart-container">
 					        <input type="checkbox" class="checkbox" id="Give-It-An-Id">
 				            <div class="svg-container">
 				                <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
@@ -389,6 +378,7 @@
 				                </svg>
 				            </div>
 				        </div>
+				        <span class="message" id="successMessage">移除成功</span>
 	                </li>
 	                <li>
 	                    <p class="price" name="price">$${item.price}</p>
@@ -488,6 +478,7 @@
 				}
 			});
 		});
+	    
 		$(".buy-button").on("click",function(){
 			let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&mbrId=2&quantity=${item.quantity}&gotoCart=gotoCart";
 			console.log(url);
@@ -503,25 +494,28 @@
 	            })
 		})
 		
+		let isTracked = ${isItemTracked};
+		if (isTracked) {
+			$(".heart-container .checkbox").prop("checked", true);
+    	}
+
 		$("#Give-It-An-Id").on("click", function () {
-		    $(this).toggleClass("active");
-		    
-		    if ($(this).hasClass("active")) {
-	            insertItem();
-	        } else {
-	            deleteItem();
-	        }
+			if (!isTracked) {
+				insertItem();
+            } else {
+            	deleteItem();
+            }
 		});
-			 
+
 		function insertItem() {
-			var itemId = "${item.itemId}";
-			var url = "${pageContext.request.contextPath}/itemtrackinglist.check?action=insert&itemId=" + itemId;
+			var url = "${pageContext.request.contextPath}/itemtrackinglist.check?action=insert&itemId=${item.itemId}";
 			
 			$.ajax({
 		        type: "POST",
 		        url: url,
 		        success: function (data) {
-		            console.log(data);
+		        	console.log(data);
+		        	isTracked = true;
 		        },
 		        error: function (xhr) {
 		            if (xhr.status === 403) {
@@ -532,16 +526,18 @@
 		        }
 		    });
 		}
-		
+
 		function deleteItem() {
-			var itemId = "${item.itemId}";
-			var url = "${pageContext.request.contextPath}/itemtrackinglist.check?action=delete&itemId=" + itemId;
+			var url = "${pageContext.request.contextPath}/itemtrackinglist.check?action=delete&itemId=${item.itemId}";
 			
 			$.ajax({
 		        type: "POST",
 		        url: url,
 		        success: function (data) {
-		        	$("#successMessage").show().delay(2000).fadeOut();
+		        	if (window.innerWidth > 600) {
+		        		$("#successMessage").show().delay(2000).fadeOut();
+		        	}
+		            isTracked = false;
 		        },
 		        error: function (xhr) {
 		        	console.log(xhr);

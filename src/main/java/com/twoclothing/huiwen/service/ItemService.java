@@ -40,6 +40,8 @@ public interface ItemService {
     void addItemImage(ItemImage itemImage);
     
     Integer getMbrPointByMbrId(Integer mbrId);
+    
+    Integer getMbrBalanceByMbrId(Integer mbrId);
 
 //    public MembersCoupon getMemCouponByPK(Integer mbrId, Integer cpnId);
     
@@ -56,4 +58,6 @@ public interface ItemService {
     List<Item> getItemBymbrIdAndStatus(Integer mbrId);
 
     public Members getMembersByPK(Integer mbrId);
+    
+    public List<Item> getAllByStatus(Integer itemStatus);
 }

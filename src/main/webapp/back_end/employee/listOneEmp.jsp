@@ -55,7 +55,7 @@ body {
 	</thead>
 	
 	<tr>
-			<td>${employee.empId}</td>
+			<td>${employee.formatEmpId}</td>
 			<td>${employee.empName}</td>
 			<td>${employee.address}</td>
 			<td>${employee.email}</td>
@@ -78,9 +78,17 @@ body {
 
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/employee/Employee.do" style="margin-bottom: 0px;">
+			     <input type="submit" value="確認">
+				 <c:choose>
+       			   <c:when test="${employee.empStatus == 0}"><input type="hidden" name="action"	value="get_On_Duty"></c:when>
+       			   <c:when test="${employee.empStatus == 1}"><input type="hidden" name="action"	value="get_Not_On_Duty"></c:when>
+       			 </c:choose>
+			   </FORM>
+			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/employee/Employee.do" style="margin-bottom: 0px;">
 			     <input type="submit" value="修改">
 			     <input type="hidden" name="empId"  value="${employee.empId}">
-			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
+			     <input type="hidden" name="action"	value="getOne_For_Update">
+			   </FORM>
 			</td>
 		</tr>
 </table>

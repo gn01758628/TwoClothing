@@ -1,6 +1,7 @@
 package com.twoclothing.huiwen.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.twoclothing.huiwen.service.ItemService;
 import com.twoclothing.huiwen.service.ItemServiceImpl;
@@ -59,21 +61,15 @@ public class ItemCartServlet extends HttpServlet {
 			String quantity = req.getParameter("quantity");
 			System.out.println("quantity" + quantity);
 
-			String mbrId = req.getParameter("mbrId");
+			HttpSession session = req.getSession();
+			String mbrId = String.valueOf(session.getAttribute("mbrId"));
 
 			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 			Jedis jedis = jedisPool.getResource();
 			try {
-				jedis.select(13);
-				
-				String[] itemIds = { itemId };
-				String[] quantities = { quantity };
-				
-				for (int i = 0; i < itemIds.length; i++) {
-					jedis.hset(mbrId, itemIds[i], quantities[i]);
-				}
-				
-//				Map<String, String> productInfo = jedis.hgetAll(mbrId);
+			    jedis.select(13);
+
+			    jedis.hset(mbrId, itemId, quantity); 
 		
 				req.setAttribute("item", itemList);
 			}catch(Exception e) {
@@ -81,6 +77,12 @@ public class ItemCartServlet extends HttpServlet {
 			}finally {
 				jedis.close();	
 			}
+			
+		    String responseData = "加入成功！"; // 這裡是要回傳的訊息
+
+		    PrintWriter out = res.getWriter();
+		    out.print(responseData);
+		    out.flush();
 
 		}
 		//查看購物車
@@ -90,17 +92,14 @@ public class ItemCartServlet extends HttpServlet {
 			//抓商品的數量
 			List<String> quantities = new ArrayList<>();
 			
-			String mbrIdStr = req.getParameter("mbrId");
+			HttpSession session = req.getSession();
+			String mbrIdStr = String.valueOf(session.getAttribute("mbrId"));
 			
 			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 			Jedis jedis = jedisPool.getResource();
 			
 			try {
 				jedis.select(13);
-				
-				System.out.println("mbrId:" + req.getParameter("mbrId"));
-				
-				
 				Set<String> itemIds = jedis.hkeys(mbrIdStr);
 				
 				
@@ -161,7 +160,8 @@ public class ItemCartServlet extends HttpServlet {
 		//使用者刪除購物車某商品(Redis刪除)
 		if ("delCart".equals(req.getParameter("delCart"))) {
 			String itemId = req.getParameter("itemId");
-			String mbrId = req.getParameter("mbrId");
+			HttpSession session = req.getSession();
+			String mbrId = String.valueOf(session.getAttribute("mbrId"));
 			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 			Jedis jedis = jedisPool.getResource();
 			try {
@@ -178,7 +178,8 @@ public class ItemCartServlet extends HttpServlet {
 		if("updateCart".equals(req.getParameter("updateCart"))) {
 			String itemId = req.getParameter("itemId");
 			String quantity = req.getParameter("quantity");
-			String mbrId = req.getParameter("mbrId");
+			HttpSession session = req.getSession();
+			String mbrId = String.valueOf(session.getAttribute("mbrId"));
 			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 			Jedis jedis = jedisPool.getResource();
 			try {
@@ -199,7 +200,8 @@ public class ItemCartServlet extends HttpServlet {
 			List<Item> itemList = new ArrayList<>();
 			List<String> quantities = new ArrayList<>();
 			//之後從session取mbrId
-			String mbrId = "2";
+			HttpSession session = req.getSession();
+			String mbrId = String.valueOf(session.getAttribute("mbrId"));
 			try {
 				jedis.select(13);
 			
@@ -222,7 +224,9 @@ public class ItemCartServlet extends HttpServlet {
 			//取得會員物流資訊
 			List<ShipSetting> shipSettingList = itemService.getSettingByMbrId(Integer.valueOf(mbrId));
 			ShipSetting shipSetting = shipSettingList.get(0);
-
+			
+			//取得會員錢包餘額
+			Integer balanceEableUse = itemService.getMbrBalanceByMbrId(Integer.valueOf(mbrId));
 			
 			//取得折扣金額
 			Integer cartCount = Integer.valueOf(req.getParameter("cartCount"));
@@ -231,6 +235,7 @@ public class ItemCartServlet extends HttpServlet {
 			req.setAttribute("quantities", quantities);
 			req.setAttribute("shipSetting", shipSetting);
 			req.setAttribute("cartCount", cartCount);
+			req.setAttribute("balanceEableUse", balanceEableUse);
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/cartToOrder.jsp");
 			dispatcher.forward(req, res);
 			return;

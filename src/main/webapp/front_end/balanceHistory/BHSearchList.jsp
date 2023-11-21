@@ -6,27 +6,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>虛擬錢包異動查詢</title>
+	<!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+
     <style>
         *{
             box-sizing: border-box;
         }
         main.main_container{
-            border: 1px solid black;
+/*             border: 1px solid black; */
             height: 100%;
-            margin: 50px;
+/*             margin: 50px; */
             display: flex;
             align-items: center;
             flex-direction: column;
             background-color: whitesmoke;
+            min-height:450px;
         }
+         main.main_container h3{
+         	margin:30px;
+         }
         main.main_container div.bh_number{
             /* border: 1px solid green; */
-            font-size: 28px;
+            font-size: 22px;
             margin-top: 10px;
             margin-bottom: 20px;
             color:white;
             width: 200px;
-            font-weight:bold;
+            font-weight:600;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -74,14 +96,14 @@
         }
 
         div.search_date > div:hover{
-            background-color: lightgray;
+            background-color: #f9edf2;
             cursor: pointer;
-            box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.2)
+            box-shadow: inset -2px -2px 8px rgba(0, 0, 0, 0.2)
         }
 
         .clickCondition{
-            box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.2);
-            background-color: lightgray;
+            box-shadow: inset -2px -2px 8px rgba(0, 0, 0, 0.2);
+            background-color: #f9edf2;
 
         }
 
@@ -146,12 +168,17 @@
         	color:red;
         }
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
 
 </head>
 <body>
+	<div class="headerHTML"></div>
+
     <main class="main_container">
-        <h1>虛擬錢包異動查詢</h1>
+        <h3>虛擬錢包異動查詢</h3>
         <div class="bh_number">
             <span class="text">餘額：<span class="number">$200</span></span>
             
@@ -192,6 +219,24 @@
         </div>
 
     </main>
+    <div class="footerHTML"></div>
+    <!--bootstrap5 js-->
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+	<!--jQuery-->
+	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+	<!--Sweet Alert-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+	<!--JS loader-->
+	<script>
+	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+	        // 保證headerHTML加載完才載入header.js
+	        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+	    });
+	
+	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	</script>
+    
     <script>
         $(".search").click(function(){
             console.log("111");

@@ -14,5 +14,5 @@ public interface NoticeDAO {
 
     void markNoticesAsRead(String... noticeIds);
 
-
+    void deleteNotices(Integer mbrId,String...noticeIds);
 }

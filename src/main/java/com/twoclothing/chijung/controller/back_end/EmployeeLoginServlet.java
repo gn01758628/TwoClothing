@@ -1,4 +1,4 @@
-package com.twoclothing.chijung.controller;
+package com.twoclothing.chijung.controller.back_end;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -127,6 +127,7 @@ public class EmployeeLoginServlet extends HttpServlet {
         session.setAttribute("emp", emp);
         session.setAttribute("empId", emp.getEmpId());
         
+        
         res.setContentType("text/html;charset=UTF-8");
         
         // 獲取PrintWriter
@@ -159,6 +160,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 		
 		HttpSession  session = req.getSession();
 		session.removeAttribute("emp");
+		session.removeAttribute("empId");
 		
         
         res.setContentType("text/html;charset=UTF-8");

@@ -8,6 +8,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>itemSellerSearch</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    
     <style>
         *{
             box-sizing: border-box;
@@ -37,10 +55,10 @@
             padding: 20px;
         }
         div.main_inner h2{
-            border: 2px solid #134f77;
+/*             border: 2px solid #134f77; */
             border-radius: 20px;
             padding: 5px;
-            background: linear-gradient(to right, #4daff0, #ffffff);
+            background: var(--gradient-2, linear-gradient(90deg, #2AF598 0%, #009EFD 100%));
             color: #393939;
             width: 180px;
             text-align: center;
@@ -67,6 +85,7 @@
 
         div.up_area>*{
             flex: 1;
+    		width: 100%; 
 
         }
 
@@ -80,6 +99,11 @@
             width: 100%;
             padding: 5px 0;
 
+        }
+         div.up_area div.tagarea{
+        	margin-top: 15px;
+            width: 100%;
+            padding: 5px 0;
         }
 
         div.up_area div.pricearea {
@@ -96,8 +120,9 @@
         }
 
         div.up_area label{
-            width: 100%;
+/*             width: 100%; */
             text-align: left;
+            background-color: #2f3640;
         }
 
         div.up_area input{
@@ -166,28 +191,42 @@
             border-radius: 15px;
         }
 
-        input{
+        form.form_search div.up_area input{
             margin: 10px 0;
             padding: 7px;
-            border-width: 1px;
+/*             border-width: 1px; */
+            border: 1px solid black !important;
         }
 
-        input.btn_submit{
+        form.form_search input.btn_submit{
             width: 180px;
             border-radius: 20px;
-            border:2px solid #134f77;
             background-color: white;
             font-size: 16px;
+            margin: 10px 0;
+            padding: 7px;
+            border: 1px solid black !important;
+            
         }
-        input.btn_submit:hover{
+        form.form_search input.btn_submit:hover{
             cursor:pointer;
-            background: linear-gradient(to right, #4daff0, #ffffff);
-
+            background: var(--gradient-2, linear-gradient(90deg, #2AF598 0%, #009EFD 100%));
+        	boder:none;
         }
-        label{
+        div.up_area label{
+/*          display:inline-block;  */
+/*         width:90px; */
             padding: 7px;
             border-radius: 15px;
-            background-color: #61abdd;
+            background-color: #2f3640;
+            color: #ffffff;
+        }
+        div.under_area label{
+/*          display:inline-block;  */
+/*         width:90px; */
+            padding: 7px;
+            border-radius: 15px;
+            background-color: #2f3640;
             color: #ffffff;
         }
         select{
@@ -197,9 +236,18 @@
             border-radius: 15px;
             width: 100%;
         }
+        #categorySelect{
+        	background-color:white;
+        }
     </style>
+    <!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
+    
 </head>
 <body>
+	<div class="headerHTML"></div>
     <main class="main">
         <div class="main_inner">
             <h2>商品查詢</h2>
@@ -216,6 +264,34 @@
                             <input type="text" name="itemPriceSearchStart"><span>~</span><input type="text" name="itemPriceSearchEnd">
                         </div>
                     </div>
+                    
+                    <div class="tagarea">
+                    	<label>商品類別</label>
+                    	<div class="mb-3">
+<!--                         <label for="categorySelect" class="form-label" ></label> -->
+                        <!-- 顯示選擇的完整結構,但不往後傳 -->
+                        <input type="text" class="form-control" id="categorySelect"
+                               aria-describedby="categorySelectHelp" readonly >
+                        <!--儲存標籤的id傳給後端-->
+                        <input type="hidden" id="selectedCategoryId" name="tagId">
+<!--                         <div id="categorySelectHelp" class="form-text">選擇適當的標籤，讓更多人能找到您的商品</div> -->
+                    </div>
+                    <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog"
+                         aria-labelledby="categoryModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="categoryModalLabel">選擇商品類別標籤</h5>
+                                </div>
+                                <div class="modal-body" id="categoryTree">
+                                    <!-- 類別標籤樹狀結構在這裡生成 -->
+                                </div>
+                            </div>
+                        </div>
+                    	</div>
+                    </div>
+                    
                 </div>
                 <div class="under_area">
                     <div class="under_up">
@@ -267,8 +343,10 @@
                                 <option value="0">上架中</option>
                                 <option value="1">下架中</option>
                             </select>
-                        </div>
+                        </div>                        
                     </div>
+                    
+
                 </div>
                 <input type="hidden" name="choice" value="searchCondition">
                 <input class="btn_submit" type="submit" value="查詢">
@@ -276,10 +354,34 @@
             </form>
         </div>
     </main>
-	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
-    <script>
+    <div class="footerHTML"></div>
     
-    </script>
+	<!--bootstrap5 js-->
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+	<!--jQuery-->
+	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+	<!--Sweet Alert-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+	<!--JS loader-->
+	<script>
+	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+	        // 保證headerHTML加載完才載入header.js
+	        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+	    });
+	
+	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	</script>
+    <script>
+    const categoryData = [
+        <c:forEach var="tags" items="${applicationScope.categoryTags}" begin="1">
+        {id:${tags.tagId}, name: '${tags.categoryName}', parentId:${tags.superTagId}},
+        </c:forEach>
+    ];
+</script>
+
+<!--商品類別標籤的js-->
+<script src="${pageContext.request.contextPath}/js/chengHan/addBidCategoryTags.js"></script>
 
     
 </body>

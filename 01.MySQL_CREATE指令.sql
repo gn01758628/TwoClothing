@@ -433,9 +433,9 @@ CREATE TABLE department
 
 -- 表格：部門 插入假資料
 INSERT INTO department (deptname)
-VALUES ('IT Department'),
-       ('Sales Department'),
-       ('Marketing Department');
+VALUES ('行銷部'),
+       ('會計部'),
+       ('客服部');
 
 -- 表格：部門 檢查
 -- SELECT * FROM department;
@@ -520,15 +520,18 @@ CREATE TABLE categorytags
 -- 表格：商品類別標籤 插入假資料
 INSERT INTO categorytags (supertagid, categoryname, empid)
 VALUES (NULL, '所有種類', 1),
-       (1, '上衣', 1),
-       (1, '褲子', 1),
-       (1, '飾品', 1),
-       (2, '短袖', 1),
-       (2, '長袖', 1),
-       (3, '短褲',1),
-       (3, '長褲', 1),
-       (5, '男短袖', 1),
-       (5, '女短袖', 1);
+       (1, '衣服', 1),
+	   (1, '褲子', 1),
+	   (1, '鞋子', 1),
+	   (1, '飾品', 1),
+       (2, 'T-shirt', 1),
+	   (2, '長袖', 1),
+       (3, '牛仔褲', 1),
+	   (3, '休閒褲', 1),
+       (4, '運動鞋', 1),
+       (4, '休閒鞋', 1),
+       (5, '項鏈', 1),
+       (5, '耳環', 1);
 
 -- 表格：商品類別標籤 檢查
 -- SELECT * FROM categorytags;

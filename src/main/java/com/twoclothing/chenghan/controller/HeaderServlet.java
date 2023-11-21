@@ -1,9 +1,11 @@
 package com.twoclothing.chenghan.controller;
 
 import com.google.gson.Gson;
-import com.twoclothing.chenghan.IsLoginDTO;
-import com.twoclothing.chenghan.MemberInfoDTO;
+import com.twoclothing.chenghan.dto.IsLoginDTO;
+import com.twoclothing.chenghan.dto.MemberInfoDTO;
 import com.twoclothing.model.members.Members;
+import com.twoclothing.model.members.MembersDAO;
+import com.twoclothing.model.members.MembersHibernateDAO;
 import com.twoclothing.redismodel.memberMessage.MemberMessageDAO;
 import com.twoclothing.redismodel.memberMessage.MemberMessageJedisDAO;
 import com.twoclothing.redismodel.notice.NoticeDAO;
@@ -28,6 +30,8 @@ public class HeaderServlet extends HttpServlet {
 
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
+    private final MembersDAO membersDAO = new MembersHibernateDAO(sessionFactory);
+
     private final JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 
     private final NoticeDAO noticeDAO = new NoticeJedisDAO();
@@ -44,7 +48,6 @@ public class HeaderServlet extends HttpServlet {
         switch (pathInfo) {
             case "/loginValidate" -> doLoginValidate(request, response);
             case "/search" -> doSearch(request, response);
-//            case "/vent" -> doVent(request, response);
         }
     }
 
@@ -52,21 +55,22 @@ public class HeaderServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        Members user = (Members) request.getSession().getAttribute("user");
+        Integer mbrId = (Integer) request.getSession().getAttribute("mbrId");
+        Members member = mbrId == null ? null : membersDAO.getByPrimaryKey(mbrId);
         PrintWriter out = response.getWriter();
         IsLoginDTO isLoginDTO = new IsLoginDTO();
-        if (user == null) {
+        if (member == null) {
             isLoginDTO.setLogin(false);
             isLoginDTO.setMbrStatus("登入/註冊");
             out.write(gson.toJson(isLoginDTO));
         } else {
             isLoginDTO.setLogin(true);
             // 獲取會員資料
-            isLoginDTO.setMbrStatus(user.getMbrName());
-            isLoginDTO.setMbrAccount(user.getEmail().split("@")[0]);
-            isLoginDTO.setBalance(user.getBalance());
-            isLoginDTO.setMbrPoint(user.getMbrPoint());
-            isLoginDTO.setMbrId(user.getMbrId());
+            isLoginDTO.setMbrStatus(member.getMbrName());
+            isLoginDTO.setMbrAccount(member.getEmail().split("@")[0]);
+            isLoginDTO.setBalance(member.getBalance());
+            isLoginDTO.setMbrPoint(member.getMbrPoint());
+            isLoginDTO.setMbrId(member.getMbrId());
             // 傳送IsLoginDTO
             out.write(gson.toJson(isLoginDTO));
         }
@@ -76,13 +80,12 @@ public class HeaderServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        Members user = (Members) request.getSession().getAttribute("user");
-        Integer mbrId = user.getMbrId();
+        Integer mbrId = (Integer) request.getSession().getAttribute("mbrId");
         PrintWriter out = response.getWriter();
         MemberInfoDTO memberInfoDTO = new MemberInfoDTO();
 
         // 購物車數量
-        try(Jedis jedis = jedisPool.getResource()) {
+        try (Jedis jedis = jedisPool.getResource()) {
             jedis.select(13);
             Long carNum = jedis.hlen(String.valueOf(mbrId));
             memberInfoDTO.setCarNum(carNum.intValue());

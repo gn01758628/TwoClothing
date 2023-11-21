@@ -61,23 +61,23 @@
         </li>
         
         <li>
-          <a href="" class="drop-down-menu"><i class="ion-ios-settings"></i> <span class="">會員管理</span></a>
-          
-          <ul class="nav-flyout">
-            <li>
-              <a href=""><i class="ion-ios-alarm-outline"></i>查看會員資料</a>
-            </li>
-            <li>
-              <a href=""><i class="ion-ios-camera-outline"></i></a>
-            </li>
-            <li>
-              <a href=""><i class="ion-ios-chatboxes-outline"></i></a>
-            </li>
-            <li>
-              <a href=""><i class="ion-ios-cog-outline"></i></a>
-            </li>
+          <a href="${pageContext.request.contextPath}/members/Members.do?action=getAll" class="drop-down-menu"><i class="ion-ios-settings"></i> <span class="">會員管理</span></a>
+<%--           <a href='${pageContext.request.contextPath}/members/Members.do?action=getAll'>後台會員列表()</a>  --%>
+<!--           <ul class="nav-flyout"> -->
+<!--             <li> -->
+<!--               <a href=""><i class="ion-ios-alarm-outline"></i>查看會員資料</a> -->
+<!--             </li> -->
+<!--             <li> -->
+<!--               <a href=""><i class="ion-ios-camera-outline"></i></a> -->
+<!--             </li> -->
+<!--             <li> -->
+<!--               <a href=""><i class="ion-ios-chatboxes-outline"></i></a> -->
+<!--             </li> -->
+<!--             <li> -->
+<!--               <a href=""><i class="ion-ios-cog-outline"></i></a> -->
+<!--             </li> -->
             
-          </ul>
+<!--           </ul> -->
         </li>
         
         <li>
@@ -104,25 +104,25 @@
         </li>
         
         <li>
-          <a href="" class="drop-down-menu"><i class="ion-ios-analytics-outline"></i> <span class="">競標管理</span></a>
+          <a href="${pageContext.request.contextPath}/back_end/servlet/biditem/search" class="drop-down-menu"><i class="ion-ios-analytics-outline"></i> <span class="">競標管理</span></a>
           
-          <ul class="nav-flyout">
-            <li>
-              <a href=""><i class="ion-ios-timer-outline"></i></a>
-            </li>
-            <li>
-              <a href=""><i class="ion-arrow-graph-down-left"></i></a>
-            </li>
-            <li>
-              <a href=""><i class="ion-ios-partlysunny-outline"></i></a>
-            </li>
-            <li>
-              <a href=""><i class="ion-ios-timer-outline"></i></a>
-            </li>
-            <li>
-              <a href=""><i class="ion-ios-game-controller-a-outline"></i></a>
-            </li>
-          </ul>
+<!--           <ul class="nav-flyout"> -->
+<!--             <li> -->
+<!--               <a href=""><i class="ion-ios-timer-outline"></i></a> -->
+<!--             </li> -->
+<!--             <li> -->
+<!--               <a href=""><i class="ion-arrow-graph-down-left"></i></a> -->
+<!--             </li> -->
+<!--             <li> -->
+<!--               <a href=""><i class="ion-ios-partlysunny-outline"></i></a> -->
+<!--             </li> -->
+<!--             <li> -->
+<!--               <a href=""><i class="ion-ios-timer-outline"></i></a> -->
+<!--             </li> -->
+<!--             <li> -->
+<!--               <a href=""><i class="ion-ios-game-controller-a-outline"></i></a> -->
+<!--             </li> -->
+<!--           </ul> -->
           
         </li>
         
@@ -131,7 +131,7 @@
           
           <ul class="nav-flyout">
             <li>
-              <a href=""><i class="ion-ios-filing-outline"></i></a>
+              <a href="${pageContext.request.contextPath}/back_end/servlet/categoryTags/list"><i class="ion-ios-filing-outline"></i>商品類別標籤管理</a>
             </li>
             <li>
               <a href=""><i class="ion-ios-information-outline"></i></a>
@@ -174,7 +174,7 @@
         </li>
         
         <li>
-          <a href="" class="drop-down-menu"><i class="ion-ios-medical-outline"></i> <span class="">競標商品訂單管理</span></a>
+          <a href="${pageContext.request.contextPath}/bidorder/BidOrder.do?action=getAll" class="drop-down-menu"><i class="ion-ios-medical-outline"></i> <span class="">競標商品訂單管理</span></a>
         </li>
         
         <li>

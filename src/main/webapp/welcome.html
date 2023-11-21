@@ -22,16 +22,375 @@
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
     <!--Sweet Alert-->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--Slick Carousel-->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
     <!--導覽列css-->
     <link rel="stylesheet" href="/TwoClothing/css/chengHan/header.css">
     <!--頁尾css-->
     <link rel="stylesheet" href="/TwoClothing/css/chengHan/footer.css">
+
+    <style>
+        body {
+            background-color: #fff8fb;
+        }
+
+        /*Slick Carousel 的箭頭*/
+        .slick-prev:before,
+        .slick-next:before {
+            color: #561729;
+            font-size: 30px;
+            transition: all 0.2s ease;
+        }
+
+        .slick-prev:hover:before,
+        .slick-next:hover:before {
+            color: #d81b60;
+            cursor: pointer;
+        }
+
+
+        .slick-prev:active:before,
+        .slick-next:active:before {
+            color: #880e4f;
+            opacity: 0.8;
+        }
+
+        /* 設定 Slick Carousel 每個滑動元素的邊距 */
+        .slick-slide {
+            margin: 0 10px;
+        }
+
+        /* 首尾元素的邊距調整，確保與其他元素間隔一致 */
+        .slick-list {
+            margin: 0 5px;
+        }
+
+        /*商品卡片*/
+        .card {
+            display: block;
+            margin-bottom: 20px;
+            line-height: 1.42857143;
+            background-color: #fff;
+            border-radius: 2px;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+            transition: box-shadow .25s;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .img-card {
+            width: 100%;
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
+            display: block;
+            overflow: hidden;
+        }
+
+        .img-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            transition: all .25s ease;
+        }
+
+        .card-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .card .itemName {
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* 限制在兩行內 */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis; /* 文本溢出顯示省略號 */
+            line-height: 1.2em; /* 根據您的需求調整 */
+            max-height: 2.4em; /* line-height 的兩倍，以確保兩行 */
+            word-break: break-word; /* 防止單詞在行末分開 */
+            margin-top: 0px;
+            font-weight: 700;
+            font-size: 1.65em; /* 或其他需要的大小 */
+            text-align: center;
+        }
+
+        .card-read-more {
+            border-top: 2px solid #D4D4D4;
+            text-align: center;
+        }
+
+        .card-content a {
+            color: #000;
+            text-decoration: none !important;
+        }
+
+        .card-read-more a {
+            text-decoration: none !important;
+            padding: 10px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .card .itemPrice {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff3400;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /*競標的特別設定*/
+        .bidItemCard {
+            height: 480px;
+        }
+
+        .bidItemCard .currentBid {
+            font-weight: bold;
+            margin-top: 10px;
+            color: #000;
+        }
+
+        .bidItemCard .currentBid .bidAmount {
+            color: #ff3400;
+            font-size: 24px;
+        }
+
+        .endDate {
+            display: block; /* 使用块级元素以覆盖整个容器宽度 */
+            background-color: #D50000; /* 红色背景 */
+            color: white; /* 白色文字 */
+            padding: 5px 0; /* 上下内边距 */
+            font-size: 20px; /* 文字大小 */
+            font-weight: bold; /* 加粗文字 */
+            text-align: center; /* 文字居中对齐 */
+            position: relative; /* 相对定位，相对于卡片而不是图片 */
+            width: 100%; /* 标签宽度与卡片相同 */
+            box-sizing: border-box; /* 确保内边距不会影响总宽度 */
+            margin-bottom: 10px; /* 调整与下方图片的距离 */
+            border-radius: 10px; /* 圆角效果 */
+        }
+
+        /*競標的特別設定*/
+
+        /*商品卡片*/
+
+        /*購買按鈕*/
+        .shopNow {
+            padding: 1.1em 2em;
+            border: 2px solid #fff;
+            font-size: 15px;
+            color: #131313;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            border-radius: 12px;
+            background-color: #ecd448;
+            font-weight: bolder;
+            box-shadow: 0 2px 0 2px #000;
+        }
+
+        .shopNow:before {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 120%;
+            background-color: #ff6700;
+            top: 50%;
+            transform: skewX(30deg) translate(-150%, -50%);
+            transition: all 0.5s;
+        }
+
+        .shopNow:hover {
+            background-color: #4cc9f0;
+            color: #fff;
+            box-shadow: 0 2px 0 2px #0d3b66;
+        }
+
+        .shopNow:hover::before {
+            transform: skewX(30deg) translate(150%, -50%);
+            transition-delay: 0.1s;
+        }
+
+        .shopNow:active {
+            transform: scale(0.9);
+        }
+
+        /*購買按鈕*/
+
+        /* 大標題 */
+        .bigTitle {
+            display: block;
+            background-color: #ffc107;
+            color: #fff;
+            font-size: 30px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 50px;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .bigTitle {
+            background-image: linear-gradient(to right, #ee90aa, #f3c4d2);
+        }
+
+        .bigTitle:hover {
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);
+            background-image: linear-gradient(to right, #f3c4d2, #ee90aa);
+        }
+
+        .bigTitle:before,
+        .bigTitle:after {
+            content: '★';
+            color: #561729;
+            font-size: 36px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .bigTitle:before {
+            left: -45px;
+        }
+
+        .bigTitle:after {
+            right: -45px;
+        }
+
+        /*大標題*/
+
+        /*圖片按鈕*/
+        .imgBtn img {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .imgBtn:hover img {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .imgBtn:active img {
+            transform: scale(0.95);
+        }
+
+        /*圖片按鈕*/
+
+        /*類別選擇按鈕*/
+        .pushable {
+            position: relative;
+            background: transparent;
+            padding: 0px;
+            border: none;
+            cursor: pointer;
+            outline-offset: 4px;
+            outline-color: deeppink;
+            transition: filter 250ms;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        .shadow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: hsl(226, 25%, 69%);
+            border-radius: 8px;
+            filter: blur(2px);
+            will-change: transform;
+            transform: translateY(2px);
+            transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+        }
+
+        .edge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            border-radius: 8px;
+            background: linear-gradient(
+                    to right,
+                    hsl(248, 39%, 39%) 0%,
+                    hsl(248, 39%, 49%) 8%,
+                    hsl(248, 39%, 39%) 92%,
+                    hsl(248, 39%, 29%) 100%
+            );
+        }
+
+        .front {
+            display: block;
+            position: relative;
+            border-radius: 8px;
+            background: hsl(248, 53%, 58%);
+            padding: 16px 32px;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 24px;
+            transform: translateY(-4px);
+            transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+        }
+
+        /*RWD*/
+        @media screen and (max-width: 767px) {
+            .front {
+                padding: 8px 16px;
+                font-size: 18px;
+            }
+        }
+
+        .pushable:hover {
+            filter: brightness(110%);
+        }
+
+        .pushable:hover .front {
+            transform: translateY(-6px);
+            transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+        }
+
+        .pushable:active .front {
+            transform: translateY(-2px);
+            transition: transform 34ms;
+        }
+
+        .pushable:hover .shadow {
+            transform: translateY(4px);
+            transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+        }
+
+        .pushable:active .shadow {
+            transform: translateY(1px);
+            transition: transform 34ms;
+        }
+
+        .pushable:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        /*類別選擇按鈕*/
+    </style>
 </head>
+
 <body>
 
 <div class="headerHTML"></div>
 
 <!--輪播圖-->
+<!--<div class="container">-->
 <div id="carouselDiv" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselDiv" data-bs-slide-to="0" class="active"
@@ -75,9 +434,114 @@
         </span>
     </button>
 </div>
+<!--</div>-->
 
-<div class="test-div" style="height: 1000px; background-color: #3498db;">
+<div class="container text-center mt-3 mb-3">
+    <div class="row">
+        <div class="col text-center">
+            <h2 class="bigTitle">我要賣衣服</h2>
+        </div>
+    </div>
+    <div class="row justify-content-evenly mt-4">
+        <div class="col-6 col-md-4">
+            <a href="/TwoClothing/front/biditem/personal/add.check" class="imgBtn">
+                <img src="/TwoClothing/images/SellBid.png" class="img-fluid" alt="新增競標案">
+            </a>
+        </div>
+        <div class="col-6 col-md-4">
+            <a href="/TwoClothing/Item/item.check?choice=addItem" class="imgBtn">
+                <img src="/TwoClothing/images/SellItem.png" class="img-fluid" alt="新增商品">
+            </a>
+        </div>
+    </div>
 </div>
+
+<div class="container mt-3 mb-3">
+    <div class="row">
+        <div class="col text-center">
+            <h2 class="bigTitle">一般商品</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <button class="pushable itemType me-4">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">衣服</span>
+            </button>
+            <p style="display: none">2</p>
+            <button class="pushable itemType me-4">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">褲子</span>
+            </button>
+            <p style="display: none">3</p>
+            <button class="pushable itemType me-4">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">鞋子</span>
+            </button>
+            <p style="display: none">4</p>
+            <button class="pushable itemType me-4">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">飾品</span>
+            </button>
+            <p style="display: none">5</p>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-3 mb-3">
+    <div class="itemCarousel">
+        <!--動態生成內容-->
+    </div>
+</div>
+
+<div class="container mt-3 mb-3">
+    <div class="row">
+        <div class="col text-center">
+            <h2 class="bigTitle">競標商品</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <button class="pushable bidItemType me-4">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">衣服</span>
+            </button>
+            <p style="display: none">2</p>
+            <button class="pushable bidItemType me-4">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">褲子</span>
+            </button>
+            <p style="display: none">3</p>
+            <button class="pushable bidItemType me-4">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">鞋子</span>
+            </button>
+            <p style="display: none">4</p>
+            <button class="pushable bidItemType me-4">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">飾品</span>
+            </button>
+            <p style="display: none">5</p>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-3 mb-3">
+
+    <div class="bidItemCarousel">
+        <!--動態生成內容-->
+    </div>
+
+</div>
+
 
 <div class="footerHTML"></div>
 
@@ -88,6 +552,8 @@
 <script src="/TwoClothing/js/jQuery/jquery-3.7.1.min.js"></script>
 <!--Sweet Alert-->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--Slick Carousel-->
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <!--JS loader-->
 <script>
     $(".headerHTML").load("/TwoClothing/headerHTML.html", function () {
@@ -97,11 +563,221 @@
 
     $(".footerHTML").load("/TwoClothing/footerHTML.html");
 </script>
-
-
+<!--Ajax抓取商品-->
 <script>
+    $(document).ready(function () {
+        $.get('/TwoClothing/welcomeHelper/randomItem', function (data) {
+            createItemCarousel(data);
+        })
 
+        $.get('/TwoClothing/welcomeHelper/randomBidItem', function (data) {
+            createBidItemCarousel(data);
+        })
+
+        // 監聽一般商品類別選擇按鈕
+        $(".itemType").click(function () {
+            let tagId = $(this).next().text();
+            $.get("/TwoClothing/welcomeHelper/randomItem?tagId=" + tagId, function (data) {
+                createItemCarousel(data);
+            })
+        })
+
+        // 監聽競標商品類別選擇按鈕
+        $(".bidItemType").click(function () {
+            let tagId = $(this).next().text();
+            $.get("/TwoClothing/welcomeHelper/randomBidItem?tagId=" + tagId, function (data) {
+                createBidItemCarousel(data);
+            })
+        })
+
+    })
+
+    // function place
+    function createItemCarousel(itemList) {
+        const itemCarousel = $(".itemCarousel");
+        // 如果輪播已經初始化，移除所有輪播
+        if (itemCarousel.hasClass('slick-initialized')) {
+            itemCarousel.slick('slickRemove', null, null, true);
+        } else {
+            itemCarousel.slick({
+                infinite: true,
+                speed: 600,
+                slidesToShow: 5,
+                autoplay: true,
+                autoplaySpeed: 2000,
+                adaptiveHeight: true,
+                arrows: true,
+                responsive: [
+                    {
+                        breakpoint: 1199,
+                        settings: {
+                            slidesToShow: 4
+                        }
+                    },
+                    {
+                        breakpoint: 992,
+                        settings: {
+                            slidesToShow: 3
+                        }
+                    },
+                    {
+                        breakpoint: 767,
+                        settings: {
+                            slidesToShow: 2
+                        }
+                    }
+                ]
+            });
+        }
+
+        // 構建輪播內容
+        itemList.forEach(function (item) {
+            // 卡片主體
+            const card = $("<div>", {class: "card"});
+            // 圖片連結
+            const link = $("<a>", {class: "img-card", href: "/TwoClothing/Itemfront/itemlist?goto=" + item.itemId});
+            const img = $("<img>", {
+                src: "/TwoClothing/ReadItemIMG/item?id=" + item.itemId + "&position=1",
+                alt: item.itemName
+            });
+            link.append(img);
+            // 卡片內容
+            const cardContent = $("<div>", {class: "card-content"});
+            const contentLink = $("<a>", {href: "/TwoClothing/Itemfront/itemlist?goto=" + item.itemId});
+            const itemName = $("<h4>", {class: "itemName"}).text(item.itemName);
+            const itemPrice = $("<p>", {class: "itemPrice"}).text(formatAsCurrency(item.price));
+            contentLink.append(itemName, itemPrice);
+            cardContent.append(contentLink);
+            // 底部按鈕
+            const cardReadMore = $("<div>", {class: "card-read-more"});
+            const buttonLink = $("<a>", {href: "/TwoClothing/Itemfront/itemlist?goto=" + item.itemId});
+            const shopNowButton = $("<button>", {class: "shopNow"}).text("Shop now");
+            buttonLink.append(shopNowButton);
+            cardReadMore.append(buttonLink);
+            // 合體
+            card.append(link, cardContent, cardReadMore);
+            // 添加
+            itemCarousel.slick("slickAdd", card);
+        })
+    }
+
+    function createBidItemCarousel(bidItemList) {
+        const bidItemCarousel = $(".bidItemCarousel");
+        // 如果輪播已經初始化，移除所有輪播
+        if (bidItemCarousel.hasClass('slick-initialized')) {
+            bidItemCarousel.slick('slickRemove', null, null, true);
+        } else {
+            bidItemCarousel.slick({
+                infinite: true,
+                speed: 600,
+                slidesToShow: 5,
+                autoplay: true,
+                autoplaySpeed: 2000,
+                adaptiveHeight: true,
+                arrows: true,
+                responsive: [
+                    {
+                        breakpoint: 1199,
+                        settings: {
+                            slidesToShow: 4
+                        }
+                    },
+                    {
+                        breakpoint: 992,
+                        settings: {
+                            slidesToShow: 3
+                        }
+                    },
+                    {
+                        breakpoint: 767,
+                        settings: {
+                            slidesToShow: 2
+                        }
+                    }
+                ]
+            });
+        }
+
+        // 構建輪播內容
+        bidItemList.forEach(function (bidItem) {
+            // 卡片主體
+            const card = $("<div>", {class: "card bidItemCard"});
+            // 節標日期
+            const endDate = $("<div>", {class: "endDate"}).text(formatMillisToString(bidItem.endTime));
+            // 圖片連結
+            const link = $("<a>", {
+                class: "img-card",
+                href: "/TwoClothing/front/biditem/anyone/detail?bidItemId=" + bidItem.bidItemId
+            });
+            const img = $("<img>", {
+                src: "/TwoClothing/ReadItemIMG/biditem?id=" + bidItem.bidItemId + "&position=1",
+                alt: bidItem.itemName
+            });
+            link.append(img);
+            // 卡片內容
+            const cardContent = $("<div>", {class: "card-content"});
+            const contentLink = $("<a>", {href: "/TwoClothing/front/biditem/anyone/detail?bidItemId=" + bidItem.bidItemId});
+            const itemName = $("<h4>", {class: "itemName"}).text(bidItem.bidName);
+            const currentBid = $("<p>", {class: "currentBid"}).text(bidItem.bidAmountType);
+            const bidAmount = $("<span>", {class: "bidAmount"}).text(formatAsCurrency(bidItem.currentBid));
+            currentBid.append(bidAmount);
+            const countDown = $("<div>", {class: "countDown"}).text(bidItem.endTime).attr("data-end-time", bidItem.endTime);
+            contentLink.append(itemName, currentBid, countDown);
+            cardContent.append(contentLink);
+            // 底部按鈕
+            const cardReadMore = $("<div>", {class: "card-read-more"});
+            const buttonLink = $("<a>", {href: "/TwoClothing/front/biditem/anyone/detail?bidItemId=" + bidItem.bidItemId});
+            const shopNowButton = $("<button>", {class: "shopNow"}).text("我要出價");
+            buttonLink.append(shopNowButton);
+            cardReadMore.append(buttonLink);
+            // 合體
+            card.append(endDate, link, cardContent, cardReadMore);
+            // 添加
+            bidItemCarousel.slick("slickAdd", card);
+        })
+
+        // 倒數計時
+        updateCountdowns();
+        setInterval(updateCountdowns, 1000);
+    }
+
+    // 結束時間倒數計時
+    function updateCountdowns() {
+        $('.countDown').each(function () {
+            let endTime = $(this).data('endTime');
+            let now = new Date();
+            let timeLeft = endTime - now;
+
+            if (timeLeft > 0) {
+                let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                let countdownText = days + "天" + hours + "時" + minutes + "分" + seconds + "秒结束";
+                $(this).text(countdownText);
+            } else {
+                $(this).text('競標已結束');
+            }
+        });
+    }
+
+    // 金額格式化
+    function formatAsCurrency(num) {
+        return '$' + num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // 毫秒數格式化 mm/dd結標
+    function formatMillisToString(milliseconds) {
+        let date = new Date(milliseconds);
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+        let paddedMonth = month < 10 ? '0' + month : month;
+        let paddedDay = day < 10 ? '0' + day : day;
+        return paddedMonth + '/' + paddedDay + '結標';
+    }
 </script>
+
 
 </body>
 </html>

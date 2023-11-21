@@ -178,7 +178,20 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
             bidOrder.setAmount(Integer.parseInt(bidAmount));
             bidOrder.setOrderStatus(0);
             bidItemService.addBidOrder(bidOrder);
-            // TODO 發送訂單成立通知(通知買賣雙方)
+            // 發送訂單成立通知(通知買賣雙方)
+            String imageLink = "/images/Mainicon.png";
+            Notice notice3 = new Notice();
+            // 買方
+            notice3.setType("競標訂單通知");
+            notice3.setHead("訂單已成立");
+            notice3.setContent("請完成訂單付款");
+            notice3.setLink("/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=" + mbrId);
+            notice3.setImageLink(imageLink);
+            bidItemService.addNotice(notice3, mbrId);
+            // 賣方
+            notice3.setContent("等待買家付款");
+            notice3.setLink("/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=" + bidItemMbrId);
+            bidItemService.addNotice(notice3,bidItemMbrId);
 
             // 傳送資料Ajax
             out.print("3");

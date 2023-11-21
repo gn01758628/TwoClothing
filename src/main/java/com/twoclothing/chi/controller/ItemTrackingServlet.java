@@ -45,14 +45,6 @@ public class ItemTrackingServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		String url = "";
-		
-//		if (action == null) {
-//			HttpSession session = req.getSession();
-//			String location = (String) session.getAttribute("location");
-//			System.out.println(location);
-//			RequestDispatcher successView = req.getRequestDispatcher(location);
-//			successView.forward(req, res);
-//		}
 
 		switch (action) {
 		case "getAllByMbrId":

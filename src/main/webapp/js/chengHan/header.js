@@ -19,25 +19,24 @@ $(document).ready(function () {
     })
 
     // 視窗滾動決定導覽列收縮
-    let prevScrollPos = $(window).scrollTop();
-    const scrollPositionThreshold = 50;
-    let isNavCollapsed = false;
-
-    $(window).scroll(function () {
-        let currentScrollPos = $(window).scrollTop();
-        if (prevScrollPos < currentScrollPos && currentScrollPos > scrollPositionThreshold) {
-            if (!isNavCollapsed) {
-                isNavCollapsed = true;
-                $("header .needSlide").slideUp(300);
-            }
-        } else {
-            if (isNavCollapsed) {
-                isNavCollapsed = false;
-                $("header .needSlide").slideDown(300);
-            }
-        }
-        prevScrollPos = currentScrollPos;
-    });
+    // let prevScrollPos = $(window).scrollTop();
+    // let isNavCollapsed = false;
+    //
+    // $(window).scroll(function () {
+    //     let currentScrollPos = $(window).scrollTop();
+    //     if (prevScrollPos < currentScrollPos) {
+    //         if (!isNavCollapsed) {
+    //             isNavCollapsed = true;
+    //             $("header .needSlide").slideUp(300);
+    //         }
+    //     } else {
+    //         if (isNavCollapsed) {
+    //             isNavCollapsed = false;
+    //             $("header .needSlide").slideDown(300);
+    //         }
+    //     }
+    //     prevScrollPos = currentScrollPos;
+    // });
 
     // 確保兩個搜尋框的輸入永遠相同
     const searchInput = $(".searchInput");
@@ -98,7 +97,7 @@ function confirmLogin() {
     const memberDrop = $(".HeadMemberDrop");
     // 判斷有沒有登入,動態改變會員下拉式選單的內容
     // jQuery Ajax Get request
-    $.post('/TwoClothing/headerHelper/loginValidate', function (data) {
+    $.get('/TwoClothing/headerHelper/loginValidate', function (data) {
         if (!data.isLogin) {
             // 沒有登入
             memberDrop.remove();
@@ -141,7 +140,7 @@ function alreadyLogin(mbrId) {
     // 即時通相關節點
     const messageNum_Span = $(".messageNum");
     // Ajax請求會員相關數據
-    $.post("/TwoClothing/headerHelper/search", function (data) {
+    $.get("/TwoClothing/headerHelper/search", function (data) {
         // 購物車數量
         if (data.carNum > 0) {
             carNum_Span.text(data.carNum);
@@ -168,14 +167,10 @@ function alreadyLogin(mbrId) {
         }
     });
     // 更新賣東西選項的連結
-    const beSeller_A = $(".beSeller");
-    beSeller_A.removeAttr("href");
+    $(".beSeller").removeAttr("href");
     const beSellerDrop = $(".beSellerDrop");
-    const sellItem_A = $(".sellItem");
-    const sellBidItem_A = $(".sellBidItem");
-    // TODO 新增一般商品的連結
-    notice_A.attr("href", "#");
-    sellBidItem_A.attr("href", "/TwoClothing/front/biditem/personal/add.check");
+    // 更新系統通知的連結
+    $(".noticeList").attr("href", "/TwoClothing/front_end/notice/noticeList.html");
 }
 
 // 移除緩存資料
@@ -197,6 +192,9 @@ function notLogin() {
     beSeller_A.attr("href", "/TwoClothing/front_end/members/registerLogin.jsp");
     const beSellerDrop = $(".beSellerDrop");
     beSellerDrop.hide();
+    // 更新系統通知的連結
+    $(".noticeList").attr("href", "/TwoClothing/front_end/members/registerLogin.jsp");
+
 }
 
 // 數字轉 $xxx,xxx,xxx
