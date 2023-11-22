@@ -35,10 +35,11 @@
             width: 100%;
             height: 100%;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             flex-direction: column;
             background-color: rgb(224, 224, 224);
+            min-height: calc(100vh - 309px);
 
         }
         main.main h3{
@@ -60,6 +61,8 @@
             flex-direction: column;
             align-items: center;
             padding: 15px;
+            position: relative;
+            min-height: calc(100vh - 409px);
         }
         th,td{
             text-align: center;
@@ -145,6 +148,8 @@
         }
         td.tag_a{
         	width:125px;
+        	position: absolute;
+    		bottom: 10px;
         }
         a.updateOther{
 		    background-color: #f9edf2;

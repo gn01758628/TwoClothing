@@ -36,7 +36,7 @@
             align-items: center;
             flex-direction: column;
             background-color: whitesmoke;
-            min-height:450px;
+            min-height: calc(100vh - 309px);
         }
          main.main_container h3{
          	margin:30px;

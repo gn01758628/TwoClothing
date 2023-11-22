@@ -31,7 +31,7 @@
         }
         main.main_container{
             border: 1px solid black;
-            min-height: 450px;
+            min-height: calc(100vh - 309px);
 /*             margin: 50px; */
             display: flex;
             align-items: center;
