@@ -34,10 +34,14 @@ public interface ItemDAO {
 	
 	 Integer getPointByMbrId(Integer mbrId);
 	 
+	 Integer getSellScoreByMbrId(Integer mbrId);
+	 
 	 Integer getbalanceByMbrId(Integer mbrId);
 	 
 	 Integer getMbrIdById(Integer itemId);
 	 
 	 List<Item> getItemByMbrIdAndStatus(Integer mbrId);
+	 
+	 List<Integer> getItemByMbrId(Integer mbrId);
 
 }

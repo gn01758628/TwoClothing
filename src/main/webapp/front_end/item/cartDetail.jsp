@@ -43,13 +43,14 @@
 			display:flex;
 			flex-direction: row;
 		    justify-content: center;
-		    max-width: 1280px;
+/* 		    max-width: 1280px; */
 /* 		    width: 1300px; */
 		    border: 1px solid;
+		    min-height:calc(100% - 309px);
 		}
 		
 		div.leftMain {
-			height: 477px;
+/* 			height: 477px; */
 			max-height: 100%;
 			overflow: auto;
 			padding: 10px 10px;
@@ -180,10 +181,11 @@
 			border-bottom: 1px solid gray;
 			width: 100%;
 			padding-bottom: 20px;
+			color:#561729;
 		}
 		
 		div.rightMain div.rightInner>div {
-			border: 1px solid black;
+			border: 1px solid #561729;
 			font-size: 16px;
 			text-align: center;
 			margin: 20px 0px;
@@ -193,6 +195,7 @@
 		    align-items: center;
 		    justify-content: center;
 		    height:35px;
+		    color:#561729;
 		}
 		
 		div.rightMain div.rightInner button#countBtn {
@@ -354,25 +357,52 @@
 		</div>
 	</div>
 	<div class="footerHTML"></div>
-<!--bootstrap5 js-->
-<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
-<!--jQuery-->
-<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
-<!--Sweet Alert-->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
-<!--JS loader-->
-<script>
-    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
-        // 保證headerHTML加載完才載入header.js
-        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
-    });
-
-    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
-</script>
+	
+	<!--bootstrap5 js-->
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+	<!--jQuery-->
+	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+	<!--Sweet Alert-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+	<!--JS loader-->
+	<script>
+	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+	        // 保證headerHTML加載完才載入header.js
+	        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+	    });
+	
+	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	</script>
+	<script>
+		//帳號異常的賣家商品不得被選取
+		$(document).ready(function() {
+			var itemIdListEnableBuy = "${itemIdListEnableBuy}";
+        	var arrayData = JSON.parse(itemIdListEnableBuy);
+        	var hasShownAlert = false;
+	        $(".checkboxLeft").each(function() {
+	            var itemId = parseInt($(this).val());
+	        	console.log(typeof itemId);
+	            if (arrayData.includes(itemId)) {
+	                $(this).prop("checked", false);
+	                $(this).prop("disabled", true);
+	                if (!hasShownAlert) {
+	                	Swal.fire({
+	                		  icon: "error",
+	                		  title: "Oops...",
+	                		  text: "賣家帳號異常！該商品不可購買"	                		
+	                		});
+	                    hasShownAlert = true; 
+	                }
+	            }
+	        });
+	        
+		})	
+	</script>
 		
 	<script>
 		$(document).ready(function() {
+   			
 			$("td[name='size']").each(function() {
 
 				let status = $(this).text();
@@ -457,9 +487,7 @@
 		  	let $currentDetailBox = $(this).closest(".detailBox");
 		  	let itemId = $currentDetailBox.find(".item-id").data("item-id");
 		 	let quantity = $(this).val();
-			console.log("itemId:"+itemId);
-			console.log("quantity:"+quantity);
-			let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=" + itemId + "&updateCart=updateCart&mbrId=2&quantity="+quantity+"";
+			let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=" + itemId + "&updateCart=updateCart&quantity=" + quantity + "";
 		    console.log(url);
 		    fetch(url)
 		    .then(function(response){

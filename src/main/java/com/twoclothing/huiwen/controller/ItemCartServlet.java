@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -91,7 +92,8 @@ public class ItemCartServlet extends HttpServlet {
 			List<Item> itemList = new ArrayList<>();
 			//抓商品的數量
 			List<String> quantities = new ArrayList<>();
-			
+			Map<Integer, Integer> map = new HashMap<>();//賣家點數判斷用
+
 			HttpSession session = req.getSession();
 			String mbrIdStr = String.valueOf(session.getAttribute("mbrId"));
 			
@@ -109,12 +111,26 @@ public class ItemCartServlet extends HttpServlet {
 					quantities.add(quantity);
 					Item item = itemService.getItemByItemId(Integer.valueOf(itemId));
 					itemList.add(item);
+//					取得商品的賣家與賣家分數						
+					Integer mbrIdSell = item.getMbrId();
+					if (!map.containsKey(mbrIdSell)) {
+						Integer score = itemService.getSellScoreByMbrId(mbrIdSell);
+						map.put(mbrIdSell, score);
+					}
 				}
-
 			}catch(Exception e) {
 				e.printStackTrace();
 			}finally {
 				jedis.close();
+			}
+			
+			//若賣家權限分超過即不可購買該商品
+			List<Integer> itemIdListEnableBuy = new ArrayList<>();//不可買的所有itemId
+			for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+			    if (entry.getValue() == 0) {
+			    	List<Integer> itemIdList = itemService.getItemByMbrId(entry.getKey());
+			    	itemIdListEnableBuy.addAll(itemIdList);
+			    }
 			}
 			
 			//取得會員擁有的點數
@@ -150,7 +166,7 @@ public class ItemCartServlet extends HttpServlet {
 			req.setAttribute("mbrPoint", mbrPoint);
 			req.setAttribute("MembersCouponList", membersCouponList);
 			req.setAttribute("couponList", couponList);
-			
+			req.setAttribute("itemIdListEnableBuy", itemIdListEnableBuy);
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/cartDetail.jsp");
 			dispatcher.forward(req, res);
 			return;
@@ -220,17 +236,19 @@ public class ItemCartServlet extends HttpServlet {
 			}finally {
 				jedis.close();	
 			}
-			
+		
 			//取得會員物流資訊
 			List<ShipSetting> shipSettingList = itemService.getSettingByMbrId(Integer.valueOf(mbrId));
-			ShipSetting shipSetting = shipSettingList.get(0);
-			
+			ShipSetting shipSetting = null;
+			if (!shipSettingList.isEmpty()) {
+				shipSetting = shipSettingList.get(0);
+			}
 			//取得會員錢包餘額
 			Integer balanceEableUse = itemService.getMbrBalanceByMbrId(Integer.valueOf(mbrId));
 			
 			//取得折扣金額
 			Integer cartCount = Integer.valueOf(req.getParameter("cartCount"));
-			
+
 			req.setAttribute("itemList", itemList);
 			req.setAttribute("quantities", quantities);
 			req.setAttribute("shipSetting", shipSetting);

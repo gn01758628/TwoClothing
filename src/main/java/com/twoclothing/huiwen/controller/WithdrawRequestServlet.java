@@ -102,7 +102,7 @@ public class WithdrawRequestServlet extends HttpServlet {
 //			successView.forward(req, res);
 //		}
 
-		// 新增虛擬錢包異動資訊
+		// 新增虛擬錢包異動資訊 新增一筆提款申請
 		if ("AddOne".equals(choice)) {
 			WithdrawRequest withdrawRequest = new WithdrawRequest();
 			//從登入取會員帳號
@@ -165,15 +165,15 @@ public class WithdrawRequestServlet extends HttpServlet {
 		// 後台查詢
 		
 		// 查全部ByStatus=0(後台員工用)
-		if ("getAll".equals(choice)) {
-			List<WithdrawRequest> withdrawRequestList = withdrawSvc.getByStatus();
-			req.setAttribute("WRList", withdrawRequestList);
-
-			String url = "/back_end/withdrawRequest/listWithdrawBack.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url);
-			successView.forward(req, res);
-
-		}
+//		if ("getAll".equals(choice)) {
+//			List<WithdrawRequest> withdrawRequestList = withdrawSvc.getByStatus();
+//			req.setAttribute("WRList", withdrawRequestList);
+//
+//			String url = "/back_end/withdrawRequest/listWithdrawBack.jsp";
+//			RequestDispatcher successView = req.getRequestDispatcher(url);
+//			successView.forward(req, res);
+//
+//		}
 		
 		//查申請時間 有空再做這功能
 		if ("searchReqDate".equals(choice)) {
@@ -187,16 +187,16 @@ public class WithdrawRequestServlet extends HttpServlet {
 		}
 
 		// 查申請狀態
-		if ("searchReqStatus".equals(choice)) {
-			Integer reqStatus = Integer.parseInt(req.getParameter("reqStatus"));
-			List<WithdrawRequest> withdrawRequestList = withdrawSvc.getAllWRByReqStatus(reqStatus);
-			req.setAttribute("WRList", withdrawRequestList);
-
-			String url = "/back_end/withdrawRequest/listWithdrawBack.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url);
-			successView.forward(req, res);
-
-		}
+//		if ("searchReqStatus".equals(choice)) {
+//			Integer reqStatus = Integer.parseInt(req.getParameter("reqStatus"));
+//			List<WithdrawRequest> withdrawRequestList = withdrawSvc.getAllWRByReqStatus(reqStatus);
+//			req.setAttribute("WRList", withdrawRequestList);
+//
+//			String url = "/back_end/withdrawRequest/listWithdrawBack.jsp";
+//			RequestDispatcher successView = req.getRequestDispatcher(url);
+//			successView.forward(req, res);
+//
+//		}
 		// 修改狀態
 //		if ("getStatusList".equals(choice)) {
 //			System.out.println("拿到getStatusList");
@@ -211,76 +211,76 @@ public class WithdrawRequestServlet extends HttpServlet {
 //
 //		}
 		// 修改狀態
-		if ("UpdateStatus".equals(choice)) {
-			
-			int index = 0;
-
-			List<WithdrawRequest> withdrawRequests = new ArrayList<>();
-
-			while (true) {
-			String wrIdStr = req.getParameter("wrId_" + index);
-			String reqStatusStr = req.getParameter("reqStatus_" + index);
-
-			if (wrIdStr == null || reqStatusStr == null) {
-				break;
-			}
-
-			try {
-				Integer wrId = Integer.valueOf(wrIdStr);
-
-	            Integer reqStatus = Integer.valueOf(reqStatusStr);
-	            WithdrawRequest withdrawRequest = withdrawSvc.getWRById(wrId);
-
-				
-				//修改會員balance金額，申請通過的才改
-	            if(reqStatus == 1) {
-	            	Integer withdrawAmount = withdrawRequest.getAmount();
-	    			HttpSession session = req.getSession();
-	    			Integer mbrId = (Integer) session.getAttribute("mbrId");
-	            	Integer balance = withdrawSvc.getBalanceByMbrId(mbrId);
-	            	Integer newAmount = balance - withdrawAmount;
-	            	
-	            	Members mem=memSvc.getByPrimaryKey(mbrId);
-	            	mem.setBalance(newAmount);
-	            	memSvc.updateMembers(mem);
-	            	
-	            }
-	            
-	            //更新申請狀態
-	            withdrawRequest.setWrId(wrId);
-	            withdrawRequest.setReqStatus(reqStatus);
-	            withdrawRequest.setEmpId(Integer.valueOf(1));// 後台取得
-	            withdrawRequest.setCheckDate(new Timestamp(System.currentTimeMillis()));// 後台時間
-	
-	            withdrawRequests.add(withdrawRequest);
-			} catch (NumberFormatException e) {    
-				e.printStackTrace();
-			}
-		        index++;
-		    }
-
-		    if (!withdrawRequests.isEmpty()) {
-		        // 批量更新
-		    	int updatedItems = withdrawSvc.updateWR(withdrawRequests);
-		    }
-		    
-		    //準備回應
-			res.setContentType("application/json; charset=UTF-8");
-    	    PrintWriter out = res.getWriter();
-    	    
-    	    String rsp = "";
-    	    
-    		res.setStatus(HttpServletResponse.SC_OK); // 設置響應狀態碼為200
-    		
-    		//validation
-    	    if (true) {
-        		rsp = "{\"message\": \"ok\"}";
-    	    } else {
-        		rsp = "{\"message\": \"out_of_e_wallet\"}";
-    	    }
-            out.print(rsp);
-            out.flush();
-        	return;
-		}
+//		if ("UpdateStatus".equals(choice)) {
+//			
+//			int index = 0;
+//
+//			List<WithdrawRequest> withdrawRequests = new ArrayList<>();
+//
+//			while (true) {
+//			String wrIdStr = req.getParameter("wrId_" + index);
+//			String reqStatusStr = req.getParameter("reqStatus_" + index);
+//
+//			if (wrIdStr == null || reqStatusStr == null) {
+//				break;
+//			}
+//
+//			try {
+//				Integer wrId = Integer.valueOf(wrIdStr);
+//
+//	            Integer reqStatus = Integer.valueOf(reqStatusStr);
+//	            WithdrawRequest withdrawRequest = withdrawSvc.getWRById(wrId);
+//
+//				
+//				//修改會員balance金額，申請通過的才改
+//	            if(reqStatus == 1) {
+//	            	Integer withdrawAmount = withdrawRequest.getAmount();
+//	    			HttpSession session = req.getSession();
+//	    			Integer mbrId = (Integer) session.getAttribute("mbrId");
+//	            	Integer balance = withdrawSvc.getBalanceByMbrId(mbrId);
+//	            	Integer newAmount = balance - withdrawAmount;
+//	            	
+//	            	Members mem=memSvc.getByPrimaryKey(mbrId);
+//	            	mem.setBalance(newAmount);
+//	            	memSvc.updateMembers(mem);
+//	            	
+//	            }
+//	            
+//	            //更新申請狀態
+//	            withdrawRequest.setWrId(wrId);
+//	            withdrawRequest.setReqStatus(reqStatus);
+//	            withdrawRequest.setEmpId(Integer.valueOf(1));// 後台取得
+//	            withdrawRequest.setCheckDate(new Timestamp(System.currentTimeMillis()));// 後台時間
+//	
+//	            withdrawRequests.add(withdrawRequest);
+//			} catch (NumberFormatException e) {    
+//				e.printStackTrace();
+//			}
+//		        index++;
+//		    }
+//
+//		    if (!withdrawRequests.isEmpty()) {
+//		        // 批量更新
+//		    	int updatedItems = withdrawSvc.updateWR(withdrawRequests);
+//		    }
+//		    
+//		    //準備回應
+//			res.setContentType("application/json; charset=UTF-8");
+//    	    PrintWriter out = res.getWriter();
+//    	    
+//    	    String rsp = "";
+//    	    
+//    		res.setStatus(HttpServletResponse.SC_OK); // 設置響應狀態碼為200
+//    		
+//    		//validation
+//    	    if (true) {
+//        		rsp = "{\"message\": \"ok\"}";
+//    	    } else {
+//        		rsp = "{\"message\": \"out_of_e_wallet\"}";
+//    	    }
+//            out.print(rsp);
+//            out.flush();
+//        	return;
+//		}
 	}
 }

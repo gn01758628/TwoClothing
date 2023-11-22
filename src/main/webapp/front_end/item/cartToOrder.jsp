@@ -284,7 +284,6 @@
    		var selectedOption='';
    		
    		$(document).ready(function() {
-   			
    			//顯示尺寸
 			$(".trtd .size").each(function () {
 				let status = $(this).text();
@@ -361,7 +360,7 @@
 				   			Swal.fire({
 				   			  icon: "error",
 				   			  title: "Oops...",
-				   			  text: "錢包餘額不足！請重新選擇付款方式",
+				   			  text: "錢包餘額不足！請選擇其他付款方式",
 // 				   			  footer: '<a href="">去查看餘額</a>'
 				   			});
 				   							   			
