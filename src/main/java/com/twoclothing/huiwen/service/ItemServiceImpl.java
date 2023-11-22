@@ -19,7 +19,7 @@ import com.twoclothing.model.categorytags.CategoryTags;
 import com.twoclothing.model.categorytags.CategoryTagsDAO;
 import com.twoclothing.model.categorytags.CategoryTagsHibernateDAO;
 import com.twoclothing.model.coupon.Coupon;
-import com.twoclothing.model.coupon.CouponDAO;
+import com.twoclothing.model.coupon.CouponJeidsDAO;
 import com.twoclothing.model.members.Members;
 import com.twoclothing.model.members.MembersDAO;
 import com.twoclothing.model.members.MembersHibernateDAO;

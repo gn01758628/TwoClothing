@@ -1,4 +1,4 @@
-package com.twoclothing.chijung.controller.back_end;
+package com.twoclothing.chijung.controller.front_end;
 
 import java.io.BufferedReader;
 import java.io.IOException;

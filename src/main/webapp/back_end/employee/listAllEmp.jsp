@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>所有員工權限資料 - listAllempmis.jsp</title>
+<title>所有員工資料</title>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>                                    <!-- ●●js  for jquery datatables 用 -->
 <script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              <!-- ●●js  for jquery datatables 用 -->
@@ -30,7 +30,7 @@
 		    },
 		    "columnDefs":[
 		    	{
-		    		targets:[6], orderable:false
+		    		targets:[6,8], orderable:false
 		    	}
 		    ]
 		});
