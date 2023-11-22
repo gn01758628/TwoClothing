@@ -1,54 +1,70 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="BIG5"%>
+<%--suppress ALL --%>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.*"%>
-
-<!DOCTYPE html>
-<html >
+<!doctype html>
+<html lang="zh-hant" xmlns="http://www.w3.org/1999/html">
 <head>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>·|­û¤¤¤ß-±b¤á¸ê°T www.bootstrapmb.com</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ç‰©æµåˆ—è¡¨</title>
+    <!--é ç±¤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--ä½ å€‘è‡ªå·±çš„css-->
+    <!--ä¸æ˜¯å¤–éƒ¨æª”æ¡ˆä¹Ÿç„¡æ‰€è¬‚-->
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
 
-<style>
+    <!--å°è¦½åˆ—css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--é å°¾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
 
-</style>
 
 </head>
 <body>
-<div id="head">
+<div class="headerHTML"></div>
 
-<div class="menu">
-<ul>
-<li ><a href='${pageContext.request.contextPath}/index.jsp'>¦^­º­¶</a></li>
-<li class="menu_selected"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">­Ó¤H¸ê°T</a></li>
-<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">¶R®a­q³æ</a></li>
-<li><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">½æ®a­q³æ</a></li>
-</ul>
-</div>
-</div>
 <div id="hy_con">
 <div id="con_lf">
-<h2>ª«¬y³]©w</h2>
+<br>
+<h2>å¸³æˆ¶ç®¡ç†</h2>
 <ul>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">­Ó¤H¸ê°T</a></li>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">ª«¬y³]©w</a></li>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">å€‹äººè³‡è¨Š</a></li>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">ç‰©æµè¨­å®š</a></li>
+</ul> 
+
+<h2>è¨‚å–®ç®¡ç†</h2>
+<ul>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">è²·å®¶è¨‚å–®</a></li>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">è³£å®¶è¨‚å–®</a></li>
 </ul>
 </div>
 <div id="con_rh">
 <div class="con_rh_con"><br></br>
-<p class="rh_title">ª«¬y³]©w</p>
+<p class="rh_title">ç‰©æµè¨­å®š</p>
 <table id="myTable"class="rh_tab2">
 <thead>
     <tr>
-        <th width="25%">¦¬¥ó¤H©m¦W</th>
-        <th>¦¬¥ó¤H¤â¾÷</th>
-        <th>¦¬¥ó¤H¦a§}</th>
-        <th>­×§ï</th>
-        <th>§R°£</th>
+        <th width="25%">æ”¶ä»¶äººå§“å</th>
+        <th>æ”¶ä»¶äººæ‰‹æ©Ÿ</th>
+        <th>æ”¶ä»¶äººåœ°å€</th>
+        <th>ä¿®æ”¹</th>
+        <th>åˆªé™¤</th>
     </tr>
 </thead>
 <c:choose>
@@ -60,7 +76,7 @@
                 <td width="25%">${ShipSetting.receiveAddress}</td>
                 <td width="25%">
                     <form method="post" action="<%=request.getContextPath()%>/shipsetting/Shipsetting.do" style="margin-bottom: 0px;">
-                        <input type="submit" value="­×§ï">
+                        <input type="submit" value="ä¿®æ”¹">
                         <input type="hidden" name="shipId"  value="${ShipSetting.shipId}">
                         <input type="hidden" name="mbrId"  value="${ShipSetting.mbrId}">
                         <input type="hidden" name="action" value="getOne_For_Update">
@@ -68,7 +84,7 @@
                 </td>
                 <td width="25%">
                     <form method="post" action="<%=request.getContextPath()%>/shipsetting/Shipsetting.do" style="margin-bottom: 0px;">
-                        <input type="submit" value="§R°£">
+                        <input type="submit" value="åˆªé™¤">
                         <input type="hidden" name="mbrId"  value="${ShipSetting.mbrId}">
                         <input type="hidden" name="shipId"  value="${ShipSetting.shipId}">
                         <input type="hidden" name="action" value="delete">
@@ -81,7 +97,7 @@
 </c:choose>
 </table>
     <form method="post" action="<%=request.getContextPath()%>/front_end/shipsetting/addShipSetting.jsp" style="margin-bottom: 0px;">
-         <input type="submit" value="·s¼W">
+         <input type="submit" value="æ–°å¢">
          <input type="hidden" name="action" value="insert">
      </form>
 
@@ -90,8 +106,25 @@
 </div>
 
 <div class="clear"></div>
-<div id="footer">
+<div id="footer"></div>
 
-</div>
+
+<div class="footerHTML"></div>
+<!--bootstrap5 js-->
+<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+<!--jQuery-->
+<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
+<script>
+    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+        // ä¿è­‰headerHTMLåŠ è¼‰å®Œæ‰è¼‰å…¥header.js
+        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+    });
+
+    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+</script>
 </body>
 </html>

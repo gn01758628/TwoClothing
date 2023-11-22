@@ -49,6 +49,19 @@ public class BidOrderServlet extends HttpServlet {
 		ShipSettingServiceImpl shipSettingServiceImpl = new ShipSettingServiceImpl();
 		BalanceHistoryServiceImpl balanceHistoryServiceImpl = new BalanceHistoryServiceImpl();
 		BidItemServiceImpl bidItemServiceImpl = new BidItemServiceImpl();
+		
+		
+		
+        if ("getAll".equals(action)) { 
+            
+            List<BidOrder> bidOrder = bidOrderServiceImpl.getAll();
+            
+        	
+            req.setAttribute("BidOrder", bidOrder); 
+            String url = "/back_end/bidorder/listAllBidOrder.jsp";
+            RequestDispatcher successView = req.getRequestDispatcher(url); 
+            successView.forward(req, res);
+        }
 
 		/*********************** 新增訂單 *************************/
 		/*********************** 新增訂單 *************************/
@@ -120,7 +133,7 @@ public class BidOrderServlet extends HttpServlet {
 			}
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("/back_end/bidorder/select_page.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back_end/bidorder/listAllBidOrder.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
@@ -133,7 +146,7 @@ public class BidOrderServlet extends HttpServlet {
 			}
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("/back_end/bidorder/select_page.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back_end/bidorder/listAllBidOrder.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
@@ -145,7 +158,7 @@ public class BidOrderServlet extends HttpServlet {
 				errorMsgs.put("bidOrderId", "查無資料");
 			}
 			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("/back_end/bidorder/select_page.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back_end/bidorder/listAllBidOrder.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
@@ -492,12 +505,16 @@ public class BidOrderServlet extends HttpServlet {
 					"&receivePhone=" + receivePhone + 
 					"&receiveAddress=" + receiveAddress;
 			
+			
+			Members members = membersServiceImpl.getByPrimaryKey(buyMbrId);
 ////////////////////////////////////////////////////////////////////////////////////			
 			
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
 			HttpSession session = req.getSession();
 			session.setAttribute("shipSetting", shipSetting);
+			
+			session.setAttribute("user", members);
 
 			
 			
@@ -519,23 +536,14 @@ public class BidOrderServlet extends HttpServlet {
 			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
+System.out.println("aaaa");
 
-
-			
 			Integer amount = Integer.valueOf(req.getParameter("amount"));
 			Integer bidOrderId = Integer.valueOf(req.getParameter("bidOrderId"));
 			Integer sellMbrId = Integer.valueOf(req.getParameter("sellMbrId"));
 			Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
 			
 
-			
-			
-			
-			System.out.println(amount);
-			System.out.println(bidOrderId);
-			System.out.println(buyMbrId);
-			
-			
 			String payTypeParam = req.getParameter("payType").trim();
 			Integer payType = null;
 
@@ -614,7 +622,6 @@ public class BidOrderServlet extends HttpServlet {
 				balance= balance-amount;
 				members.setBalance(balance);
 				
-				System.out.println(balance);
 				membersServiceImpl.updateMembers(members);
 				HttpSession session = req.getSession();
 				session.setAttribute("user", members);
@@ -1282,6 +1289,25 @@ public class BidOrderServlet extends HttpServlet {
 			req.setAttribute("BidOrder", bidOrder);
 			String url = "/front_end/bidorder/sellBidorder4.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
+			
+			
+		}
+		if ("bidOrderBidItem".equals(action)) {
+			/*************************** 1.接收請求參數 ***************************************/
+			
+			Integer bidOrderId = Integer.valueOf(req.getParameter("bidOrderId"));
+			Integer bidItemId = Integer.valueOf(req.getParameter("bidItemId"));
+			
+			/*************************** 2.開始查詢資料 ****************************************/
+			
+			BidOrder bidOrder = bidOrderServiceImpl.getByPrimaryKey(bidOrderId);
+			BidItem bidItem = bidItemServiceImpl.getBidItemByBidItemId(bidItemId);
+			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+			req.setAttribute("BidItem", bidItem);
+			req.setAttribute("BidOrder", bidOrder);
+			String url = "/front_end/bidorder/BidOrderBidItem.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); 
 			successView.forward(req, res);
 			
 			

@@ -63,7 +63,7 @@ h1 {
 </head>
 <body>
 <h1 style="color: red;">會員列表</h1>
-<a href='${pageContext.request.contextPath}//members/Members.do?action=getAll'>後台會員列表()</a>
+<a href='${pageContext.request.contextPath}/members/Members.do?action=getAll'>後台會員列表</a>
     <table id="myTable">
         <thead>
 	  <tr>

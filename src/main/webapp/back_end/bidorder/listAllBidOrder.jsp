@@ -1,91 +1,101 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*"%>
-<%@ page import="com.twoclothing.gordon.service.*"%>
-<%@ page import="com.twoclothing.model.abid.bidorder.*"%>
-<%-- ¦¹­¶½m²ß±Ä¥Î EL ªº¼gªk¨ú­È --%>
 
-<%
-BidOrderServiceImpl bidOrderServiceImpl = new BidOrderServiceImpl();
-    List<BidOrder> list = bidOrderServiceImpl.getAll();
-    pageContext.setAttribute("list",list);
-%>
-
-
+<!DOCTYPE html>
 <html>
 <head>
-<title>©Ò¦³­û¤u¸ê®Æ - listAllMembers.jsp</title>
+<meta charset="UTF-8">
+<title>è¨‚å–®</title>
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css" />
+<style type="text/css">
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
 
-<style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
+h1 {
     color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
+}
 
-<style>
-  table {
-	width: 800px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
-  }
-  table, th, td {
-    border: 1px solid #CCCCFF;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  }
+#myTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#myTable th, #myTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#myTable th {
+    background-color: #f2f2f2;
+}
+
+#myTable tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* DataTables styling */
+.dataTables_wrapper {
+    margin-top: 20px;
+}
+
+.dataTables_filter label {
+    font-weight: normal;
+}
+
+.dataTables_length label {
+    font-weight: normal;
+}
 </style>
 
 </head>
-<body bgcolor='white'>
+<body>
+	<a href='${pageContext.request.contextPath}/bidorder/BidOrder.do?action=getAll'>å¾Œå°è¨‚å–®åˆ—è¡¨</a>
 
-<h4>¦¹­¶½m²ß±Ä¥Î EL ªº¼gªk¨ú­È:</h4>
-<table id="table-1">
-	<tr><td>
-		 <h3>Äv¼Ğ - listAllBidOrderjsp</h3>
-		 <h4><a href="<%=request.getContextPath()%>/back_end/bidorder/select_page.jsp"><img src="images/login2.png" width="100" height="102" border="0">¦^­º­¶</a></h4>
-	</td></tr>
-</table>
+    <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" >
+        <b>è¼¸å…¥è¨‚å–®ç·¨è™Ÿ (å¦‚1):</b>
+        <input type="text" name="bidOrderId" value="${param.bidOrderId}"><font color=red>${errorMsgs.bidOrderId}</font>
+        <input type="hidden" name="action" value="getOne_For_Display">
+        <input type="submit" value="é€å‡º">
+    </FORM>
 
-<table>
-	<tr>
-		<th>Äv¼Ğ°Ó«~­q³æ½s¸¹</th>
-		<th>Äv¼Ğ°Ó«~½s¸¹</th>
-		<th>¶R®a·|­û½s¸¹</th>
-		<th>½æ®a·|­û½s¸¹</th>
-		<th>¶R®aµû»ù¬P¼Æ</th>
-		<th>¶R®aµû»ù¤º®e</th>
-		<th>½æ®aµû»ù¬P¼Æ</th>
-		<th>½æ®aµû»ù¤º®e</th>
-		<th>­q³æ¤é´Á</th>
-		<th>¥I´Ú¤è¦¡</th>
-		<th>¥I´Ú¸ê®Æ</th>
-		<th>­q³æª÷ÃB</th>
-		<th>­q³æª¬ºA</th>
-		<th>¦¬¥ó¦a§}</th>
-		<th>¦¬¥ó¤H©m¦W</th>
-		<th>¦¬¥ó¤H¤â¾÷</th>
-		<th>³Æµù</th>
-	</tr>
-	
+<h1 style="color: red;">å…¨éƒ¨è¨‚å–®</h1>
+    <table id="myTable">
+        <thead>
+	  <tr>
+	    <th>ç«¶æ¨™å•†å“è¨‚å–®ç·¨è™Ÿ</th>
+		<th>ç«¶æ¨™å•†å“ç·¨è™Ÿ</th>
+		<th>è²·å®¶æœƒå“¡ç·¨è™Ÿ</th>
+		<th>è³£å®¶æœƒå“¡ç·¨è™Ÿ</th>
+		<th>è²·å®¶è©•åƒ¹æ˜Ÿæ•¸</th>
+		<th>è²·å®¶è©•åƒ¹å…§å®¹</th>
+		<th>è³£å®¶è©•åƒ¹æ˜Ÿæ•¸</th>
+		<th>è³£å®¶è©•åƒ¹å…§å®¹</th>
+		<th>è¨‚å–®æ—¥æœŸ</th>
+		<th>ä»˜æ¬¾æ–¹å¼</th>
+		<th>ä»˜æ¬¾è³‡æ–™</th>
+		<th>è¨‚å–®é‡‘é¡</th>
+		<th>è¨‚å–®ç‹€æ…‹</th>
+		<th>æ”¶ä»¶åœ°å€</th>
+		<th>æ”¶ä»¶äººå§“å</th>
+		<th>æ”¶ä»¶äººæ‰‹æ©Ÿ</th>
+		<th>å‚™è¨»</th>
+		<th>ä¿®æ”¹</th>
+		<th>åˆªé™¤</th>
+	  </tr>
+	 </thead>
 <c:choose>
-    <c:when test="${not empty list}">	
-	<%@ include file="page1.file" %> 
-	<c:forEach var="BidOrder" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">>
-		
+    <c:when test="${not empty BidOrder}">	
+    
+	<c:forEach var="BidOrder" items="${BidOrder}" >
 		<tr>
 		<td>${BidOrder.bidOrderId}</td>
 		<td>${BidOrder.bidItemId}</td>
@@ -104,35 +114,47 @@ BidOrderServiceImpl bidOrderServiceImpl = new BidOrderServiceImpl();
 		<td>${BidOrder.receiveName}</td>
 		<td>${BidOrder.receivePhone}</td>
 		<td>${BidOrder.remarks}</td>
-			
-			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="­×§ï">
-			     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}">
-			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
-			</td>
-			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="§R°£">
-			     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}">
-			     <input type="hidden" name="action" value="delete"></FORM>
-			</td>
-			
+		<td>
+		  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
+		     <input type="submit" value="ä¿®æ”¹">
+		     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}">
+		     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
+		</td>
+		<td>
+		  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
+		     <input type="submit" value="åˆªé™¤">
+		     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}">
+		     <input type="hidden" name="action" value="delete"></FORM>
+		</td>	
+					
 		</tr>
+		 
 		
 	</c:forEach>
-	<%@ include file="page2.file" %>
 	 </c:when>
-    <c:otherwise>
-        <tr>
-            <td colspan="17">µL¸ê®Æ</td>
-        </tr>
-    </c:otherwise>
+  
 </c:choose>
 
 
 	
 </table>
+<script type="text/javascript"
+		src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#myTable').DataTable({
 
+				columnDefs: [
+        		    {
+        		        targets: -1,
+        		        className: 'dt-body-right'
+        		    }
+        		  ]
+			});
+
+		});
+	</script>
 </body>
 </html>

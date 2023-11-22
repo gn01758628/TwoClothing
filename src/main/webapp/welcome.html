@@ -176,7 +176,6 @@
         }
 
         /*競標的特別設定*/
-
         /*商品卡片*/
 
         /*購買按鈕*/
@@ -704,11 +703,12 @@
             const card = $("<div>", {class: "card bidItemCard"});
             // 節標日期
             const endDate = $("<div>", {class: "endDate"}).text(formatMillisToString(bidItem.endTime));
-            // 圖片連結
+            // 連結
             const link = $("<a>", {
                 class: "img-card",
                 href: "/TwoClothing/front/biditem/anyone/detail?bidItemId=" + bidItem.bidItemId
             });
+            // 圖片連結
             const img = $("<img>", {
                 src: "/TwoClothing/ReadItemIMG/biditem?id=" + bidItem.bidItemId + "&position=1",
                 alt: bidItem.itemName

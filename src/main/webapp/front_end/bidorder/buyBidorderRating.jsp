@@ -1,12 +1,34 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.*"%>
-<%@ include file="buyBidorderBanner.jsp"%>
-<!DOCTYPE html>
-<html>
+<%--suppress ALL --%>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!doctype html>
+<html lang="zh-hant" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>買家評價</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>訂單評價</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--你們自己的css-->
+
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
+
     <style>
     	
         body {
@@ -37,21 +59,49 @@
         select, textarea, input[type="file"] {
             margin-bottom: 10px;
         }
-        #imagePreview {
-		    max-width: 300px;
-		    margin: 10px auto; /* 將 margin 設為 auto，使其水平置中 */
-		    text-align: center; /* 文字居中 */
-		}
-		
-		
+	
     </style>
+	<!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
+		
+	
 </head>
 <body>
+<div class="headerHTML"></div>
+	<script
+		src="<%=request.getContextPath()%>/js/bootstrap5/bootstrap.bundle.min.js"></script>
+	<div id="hy_con">
+		<div id="con_lf">
+		<br><br>
+			<h2>買家競標商品訂單</h2>
+			<ul>
+				<li class="lf_li1"><a
+					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">待付款</a></li>
+				<li class="lf_li1"><a
+					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder1&buyMbrId=${user.mbrId}">未出貨</a></li>
+				<li class="lf_li1"><a
+					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder2&buyMbrId=${user.mbrId}">待收貨</a></li>
+				<li class="lf_li1"><a
+					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder3&buyMbrId=${user.mbrId}">訂單完成</a></li>
+				<li class="lf_li1"><a
+					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder4&buyMbrId=${user.mbrId}">訂單不成立</a></li>
+			</ul>
+		</div>
+		<div id="con_rh">
+			<div class="con_rh_con">
+				<br></br>
+				<p class="rh_title">買家評價</p>
+
+
+
+
     <div class="form-container">
 		    <h2>買家評價</h2>
 		    <h2>訂單編號: ${BidOrder.bidOrderId}</h2>
-		
-     
+	
+      <br>
         <form method="post" action="<%=request.getContextPath()%>/bidorder/BidOrder.do"  enctype="multipart/form-data">
             <label>買家評價星數：</label>
             <div class="stars" id="starRating">
@@ -65,10 +115,10 @@
             <br>
             <br>
 
-            <label>買家評價內容：</label>
+            <label>買家評價內容：</label><br>
             <textarea name="buyerRatingDesc" rows="4" cols="50"></textarea>
- 
-            <label>上傳圖片：</label>
+ 		<br><br>
+            <label>上傳圖片：</label><br>
             <input type="file" name="image" id="imageInput" onchange="previewImage()">
             <div id="imagePreview"></div>
             <br>
@@ -80,17 +130,43 @@
             <input type="submit" value="提交評價">
             
         </form >
+ </div>	
+   
 
-    </div>
-    <!-- 這裡可以加入你的 JavaScript 連結 -->
+			</div>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+	<div id="footer"></div>
+	
+	<!--放在最後面-->
+<div class="footerHTML"></div>
+<!--bootstrap5 js-->
+<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+<!--jQuery-->
+<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
+<script>
+    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+    });
+
+    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+</script>
+
     <script>
-        function setRating(rating) {
-            document.getElementById('ratingValue').value = rating;
-            for (let i = 1; i <= 5; i++) {
-                const star = document.getElementById('starRating').children[i - 1];
-                star.classList.toggle('active', i <= rating);
-            }
+    function setRating(rating) {
+        document.getElementById('ratingValue').value = rating;
+        for (let i = 1; i <= 5; i++) {
+            const star = document.getElementById('starRating').children[i - 1];
+            star.classList.toggle('active', i <= rating);
         }
+    }
 
         function previewImage() {
             const input = document.getElementById('imageInput');

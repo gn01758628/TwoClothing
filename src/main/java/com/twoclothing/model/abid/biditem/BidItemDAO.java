@@ -45,4 +45,26 @@ public interface BidItemDAO {
      */
     boolean update(BidItem bidItem);
 
+    // 瀏覽頁面相關 (競標商品已上架/分頁查詢)
+
+    /**
+     * @return 不分類分頁查詢
+     */
+    List<BidItem> getAllLimit(int currentPage, int pageMaxResult);
+
+    /**
+     * @return 上架中的總數量
+     */
+    int countByActive();
+
+    /**
+     * @return 類別分頁查詢
+     */
+    List<BidItem> getAllByTagsLimit(int currentPage, int pageMaxResult, Integer tagId);
+
+    /**
+     * @return 類別上架總數量
+     */
+    int countByTags(Integer tagId);
+
 }

@@ -45,7 +45,6 @@ public class NoticeListServlet extends HttpServlet {
 
     private void doUpdate(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println(456);
         String idListJSON = request.getParameter("idList");
         String id = request.getParameter("id");
         if (idListJSON != null) {
@@ -70,7 +69,6 @@ public class NoticeListServlet extends HttpServlet {
 
     private void doDEL(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println(123);
         String idListJSON = request.getParameter("idList");
         Integer mbrId = (Integer) request.getSession().getAttribute("mbrId");
         if (idListJSON != null) {
