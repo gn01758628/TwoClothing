@@ -304,6 +304,13 @@ public class MembersServlet extends HttpServlet {
                 sendResponse(res, response, errorMsgs, false);
                 return;
             }
+            // 會員已停權
+            if (members.getMbrStatus() == 2) {
+            	response.put("mbrStatus", 2);
+            	errorMsgs.put("error", "會員已停權");
+            	sendResponse(res, response, errorMsgs, false);
+            	return;
+            }
 
             // 會員已驗證
             session.setAttribute("user", members);
