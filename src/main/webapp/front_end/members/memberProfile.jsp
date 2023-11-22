@@ -125,6 +125,7 @@
 <!--放在最前面-->
 <div class="headerHTML"></div>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 
 <div id="hy_con">
@@ -169,7 +170,7 @@
 	    <div id="passwordPopup">
 	        <form method="post" id="pswdHashForm" class="UpdatePswdHash" >
 	            <input type="password" id="pswdHash" name="pswdHash" placeholder="密碼">
-	            <input type="hidden" id="mbrId" name="mbrId" value="1">
+	            <input type="hidden" id="mbrId" name="mbrId" value="${user.mbrId}">
 	            <span id="pswdHashError" style="color: red;"></span>
 	            <input type="hidden" name="action" value="members_UpdatePswdHash_1">
 	            <input type="submit" value="確定">
