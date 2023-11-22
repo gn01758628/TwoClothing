@@ -3,6 +3,10 @@ package com.twoclothing.chenghan.controller;
 import com.google.gson.Gson;
 import com.twoclothing.chenghan.dto.IsLoginDTO;
 import com.twoclothing.chenghan.dto.MemberInfoDTO;
+import com.twoclothing.model.abid.biditem.BidItemDAO;
+import com.twoclothing.model.abid.biditem.BidItemHibernateDAO;
+import com.twoclothing.model.aproduct.item.ItemDAO;
+import com.twoclothing.model.aproduct.item.ItemHibernateDAO;
 import com.twoclothing.model.members.Members;
 import com.twoclothing.model.members.MembersDAO;
 import com.twoclothing.model.members.MembersHibernateDAO;
@@ -38,6 +42,10 @@ public class HeaderServlet extends HttpServlet {
 
     private final MemberMessageDAO memberMessageDAO = new MemberMessageJedisDAO();
 
+    private final ItemDAO itemDAO = new ItemHibernateDAO(sessionFactory);
+
+    private final BidItemDAO bidITemDAO = new BidItemHibernateDAO(sessionFactory);
+
     private final Gson gson = new Gson();
 
 
@@ -47,7 +55,8 @@ public class HeaderServlet extends HttpServlet {
         String pathInfo = request.getPathInfo();
         switch (pathInfo) {
             case "/loginValidate" -> doLoginValidate(request, response);
-            case "/search" -> doSearch(request, response);
+            case "/searchInfo" -> doSearchInfo(request, response);
+            case "/searchItem" -> doSearchItem(request, response);
         }
     }
 
@@ -76,7 +85,7 @@ public class HeaderServlet extends HttpServlet {
         }
     }
 
-    private void doSearch(HttpServletRequest request, HttpServletResponse response)
+    private void doSearchInfo(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -101,5 +110,20 @@ public class HeaderServlet extends HttpServlet {
 
         // 傳送MemberInfoDTO
         out.write(gson.toJson(memberInfoDTO));
+    }
+
+    private void doSearchItem(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+        String name = request.getParameter("name");
+        // 檢查是否有查詢到東西
+        int itemNum = itemDAO.countActiveByItemName(name);
+        int bidNum = bidITemDAO.countActiveByBidItemName(name);
+        int totalCount = itemNum + bidNum;
+        boolean haveResult = !(totalCount == 0);
+        // 如果查詢有結果,將name保存在session
+        if (haveResult) request.getSession().setAttribute("navSearch", name);
+        // 回傳查詢結果
+        out.write(String.valueOf(haveResult));
     }
 }
