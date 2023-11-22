@@ -167,9 +167,9 @@ public class CouponServlet extends HttpServlet {
 				break;
 
 			case "allot_Coupon":
-				
-				
-				
+				break;
+			case "turn_To_Allot_Coupon":
+				break;
 			case "get_All_Allot_Coupon":
 				try (Jedis jedis = JedisPoolUtil.getJedisPool().getResource()) {
 		            jedis.select(7);
@@ -177,28 +177,30 @@ public class CouponServlet extends HttpServlet {
 				
 				
 				
-				
+				break;
 			case "stop_Issuing_Coupon":
 				
 				
 				
 				
 				
-				
+				break;
 			case "receive_Coupon":
 				try (Jedis jedis = JedisPoolUtil.getJedisPool().getResource()) {
 		            jedis.select(7);
 		         // Lua腳本
 		            String luaScript = "local key = KEYS[1]\n" +
 		                    "local latestData = redis.call('LINDEX', key, -1)\n" +
-		                    "local parts = {}\n" +
-		                    "for part in string.gmatch(latestData, '([^,]+)') do\n" +
-		                    "    table.insert(parts, part)\n" +
+		                    "local data = cjson.decode(latestData)\n" +
+		                    "if data.status == 1 then\n" +
+		                    "    return -1\n" +
 		                    "end\n" +
-		                    "local remainingQuantity = tonumber(parts[4])\n" +
+		                    "local remainingQuantity = tonumber(data.remainingQuantity)\n" +
 		                    "if remainingQuantity > 0 then\n" +
 		                    "    remainingQuantity = remainingQuantity - 1\n" +
-		                    "    redis.call('LSET', key, -1, string.format('%s,%s,%s,%d,%s', parts[1], parts[2], parts[3], remainingQuantity, parts[5]))\n" +
+		                    "    data.remainingQuantity = remainingQuantity\n" +
+		                    "    local updatedData = cjson.encode(data)\n" +
+		                    "    redis.call('LSET', key, -1, updatedData)\n" +
 		                    "    return remainingQuantity\n" +
 		                    "else\n" +
 		                    "    return 0\n" +
@@ -216,7 +218,7 @@ public class CouponServlet extends HttpServlet {
 		        }
 				
 				
-				
+				break;
 				
 		}
 		if(!forwardPath.isEmpty()) {

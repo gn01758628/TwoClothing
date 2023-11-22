@@ -38,7 +38,7 @@
 		    "order": [[ 0, "asc" ]],
 		    "columnDefs":[
 		    	{
-		    		targets:[8], orderable:false
+		    		targets:[9], orderable:false
 		    	}
 		    ]
 		    
@@ -68,7 +68,7 @@ body {
 			<th>最低金額條件</th>
 			<th>當前狀態</th>
 			<th>員工編號</th>
-			<th>新增</th>
+			<th>新增發放</th>
 			
 		</tr>
 	</thead>
@@ -99,15 +99,72 @@ body {
 			
 
 			<td>
-			  <FORM METHOD="post" ACTION="<%= servletPath %>" style="margin-bottom: 0px;">
-			     <input type="submit" value="新增發放項目">
-			     <input type="hidden" name="cpnId"  value="${coupon.cpnId}">
-			     <input type="hidden" name="action"	value="add_Coupon">
-		      </FORM>
+			     <input id="allot_Coupon_btn" type="submit" value="新增發放項目">
+			     
+<!-- 			  <FORM METHOD="post" ACTION="" style="margin-bottom: 0px;"> -->
+<!-- 			     <input type="submit" value="新增發放項目"> -->
+<%-- 			     <input type="hidden" name="cpnId"  value="${coupon.cpnId}"> --%>
+<%-- 			     <input type="hidden" name="cpnName"  value="${coupon.cpnName}"> --%>
+<!-- 		      </FORM> -->
 			</td>
 		</tr>
 	</c:forEach>
 </table>
-
+<script>
+	$(function(){
+			let servletPath = '<%= servletPath %>';
+			
+		    $('#allot_Coupon_btn').click(async function(){
+		    	
+		    	
+		        Swal.fire({
+		        	  html:
+		        		  '<input type="datetime-local" name="allotDate" id="swal-input1" class="swal2-input" style="width:70%;">' +
+		                  '<input type="number" name="disvalue"  min="0" id="swal-input2" class="swal2-input" style="width:70%;">',
+		    		  inputAttributes: {
+		    		    autocapitalize: "off"
+		    		  },
+		    		  showCancelButton: true,
+		    		  confirmButtonText: "確認",
+		    		  cancelButtonText: "取消",
+		    		  showLoaderOnConfirm: true,
+		    		  preConfirm: async (pswdhash) => {
+	
+// 		    	            if (!pswdhash) {
+// 		    	                Swal.showValidationMessage("密碼不能為空");
+// 		    	                return false;
+// 		    	            }
+	
+// 		    	            // 發送請求到後端進行密碼驗證
+// 		    	            const response = await fetch(servletPath, {
+// 		    	                method: 'POST',
+// 		    	                headers: {
+// 		    	                    'Content-Type': 'application/x-www-form-urlencoded'
+// 		    	                },
+// 		    	                body: 'pswdhash='+pswdhash+'&empId='+empId+'&action=change_Password',
+// 		    	            });
+	
+// 		    	            if (!response.ok) {
+// 		    	                const errorText = await response.text();
+// 		    	                Swal.showValidationMessage('密碼驗證失敗:'+errorText);
+// 		    	                return false;
+// 		    	            }
+		    	            
+// 		    	            return pswdhash;
+		    	        },
+		    	        allowOutsideClick: () => !Swal.isLoading()
+		    	    });
+	
+		    	    if (isConfirmed) {
+// 		    	        // 在這裡處理密碼驗證成功後的操作
+// 		    	        Swal.fire({
+// 		    	            title: "密碼驗證成功",
+// 		    	            text: '你輸入的密碼是：'+pswdhash,
+// 		    	            icon: "success"
+// 		    	        });
+		    	    }
+		    });
+		});
+</script>
 </body>
 </html>
