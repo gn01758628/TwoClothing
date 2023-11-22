@@ -8,6 +8,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,20 @@ public class BidItemHibernateDAO implements BidItemDAO {
     public BidItemHibernateDAO(SessionFactory factory) {
         this.factory = factory;
     }
+
+    private final String GET_ALL_SUB_BY_TAGID = "WITH RECURSIVE taghierarchy AS ( "
+            + "SELECT tagid "
+            + "FROM categorytags "
+            + "WHERE tagid = :tagId "
+            + "UNION ALL "
+            + "SELECT ct.tagid "
+            + "FROM categorytags ct "
+            + "INNER JOIN taghierarchy th ON ct.supertagid = th.tagid "
+            + ") "
+            + "SELECT DISTINCT it.* "
+            + "FROM taghierarchy th "
+            + "INNER JOIN biditem it ON th.tagid = it.tagid "
+            + "WHERE it.bidstatus = 4";
 
     // session執行序不安全,由各方法內部調用
     private Session getSession() {
@@ -58,21 +73,7 @@ public class BidItemHibernateDAO implements BidItemDAO {
 
     @Override
     public List<BidItem> getAllSubByTagId(Integer tagId) {
-        String sql ="WITH RECURSIVE tahhierarchy AS ( "
-                + "SELECT tagid "
-                + "FROM categorytags "
-                + "WHERE tagid = :tagId "
-                + "UNION ALL "
-                + "SELECT ct.tagid "
-                + "FROM categorytags ct "
-                + "INNER JOIN tahhierarchy th ON ct.supertagid = th.tagid "
-                + ") "
-                + "SELECT DISTINCT it.* "
-                + "FROM tahhierarchy th "
-                + "INNER JOIN biditem it ON th.tagid = it.tagid "
-                + "WHERE it.bidstatus = 4;";
-
-        return getSession().createNativeQuery(sql, BidItem.class)
+        return getSession().createNativeQuery(GET_ALL_SUB_BY_TAGID, BidItem.class)
                 .setParameter("tagId", tagId)
                 .list();
     }
@@ -95,15 +96,15 @@ public class BidItemHibernateDAO implements BidItemDAO {
 
     @Override
     public List<BidItem> getAllActiveBidItemsByEndTime(Timestamp time) {
-        return getSession().createQuery("from BidItem where bidStatus = 4 and endTime < :time",BidItem.class)
-                .setParameter("time",time)
+        return getSession().createQuery("from BidItem where bidStatus = 4 and endTime < :time", BidItem.class)
+                .setParameter("time", time)
                 .list();
     }
 
     @Override
     public List<BidItem> getAllPassBidItemsByStartTime(Timestamp time) {
-        return getSession().createQuery("from BidItem where bidStatus = 1 and startTime < :time",BidItem.class)
-                .setParameter("time",time)
+        return getSession().createQuery("from BidItem where bidStatus = 1 and startTime < :time", BidItem.class)
+                .setParameter("time", time)
                 .list();
     }
 
@@ -152,5 +153,41 @@ public class BidItemHibernateDAO implements BidItemDAO {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    // 瀏覽頁面相關
+    @Override
+    public List<BidItem> getAllLimit(int currentPage, int pageMaxResult) {
+        int first = (currentPage - 1) * pageMaxResult;
+        return getSession().createQuery("from BidItem where bidStatus = 4 order by endTime desc", BidItem.class)
+                .setFirstResult(first)
+                .setMaxResults(pageMaxResult)
+                .list();
+    }
+
+    @Override
+    public int countByActive() {
+        long count = (long) getSession().createQuery("select count(*) from BidItem where bidStatus = 4")
+                .uniqueResult();
+        return (int) count;
+    }
+
+    @Override
+    public List<BidItem> getAllByTagsLimit(int currentPage, int pageMaxResult, Integer tagId) {
+        int first = (currentPage - 1) * pageMaxResult;
+        return getSession().createNativeQuery(GET_ALL_SUB_BY_TAGID, BidItem.class)
+                .setParameter("tagId", tagId)
+                .setFirstResult(first)
+                .setMaxResults(pageMaxResult)
+                .list();
+    }
+
+    @Override
+    public int countByTags(Integer tagId) {
+        String countQuery = "SELECT COUNT(*) FROM (" + GET_ALL_SUB_BY_TAGID + ") as sub";
+        BigInteger count = (BigInteger) getSession().createNativeQuery(countQuery)
+                .setParameter("tagId", tagId)
+                .getSingleResult();
+        return count.intValue();
     }
 }
