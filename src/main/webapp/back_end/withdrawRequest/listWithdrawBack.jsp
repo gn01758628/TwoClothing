@@ -111,7 +111,6 @@
 					
 					<tbody class="body">
 						<c:forEach var="withdrawRequest" items="${WRList}" varStatus="loop">
-	<%-- 					<input type="hidden" name="wrId" value="${withdrawRequest.wrId}"> --%>
 							<tr>
 								<td>${loop.index+1}</td>
 								<td>${withdrawRequest.mbrId}</td>
@@ -122,6 +121,8 @@
 								<td>${withdrawRequest.note}</td>
 								<td>
 							<input type="hidden" name="wrId"  value="${withdrawRequest.wrId}">
+							<input type="hidden" name="amount" value="${withdrawRequest.amount}">
+							
 									<label for="pass_${withdrawRequest.wrId}_${loop.index}">
 										<input type="radio" name="status_${withdrawRequest.wrId}" id="pass_${withdrawRequest.wrId}_${loop.index}" value="1">
 										通過
@@ -151,8 +152,10 @@
 		$('input[name^="status_"]:checked').each(function() {			
 			selectedValue = $(this).val();
 	        wrId = $(this).closest('tr').find('input[name="wrId"]').val();
+	        amount = $(this).closest('tr').find('input[name="amount"]').val();
 	        console.log(wrId);
-	        statusarr.push({ wrId: wrId, status: selectedValue});
+	        console.log(amount);
+	        statusarr.push({ wrId: wrId, status: selectedValue, amount: amount});
 		
 		});
 
@@ -160,12 +163,13 @@
 		statusarr.forEach(function (item, index) {
 		    formDataObject['wrId_' + index] = item.wrId;
 		    formDataObject['reqStatus_' + index] = item.status;
+		    formDataObject['amount_' + index] = item.amount;
 		});
 
    		let formDataUrlEncoded = new URLSearchParams(formDataObject);
    		console.log(formDataUrlEncoded);
 
-		 fetch("${pageContext.request.contextPath}/WithdrawRequest/withdraw?choice=UpdateStatus", {
+		 fetch("${pageContext.request.contextPath}/back_end/BackWithdrawRequest/withdraw?choice=UpdateStatus", {
 		    method: "post",
 		    body: formDataUrlEncoded
 		 })

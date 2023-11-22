@@ -67,15 +67,15 @@ public class BalanceHistoryServlet extends HttpServlet{
 			
 		}
 		
-		//會員id搜尋
+		//會員id搜尋 會員
 		if("searchMbrId".equals(choice)){
 			HttpSession session = req.getSession();
 			Integer mbrId = (Integer) session.getAttribute("mbrId");
-			
+			System.out.println(mbrId);
 			List<BalanceHistory> balanceHistoryList = BHSvc.getAllBHByMbrId(mbrId);
 			req.setAttribute("BHList", balanceHistoryList);
 			
-			String url = "/back_end/balanceHistory/listAllBalance.jsp";
+			String url = "/front_end/balanceHistory/BHSearchList.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
 		}

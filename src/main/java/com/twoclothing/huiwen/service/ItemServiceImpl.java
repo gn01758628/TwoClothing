@@ -252,6 +252,10 @@ public class ItemServiceImpl implements ItemService{
 		return dao.getPointByMbrId(mbrId);
 	}
 	@Override
+	public Integer getSellScoreByMbrId(Integer mbrId) {
+		return dao.getSellScoreByMbrId(mbrId);
+	}
+	@Override
 	public Integer getMbrBalanceByMbrId(Integer mbrId) {
 		return dao.	getbalanceByMbrId(mbrId);
 	}
@@ -298,9 +302,13 @@ public class ItemServiceImpl implements ItemService{
 	public CategoryTags getByPrimaryKey(Integer tagId) {
 		return categoryTagsDAO.getByPrimaryKey(tagId);
 	}
-	
+	@Override
 	public List<Item> getAllByStatus(Integer itemStatus) {
 		return dao.getAllByItemStatus(itemStatus);
+	}
+	@Override
+	public List<Integer> getItemByMbrId(Integer mbrId) {
+		return dao.getItemByMbrId(mbrId);
 	}
 
 }

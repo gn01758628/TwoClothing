@@ -256,6 +256,10 @@ public class ItemHibernateDAO implements ItemDAO {
 		return (Integer) getSession().createQuery("select m.mbrPoint from Members m where m.mbrId = :mbrId").setParameter("mbrId", mbrId).uniqueResult();
 	}
 	@Override
+	public Integer getSellScoreByMbrId(Integer mbrId) {
+		return (Integer) getSession().createQuery("select m.sellScore from Members m where m.mbrId = :mbrId").setParameter("mbrId", mbrId).uniqueResult();
+	}
+	@Override
 	public Integer getbalanceByMbrId(Integer mbrId) {
 		return (Integer) getSession().createQuery("select m.balance from Members m where m.mbrId = :mbrId").setParameter("mbrId", mbrId).uniqueResult();
 	}
@@ -270,6 +274,11 @@ public class ItemHibernateDAO implements ItemDAO {
 		return getSession().createQuery("from Item where mbrId = :mbrId and itemStatus = 0", Item.class)
 		.setParameter("mbrId", mbrId)
 		.list();
+	}
+	@Override
+	public List<Integer> getItemByMbrId(Integer mbrId) {		
+		return getSession().createQuery("select itemId from Item where mbrId = :mbrId")
+				.setParameter("mbrId", mbrId).list();
 	}
 	
 	
