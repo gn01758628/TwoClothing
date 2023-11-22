@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.twoclothing.chi.service.ItemReportService;
 import com.twoclothing.chi.service.ItemReportServiceImpl;
@@ -45,8 +46,10 @@ public class ItemReportFrontServlet extends HttpServlet {
 			url = getAllByMbrId(req, res);
 			break;
 		case "insert":
-			url = addItemReport(req, res);
-			break;
+//			url = addItemReport(req, res);
+//			break;
+			addItemReport(req, res);
+			return;
 		default:
 			url = "/front_end/itemreport/itemReportList.jsp";
 		}
@@ -91,9 +94,10 @@ public class ItemReportFrontServlet extends HttpServlet {
 		return "/front_end/itemreport/itemReportList.jsp";
 	}
 
-	private String addItemReport(HttpServletRequest req, HttpServletResponse res) {
+	private void addItemReport(HttpServletRequest req, HttpServletResponse res) {
 		String itemId = req.getParameter("itemId");
-		String mbrId = req.getParameter("mbrId");
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer) session.getAttribute("mbrId");
 		String description = req.getParameter("description");
 
 		List<String> errorMsgs = new LinkedList<String>();
@@ -108,7 +112,7 @@ public class ItemReportFrontServlet extends HttpServlet {
 
 		ItemReport itemReport = new ItemReport();
 		itemReport.setItemId(Integer.parseInt(itemId));
-		itemReport.setMbrId(Integer.parseInt(mbrId));
+		itemReport.setMbrId(mbrId);
 		Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 		itemReport.setReportDate(currentTime);
 		itemReport.setDescription(description);
@@ -116,6 +120,6 @@ public class ItemReportFrontServlet extends HttpServlet {
 
 		itemReportService.addItemReport(itemReport);
 
-		return "/front/itemreport?action=getAllByMbrId";
+//		return "/front/itemreport?action=getAllByMbrId";
 	}
 }

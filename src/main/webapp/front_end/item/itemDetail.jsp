@@ -6,24 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${item.itemName}</title>
-    <!--頁籤icon-->
-    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
-    <!--bootstrap5 css-->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
-    <!-- google fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
-    <style>
-        *:not([class^="fa-"]) {
-            font-family: 'Noto Sans TC', sans-serif !important;
-        }
-    </style>
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
-    <!--Sweet Alert-->
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
-    
 	<style>
         * {
             box-sizing: border-box;
@@ -41,15 +23,14 @@
             justify-content: center;
             flex-direction: column;
             align-items: center;
-            max-height: 592px;
         }
 
-        div.body_container {
+        div.container {
             max-width: 800px;
             width: 100%;
             display: flex;
             min-height: 400px;
-/*             max-height: 412px; */
+            max-height: 412px;
         }
 
         div.downarea {
@@ -67,7 +48,6 @@
             height: 100px;
             table-layout: fixed;
             border-spacing: 20px;
-            border-collapse: separate;
         }
 
         div.downarea table tr td, th {
@@ -80,7 +60,7 @@
             border-bottom: 2px solid gray;            
         }
 
-        div.body_container div.product-image {
+        div.container div.product-image {
             flex: 1;
             min-width: 50%;
             display: flex;
@@ -88,14 +68,14 @@
     		background-color: #f2f2f2;
         }
 
-        div.body_container div.product-image img {
+        div.container div.product-image img {
 /*             border: 1px solid black; */
              max-width: 100%; 
              height: 100%;
             display: block;
         }
 
-        div.body_container div.product-info {
+        div.container div.product-info {
             flex: 1;
             background-color: #f2f2f2;
             padding: 0px;
@@ -106,7 +86,7 @@
             position: relative;
         }
         
-        div.body_container div.product-info ul {
+        div.container div.product-info ul {
             list-style-type: none;
             display: flex;
             justify-content: center;
@@ -115,7 +95,7 @@
             padding: 0px;
         }
         
-        div.body_container div.product-info ul li {
+        div.container div.product-info ul li {
             margin: 10px 4px;
             display: flex;
             justify-content: center;
@@ -124,12 +104,12 @@
             padding: 5px;
         }
         
-        div.body_container div.product-info ul li h1 {
+        div.container div.product-info ul li h1 {
             font-size: 24px;
             margin: 0;
         }
 
-        div.body_container div.product-info ul li p {
+        div.container div.product-info ul li p {
             font-size: 16px;
             display: inline-block;
             margin: 2px 0;
@@ -139,10 +119,16 @@
         .heart-container {
         	--heart-color: rgb(255, 91, 137);
   			position: absolute;
-  			left: 160px;
+  			left: 170px;
 		  	width: 20px;
 		  	height: 20px;
 		  	transition: .3s;
+		}
+		
+		@media screen and (max-width: 540px) {
+			.heart-container {
+	        	display: none;
+			}
 		}
 
 		.heart-container .checkbox {
@@ -221,36 +207,89 @@
     			display: none;
   			}
 		}
-		
-		.message {
- 			display: none;
-			font-size: 14px;
-			position: absolute;
-			padding-top: 55px;
-    		transform: translateX(169%);
+        
+        .custom-popup-class {
+        	background-color: #f2f2f2;
+        	width: 250px;
         }
-
-        div.body_container div.product-info ul li.li_num {
+		
+		.custom-title-class {
+			font-size: 20px;
+		}
+        
+        .report-container {
+        	position: absolute;
+  			left: 170px;
+  			transition: transform 0.3s ease;
+		}
+        
+        .report-container svg {
+    		transform: scale(0.28);
+		}
+		
+		@media screen and (max-width: 710px) {
+			.report-container {
+	        	display: none;
+			}
+		}
+		
+		.report-container:hover {
+		    transform: scale(1.1);
+		}
+		
+		.report-custom-popup-class {
+        	background-color: #f2f2f2;
+        }
+        
+        .modal-dialog {
+        	width: 100%;
+        }
+        
+        .modal-body {
+  			display: flex;
+        	align-items: center;
+        	justify-content: center;
+        }
+        
+        .title-description {
+        	margin-top: 10px;
+        }
+        
+        td.itemId {
+        	padding-left: 19px;
+        }
+        
+        .inputDescription {
+        	margin-top: 10px;
+        	margin-left: 16px;
+        }
+        
+        .modal-footer button:hover, button:focus, button:active, button:visited {
+        	outline: none;
+	    	box-shadow: none !important;
+        }
+        
+        div.container div.product-info ul li.li_num {
             margin-bottom: 0px;
             padding-bottom: 0px;
         }
         
-        div.body_container div.product-info ul li.li_quantity {
+        div.container div.product-info ul li.li_quantity {
             display: inline-block;
             margin-top: 0px;
             padding-top: 0px;
 
         }
         
-        div.body_container div.product-info ul li p.p_quantity {
+        div.container div.product-info ul li p.p_quantity {
             font-size: 12px;
         }
         
-        div.body_container div.product-info ul li.li_quantity p:nth-child(2) {
+        div.container div.product-info ul li.li_quantity p:nth-child(2) {
             margin-left: 5px;
         }
 
-        div.body_container div.product-info ul li p.price {
+        div.container div.product-info ul li p.price {
             font-size: 20px;
         }
 
@@ -267,12 +306,12 @@
             padding: 4px 7px;
         }
 
-        div.body_container div.product-info ul li div.description {
+        div.container div.product-info ul li div.description {
             margin-top: 20px;
         }
 
-        div.body_container div.product-info ul input.buy-button {
-            background-color: #561729;
+        div.container div.product-info ul input.buy-button {
+            background-color: #1a191f;
             color: #fff;
             border: none;
             padding: 5px 10px;
@@ -282,31 +321,22 @@
             border-radius: 15px;
         }
 
-        div.body_container div.product-info ul button.buy-button:hover {
+        div.container div.product-info ul button.buy-button:hover {
             background-color: #6e6b71;
-        }
-        
-        a#contactSeller{
-        	margin: 10px 0;
-		    font-size: 12px;
-		    text-decoration: none;
-		    color: #561729;
         }
         
         div.toSeller {
             width: 0;
             height: 0;
             border-top: 100px solid transparent;
-            border-right: 120px solid pink;
-            color:white;
+            border-right: 120px solid rgb(243, 170, 107);
             display: flex;
             flex-direction: row;
             margin-left: auto;
         }
         
         div.toSeller:hover {
-            border-right-color: #561729;
-            color:black;
+            border-right-color: rgb(249, 194, 145);
         }
         
         div.toSeller:hover a {
@@ -345,17 +375,12 @@
 /* 	  		width: 400px;  */
          }
 	</style>
-	<link rel="stylesheet" href="sweetalert2.min.css">
-    <!--導覽列css-->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
-    <!--頁尾css-->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
-	<div class="headerHTML"></div>
-
 	<form class="form_detail" method="post" action="${pageContext.request.contextPath}/ItemCart/cart" enctype="multipart/form-data">
-	    <div class="body_container">
+	    <div class="container">
 	        <div class="product-image">
 	<%--             <img id="slider_img" src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="Product Image"> --%>
 	<!--         	<button type="button" onclick="nextImg()">按</button> -->
@@ -412,13 +437,20 @@
 				                </svg>
 				            </div>
 				        </div>
-				        <span class="message" id="successMessage">移除成功</span>
+				        
+				        <div class="report-container">
+				        	<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+        						<polygon points="50,20 85,80 15,80" style="fill: #f2f2f2; stroke: #ff6A6A; stroke-width: 5; stroke-linejoin: round;"/>
+        						<text x="50" y="60" font-size="40" fill="#ff6A6A" text-anchor="middle" dominant-baseline="middle">!</text>
+    							<rect x="13" y="15" width="75" height="70" fill="transparent" style="cursor: pointer;" onclick="showDetail(${item.itemId})"/>
+    						</svg>
+				        </div>
 	                </li>
 	                <li>
 	                    <p class="price" name="price">$${item.price}</p>
 	                </li>
 	                <li class="li_num">
-	                    <p>數量</p><input type="number" name="quantity" id="input_num" min="1" value="1" max="${item.quantity}">
+	                    <p>數量：</p><input type="number" name="quantity" id="input_num" min="1" value="1" max="${item.quantity}">
 	                </li>
 	                <li class="li_quantity">
 	                    <p class="p_quantity">剩餘件數</p><p>${item.quantity}</p>
@@ -427,7 +459,6 @@
 	            	<input type="hidden" name="itemId"  value="${item.itemId}">
 					<input type="hidden" name="gotoCart" value="gotoCart">
 	                <input type="button" class="buy-button" value="加入購物車">
-	                <a href="${pageContext.request.contextPath}/front/chatroom/${item.mbrId}.check" id="contactSeller">聯絡賣家</a>
 	            </ul>
 	            <div class="toSeller">
 	                    <a href="${pageContext.request.contextPath}/SellerHome/home?mbrId=${item.mbrId}">查看賣場</a>
@@ -449,29 +480,49 @@
 	        </table>
 	    </div>
 	</form>
-<%-- 	<a href="${pageContext.request.contextPath}/ItemCart/cartlist?goto=cart&mbrId=2">查看購物車</a> --%>
-	<div class="footerHTML"></div>
-	<!--bootstrap5 js-->
-	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
-	<!--jQuery-->
-	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
-	<!--Sweet Alert-->
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
-	<!--JS loader-->
-	<script>
-	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
-	        // 保證headerHTML加載完才載入header.js
-	        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
-	    });
+	<a href="${pageContext.request.contextPath}/ItemCart/cartlist?goto=cart&mbrId=2">查看購物車</a>
 	
-	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
-	</script>
-	<script src="sweetalert2.min.js"></script>
+	<div class="modal fade" id="itemReportModal" tabindex="-1" aria-labelledby="itemReportModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+	      		<div class="modal-header">
+	      			<h5 class="modal-title" id="itemReportModalLabel">商品檢舉</h5>
+	      		</div>
+	      		
+		      	<div class="modal-body">
+			        <div class="card" style="width: 45rem;">
+				        <div class="card-body">
+					        <table>
+								<tr>
+									<td>商品編號</td>
+									<td id="itemId" class="itemId"></td>
+								</tr>
+								<tr>
+									<td>
+										<div class="title-description">檢舉原因</div></td>
+									<td>
+										<input type="text" id="inputDescription" class="inputDescription" name="inputDescription" size="72"/>
+									</td>
+								</tr>
+							</table>
+				        </div>
+		      		</div>
+		      	</div>
+		      	
+		      	<div class="modal-footer">
+		      		<button class="btn btn-secondary" id="insert" onclick="insertReport()">送出</button>
+			    	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+			    </div>
+			</div>
+		</div>
+	</div>
+	
+    <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
 	    $(document).ready(function() {
-	    	var quantities;
 			$(".size").each(function () {
 				let status = $(this).text();
 				switch(status){
@@ -530,23 +581,18 @@
 			});
 		});
 	    
-		$(".buy-button").on("click",function(){			
-			quantities = $("#input_num").val();
-			let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&mbrId=2&quantity="+quantities+"&gotoCart=gotoCart";
+		$(".buy-button").on("click",function(){
+			let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&mbrId=2&quantity=${item.quantity}&gotoCart=gotoCart";
+			console.log(url);
 			fetch(url)
 	            .then(function(response){
 	            	return response.text();
 	            })
 	            .then(function(data){
-	            	Swal.fire({
-	            		  title: data,
-	            		  confirmButtonText: "確認",
-	            		  icon: "success"
-	            		});
-// 	            	location.reload();
+	            	console.log(data);
 	            })
 	            .catch(function(error){
-	            	alert("加入購物車失敗！");
+	            	console.log(error);
 	            })
 		})
 		
@@ -590,15 +636,68 @@
 		        type: "POST",
 		        url: url,
 		        success: function (data) {
-		        	if (window.innerWidth > 600) {
-		        		$("#successMessage").show().delay(2000).fadeOut();
-		        	}
+		        	Swal.fire ({
+		        		title: "移除成功",
+		        		timer: 900,
+		        		showConfirmButton: false,
+		        		customClass: {
+		        			popup: 'custom-popup-class',
+		        		    title: 'custom-title-class',
+		        		}
+		        	});
 		            isTracked = false;
 		        },
 		        error: function (xhr) {
 		        	console.log(xhr);
 		        }
 		    });
+		}
+		
+		function showDetail(itemId) {
+		    event.preventDefault();
+		    $('#itemId').text(itemId);
+		    let html = `<li class="list-group-item" id="report">An itemreport</li>`;
+		    $('#itemReportModal').modal('show');
+		}
+		
+		function insertReport() {
+			if ($('#inputDescription').val() == "") {
+				alert("請填寫原因");
+				return;
+			}
+			
+			var url = "${pageContext.request.contextPath}/front/itemreport?action=insert&itemId=${item.itemId}&description=" + $('#inputDescription').val();
+						
+			$.ajax({
+				type: "POST",
+				url: url,
+				success: function (data) {
+					$('#itemReportModal').modal('hide');
+					
+					Swal.fire({
+				        title: "檢舉成功",
+				        text: "請至我的檢舉查看",
+				        icon: "success",
+				        timer: 2700,
+		        		showConfirmButton: false,
+				        customClass: {
+				        	popup: 'report-custom-popup-class',
+				            title: 'custom-title-class',
+				        },
+				        iconColor: '#b0c4de',
+				        didClose: () => {
+				            location.reload();
+				        }
+				    });
+				},
+				error: function (xhr) {
+					if (xhr.status === 403) {
+						window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
+					} else {
+						console.log(xhr);
+					}
+				}
+			});
 		}
 		
 // 		    const images = [
