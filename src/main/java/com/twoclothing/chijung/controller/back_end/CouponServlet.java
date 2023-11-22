@@ -18,9 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.twoclothing.chijung.Mapping;
 import com.twoclothing.model.coupon.Coupon;
+import com.twoclothing.model.employee.Employee;
 import com.twoclothing.utils.JedisPoolUtil;
 import com.twoclothing.utils.generic.GenericService;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import redis.clients.jedis.Jedis;
 
 
@@ -108,7 +110,6 @@ public class CouponServlet extends HttpServlet {
             	        }
             	        
             	    } catch (java.text.ParseException e) {
-            	        errorMsgs.put("expireDate", "日期格式無效");
             	    }
             	}
             	
@@ -167,6 +168,62 @@ public class CouponServlet extends HttpServlet {
 				break;
 
 			case "allot_Coupon":
+				currentDate = new Date();
+				Date allotDate = null;
+				expireDate = null;
+				String allotDateString = req.getParameter("allotDate");
+		        expireDateString = req.getParameter("expireDate");
+            	System.out.println(expireDateString);
+            	
+            	if (allotDateString != null && !allotDateString.isEmpty()) {
+            	    try {
+            	        // 將 allotDateString 轉換為日期對象
+            	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            	        allotDate = dateFormat.parse(allotDateString);
+
+            	        // 檢查 allotDate 是否大於當前時間
+            	        if (!allotDate.after(currentDate)) {
+            	        	res.getWriter().write("發放時間不得小於或等於當前時間");
+        					res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        					return;
+            	        }
+            	        
+            	    } catch (java.text.ParseException e) {
+            	        res.getWriter().write("日期格式無效");
+    					res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    					return;
+            	    }
+            	}
+            	
+            	if (expireDateString != null && !expireDateString.isEmpty()) {
+            	    try {
+            	        // 將 allotDateString 轉換為日期對象
+            	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+            	        expireDate = dateFormat.parse(expireDateString);
+            	        System.out.println(1);
+            	        
+            	    } catch (java.text.ParseException e) {
+            	    	System.out.println(2);
+            	    }
+            	}
+            	System.out.println(allotDateString);
+            	System.out.println(expireDate);
+            	
+            	// 結束時間比對發布時間
+            	if (allotDateString != null && expireDateString != null && !allotDateString.isEmpty() && !expireDateString.isEmpty()) {
+            	    // 檢查 allotDate 是否大於 expireDate
+            	    if (allotDate.after(expireDate)) {
+            	    	res.getWriter().write("發放日期已超過使用期限");
+    					res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    					return;
+            	    } 
+            	}
+				
+            	//jedisDAO
+            	
+            	
+				res.getWriter().write("新增發放成功");
+				res.setStatus(HttpServletResponse.SC_OK);
 				break;
 			case "turn_To_Allot_Coupon":
 				break;

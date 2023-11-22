@@ -99,13 +99,13 @@ body {
 			
 
 			<td>
-			     <input id="allot_Coupon_btn" type="submit" value="新增發放項目">
-			     
-<!-- 			  <FORM METHOD="post" ACTION="" style="margin-bottom: 0px;"> -->
-<!-- 			     <input type="submit" value="新增發放項目"> -->
-<%-- 			     <input type="hidden" name="cpnId"  value="${coupon.cpnId}"> --%>
-<%-- 			     <input type="hidden" name="cpnName"  value="${coupon.cpnName}"> --%>
-<!-- 		      </FORM> -->
+				<c:choose>
+					<c:when test="${not empty coupon.expireDate and coupon.expireDate lt now}">
+					</c:when>
+			        <c:otherwise>
+						<input class="allot_Coupon_btn" type="submit" value="新增發放項目">
+			        </c:otherwise>
+		    	</c:choose>
 			</td>
 		</tr>
 	</c:forEach>
@@ -114,55 +114,50 @@ body {
 	$(function(){
 			let servletPath = '<%= servletPath %>';
 			
-		    $('#allot_Coupon_btn').click(async function(){
+		    $('.allot_Coupon_btn').click(async function(){
+		    	let tr = $(this).closest('tr');
+
+		        // 在 tr 元素中找到名為 expireDate 的元素
+		        let expireDate = tr.find('td:eq(3)').text(); 
 		    	
+		    	Swal.fire({
+		    		html:'<input type="datetime-local" name="allotDate" id="swal-input1" class="swal2-input" style="width:70%;">' +
+		            '<input type="number" name="disvalue" value="1"  min="1" id="swal-input2" class="swal2-input" style="width:70%;">',
+		        inputAttributes:{
+		            autocapitalize: "off"
+		        },
+		        showCancelButton: true,
+		        confirmButtonText: "確認",
+		        cancelButtonText: "取消",
+		        allowOutsideClick: false,
+		        showLoaderOnConfirm: true,
+    		    preConfirm: async () => {
+    		    	let allotDate = $('#swal-input1').val();
+    	            let disvalue = $('#swal-input2').val();
+	
+    		    	let response = await fetch(servletPath, {
+    		    	    method: 'POST',
+    		    	    headers: {
+    		    	        'Content-Type': 'application/x-www-form-urlencoded'
+    		    	    },
+    		    	    body: 'allotDate=' + encodeURIComponent(allotDate) + '&disvalue=' + encodeURIComponent(disvalue)+ '&expireDate=' + encodeURIComponent(expireDate) +'&action=allot_Coupon',
+    		    	});
+
+    		    	if (!response.ok) {
+    		    	    const errorText = await response.text();
+    		    	    Swal.showValidationMessage(errorText);
+    		    	    return false;
+    		    	}
+    		    	// 成功後顯示成功訊息
+    	            Swal.fire({
+    	                title: '成功',
+    	                text: '優惠券新增發放成功',
+    	                icon: 'success'
+    	            });
+	    	            
+    	        }
+	    	    });
 		    	
-		        Swal.fire({
-		        	  html:
-		        		  '<input type="datetime-local" name="allotDate" id="swal-input1" class="swal2-input" style="width:70%;">' +
-		                  '<input type="number" name="disvalue"  min="0" id="swal-input2" class="swal2-input" style="width:70%;">',
-		    		  inputAttributes: {
-		    		    autocapitalize: "off"
-		    		  },
-		    		  showCancelButton: true,
-		    		  confirmButtonText: "確認",
-		    		  cancelButtonText: "取消",
-		    		  showLoaderOnConfirm: true,
-		    		  preConfirm: async (pswdhash) => {
-	
-// 		    	            if (!pswdhash) {
-// 		    	                Swal.showValidationMessage("密碼不能為空");
-// 		    	                return false;
-// 		    	            }
-	
-// 		    	            // 發送請求到後端進行密碼驗證
-// 		    	            const response = await fetch(servletPath, {
-// 		    	                method: 'POST',
-// 		    	                headers: {
-// 		    	                    'Content-Type': 'application/x-www-form-urlencoded'
-// 		    	                },
-// 		    	                body: 'pswdhash='+pswdhash+'&empId='+empId+'&action=change_Password',
-// 		    	            });
-	
-// 		    	            if (!response.ok) {
-// 		    	                const errorText = await response.text();
-// 		    	                Swal.showValidationMessage('密碼驗證失敗:'+errorText);
-// 		    	                return false;
-// 		    	            }
-		    	            
-// 		    	            return pswdhash;
-		    	        },
-		    	        allowOutsideClick: () => !Swal.isLoading()
-		    	    });
-	
-		    	    if (isConfirmed) {
-// 		    	        // 在這裡處理密碼驗證成功後的操作
-// 		    	        Swal.fire({
-// 		    	            title: "密碼驗證成功",
-// 		    	            text: '你輸入的密碼是：'+pswdhash,
-// 		    	            icon: "success"
-// 		    	        });
-		    	    }
 		    });
 		});
 </script>

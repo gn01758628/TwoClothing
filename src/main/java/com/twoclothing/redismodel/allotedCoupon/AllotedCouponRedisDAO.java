@@ -21,7 +21,7 @@ public class AllotedCouponRedisDAO implements AllotedCouponDAO{
 
 
 	@Override
-	public void insert(AllotedCoupon allotedCoupon) {
+	public void allot(AllotedCoupon allotedCoupon) {
 		// TODO Auto-generated method stub
 		
 	}

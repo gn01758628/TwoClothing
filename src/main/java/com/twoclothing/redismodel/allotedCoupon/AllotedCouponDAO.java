@@ -6,7 +6,7 @@ import com.twoclothing.model.coupon.Coupon;
 
 public interface AllotedCouponDAO {
 	
-	void insert(AllotedCoupon allotedCoupon);
+	void allot(AllotedCoupon allotedCoupon);
 
 	List<AllotedCoupon> getAll();
 
