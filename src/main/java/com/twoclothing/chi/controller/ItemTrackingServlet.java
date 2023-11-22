@@ -60,6 +60,9 @@ public class ItemTrackingServlet extends HttpServlet {
 //			break;
 			deleteItemTracking(req, res);
 			return;
+		case "deletefromlist":
+			url = deleteItemTrackingFromList(req, res);
+			break;
 		default:
 			url = "/front_end/itemtracking/itemTrackingList.jsp";
 		}
@@ -82,9 +85,14 @@ public class ItemTrackingServlet extends HttpServlet {
 			CompositeDetail compositeDetail = i.getCompositeKey();
 			int itemId = compositeDetail.getItemId();
 			Item item = itemService.getItemByItemId(itemId);
+			
 			if (item != null) {
 				itemTrackingList.add(item);
-			}
+				
+				if (item.getItemStatus() == 2) {
+					itemTrackingService.deleteItemTracking(itemId, mbrId);
+				}
+	        }
 		}
 
 		int itemTrackingPageQty = itemTrackingService.getPageTotal(mbrId);
@@ -127,5 +135,15 @@ public class ItemTrackingServlet extends HttpServlet {
 		}
 
 //		return "/itemtrackinglist.check?action=getAllByMbrId";
+	}
+	
+	private String deleteItemTrackingFromList(HttpServletRequest req, HttpServletResponse res) {
+		int itemId = Integer.parseInt(req.getParameter("itemId"));
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer) session.getAttribute("mbrId");
+
+		itemTrackingService.deleteItemTracking(itemId, mbrId);
+
+		return "/itemtrackinglist.check?action=getAllByMbrId";
 	}
 }

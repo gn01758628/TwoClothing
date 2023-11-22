@@ -27,8 +27,6 @@ import com.twoclothing.model.department.Department;
 import com.twoclothing.model.employee.Employee;
 import com.twoclothing.model.empmissions.EmpMissions;
 import com.twoclothing.model.permissions.Permissions;
-import com.twoclothing.tonyhsieh.service.BidItemReportService;
-import com.twoclothing.tonyhsieh.service.BidItemReportServiceImpl;
 import com.twoclothing.tonyhsieh.service.DepartmentService;
 import com.twoclothing.tonyhsieh.service.DepartmentServiceImpl;
 import com.twoclothing.tonyhsieh.service.EmpMissionsService;

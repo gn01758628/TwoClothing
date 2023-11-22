@@ -1,6 +1,3 @@
-<%@ page import="com.twoclothing.model.aproduct.itemtracking.*"%>
-<%@ page import="com.twoclothing.chi.controller.*"%>
-<%@ page import="com.twoclothing.chi.service.*"%>
 <%@ page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -29,10 +26,31 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <!--css-->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/chi/list.css">
-	<style>    	
+	<style>
+		.not-found-container {
+		    position: absolute;
+		    height: 200px;
+		    width: 200px;
+		    left: 50%;
+		    top: 50%;
+		    transform: translate(-50%, -50%);
+		    border-radius: 50%;
+		    background-color: rgba(192, 192, 192, 0.3);
+		    display: flex;
+    		justify-content: center;
+    		align-items: center;
+		}
+		
+		.not-found {
+			color: white;
+			font-size: 30px;
+			margin: 0px;
+		}
+	
     	.delete {
     		background-color: transparent;
 		  	border: none;
+		  	transform: translateY(-3.5px) !important;
 		  	transform: scale(1.1);
 		  	transition: .2s linear;
 		}
@@ -46,13 +64,12 @@
 		}
     
 		.btn {
-		    border: none;
+ 		    border: none;
 		    padding: 0;
 		    margin: 0;
 		    height: 30px;
 		    width: 50px;
 		    font-size: 14px;
-		    line-height: 30px;
 		    text-align: center;
 	    }
 	    
@@ -61,13 +78,20 @@
 	    	box-shadow: none !important;
 	    }
 	    
+	    .page-container {
+	    	position: absolute;
+	    	left: 50%;
+    		transform: translateX(-50%);
+    		margin-top: 4px;
+	    }
+	    
 	    .btn.page {
 	    	color: black;
 	    	width: 40px;
 	    }
 	    
 	    .btn.page:hover {
-	    	color: red;
+	    	color: rgb(168, 7, 7);
 	    }
 	</style>
 	<!--導覽列css-->
@@ -88,8 +112,13 @@
 				    	</div>
 				    	
 	    				<div class="product-info">
+	    					<c:if test="${item.itemStatus eq 1}">
+	    						<div class="not-found-container">
+               						<p class="not-found">商品未上架</p>
+               					</div>
+            				</c:if>
 						    <span class="name">${item.itemName}</span>
-						    <span class="price">${item.price}</span>
+						    <span class="price">NT$ ${item.price}</span>
 						    <form method="post" action="${pageContext.request.contextPath}/itemtrackinglist.check">
 						        <button class="delete" type="submit">
 						        	<svg viewBox="0 0 15 17.5" height="16" width="14" xmlns="http://www.w3.org/2000/svg" class="icon">
@@ -98,7 +127,7 @@
 						        </button>
 						        <input type="hidden" name="itemId" value="${item.itemId}">
 						        <input type="hidden" name="mbrId" value="${sessionScope.mbrId}">
-						        <input type="hidden" name="action" value="delete">
+						        <input type="hidden" name="action" value="deletefromlist">
 						    </form>
 						</div>
 					</a>
@@ -106,7 +135,7 @@
 			</c:forEach>
 		</ul>
 		
-		<div class="pagination justify-content-center mt-3">
+		<div class="page-container">
 			<a class="btn page" href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=1">&lt;&lt;</a>
 			    
 			<c:forEach var="i" begin="1" end="${itemTrackingPageQty}">
