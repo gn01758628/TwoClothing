@@ -93,6 +93,9 @@ input {
 </style>
 </head>
 <body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 			<form action="${pageContext.request.contextPath}/members/Members.do"
 				method="post">
 				<input type="hidden" name="action" value="logout">
@@ -116,7 +119,31 @@ input {
 		</div>
 	</div>
 
+<script>
+$(document).ready(function () {
+    // 當按鈕被點擊時觸發
+    $('.submit').click(function (e) {
+        // 防止表單自動提交
+        e.preventDefault();
 
+        // 使用SweetAlert2顯示提示框
+        Swal.fire({
+            title: '確認寄信?',
+            text: '確認後將寄出驗證信。',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '確認',
+            cancelButtonText: '取消'
+        }).then((result) => {
+            // 如果使用者點擊了"確認"按鈕
+            if (result.isConfirmed) {
+                // 提交表單
+                $(this).closest('form').submit();
+            }
+        });
+    });
+});
+</script>
 
 
 </body>

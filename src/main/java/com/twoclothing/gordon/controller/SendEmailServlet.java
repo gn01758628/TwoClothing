@@ -73,9 +73,11 @@ public class SendEmailServlet extends HttpServlet {
     		
 /////////////////////////////////////redis測試////////////////////	
 
-    		String messageText =  "註冊成功，請點擊<a href='http://192.168.0.32/TwoClothing/members/SendEmailServlet?action=action&activeCode="
+    		String messageText =  "註冊成功，請點擊<a href='http://twoclothing.ddns.net/TwoClothing/members/SendEmailServlet?action=action&activeCode="
     	            +activeCode+"&email="+to;
     	           
+    		System.out.println("註冊成功，請點擊<a href='http://twoclothing.ddns.net/TwoClothing/members/SendEmailServlet?action=action&activeCode="
+    	            +activeCode+"&email="+to);
     		System.out.println(activeCode);
     		 MailService mailService = new MailService();
     		 mailService.sendMail(to, subject, messageText);
@@ -97,6 +99,8 @@ public class SendEmailServlet extends HttpServlet {
 
     		MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
     		Members members = membersServiceImpl.getByEmail(email);
+    		
+    		
 /////////////////////////////////////redis測試////////////////////	
     		Jedis jedis = new Jedis("localhost", 6379);
     		jedis.select(0); 
@@ -130,7 +134,7 @@ public class SendEmailServlet extends HttpServlet {
     			System.out.println(activeCode);
     			System.out.println(getActiveCode);
     			members.setMbrStatus(1);
-    			res.sendRedirect(req.getContextPath() + "/index.jsp");
+    			res.sendRedirect(req.getContextPath() + "/welcome.html");
     		}else {
     			System.out.println(activeCode);
     			System.out.println(getActiveCode);
@@ -150,8 +154,9 @@ public class SendEmailServlet extends HttpServlet {
     		String to = req.getParameter("email3");
     		String subject = "TwoClothing 忘記密碼";
     		
-    		String messageText =  "註冊成功，請點擊<a href='http://192.168.0.32/TwoClothing/front_end/members/forgotPassword.jsp?email="+to;
-    	           
+    		String messageText =  "註冊成功，請點擊<a href='http://twoclothing.ddns.net/TwoClothing/front_end/members/forgotPassword.jsp?email="+to;
+			System.out.println("註冊成功，請點擊<a href='http://twoclothing.ddns.net/TwoClothing/front_end/members/forgotPassword.jsp?email="+to);
+
     		 MailService mailService = new MailService();
     		 mailService.sendMail(to, subject, messageText);
     		 
