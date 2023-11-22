@@ -119,10 +119,16 @@
         .heart-container {
         	--heart-color: rgb(255, 91, 137);
   			position: absolute;
-  			left: 160px;
+  			left: 170px;
 		  	width: 20px;
 		  	height: 20px;
 		  	transition: .3s;
+		}
+		
+		@media screen and (max-width: 540px) {
+			.heart-container {
+	        	display: none;
+			}
 		}
 
 		.heart-container .checkbox {
@@ -201,15 +207,68 @@
     			display: none;
   			}
 		}
-		
-		.message {
- 			display: none;
-			font-size: 14px;
-			position: absolute;
-			padding-top: 55px;
-    		transform: translateX(169%);
+        
+        .custom-popup-class {
+        	background-color: #f2f2f2;
+        	width: 250px;
         }
-
+		
+		.custom-title-class {
+			font-size: 20px;
+		}
+        
+        .report-container {
+        	position: absolute;
+  			left: 170px;
+  			transition: transform 0.3s ease;
+		}
+        
+        .report-container svg {
+    		transform: scale(0.28);
+		}
+		
+		@media screen and (max-width: 710px) {
+			.report-container {
+	        	display: none;
+			}
+		}
+		
+		.report-container:hover {
+		    transform: scale(1.1);
+		}
+		
+		.report-custom-popup-class {
+        	background-color: #f2f2f2;
+        }
+        
+        .modal-dialog {
+        	width: 100%;
+        }
+        
+        .modal-body {
+  			display: flex;
+        	align-items: center;
+        	justify-content: center;
+        }
+        
+        .title-description {
+        	margin-top: 10px;
+        }
+        
+        td.itemId {
+        	padding-left: 19px;
+        }
+        
+        .inputDescription {
+        	margin-top: 10px;
+        	margin-left: 16px;
+        }
+        
+        .modal-footer button:hover, button:focus, button:active, button:visited {
+        	outline: none;
+	    	box-shadow: none !important;
+        }
+        
         div.container div.product-info ul li.li_num {
             margin-bottom: 0px;
             padding-bottom: 0px;
@@ -378,7 +437,14 @@
 				                </svg>
 				            </div>
 				        </div>
-				        <span class="message" id="successMessage">移除成功</span>
+				        
+				        <div class="report-container">
+				        	<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+        						<polygon points="50,20 85,80 15,80" style="fill: #f2f2f2; stroke: #ff6A6A; stroke-width: 5; stroke-linejoin: round;"/>
+        						<text x="50" y="60" font-size="40" fill="#ff6A6A" text-anchor="middle" dominant-baseline="middle">!</text>
+    							<rect x="13" y="15" width="75" height="70" fill="transparent" style="cursor: pointer;" onclick="showDetail(${item.itemId})"/>
+    						</svg>
+				        </div>
 	                </li>
 	                <li>
 	                    <p class="price" name="price">$${item.price}</p>
@@ -416,8 +482,44 @@
 	</form>
 	<a href="${pageContext.request.contextPath}/ItemCart/cartlist?goto=cart&mbrId=2">查看購物車</a>
 	
+	<div class="modal fade" id="itemReportModal" tabindex="-1" aria-labelledby="itemReportModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+	      		<div class="modal-header">
+	      			<h5 class="modal-title" id="itemReportModalLabel">商品檢舉</h5>
+	      		</div>
+	      		
+		      	<div class="modal-body">
+			        <div class="card" style="width: 45rem;">
+				        <div class="card-body">
+					        <table>
+								<tr>
+									<td>商品編號</td>
+									<td id="itemId" class="itemId"></td>
+								</tr>
+								<tr>
+									<td>
+										<div class="title-description">檢舉原因</div></td>
+									<td>
+										<input type="text" id="inputDescription" class="inputDescription" name="inputDescription" size="72"/>
+									</td>
+								</tr>
+							</table>
+				        </div>
+		      		</div>
+		      	</div>
+		      	
+		      	<div class="modal-footer">
+		      		<button class="btn btn-secondary" id="insert" onclick="insertReport()">送出</button>
+			    	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+			    </div>
+			</div>
+		</div>
+	</div>
+	
     <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>	
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
 	    $(document).ready(function() {
@@ -534,15 +636,68 @@
 		        type: "POST",
 		        url: url,
 		        success: function (data) {
-		        	if (window.innerWidth > 600) {
-		        		$("#successMessage").show().delay(2000).fadeOut();
-		        	}
+		        	Swal.fire ({
+		        		title: "移除成功",
+		        		timer: 900,
+		        		showConfirmButton: false,
+		        		customClass: {
+		        			popup: 'custom-popup-class',
+		        		    title: 'custom-title-class',
+		        		}
+		        	});
 		            isTracked = false;
 		        },
 		        error: function (xhr) {
 		        	console.log(xhr);
 		        }
 		    });
+		}
+		
+		function showDetail(itemId) {
+		    event.preventDefault();
+		    $('#itemId').text(itemId);
+		    let html = `<li class="list-group-item" id="report">An itemreport</li>`;
+		    $('#itemReportModal').modal('show');
+		}
+		
+		function insertReport() {
+			if ($('#inputDescription').val() == "") {
+				alert("請填寫原因");
+				return;
+			}
+			
+			var url = "${pageContext.request.contextPath}/front/itemreport?action=insert&itemId=${item.itemId}&description=" + $('#inputDescription').val();
+						
+			$.ajax({
+				type: "POST",
+				url: url,
+				success: function (data) {
+					$('#itemReportModal').modal('hide');
+					
+					Swal.fire({
+				        title: "檢舉成功",
+				        text: "請至我的檢舉查看",
+				        icon: "success",
+				        timer: 2700,
+		        		showConfirmButton: false,
+				        customClass: {
+				        	popup: 'report-custom-popup-class',
+				            title: 'custom-title-class',
+				        },
+				        iconColor: '#b0c4de',
+				        didClose: () => {
+				            location.reload();
+				        }
+				    });
+				},
+				error: function (xhr) {
+					if (xhr.status === 403) {
+						window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
+					} else {
+						console.log(xhr);
+					}
+				}
+			});
 		}
 		
 // 		    const images = [
