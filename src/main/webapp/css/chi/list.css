@@ -6,53 +6,49 @@ body {
 	margin: 0;
 	padding: 0;
 	min-height: 100vh;
-    height: 100%; 
+    height: 100%;
 }
 
 html {
 	--header-height: 92px;
-	--aside-width: 224px;
+	--footer-height: 281px;
+/* 	--aside-width: 224px; */
 	min-height: 100vh;
     height: 100%;
 }
 
 main.main {
-	border: 1px solid red;
-	width: calc(100% - var(--aside-width));
-	margin-left: var(--aside-width);
-	min-height: calc(100vh - var(--header-height));
-	padding: 20px;
-	height: 100%; 
+/* 	width: calc(100% - var(--aside-width)); */
+/* 	margin-left: var(--aside-width); */
+	margin-top: var(--header-height);
+	padding: 15px 20px 40px 20px;
+    height: auto;
 }
 
 main.main ul.list {
-	border: 1px solid orange;
 	list-style: none;
 	margin: 0;
 	padding: 0;
+	height: auto;
 	display: flex;
 	flex-wrap: wrap;
-	height: 98%;
 }
 
 main.main ul.list > li {
-	border: 1px solid black;
 	width: calc(25% - 20px);
-	margin-right: 20px;
+	margin: 10px;
 	padding: 10px;
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	height: calc(50% - 20px);
-}
-
-main.main ul.list > li:nth-child(4n) {
-	border: 1px solid gray;
-	margin-right: 0;
+	min-height: 250px;
+	border: 0.5px solid rgba(192, 192, 192, 0.8);
+	border-radius: 20px;
+	overflow: hidden;
 }
 
 main.main ul.list > li a {
-	border: 1px solid red;
 	display: block;
 	text-decoration: none;
 	width: 100%;
@@ -60,36 +56,60 @@ main.main ul.list > li a {
 }
 
 main.main ul.list > li a div.image-container {
-	border: 1px solid blue;
 	width: 100%;
-	height: calc(100% - 30px);
-	font-size: 0;
-	text-align: center;
+	height: calc(90% - 30px);
+	min-height: 220px;
 	position: relative;
+	display: flex;
+	justify-content: center;
+    align-items: center;
 }
 
-img {
-	border: 1px solid lightblue;
-	max-width: 100%;
-	max-height: 100%;
+main.main ul.list > li a div.image-container img {
+	max-width: 90%;
+	max-height: 90%;
 }
 
 main.main ul.list > li a div.product-info {
-	border: 1px solid green;
 	display: flex;
-	padding: 2px 4px;
+	padding: 2px 10px;
 	align-items: baseline;
 	color: black;
 }
 
 main.main ul.list > li a div.product-info span {
-	border: 1px solid lightgreen;
-	padding-right: 20px;
+	padding-right: 30px;
+	display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 main.main ul.list > li a div.product-info form {
-	border: 1px solid yellow;
 	position: absolute;
 	right: 0;
  	padding-right: 15px;
+}
+
+@media screen and (max-width: 991.2px) {	
+	main.main ul.list > li {
+        width: calc(50% - 40px);
+        height: auto;
+        margin: 10px auto;
+    }
+}
+
+@media screen and (max-width: 600px) {
+	main.main ul.list > li {
+        width: calc(75% - 40px);
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 0 0 10px;
+    }
+    
+    main.main ul.list > li a div.image-container {
+        width: 75%;
+		left: 50%;
+		transform: translateX(-50%);
+    }
 }
