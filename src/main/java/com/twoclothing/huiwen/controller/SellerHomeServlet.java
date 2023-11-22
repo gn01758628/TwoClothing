@@ -44,9 +44,9 @@ public class SellerHomeServlet extends HttpServlet{
 		res.setContentType("text; charset=UTF-8");
 		
 		//取商品列表
-		HttpSession session = req.getSession();
-		Integer mbrId = (Integer) session.getAttribute("mbrId");
-		
+//		HttpSession session = req.getSession();
+//		Integer mbrId = (Integer) session.getAttribute("mbrId");
+		Integer mbrId = Integer.valueOf(req.getParameter("mbrId"));
 		List<Item> itemList = new ArrayList<>();
 		itemList = itemService.getItemBymbrIdAndStatus(mbrId);
 		

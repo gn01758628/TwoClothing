@@ -45,7 +45,7 @@
 		    justify-content: center;
 /* 		    max-width: 1280px; */
 /* 		    width: 1300px; */
-		    border: 1px solid;
+/* 		    border: 1px solid; */
 		    min-height:calc(100% - 309px);
 		}
 		
@@ -223,7 +223,7 @@
 			height: 35px;
 			font-size: 18px;
 			background-color: #561729;
-			border-color: black;
+/* 			border-color: black; */
 			border:none;
 			border-radius:1rem;
 		}
