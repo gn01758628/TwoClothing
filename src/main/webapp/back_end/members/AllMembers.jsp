@@ -62,12 +62,18 @@ h1 {
 </head>
 <body>
 <h1 style="color: red;">會員列表</h1>
-<a href='${pageContext.request.contextPath}//members/Members.do?action=getAll'>後台會員列表()</a>
+<a href='${pageContext.request.contextPath}/members/Members.do?action=getAll'>後台會員列表</a>
 
     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/members/Members.do" >
         <b>輸入會員編號 (如1):</b>
         <input type="text" name="mbrId" value="${param.mbrId}"><font color=red>${errorMsgs.mbrId}</font>
-        <input type="hidden" name="action" value="getOne_For_Display">
+        <input type="hidden" name="action" value="getOne_For_mbrId">
+        <input type="submit" value="送出">
+    </FORM>
+    <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/members/Members.do" >
+        <b>輸入會員email :</b>
+        <input type="text" name="email" value="${param.email}"><font color=red>${errorMsgs.email}</font>
+        <input type="hidden" name="action" value="getOne_For_email">
         <input type="submit" value="送出">
     </FORM>
 

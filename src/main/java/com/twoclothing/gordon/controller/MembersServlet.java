@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -25,6 +26,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.twoclothing.gordon.service.MembersServiceImpl;
 import com.twoclothing.model.members.Members;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 @WebServlet("/members/Members.do")
 @MultipartConfig(
 	    fileSizeThreshold = 1024 * 1024 * 2,  // 2 MB
@@ -41,9 +44,20 @@ public class MembersServlet extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
+        
+        if ("getAll".equals(action)) { 
+            MembersServiceImpl mbrServiceHibernate = new MembersServiceImpl();
+            List<Members> members = mbrServiceHibernate.getAll();
+            
+        	
+            req.setAttribute("Members", members); 
+            String url = "/back_end/members/AllMembers.jsp";
+            RequestDispatcher successView = req.getRequestDispatcher(url); 
+            successView.forward(req, res);
+        }
 
         //pk查詢
-        if ("getOne_For_Display".equals(action)) { 
+        if ("getOne_For_mbrId".equals(action)) { 
 
             Map<String, String> errorMsgs = new LinkedHashMap<>();
             req.setAttribute("errorMsgs", errorMsgs);
@@ -54,7 +68,7 @@ public class MembersServlet extends HttpServlet {
                 errorMsgs.put("mbrId", "請輸入會員編號");
             }
             if (!errorMsgs.isEmpty()) {
-                RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/select_page.jsp");
+                RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/AllMembers.jsp");
                 failureView.forward(req, res);
                 return;// 程式中斷
             }
@@ -67,7 +81,7 @@ public class MembersServlet extends HttpServlet {
             }
             // Send the use back to the form, if there were errors
             if (!errorMsgs.isEmpty()) {
-                RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/select_page.jsp");
+                RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/AllMembers.jsp");
                 failureView.forward(req, res);
                 return;// 程式中斷
             }
@@ -79,7 +93,7 @@ public class MembersServlet extends HttpServlet {
                 errorMsgs.put("mbrId", "查無資料");
             }
             if (!errorMsgs.isEmpty()) {
-                RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/select_page.jsp");
+                RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/AllMembers.jsp");
                 failureView.forward(req, res);
                 return;// 程式中斷
             }
@@ -89,6 +103,41 @@ public class MembersServlet extends HttpServlet {
             RequestDispatcher successView = req.getRequestDispatcher(url); 
             successView.forward(req, res);
 
+        }
+        //email查詢
+        if ("getOne_For_email".equals(action)) { 
+        	
+        	Map<String, String> errorMsgs = new LinkedHashMap<>();
+        	req.setAttribute("errorMsgs", errorMsgs);
+        	
+        	// 1.接收請求參數 - 輸入格式的錯誤處理
+        	String str = req.getParameter("email");
+        	if (str == null || (str.trim()).isEmpty()) {
+        		errorMsgs.put("email", "請輸入email");
+        	}
+        	if (!errorMsgs.isEmpty()) {
+        		RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/AllMembers.jsp");
+        		failureView.forward(req, res);
+        		return;// 程式中斷
+        	}
+        	
+        	// 2.開始查詢資料
+        	MembersServiceImpl mbrServiceHibernate = new MembersServiceImpl();
+        	Members members = mbrServiceHibernate.getByEmail(str);
+        	if (members == null) {
+        		errorMsgs.put("email", "查無資料");
+        	}
+        	if (!errorMsgs.isEmpty()) {
+        		RequestDispatcher failureView = req.getRequestDispatcher("/back_end/members/AllMembers.jsp");
+        		failureView.forward(req, res);
+        		return;// 程式中斷
+        	}
+        	// 3.查詢完成,準備轉交(Send the Success view)
+        	req.setAttribute("Members", members); 
+        	String url = "/back_end/members/listOneMembers.jsp";
+        	RequestDispatcher successView = req.getRequestDispatcher(url); 
+        	successView.forward(req, res);
+        	
         }
 
         // update
@@ -171,7 +220,8 @@ public class MembersServlet extends HttpServlet {
 
             // 1.接收請求參數 - 輸入格式的錯誤處理
             String email = req.getParameter("email");
-            String pswdHash = PasswordHashing.hashPassword(req.getParameter("pswdHash")); //加密
+            String pswdHashvalue = req.getParameter("pswdHash"); //加密
+            String pswdHash = BCrypt.withDefaults().hashToString(12, pswdHashvalue.toCharArray());
             String userInputCode = req.getParameter("VerificationCode");
 
             // 驗證碼圖片的資料
@@ -217,7 +267,9 @@ public class MembersServlet extends HttpServlet {
 
             // 接收请求参数
             String email = req.getParameter("email2");
-            String pswdHash = PasswordHashing.hashPassword(req.getParameter("pswdHash2"));  //加密
+            String pswdHash = req.getParameter("pswdHash2");  //加密
+            
+
             res.setContentType("application/json");
             res.setCharacterEncoding("UTF-8");
             Map<String, Object> response = new HashMap<>();
@@ -236,8 +288,10 @@ public class MembersServlet extends HttpServlet {
                 sendResponse(res, response, errorMsgs, false);
                 return;
             }
+            BCrypt.Result result = BCrypt.verifyer().verify(pswdHash.toCharArray(), members.getPswdHash());
 
-            if (!members.getPswdHash().equals(pswdHash)) {
+
+            if (!result.verified) {
                 errorMsgs.put("error", "帳號密碼不正確");
                 sendResponse(res, response, errorMsgs, false);
                 return;
@@ -339,7 +393,9 @@ public class MembersServlet extends HttpServlet {
         if ("forgotPassword".equals(action)) {
         	
             String email = req.getParameter("email");
-            String pswdHash = PasswordHashing.hashPassword(req.getParameter("pswdHash"));  //加密
+//            String pswdHash = PasswordHashing.hashPassword(req.getParameter("pswdHash"));  //加密
+            String pswdHashvalue = req.getParameter("pswdHash");  //加密
+            String pswdHash = BCrypt.withDefaults().hashToString(12, pswdHashvalue.toCharArray()); //加密
         	System.out.println("email="+email);
         	System.out.println(pswdHash);
         	
@@ -355,6 +411,61 @@ public class MembersServlet extends HttpServlet {
          	RequestDispatcher successView = req.getRequestDispatcher(url); 
          	successView.forward(req, res);
             
+        }
+        //修改密碼1
+        if ("members_UpdatePswdHash_1".equals(action)) {
+        	Map<String, String> errorMsgs = new LinkedHashMap<>();
+            req.setAttribute("errorMsgs", errorMsgs);
+            
+            res.setContentType("application/json");
+            res.setCharacterEncoding("UTF-8");
+            Map<String, Object> response = new HashMap<>();
+            
+        	Integer mbrId = Integer.valueOf(req.getParameter("mbrId"));
+//            String pswdHash = PasswordHashing.hashPassword(req.getParameter("pswdHash"));  //加密
+        	String pswdHash = req.getParameter("pswdHash");  //加密
+        	
+        	 MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
+             Members members = membersServiceImpl.getByPrimaryKey(mbrId);
+             
+             BCrypt.Result result = BCrypt.verifyer().verify(pswdHash.toCharArray(), members.getPswdHash());
+
+
+             if (!result.verified) {
+                 errorMsgs.put("error", "帳號密碼不正確");
+                 sendResponse(res, response, errorMsgs, false);
+                 return;
+             }
+
+             sendResponse(res, response, errorMsgs, true);
+             
+//        	String url = "/front_end/members/UpdatePswdHash.jsp";
+//        	RequestDispatcher successView = req.getRequestDispatcher(url); 
+//        	successView.forward(req, res);
+        	
+        }
+        //TODO //TODO 
+        //修改密碼2
+        if ("members_UpdatePswdHash_2".equals(action)) {
+        	
+        	Integer mbrId = Integer.valueOf(req.getParameter("mbrId"));
+//            String pswdHash = PasswordHashing.hashPassword(req.getParameter("pswdHash"));  //加密
+        	String pswdHashvalue = req.getParameter("pswdHash");  //加密
+        	String pswdHash = BCrypt.withDefaults().hashToString(12, pswdHashvalue.toCharArray()); //加密
+        	
+        	
+        	
+        	
+        	MembersServiceImpl membersServiceImpl = new MembersServiceImpl();
+        	Members members = membersServiceImpl.getByPrimaryKey(mbrId);
+        	
+        	members.setPswdHash(pswdHash);
+        	membersServiceImpl.updateMembers(members);
+        	
+        	String url = "/front_end/members/memberProfile.jsp";
+        	RequestDispatcher successView = req.getRequestDispatcher(url); 
+        	successView.forward(req, res);
+        	
         }
         //會員修改資料
 

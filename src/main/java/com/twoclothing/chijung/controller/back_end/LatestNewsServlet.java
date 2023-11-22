@@ -27,7 +27,7 @@ import com.twoclothing.model.latestnews.LatestNews;
 import com.twoclothing.utils.generic.GenericService;
 
 
-@WebServlet("/LatestNewsServlet")
+@WebServlet("/back_end/LatestNewsServlet")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
 maxFileSize = 1024 * 1024 * 50,       // 10MB
 maxRequestSize = 1024 * 1024 * 50)   // 50MB

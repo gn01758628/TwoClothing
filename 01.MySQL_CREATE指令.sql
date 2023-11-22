@@ -123,7 +123,7 @@ CREATE TABLE coupon
 (
     cpnid      INT AUTO_INCREMENT NOT NULL,
     cpnname    VARCHAR(20),
-    tagid      INT      NOT NULL,
+    tagid      INT,
     empid      INT      NOT NULL,
     createdate DATETIME NOT NULL,
     expiredate DATETIME,

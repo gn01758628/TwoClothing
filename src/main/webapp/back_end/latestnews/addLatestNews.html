@@ -71,16 +71,20 @@
 	//初始設定
 	$(document).ready(function() {
 		// 取得現在的日期和時間
-		const now = new Date();
+	    const now = new Date();
 
-		// 格式化現在的日期和時間為 YYYY-MM-DDTHH:mm（符合datetime-local輸入的格式）
-		const formattedNow = now.toISOString().slice(0, 16);
+	    // 格式化現在的日期和時間為 YYYY-MM-DDTHH:mm（符合datetime-local輸入的格式）
+	    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Taipei' };
+	    const formattedNow = now.toLocaleString('zh-TW', options)
+	        .replace(/\//g, '-')
+	        .replace(',','');
+	    
 
-		// 設定開始日期和時間的最小值為現在的日期和時間
-		document.getElementById("startDate").min = formattedNow;
+	    // 設定開始日期和時間的最小值為現在的日期和時間
+	    document.getElementById("startDate").min = formattedNow;
 
-		// 設定結束日期和時間的最小值為現在的日期和時間
-		document.getElementById("endDate").min = formattedNow;
+	    // 設定結束日期和時間的最小值為現在的日期和時間
+	    document.getElementById("endDate").min = formattedNow;
 	});
 	
 	
@@ -210,7 +214,7 @@
 
 	    // 使用$.ajax()发送FormData到服务器的Servlet路径（假设是/upload-form-data）
 	    $.ajax({
-	        url: '/TwoClothing/LatestNewsServlet',
+	        url: '/TwoClothing/back_end/LatestNewsServlet',
 	        type: 'POST',
 	        data: formData,
 	        processData: false,
@@ -231,7 +235,7 @@
 	                for (var key in errorMsgs) {
 	                    if (errorMsgs.hasOwnProperty(key)) {
 	                        var errorMsg = errorMsgs[key];
-	                        errorMsgDiv.append('<p>' + errorMsg + '</p>');
+	                        errorMsgDiv.append('<p style="color:red;">' + errorMsg + '</p>');
 	                    }
 	                }
 	            } catch (e) {

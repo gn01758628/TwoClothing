@@ -7,13 +7,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>員工中心</title>
+
 	<!-- 引入 jQuery -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
 	<link rel="stylesheet" href="/TwoClothing/css/chijung/empCenter.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-	
+<title>員工中心</title>	
 	
 </head>
 
@@ -134,10 +134,10 @@
               <a href="${pageContext.request.contextPath}/back_end/servlet/categoryTags/list"><i class="ion-ios-filing-outline"></i>商品類別標籤管理</a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-information-outline"></i></a>
+              <a href="${pageContext.request.contextPath}/back_end/coupon/CouponServlet.do?action=turn_To_Add_Coupon"><i class="ion-ios-paperplane-outline"></i>新增優惠券</a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-paperplane-outline"></i></a>
+              <a href="${pageContext.request.contextPath}/back_end/coupon/CouponServlet.do?action=get_All_Coupon"><i class="ion-ios-information-outline"></i>優惠券管理</a>
             </li>
             <li>
               <a href=""><i class="ion-android-star-outline"></i></a>

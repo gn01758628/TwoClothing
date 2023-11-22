@@ -30,6 +30,20 @@
 </head>
 <body bgcolor='white'>
 
+
+
+
+
+<a href='${pageContext.request.contextPath}/bidorder/BidOrder.do?action=getAll'>後台訂單列表</a>
+
+
+
+
+
+
+
+
+
 <table id="table-1">
    <tr><td><h3>IBM BidOrder: Home</h3><h4>( MVC )</h4></td></tr>
 </table>
