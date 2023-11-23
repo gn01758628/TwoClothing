@@ -50,16 +50,15 @@
 
 <!--     <aside class="itemSearch"> -->
 <!--     </aside> -->
-	
-<!--     <script src="/TwoClothing/js/chijung/itemSearch.js"></script> -->
+
+    <script src="/TwoClothing/js/chijung/itemSearch.js"></script>
     <script>
+
     $(document).ready(function () {
         // Bootstrap初始化
         let collapseElementList = [];
-        let itemList = [];
 
         $.get('/TwoClothing/front_end/itemsearchServlet?action=getCategoryTags', function (data) {
-            itemList = data;
             for (let i = 0; i < data.length; i++) {
                 let currentElement = data[i];
                 let nextElement = data[i + 1];
@@ -106,9 +105,8 @@
                 });
             });
         }, 'json');
-
     });
-    
+
     </script>
 
 

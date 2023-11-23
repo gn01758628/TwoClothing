@@ -156,41 +156,6 @@
     		color:#561729;
     		border-radius: 6px;
     		
-    		
-    		
-    	.itemSearch{
-            max-width:100%;
-        }
-        .accordion-header {
-            display:flex;
-            align-items:center;
-        }
-        .accordion-button {
-            margin-left: auto;
-            width: auto;
-            background-color: rgba(0,0,0,0);
-        }
-        .accordion-button:not(.collapsed) {
-		    color: #0c63e4;
-		    background-color: unset;
-		    box-shadow: unset;
-		}
-        .accordion-item{
-        	border:unset;
-            border-bottom: 1px solid rgba(0,0,0,.125);
-        }
-		.accordion-body {
-			padding:0;
-		    padding-left: 0.75rem;
-		}
-        .itemsearch a{
-			font-size: 1.25rem;
-			color: #000000;
-			text-decoration: none;
-		}
-		.hovered:hover{
-			background-color:var(--bs-gray-200);
-		}
     	}
 	</style>
     <!--導覽列css-->
@@ -236,7 +201,6 @@
 	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
 	<!--Sweet Alert-->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
-	
 	<!--JS loader-->
 	<script>
 	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
@@ -249,19 +213,20 @@
 	</script>
 	<script src="${pageContext.request.contextPath}/js/chijung/itemSearch.js"></script>
 	<script>
+	var myList = [
+	    { itemId: 1, itemName: "商品1", price: 20,tagId:1 },
+	    { itemId: 2, itemName: "商品2", price: 30,tagId:2 },
+	    { itemId: 3, itemName: "商品3", price: 25,tagId:3 },
+	    { itemId: 4, itemName: "商品4", price: 15,tagId:4 },
+	    { itemId: 5, itemName: "商品5", price: 40,tagId:5 },
+	    { itemId: 6, itemName: "商品6", price: 50,tagId:6 },
+	    { itemId: 7, itemName: "商品7", price: 35,tagId:3 },
+	    { itemId: 8, itemName: "商品8", price: 28,tagId:3 },
+	    { itemId: 9, itemName: "商品9", price: 22,tagId:2 },
+	    { itemId: 10, itemName: "商品10", price: 18,tagId:7 }
+	];
 	$(document).ready(function() {
-// 		var myList = [
-// 		    { itemId: 1, itemName: "商品1", price: 20 },
-// 		    { itemId: 2, itemName: "商品2", price: 30 },
-// 		    { itemId: 3, itemName: "商品3", price: 25 },
-// 		    { itemId: 4, itemName: "商品4", price: 15 },
-// 		    { itemId: 5, itemName: "商品5", price: 40 },
-// 		    { itemId: 6, itemName: "商品6", price: 50 },
-// 		    { itemId: 7, itemName: "商品7", price: 35 },
-// 		    { itemId: 8, itemName: "商品8", price: 28 },
-// 		    { itemId: 9, itemName: "商品9", price: 22 },
-// 		    { itemId: 10, itemName: "商品10", price: 18 }
-// 		];
+		
 
 		function setupPagination(myList) {
 	 	  //每頁顯示幾項商品
@@ -364,34 +329,6 @@
 			
 		}
 		setupPagination(myList);
-		
-		
-		
-		// 使用 jQuery 綁定事件
-        $('.itemSearch').on('click', 'a', function (event) {
-            event.preventDefault();
-            clickedIdSubsList = [];
-            clickedIdParentsList = [];
-
-            let clickedId = $(this).attr('id');
-            clickedIdSubsList.push(clickedId);
-            findAccordionBody(clickedId);
-
-            clickedIdParentsList.unshift(clickedId);
-            let accordionBodyId = $(this).closest('.accordion-body').attr('id');
-            if (accordionBodyId) {
-                $(this).parents('.accordion-body').each(function () {
-                    clickedIdParentsList.unshift(this.id.replace('c', ''));
-                });
-            }
-            console.log("clickedIdSubsList:"+clickedIdSubsList);
-            console.log("clickedIdParentsList:"+clickedIdParentsList);
-            let filteredData = filterItemListByIds(clickedIdSubsList, itemList);
-            // 遍歷 filteredData 並印出每個對象的內容
-    		filteredData.forEach(function (item) {
-    		    console.log("Tag ID: " + item.tagId + ", Other Properties: " + JSON.stringify(item));
-    		});
-        });
 	})
 	
 	</script>

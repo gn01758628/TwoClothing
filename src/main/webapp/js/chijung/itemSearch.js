@@ -4,8 +4,8 @@ let clickedIdParentsList = [];
 $(document).ready(function () {
     // Bootstrap初始化
     let collapseElementList = [];
-    let itemList = [];
-
+//    let itemList = [];
+//
 //    $.get('/TwoClothing/front_end/itemsearchServlet?action=getCategoryTags', function (data) {
 //        itemList = data;
 //        for (let i = 0; i < data.length; i++) {
@@ -54,9 +54,9 @@ $(document).ready(function () {
 //            });
 //        });
 //    }, 'json');
-//
-//    
-//
+
+    
+
     // 使用 jQuery 綁定事件
     $('.itemSearch').on('click', 'a', function (event) {
         event.preventDefault();
@@ -76,7 +76,8 @@ $(document).ready(function () {
         }
         console.log("clickedIdSubsList:"+clickedIdSubsList);
         console.log("clickedIdParentsList:"+clickedIdParentsList);
-        let filteredData = filterItemListByIds(clickedIdSubsList, itemList);
+//        let filteredData = filterItemListByIds(clickedIdSubsList, itemList);
+        let filteredData = filterItemListByIds(clickedIdSubsList, myList);
         // 遍歷 filteredData 並印出每個對象的內容
 		filteredData.forEach(function (item) {
 		    console.log("Tag ID: " + item.tagId + ", Other Properties: " + JSON.stringify(item));
