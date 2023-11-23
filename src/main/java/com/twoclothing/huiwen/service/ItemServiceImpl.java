@@ -28,6 +28,9 @@ import com.twoclothing.model.memberscoupon.MembersCoupon.MembersCouponCompositeD
 import com.twoclothing.model.shipsetting.ShipSetting;
 import com.twoclothing.model.shipsetting.ShipSettingDAO;
 import com.twoclothing.model.shipsetting.ShipSettingHibernateDAO;
+import com.twoclothing.redismodel.notice.Notice;
+import com.twoclothing.redismodel.notice.NoticeDAO;
+import com.twoclothing.redismodel.notice.NoticeJedisDAO;
 import com.twoclothing.utils.HibernateUtil;
 import com.twoclothing.utils.generic.*;
 
@@ -47,6 +50,8 @@ public class ItemServiceImpl implements ItemService{
     
     private MembersDAO  membersDAO;
     
+    private final NoticeDAO noticeDAO = new NoticeJedisDAO();
+    
 	public ItemServiceImpl() {
 		dao = new ItemHibernateDAO(HibernateUtil.getSessionFactory());
 		categoryTagsDAO = new CategoryTagsHibernateDAO(HibernateUtil.getSessionFactory());
@@ -54,7 +59,8 @@ public class ItemServiceImpl implements ItemService{
 		MemCouponDAO = DAOSelector.getDAO(MembersCoupon.class);
 		couponDAO = DAOSelector.getDAO(Coupon.class);
 		shipSettingDAO = new ShipSettingHibernateDAO(HibernateUtil.getSessionFactory());
-		membersDAO = new MembersHibernateDAO(HibernateUtil.getSessionFactory());
+		membersDAO = new MembersHibernateDAO(HibernateUtil.getSessionFactory());		
+//		noticeDAO = new NoticeJedisDAO(HibernateUtil.getSessionFactory());
 	}
 	
 	@Override
@@ -310,5 +316,10 @@ public class ItemServiceImpl implements ItemService{
 	public List<Integer> getItemByMbrId(Integer mbrId) {
 		return dao.getItemByMbrId(mbrId);
 	}
+	
+    @Override
+    public void addNotice(Notice notice, Integer mbrId) {
+        noticeDAO.insert(notice, mbrId);
+    }
 
 }

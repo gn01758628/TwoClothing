@@ -1,5 +1,42 @@
 // 頁面動畫,搜尋按鈕,登出警告
 $(document).ready(function () {
+    // 重新包裝頁面
+    const bodyHTML = $("body");
+    const footerHTML = $(".footerHTML");
+    bodyHTML.wrapInner('<div id="content-wrap"></div>');
+    $(".headerHTML").prependTo("body");
+    footerHTML.appendTo("body");
+    $("body, html").css({
+        height: '100%',
+        margin: '0'
+    });
+    $("#content-wrap").css({
+        flex: '1'
+    });
+    footerHTML.css({
+        flexShrink: '0'
+    });
+    bodyHTML.css({
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh'
+    });
+    bodyHTML.css({
+        marginTop: '92px'
+    });
+
+    adjustMarginTop();
+    $(window).resize(adjustMarginTop);
+    function adjustMarginTop() {
+        if (window.matchMedia('(max-width: 767.2px)').matches) {
+            bodyHTML.css('marginTop', '184px');
+        } else if (window.matchMedia('(max-width: 991.2px)').matches) {
+            bodyHTML.css('marginTop', '124px');
+        } else {
+            bodyHTML.css('marginTop', '92px');
+        }
+    }
+
     // 頁面進度條
     $(document).scroll(function () {
         const scrollHeight = $(document).height() - $(window).height();
@@ -19,24 +56,17 @@ $(document).ready(function () {
     })
 
     // 視窗滾動決定導覽列收縮
-    // let prevScrollPos = $(window).scrollTop();
-    // let isNavCollapsed = false;
-    //
-    // $(window).scroll(function () {
-    //     let currentScrollPos = $(window).scrollTop();
-    //     if (prevScrollPos < currentScrollPos) {
-    //         if (!isNavCollapsed) {
-    //             isNavCollapsed = true;
-    //             $("header .needSlide").slideUp(300);
-    //         }
-    //     } else {
-    //         if (isNavCollapsed) {
-    //             isNavCollapsed = false;
-    //             $("header .needSlide").slideDown(300);
-    //         }
-    //     }
-    //     prevScrollPos = currentScrollPos;
-    // });
+    let prevScrollPos = $(window).scrollTop();
+
+    $(window).scroll(function () {
+        let currentScrollPos = $(window).scrollTop();
+        if (prevScrollPos < currentScrollPos) {
+            $("header .needSlide").slideUp(300);
+        } else {
+            $("header .needSlide").slideDown(300);
+        }
+        prevScrollPos = currentScrollPos;
+    });
 
     // 確保兩個搜尋框的輸入永遠相同
     const searchInput = $(".searchInput");
@@ -48,9 +78,44 @@ $(document).ready(function () {
     // 綁定搜尋按鈕
     const searchButton = $(".searchButton");
     searchButton.click(function () {
-        const currentInput = $(this).prev();
-        // TODO 補上搜尋前往的地方
+        const input = $(".searchInput");
+        let inputValue = input.val().trim();
+        if (inputValue !== "") {
+            // 搜尋AJAX請求
+            $.get('/TwoClothing/headerHelper/searchItem', {
+                name: inputValue
+            }, function (data) {
+                if (JSON.parse(data)) {
+                    // 有結果就將頁面導向,結果展示頁面
+                    window.location.href = '/TwoClothing/front_end/keywordResult.html';
+                } else {
+                    Swal.fire({
+                        title: "對不起，沒有找到符合條件的商品",
+                        text: "我們這裡仍有眾多商品等待您的發掘",
+                        imageUrl: "/TwoClothing/images/ItemNotFound.png",
+                        imageWidth: 500,
+                        imageHeight: 500,
+                        imageAlt: "Custom image",
+                        confirmButtonColor: "#561729",
+                        confirmButtonText: "嘗試其他關鍵詞"
+                    });
+                }
+            })
+        }
     })
+
+    // 輸入框的鍵盤監聽
+    searchInput.on("keydown", function (event) {
+        let keyCode = event.keyCode || event.which;
+        // Enter鍵
+        if (keyCode === 13) {
+            searchButton.click();
+        }
+        // Esc鍵
+        if (keyCode === 27) {
+            searchInput.val("");
+        }
+    });
 
     // 登出按鈕alert
     $("#logoutButton").click(function (e) {
@@ -140,7 +205,7 @@ function alreadyLogin(mbrId) {
     // 即時通相關節點
     const messageNum_Span = $(".messageNum");
     // Ajax請求會員相關數據
-    $.get("/TwoClothing/headerHelper/search", function (data) {
+    $.get("/TwoClothing/headerHelper/searchInfo", function (data) {
         // 購物車數量
         if (data.carNum > 0) {
             carNum_Span.text(data.carNum);

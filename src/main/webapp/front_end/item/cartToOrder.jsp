@@ -398,6 +398,7 @@
 	   				mytotal : $(".add_price input").val(),
 	   				count : $(".count input").val(),
 	   				eachCount : output,
+	   				mbrPoint : "${mbrPoint}",
 	   				totalPay : ($(".add_price input").val()) - ($(".count input").val())
 	   		};
 	   		console.log(cartData);

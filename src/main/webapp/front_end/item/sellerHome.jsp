@@ -30,7 +30,7 @@
         }   
 
         div.body_container{
-            border:1px solid black;
+/*             border:1px solid black; */
             width:100%;
             height:100%;
             display:flex;
@@ -49,7 +49,7 @@
         }
 
         div.body_container div.imgContainer div.imgdown{
-            border:1px solid orange;
+/*             border:1px solid orange; */
             width: 100%;
             height: 100%;
             overflow: hidden;
@@ -88,19 +88,19 @@
         }
         
         div.cate_container{
-            border:1px solid blue;
+/*             border:1px solid blue; */
             width: 100%;
             height: 200px;
             display:flex;
             justify-content: center;
             align-items: center;
             flex-direction: row;
-            margin: 30px 0;
+            margin: 30px;
         }
 
         div.cate_container > div{
-            border:1px solid yellow;
-            width: 100%;
+            border:1px solid black; 
+            width: 25%;
             height: 100%;
             display: flex;
             justify-content: center;
@@ -109,7 +109,7 @@
         }
 
         div.cate_container div div.cateImgContainer{
-            border:1px solid burlywood;
+/*             border:1px solid burlywood; */
             width: 35%;
             height: 60%;
             margin: 10px 0;
@@ -151,9 +151,11 @@
         }
         div.itemarea{
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             flex-direction: column;
             width:100%;
+            min-height: 1000px;
+            
 
         }
         div.itemarea ul.itemList{
@@ -166,7 +168,7 @@
 
         }
         div.itemarea ul.itemList > li{
-            border: 1px solid cornflowerblue;
+/*             border: 1px solid cornflowerblue; */
             flex-grow: 1;
             max-width: 25%;
             margin-bottom: 20px;
@@ -176,10 +178,11 @@
         }
         div.itemarea ul.itemList >li a{
             display: block;
-            border: 1px solid wheat;
+            border: 1px solid black;
             text-decoration: none;
             width: 90%;
             height: 100%;
+            padding:25px;
         }
         div.itemarea ul.itemList li:nth-child(4n){
             margin-left: 0;
@@ -206,7 +209,7 @@
         }
 
         div.itemarea ul.itemList >li a div.imgBlock{
-            border:1px solid orchid;
+/*             border:1px solid orchid; */
             font-size: 0;
             text-align: center;
             position:relative;

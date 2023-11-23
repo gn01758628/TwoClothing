@@ -67,4 +67,9 @@ public interface BidItemDAO {
      */
     int countByTags(Integer tagId);
 
+    // 導覽列搜尋
+    List<BidItem> getAllActiveByBidItemName(String bidName);
+
+    int countActiveByBidItemName(String bidName);
+
 }
