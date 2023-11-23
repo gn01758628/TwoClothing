@@ -10,6 +10,7 @@ import com.twoclothing.model.coupon.Coupon;
 import com.twoclothing.model.members.Members;
 import com.twoclothing.model.memberscoupon.MembersCoupon;
 import com.twoclothing.model.shipsetting.ShipSetting;
+import com.twoclothing.redismodel.notice.Notice;
 
 public interface ItemService {
 	
@@ -64,5 +65,9 @@ public interface ItemService {
     public List<Item> getAllByStatus(Integer itemStatus);
     
     List<Integer> getItemByMbrId(Integer mbrId);
+
+	void addNotice(Notice notice, Integer mbrId);
+    
+    
     
 }

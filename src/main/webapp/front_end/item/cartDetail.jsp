@@ -46,7 +46,7 @@
 /* 		    max-width: 1280px; */
 /* 		    width: 1300px; */
 /* 		    border: 1px solid; */
-		    min-height:calc(100% - 309px);
+		    min-height:calc(100vh - 209px);
 		}
 		
 		div.leftMain {
@@ -307,7 +307,7 @@
 		<div class="rightMain">
 			<div class="rightInner">
 				<label class="checkPoint">
-					<input type="checkbox" name="mbrPoint" id="point" onchange="countEverything()">
+					<input type="checkbox" name="mbrPoint" id="point" onchange="countEverything()" value="${mbrPoint}">
 					使用會員點數 <span>${mbrPoint}</span>點
 				</label>
 				<button id="countBtn" class="choice_cou" type="button" class="btn btn-primary"
@@ -320,7 +320,7 @@
 					合計$<span>0</span>
 				</div>
 				<input type="hidden" name="toPay" value="toPay">
-				<input class="btn-primary" type="submit" value="去買單">
+				<input class="btn-primary" type="submit" onclick="return checkIfAnyCheckboxSelected()" value="去買單">
 <!-- 				<button name="pay">去買單</button> -->
 			</div>
 		</div>
@@ -574,6 +574,22 @@
 	});
 
 	
+	</script>
+	<script>
+		function checkIfAnyCheckboxSelected() {			
+		    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+		    var anyCheckboxSelected = Array.from(checkboxes).some(checkbox => checkbox.checked);
+		    
+		    if (!anyCheckboxSelected) {
+		    	Swal.fire({
+		    		  icon: "error",
+		    		  title: "沒有商品",
+		    		  text: "請至少選擇一件商品！",
+		    		});
+		        return false;
+		    }
+		    return true;
+		};
 	</script>
 	
 </body>

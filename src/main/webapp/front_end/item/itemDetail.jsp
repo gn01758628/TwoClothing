@@ -6,6 +6,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${item.itemName}</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    
 	<style>
         * {
             box-sizing: border-box;
@@ -23,14 +41,15 @@
             justify-content: center;
             flex-direction: column;
             align-items: center;
+            min-height: calc(100vh - 309px);
         }
 
-        div.container {
+        div.body_container {
             max-width: 800px;
             width: 100%;
             display: flex;
             min-height: 400px;
-            max-height: 412px;
+/*             max-height: 412px; */
         }
 
         div.downarea {
@@ -48,6 +67,7 @@
             height: 100px;
             table-layout: fixed;
             border-spacing: 20px;
+            border-collapse: separate;
         }
 
         div.downarea table tr td, th {
@@ -60,7 +80,7 @@
             border-bottom: 2px solid gray;            
         }
 
-        div.container div.product-image {
+        div.body_container div.product-image {
             flex: 1;
             min-width: 50%;
             display: flex;
@@ -68,14 +88,14 @@
     		background-color: #f2f2f2;
         }
 
-        div.container div.product-image img {
+        div.body_container div.product-image img {
 /*             border: 1px solid black; */
              max-width: 100%; 
              height: 100%;
             display: block;
         }
 
-        div.container div.product-info {
+        div.body_container div.product-info {
             flex: 1;
             background-color: #f2f2f2;
             padding: 0px;
@@ -86,7 +106,7 @@
             position: relative;
         }
         
-        div.container div.product-info ul {
+        div.body_container div.product-info ul {
             list-style-type: none;
             display: flex;
             justify-content: center;
@@ -95,7 +115,7 @@
             padding: 0px;
         }
         
-        div.container div.product-info ul li {
+        div.body_container div.product-info ul li {
             margin: 10px 4px;
             display: flex;
             justify-content: center;
@@ -104,12 +124,12 @@
             padding: 5px;
         }
         
-        div.container div.product-info ul li h1 {
+        div.body_container div.product-info ul li h1 {
             font-size: 24px;
             margin: 0;
         }
 
-        div.container div.product-info ul li p {
+        div.body_container div.product-info ul li p {
             font-size: 16px;
             display: inline-block;
             margin: 2px 0;
@@ -269,27 +289,27 @@
 	    	box-shadow: none !important;
         }
         
-        div.container div.product-info ul li.li_num {
+        div.body_container div.product-info ul li.li_num {
             margin-bottom: 0px;
             padding-bottom: 0px;
         }
         
-        div.container div.product-info ul li.li_quantity {
+        div.body_container div.product-info ul li.li_quantity {
             display: inline-block;
             margin-top: 0px;
             padding-top: 0px;
 
         }
         
-        div.container div.product-info ul li p.p_quantity {
+        div.body_container div.product-info ul li p.p_quantity {
             font-size: 12px;
         }
         
-        div.container div.product-info ul li.li_quantity p:nth-child(2) {
+        div.body_container div.product-info ul li.li_quantity p:nth-child(2) {
             margin-left: 5px;
         }
 
-        div.container div.product-info ul li p.price {
+        div.body_container div.product-info ul li p.price {
             font-size: 20px;
         }
 
@@ -306,12 +326,12 @@
             padding: 4px 7px;
         }
 
-        div.container div.product-info ul li div.description {
+        div.body_container div.product-info ul li div.description {
             margin-top: 20px;
         }
 
-        div.container div.product-info ul input.buy-button {
-            background-color: #1a191f;
+        div.body_container div.product-info ul input.buy-button {
+            background-color: #561729;
             color: #fff;
             border: none;
             padding: 5px 10px;
@@ -321,22 +341,33 @@
             border-radius: 15px;
         }
 
-        div.container div.product-info ul button.buy-button:hover {
+        div.body_container div.product-info ul button.buy-button:hover {
             background-color: #6e6b71;
+        }
+        
+        a#contactSeller{
+        	margin: 10px 0;
+		    font-size: 12px;
+		    text-decoration: none;
+		    color: #561729;
         }
         
         div.toSeller {
             width: 0;
             height: 0;
             border-top: 100px solid transparent;
-            border-right: 120px solid rgb(243, 170, 107);
+            border-right: 120px solid pink;
             display: flex;
             flex-direction: row;
             margin-left: auto;
+            position: absolute;
+		    bottom: 0;
+		    right: 0;
         }
         
         div.toSeller:hover {
-            border-right-color: rgb(249, 194, 145);
+            border-right-color: #561729;
+            color:black;
         }
         
         div.toSeller:hover a {
@@ -344,14 +375,15 @@
         }
         
         div.toSeller a {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            text-decoration: none;
-            margin-left: auto;
-            color: rgb(0, 0, 0);
-            padding: 2px;
-            font-size: 17px;
+			position: absolute;
+		    bottom: 5px;
+		    right: -113px;
+		    width: 74px;
+		    text-decoration: none;
+		    margin-left: auto;
+		    color: rgb(0, 0, 0);
+		    padding: 2px;
+		    font-size: 17px;
         }
         
 /*         項目條 */
@@ -375,12 +407,19 @@
 /* 	  		width: 400px;  */
          }
 	</style>
+	<!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
+	
 
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<!-- 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> -->
 </head>
 <body>
+	<div class="headerHTML"></div>
+
 	<form class="form_detail" method="post" action="${pageContext.request.contextPath}/ItemCart/cart" enctype="multipart/form-data">
-	    <div class="container">
+	    <div class="body_container">
 	        <div class="product-image">
 	<%--             <img id="slider_img" src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" alt="Product Image"> --%>
 	<!--         	<button type="button" onclick="nextImg()">按</button> -->
@@ -459,6 +498,7 @@
 	            	<input type="hidden" name="itemId"  value="${item.itemId}">
 					<input type="hidden" name="gotoCart" value="gotoCart">
 	                <input type="button" class="buy-button" value="加入購物車">
+	                <a href="${pageContext.request.contextPath}/front/chatroom/${item.mbrId}.check" id="contactSeller">聯絡賣家</a>
 	            </ul>
 	            <div class="toSeller">
 	                    <a href="${pageContext.request.contextPath}/SellerHome/home?mbrId=${item.mbrId}">查看賣場</a>
@@ -480,7 +520,7 @@
 	        </table>
 	    </div>
 	</form>
-	<a href="${pageContext.request.contextPath}/ItemCart/cartlist?goto=cart&mbrId=2">查看購物車</a>
+<%-- 	<a href="${pageContext.request.contextPath}/ItemCart/cartlist?goto=cart&mbrId=2">查看購物車</a> --%>
 	
 	<div class="modal fade" id="itemReportModal" tabindex="-1" aria-labelledby="itemReportModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
@@ -516,13 +556,32 @@
 			</div>
 		</div>
 	</div>
+	<div class="footerHTML"></div>
 	
-    <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>	
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<%--     <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>	 --%>
+<!-- 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> -->
+<!--     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
     
+    <!--bootstrap5 js-->
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+	<!--jQuery-->
+	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+	<!--Sweet Alert-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+	<!--JS loader-->
+	<script>
+	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+	        // 保證headerHTML加載完才載入header.js
+	        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+	    });
+	
+	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	</script>
+
     <script>
 	    $(document).ready(function() {
+	    	var quantities;
 			$(".size").each(function () {
 				let status = $(this).text();
 				switch(status){
@@ -582,18 +641,24 @@
 		});
 	    
 		$(".buy-button").on("click",function(){
-			let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&mbrId=2&quantity=${item.quantity}&gotoCart=gotoCart";
+			quantities = $("#input_num").val();
+			let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&quantity="+quantities+"&gotoCart=gotoCart";
 			console.log(url);
 			fetch(url)
-	            .then(function(response){
-	            	return response.text();
-	            })
-	            .then(function(data){
-	            	console.log(data);
-	            })
-	            .catch(function(error){
-	            	console.log(error);
-	            })
+            .then(function(response){
+            	return response.text();
+            })
+            .then(function(data){
+            	Swal.fire({
+            		  title: data,
+            		  confirmButtonText: "確認",
+            		  icon: "success"
+            		});
+//	            	location.reload();
+            })
+            .catch(function(error){
+            	alert("加入購物車失敗！");
+            })
 		})
 		
 		let isTracked = ${isItemTracked};
