@@ -182,7 +182,7 @@
         </li>
         
         <li>
-          <a href="" class="drop-down-menu"><i class="ion-ios-medical-outline"></i> <span class="">虛擬錢包提款審核</span></a>
+          <a href="${pageContext.request.contextPath}/back_end/BackWithdrawRequest/withdraw?choice=getAll" class="drop-down-menu"><i class="ion-ios-medical-outline"></i> <span class="">虛擬錢包提款審核</span></a>
         </li>
         
       </ul>
