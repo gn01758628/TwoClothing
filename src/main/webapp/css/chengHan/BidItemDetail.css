@@ -1,0 +1,308 @@
+body {
+    background-color: #fff8fb;
+}
+
+#bidHelp, #wrongMsg {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    padding: 0px !important;
+}
+
+.makePrice {
+    background-color: #f3c4d2;
+    width: 400px;
+}
+
+/* 出價框的基本樣式 */
+.bid-container {
+    padding: 1rem; /* 之前為 p-3，現在轉換為CSS */
+    background-color: #f9edf2; /* 之前的內聯式背景顏色 */
+    border: 2px solid #f9edf2; /* 添加框線 */
+    border-radius: 8px; /* 圓角效果 */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* 平滑過渡效果 */
+    max-width: 100%; /* 確保容器寬度不會超過其父元素 */
+    box-sizing: border-box; /* 邊框和內邊距不會讓元素寬度超出 */
+}
+
+.bid-container .form-control {
+    width: 200px;
+}
+
+/* 輸入組的響應式設計 */
+.input-group {
+    width: 100x; /* 讓輸入框有彈性的寬度 */
+}
+
+/* 出價按鈕的響應式設計 */
+#bidBtn {
+    white-space: nowrap; /* 防止按鈕文字換行 */
+    margin-top: 0.5rem; /* 在小屏幕上提供一些頂部間距 */
+}
+
+/* 直購價和立即結標按鈕的響應式設計 */
+.align-vertical {
+    flex-wrap: wrap; /* 允許元素在小屏幕上換行 */
+}
+
+/* 為了在小屏幕上更好的顯示，我們可以添加一些媒體查詢 */
+@media (max-width: 768px) {
+    .bid-container, .align-vertical {
+        padding: 0.5rem; /* 在小屏幕上減少內邊距 */
+    }
+
+    .input-group, .align-vertical {
+        flex-direction: column; /* 在小屏幕上堆疊元素 */
+    }
+
+    .input-group-text, #bidAmountInp, #bidBtn, #bidDirectBtn {
+        width: 100%; /* 在小屏幕上元素寬度占滿父容器 */
+        margin-bottom: 0.5rem; /* 在堆疊元素之間提供間距 */
+    }
+}
+
+/* 滑鼠懸浮在出價框時的樣式 */
+.bid-container:hover {
+    border-color: #e2c1c7; /* 框線顏色變化 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加陰影 */
+}
+
+/* 出價輸入框的樣式 */
+#bidAmountInp {
+    border: 1px solid #ced4da; /* Bootstrap風格的框線 */
+    border-radius: 0.25rem; /* 輕微的邊角圓滑化 */
+}
+
+/* 輸入框前的貨幣符號樣式 */
+.input-group-text {
+    background-color: #e9ecef; /* 輕灰色背景 */
+    border: 1px solid #ced4da; /* Bootstrap風格的框線 */
+    border-radius: 0.25rem; /* 輕微的邊角圓滑化 */
+}
+
+/* 出價按鈕的樣式 */
+#bidBtn {
+    background-color: #ffc107; /* 橙色背景 */
+    color: #ffffff; /* 白色文字 */
+    border: none; /* 移除框線 */
+}
+
+/* 最低出價資訊的樣式 */
+#bidHelp {
+    font-size: 0.9rem; /* 字體大小調整 */
+    font-weight: bold;
+    color: #646c72; /* Bootstrap默認的文字顏色 */
+}
+
+/* 錯誤訊息的樣式 */
+#wrongMsg {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #dc3545; /* Bootstrap的警告紅色 */
+}
+
+/* 直購價金額的樣式 */
+#directPriceHelp {
+    color: #dc3545; /* Bootstrap的警告紅色 */
+    font-weight: bold; /* 加粗字體 */
+    font-size: 1.5rem; /* 較大的字體大小 */
+}
+
+/* 直購價與立即結標按鈕的容器樣式 */
+.align-vertical {
+    align-items: center; /* 垂直居中對齊內容 */
+    display: flex; /* 使用flex布局 */
+}
+
+
+.product-info > div {
+    display: flex;
+    align-items: baseline; /* 確保內容在基線對齊 */
+}
+
+/* 標籤欄位的固定寬度和文本對齊 */
+.min-width {
+    min-width: 100px; /* 設定最小寬度 */
+    flex: 0 0 100px; /* 防止彈性容器影響寬度 */
+    text-align: right; /* 文本向右對齊 */
+}
+
+/* 商品資訊值的排版和間距 */
+.info-value {
+    flex-grow: 1; /* 允許元素增長填充可用空間 */
+    text-align: left; /* 文本向左對齊 */
+    margin-left: 10px; /* 與左側標籤的間距 */
+}
+
+/* 移除超連結預設樣式 */
+.link-no-style {
+    text-decoration: none; /* 移除超連結下劃線 */
+    color: inherit; /* 顏色繼承於父元素 */
+}
+
+/* 超連結按鈕懸停和聚焦狀態下的樣式 */
+.link-no-style:hover, .link-no-style:focus {
+    text-decoration: none; /* 滑鼠懸停或聚焦時不顯示下劃線 */
+    color: inherit; /* 滑鼠懸停或聚焦時顏色繼承於父元素 */
+}
+
+/* 商品圖片的最大高度設定 */
+.bigIMG {
+    max-height: 350px; /* 主要商品圖片的最大高度 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加一個輕微的陰影 */
+    transition: box-shadow 0.3s ease; /* 平滑過渡效果 */
+    border-radius: 10px; /* 輕微的邊角圓滑化 */
+}
+
+.happyIMG {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加一個輕微的陰影 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加一個輕微的陰影 */
+    transition: box-shadow 0.3s ease; /* 平滑過渡效果 */
+    border-radius: 10px; /* 輕微的邊角圓滑化 */
+}
+
+.smallIMG {
+    max-height: 150px; /* 縮略圖的最大高度 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* 平滑過渡效果 */
+    border-radius: 50px; /* 輕微的邊角圓滑化 */
+    border: 2px solid transparent; /* 初始時透明的框線 */
+}
+
+/* 滑鼠懸停在小圖上時的樣式 */
+.smallIMG:hover {
+    transform: scale(1.05); /* 輕微放大 */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 增加陰影 */
+    border-color: #007bff; /* 改變框線顏色 */
+}
+
+/* 滑鼠點擊小圖時的樣式 */
+.smallIMG:active {
+    transform: scale(0.95); /* 輕微縮小 */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* 增加陰影 */
+}
+
+/* 縮略圖容器的設定 */
+.thumbnails-container {
+    display: flex;
+    justify-content: center; /* 縮略圖在容器中央對齊 */
+    gap: 50px; /* 縮略圖之間的間隙 */
+}
+
+/* 縮略圖的對齊設定 */
+.thumbnail-left {
+    margin-right: auto; /* 左邊縮略圖向右邊界靠攏 */
+}
+
+.thumbnail-right {
+    margin-left: auto; /* 右邊縮略圖向左邊界靠攏 */
+}
+
+/* 倒數計時和結束日期容器樣式 */
+.countdown-container {
+    display: flex;
+    justify-content: space-between; /* 兩端對齊 */
+    align-items: center; /* 垂直居中 */
+    padding: 1rem; /* 添加內邊距 */
+    border: 2px solid #ffc107; /* 添加黃色邊框 */
+    border-radius: 8px; /* 邊角圓滑化 */
+    background-color: #fff3cd; /* 淺黃色背景 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 輕微陰影效果 */
+    margin-bottom: 1rem; /* 與下方元素的間距 */
+}
+
+/* 倒數計時數字樣式 */
+.countdown-number {
+    font-weight: bold;
+    color: #e74c3c;
+    font-size: 1.25rem; /* 較大的字體大小 */
+}
+
+/* 倒數計時單位樣式 */
+.countdown-unit {
+    margin-left: 2px;
+    color: #7f8c8d;
+    font-weight: normal;
+    font-size: 1rem; /* 正常的字體大小 */
+}
+
+/* 結束日期樣式 */
+.end-date {
+    color: #000; /* 黑色字體 */
+    margin-left: 220px; /* 確保沒有左邊距 */
+    margin-right: 0; /* 確保沒有右邊距，並靠右對齊 */
+}
+
+/* 目前出價金額的樣式 */
+.currentBid {
+    font-size: 1.5rem; /* 較大的字體大小強調金額 */
+    color: #e74c3c; /* 醒目的顏色 */
+    font-weight: bold; /* 加粗字體 */
+    margin-right: 0.5rem; /* 與次數的間距 */
+}
+
+/* 出價次數的樣式 */
+.bid-count {
+    font-size: 0.9rem; /* 較小的字體大小 */
+    color: #6c757d; /* 較淡的顏色 */
+}
+
+/* 容器樣式 */
+.custom-table-container {
+    margin-top: 20px; /* 或者根據您的頁面設計進行調整 */
+    font-size: 18px;
+}
+
+/* 表格基礎樣式 */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+/* 表頭樣式 */
+.custom-table thead tr {
+    background-color: #f9edf2;
+    color: #6c757d;
+    text-align: left;
+    font-size: 20px;
+}
+
+/* 表格行樣式 */
+.custom-table th,
+.custom-table td {
+    padding: 12px 15px;
+}
+
+/* 條紋行效果 */
+.custom-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.custom-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.custom-table tbody tr:last-of-type {
+    border-bottom: 2px solid #f9edf2;
+}
+
+/* 滑鼠懸浮效果 */
+.custom-table tbody tr:hover {
+    background-color: #f5e5f7;
+    cursor: pointer;
+}
+
+/* 表格文字對齊樣式 */
+.custom-table th,
+.custom-table td {
+    text-align: center;
+}
+
+/* 表格垂直對齊樣式 */
+.custom-table th,
+.custom-table td {
+    vertical-align: middle;
+}
