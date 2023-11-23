@@ -74,35 +74,16 @@ body {
 		<tr>
 			<td>${allotedCoupon.cpnId}</td>
 			<td>${allotedCoupon.cpnName}</td>
-			<td>${allotedCoupon.createDate}</td>
-			<td>${allotedCoupon.expireDate}</td>
-			<td>${couponDisTypeMap[coupon.disType]}</td>
-			<td>${coupon.disValue}</td>
-			<td>${coupon.minAmount}</td>
-			
-			<c:choose>
-		        <c:when test="${coupon.createDate gt now}">
-		                <td>尚未生效</td>
-		        </c:when>
-		        <c:when test="${not empty coupon.expireDate and coupon.expireDate lt now}">
-				    <td>已失效</td>
-				</c:when>
-		        <c:otherwise>
-		                <td>生效中</td>
-		        </c:otherwise>
-		    </c:choose>
-			
-			<td>${coupon.empId}</td>
-			
-
+			<td>${allotedCoupon.totalQuantity}</td>
+			<td>${allotedCoupon.totalQuantity - allotedCoupon.remainingQuantity}</td>
+			<td>${allotedCoupon.remainingQuantity}</td>
+			<td>${AllotedCouponStatusMap[allotedCoupon.status]}</td>
 			<td>
 				<c:choose>
-					<c:when test="${not empty coupon.expireDate and coupon.expireDate lt now}">
-					</c:when>
-			        <c:otherwise>
-						<input class="allot_Coupon_btn" type="submit" value="新增發放項目">
-			        </c:otherwise>
-		    	</c:choose>
+			        <c:when test="${allotedCoupon.status eq 1}">
+			                <input class="stop_Issuing_Coupon_btn" type="submit" value="停止發放">
+			        </c:when>
+			    </c:choose>
 			</td>
 		</tr>
 	</c:forEach>
