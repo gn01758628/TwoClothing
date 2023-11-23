@@ -662,7 +662,13 @@
             	alert("加入購物車失敗！");
             })
 			
-			var carNum=$("span.carNum").val();
+			//購物車icon顯示數量
+			var carNum= parseInt($("li.nav-item span.carNum").text());
+			console.log("carNum"+carNum);
+			if(!carNum){
+				carNum=0;
+			}
+			console.log("carNum/"+carNum);
 			let url2="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&addCartNum=addCartNum";
 			console.log(url2);
 			fetch(url2)
@@ -676,8 +682,9 @@
 				}else{
 					console.log("無相同商品");
 					carNum += 1;
+					$("li.nav-item span.carNum").text(carNum);
 					if(carNum == 0){
-						$("span.carNum").hide();
+						$("li.nav-item span.carNum").hide();
 					}
 				}
             })
