@@ -61,7 +61,7 @@ public class ItemServlet extends HttpServlet {
 		PrintWriter out = res.getWriter();
 
 		String choice = req.getParameter("choice");
-		System.out.println("choice:" + choice);
+//		System.out.println("choice:" + choice);
 		String forwardPath = "";
 		if (choice != null) {
 			switch (choice) {
@@ -418,7 +418,7 @@ public class ItemServlet extends HttpServlet {
 	//查全部不分頁
 	public String getAllListNoPage(HttpServletRequest req, HttpServletResponse res) {
 		List<Item> itemList = itemService.getAllByStatus(0);
-		System.out.println("...."+itemList);
+//		System.out.println("...."+itemList);
 		req.setAttribute("itemList", itemList);
 		return "/front_end/item/itemList.jsp";
 	}
