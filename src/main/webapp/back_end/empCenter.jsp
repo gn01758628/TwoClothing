@@ -151,7 +151,7 @@
           
           <ul class="nav-flyout">
             <li>
-              <a href="${pageContext.request.contextPath}/back/itemreport?action=getAll"><i class="ion-ios-flame-outline"></i>一般商品檢舉管理</a>
+              <a href="${pageContext.request.contextPath}/back/itemreport?action=compositeQuery"><i class="ion-ios-flame-outline"></i>一般商品檢舉管理</a>
             </li>
             <li>
               <a href=""><i class="ion-ios-lightbulb-outline"></i></a>

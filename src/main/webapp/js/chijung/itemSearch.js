@@ -57,32 +57,32 @@ $(document).ready(function () {
 
     
 
-    // 使用 jQuery 綁定事件
-    $('.itemSearch').on('click', 'a', function (event) {
-        event.preventDefault();
-        clickedIdSubsList = [];
-        clickedIdParentsList = [];
-
-        let clickedId = $(this).attr('id');
-        clickedIdSubsList.push(clickedId);
-        findAccordionBody(clickedId);
-
-        clickedIdParentsList.unshift(clickedId);
-        let accordionBodyId = $(this).closest('.accordion-body').attr('id');
-        if (accordionBodyId) {
-            $(this).parents('.accordion-body').each(function () {
-                clickedIdParentsList.unshift(this.id.replace('c', ''));
-            });
-        }
-        console.log("clickedIdSubsList:"+clickedIdSubsList);
-        console.log("clickedIdParentsList:"+clickedIdParentsList);
-//        let filteredData = filterItemListByIds(clickedIdSubsList, itemList);
-        let filteredData = filterItemListByIds(clickedIdSubsList, myList);
-        // 遍歷 filteredData 並印出每個對象的內容
-		filteredData.forEach(function (item) {
-		    console.log("Tag ID: " + item.tagId + ", Other Properties: " + JSON.stringify(item));
-		});
-    });
+//    // 使用 jQuery 綁定事件
+//    $('.itemSearch').on('click', 'a', function (event) {
+//        event.preventDefault();
+//        clickedIdSubsList = [];
+//        clickedIdParentsList = [];
+//
+//        let clickedId = $(this).attr('id');
+//        clickedIdSubsList.push(clickedId);
+//        findAccordionBody(clickedId);
+//
+//        clickedIdParentsList.unshift(clickedId);
+//        let accordionBodyId = $(this).closest('.accordion-body').attr('id');
+//        if (accordionBodyId) {
+//            $(this).parents('.accordion-body').each(function () {
+//                clickedIdParentsList.unshift(this.id.replace('c', ''));
+//            });
+//        }
+//        console.log("clickedIdSubsList:"+clickedIdSubsList);
+//        console.log("clickedIdParentsList:"+clickedIdParentsList);
+////        let filteredData = filterItemListByIds(clickedIdSubsList, itemList);
+//        let filteredData = filterItemListByIds(clickedIdSubsList, myList);
+//        // 遍歷 filteredData 並印出每個對象的內容
+//		filteredData.forEach(function (item) {
+//		    console.log("Tag ID: " + item.tagId + ", Other Properties: " + JSON.stringify(item));
+//		});
+//    });
     
 });
 // 尋找對應的 div 並執行相應的操作

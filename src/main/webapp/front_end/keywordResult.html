@@ -27,6 +27,7 @@
         body {
             background-color: #fff8fb;
         }
+
         /* 大標題 */
         .bigTitle {
             display: block;
@@ -84,8 +85,11 @@
             border-radius: 2px;
             box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
             transition: box-shadow .25s;
-            height: 400px;
+            height: 300px;
+            width: 200px;
             overflow: hidden;
+            margin-right: 20px;
+
         }
 
         .card:hover {
@@ -102,7 +106,7 @@
 
         .img-card img {
             width: 100%;
-            height: 200px;
+            height: 100px;
             object-fit: contain;
             transition: all .25s ease;
         }
@@ -145,7 +149,7 @@
         }
 
         .card .itemPrice {
-            font-size: 24px;
+            font-size: 16px;
             font-weight: bold;
             color: #ff3400;
             margin-top: 10px;
@@ -155,7 +159,7 @@
 
         /*競標的特別設定*/
         .bidItemCard {
-            height: 480px;
+            height: 370px;
         }
 
         .bidItemCard .currentBid {
@@ -166,7 +170,7 @@
 
         .bidItemCard .currentBid .bidAmount {
             color: #ff3400;
-            font-size: 24px;
+            font-size: 16px;
         }
 
         .endDate {
@@ -182,6 +186,10 @@
             box-sizing: border-box; /* 确保内边距不会影响总宽度 */
             margin-bottom: 10px; /* 调整与下方图片的距离 */
             border-radius: 10px; /* 圆角效果 */
+        }
+
+        .countDown {
+            font-size: 13px;
         }
 
         /*競標的特別設定*/
@@ -231,6 +239,73 @@
 
         /*購買按鈕*/
 
+        /*顯示選擇*/
+        .chooseResult .radio-input {
+            display: flex;
+            flex-direction: row;
+            font-size: 16px;
+            font-weight: 200;
+            color: white;
+        }
+
+        .chooseResult .radio-input input[type="radio"] {
+            display: none;
+        }
+
+        .chooseResult .radio-input label {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #212121;
+            border-radius: 5px;
+            margin-right: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .chooseResult .radio-input label:before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .chooseResult .radio-input input[type="radio"]:checked + label:before {
+            background-color: green;
+            top: 0;
+        }
+
+        .chooseResult .radio-input input[type="radio"]:checked + label {
+            background-color: royalblue;
+            color: #fff;
+            border-color: rgb(129, 235, 129);
+            animation: radio-translate 0.5s ease-in-out;
+        }
+
+        @keyframes radio-translate {
+            0% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
     </style>
     <!--導覽列css-->
     <link rel="stylesheet" href="/TwoClothing/css/chengHan/header.css">
@@ -241,33 +316,50 @@
 <!--放在最前面-->
 <div class="headerHTML"></div>
 
-<!--標題-->
-<div class="container itemTitle">
-    <div class="row">
-        <div class="col text-center">
-            <h2 class="bigTitle">一般商品</h2>
+<div class="container pt-4">
+    <div class="row justify-content-start">
+        <div class="col-auto chooseResult">
+            <div class="radio-input">
+                <input value="0" name="chooseResult" id="item" type="radio" checked>
+                <label for="item">顯示一般商品</label>
+                <input value="1" name="chooseResult" id="biditem" type="radio">
+                <label for="biditem">顯示競標商品</label>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="container">
-    <div class="row justify-content-start showItem">
-        <!-- 動態生成一般商品項目 -->
+<div id="itemWrapper">
+    <!--標題-->
+    <div class="container itemTitle">
+        <div class="row">
+            <div class="col text-center">
+                <h2 class="bigTitle">一般商品</h2>
+            </div>
+        </div>
     </div>
-</div>
 
-<!--標題-->
-<div class="container bidItemTitle">
-    <div class="row">
-        <div class="col text-center">
-            <h2 class="bigTitle">競標商品</h2>
+    <div class="container">
+        <div class="row justify-content-start showItem">
+            <!-- 動態生成一般商品項目 -->
         </div>
     </div>
 </div>
 
-<div class="container">
-    <div class="row justify-content-start showBidItem">
-        <!-- 動態生成競標商品項目 -->
+<div id="bidItemWrapper">
+    <!--標題-->
+    <div class="container bidItemTitle">
+        <div class="row">
+            <div class="col text-center">
+                <h2 class="bigTitle">競標商品</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-start showBidItem">
+            <!-- 動態生成競標商品項目 -->
+        </div>
     </div>
 </div>
 
@@ -294,20 +386,31 @@
 
 <!--此頁面的js-->
 <script>
-    const itemTitle = $(".itemTitle");
-    const bidItemTitle = $(".bidItemTitle");
-    const itemDiv =$(".showItem");
-    const bidItemDiv =$(".showBidItem");
+    const itemDiv = $(".showItem");
+    const bidItemDiv = $(".showBidItem");
+    const bidItemWrapper = $("#bidItemWrapper");
+    const itemWrapper = $("#itemWrapper");
 
     $(document).ready(function () {
         // 頁面載入,發出Ajax請求
         $.get("/TwoClothing/keywordResult", function (data) {
             const itemList = JSON.parse(data.itemList);
             const bidItemList = JSON.parse(data.bidItemList);
-            console.log(itemList);
             createItem(itemList);
             createBidItem(bidItemList);
+            bidItemWrapper.hide();
         })
+
+        $('input[name="chooseResult"]').change(function () {
+            let value = Number($(this).val());
+            if (value === 1) {
+                itemWrapper.hide();
+                bidItemWrapper.show();
+            } else {
+                bidItemWrapper.hide();
+                itemWrapper.show();
+            }
+        });
 
         function createItem(itemList) {
             itemList.forEach(function (item) {

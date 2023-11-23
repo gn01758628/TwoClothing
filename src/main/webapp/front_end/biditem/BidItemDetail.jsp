@@ -2,6 +2,7 @@
 <%--suppress JSUnusedLocalSymbols --%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html lang="zh-hant" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -26,32 +27,7 @@
     <!--Sweet Alert-->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <!--此頁面的css-->
-
-    <style>
-        #bidBtn_hr {
-            margin-top: -5px;
-            margin-bottom: -5px;
-            padding: 0px !important;
-        }
-
-        #bidHelp, #wrongMsg {
-            margin-top: 10px;
-            margin-bottom: 5px;
-            padding: 0px !important;
-            color: #6c757d;
-        }
-
-        .align-vertical {
-            display: flex;
-            align-items: center;
-        }
-
-        .table-no-border td,
-        .table-no-border th {
-            border: none;
-        }
-    </style>
-
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/BidItemDetail.css">
     <!--導覽列css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
     <!--頁尾css-->
@@ -68,112 +44,190 @@
     </div>
 </c:if>
 <!--商品詳情-->
-<div class="container pt-1">
-    <div class="row mt-5">
-        <div class="col-md-6">
-            <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${bidItem.bidItemId}&position=1"
-                 alt="商品主图" class="img-fluid">
-        </div>
-        <div class="col-md-6">
-            <ul class="list-group">
-                <li class="list-group-item">商品編號：<span id="bidItemId">${bidItem.bidItemId}</span></li>
-                <li class="list-group-item">商品名稱：${bidItem.bidName}</li>
-                <li class="list-group-item">商品新舊程度：${grade}</li>
-                <li class="list-group-item">商品尺寸：${size}</li>
-                <li class="list-group-item">商品詳述：${bidItem.detail}</li>
-                <li class="list-group-item">商品類別：${categoryName}</li>
-                <li class="list-group-item">所屬會員：${bidItem.mbrId}</li>
-                <li class="list-group-item">起標價格：$<span id="startPrice">${bidItem.startPrice}</span></li>
-                <c:if test="${not empty bidItem.reservePrice}">
-                    <li class="list-group-item">底標價格：$<span id="reservePrice">${bidItem.reservePrice}</span></li>
-                </c:if>
-                <c:if test="${not empty bidItem.directPrice}">
-                    <li class="list-group-item">直購價：$<span id="directPrice">${bidItem.directPrice}</span></li>
-                </c:if>
-                <c:if test="${not empty bidItem.startTime}">
-                    <li class="list-group-item">競標開始時間：<span id="startTime">${timeArr[0]}</span></li>
-                </c:if>
-                <c:if test="${not empty bidItem.endTime}">
-                    <li class="list-group-item">競標結束時間：<span id="endTime">${timeArr[1]}</span></li>
-                </c:if>
-                <c:if test="${not empty bidItem.empId}">
-                    <li class="list-group-item">審核員工：${bidItem.empId}</li>
-                </c:if>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<!--出價狀況-->
-<div class="container mt-5 mb-3 text-center">
+<div class="container pt-5">
     <div class="row">
-        <h1>目前出價：<span id="currentBid" style="color: red">$${bidRecordList[0].bidAmount}</span></h1>
-    </div>
-</div>
+        <div class="col-md-5">
+            <!-- 主要商品圖片 -->
+            <div class="text-center">
+                <img src="#" class="img-fluid mb-3 bigIMG" alt="商品主圖">
+            </div>
 
-<div class="container mt-5 mb-3 text-center">
-    <div class="row">
-        <h1>最高出價者：<span id="highestBider">${mbrMap[bidRecordList[0].mbrId]}</span></h1>
-    </div>
-</div>
-
-<!--出價框-->
-<div class="container mt-5 p-3" style="background-color:#fff8fb;">
-    <div class="row justify-content-end">
-        <div class="col-12">
-            <div class="row gx-2 justify-content-end">
-                <div class="col-auto">
-                    <div class="input-group">
-                        <span class="input-group-text">$</span>
-                        <input type="number" class="form-control" placeholder="請直接輸入出價金額"
-                               id="bidAmountInp">
-                    </div>
+            <!-- 縮略圖 -->
+            <div class="thumbnails-container">
+                <div class="thumbnail-right">
+                    <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${bidItem.bidItemId}&position=1"
+                         class="img-fluid smallIMG" alt="商品主圖">
                 </div>
-
-                <div class="col-auto">
-                    <button type="button" style="display: none" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                            id="fakeBtn">立即結標
-                    </button>
-                    <button type="button" class="btn btn-warning rounded-pill" id="bidBtn">我要出價</button>
+                <div class="thumbnail-left">
+                    <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${bidItem.bidItemId}&position=2"
+                         class="img-fluid smallIMG" alt="商品附圖">
                 </div>
             </div>
         </div>
 
-        <div class="col-12" id="bidHelper">
-            <div class="row justify-content-end">
-                <div class="col-auto">
-                    <div id="bidHelp" style="display: none;">
-                        最低出價金額$<span id="minRequest"></span>，全站競標出價增額皆為3%
+        <div class="col-md-7">
+            <!-- 商品資訊 -->
+            <div class="product-info">
+                <div class="row mb-3">
+                    <div class="col-md-8 d-flex align-items-center">
+                        <h2>${bidItem.bidName}</h2>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-end">
+                        <a href="${pageContext.request.contextPath}/front/chatroom/${bidItem.mbrId}.check"
+                           class="link-no-style">
+                            <button type="button" class="btn btn-success me-2">聯絡賣家</button>
+                        </a>
+                        <button type="button" class="btn btn-danger" id="reportBtn">檢舉</button>
                     </div>
                 </div>
+
+                <!-- 倒數計時 -->
+                <div class="mb-3 countdown-container">
+                    <p id="countdown" class="mb-0">距離結束還有：
+                        <span id="days" class="countdown-number"></span><span class="countdown-unit">天</span>
+                        <span id="hours" class="countdown-number"></span><span class="countdown-unit">時</span>
+                        <span id="minutes" class="countdown-number"></span><span class="countdown-unit">分</span>
+                        <span id="seconds" class="countdown-number"></span><span class="countdown-unit">秒</span>
+                        <span class="end-date">結束日期：2023-12-06</span>
+                    </p>
+                </div>
+
+                <div class="mb-3 d-flex align-items-baseline">
+                    <div class="fw-bold min-width">
+                        <c:if test="${not empty bidRecordList}">
+                            目前出價：
+                        </c:if>
+                        <c:if test="${empty bidRecordList}">
+                            起標價：
+                        </c:if>
+                    </div>
+                    <div class="info-value">
+                        <span class="currentBid">
+                            <c:if test="${not empty bidRecordList}">$
+                                ${bidRecordList[0].bidAmount}
+                            </c:if>
+                            <c:if test="${empty bidRecordList}">
+                                ${bidItem.startPrice}
+                            </c:if>
+                        </span>
+                        <span class="bid-count">(${fn:length(bidRecordList)}次出價)</span>
+                    </div>
+                    <div class="fw-bold min-width">最高出價者：</div>
+                    <div class="info-value">${mbrMap[bidRecordList[0].mbrId]}</div>
+                    <!--隱藏的直購價-->
+                    <c:if test="${not empty bidItem.directPrice}">
+                        <span id="directPrice" style="display: none">${bidItem.directPrice}</span>
+                    </c:if>
+                </div>
+
+                <div class="mb-3 d-flex align-items-baseline">
+                    <div class="fw-bold min-width">賣家：</div>
+                    <div class="info-value">
+                        <a href="${pageContext.request.contextPath}/SellerHome/home?mbrId=${bidItem.mbrId}">
+                        ${sellerNameArr[0]}(${sellerNameArr[1]})
+                            <strong>前往賣家賣場</strong>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 出價框 -->
+                <div class="mb-3 mt-3">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-5 d-flex justify-content-center">
+                                <img src="/TwoClothing/images/HappyBidding.png"
+                                     alt="HappyBid" class="img-fluid happyIMG">
+                            </div>
+                            <div class="col-7 d-flex justify-content-center">
+                                <div class="p-3 bid-container">
+                                    <div class="row justify-content-end">
+                                        <div class="col-12">
+                                            <div class="row gx-2 justify-content-end">
+                                                <div class="col-9">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">$</span>
+                                                        <label for="bidAmountInp">
+                                                            <input type="number" class="form-control"
+                                                                   placeholder="請直接輸入金額" id="bidAmountInp">
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-3">
+                                                    <button type="button" style="display: none" data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop"
+                                                            id="fakeBtn">立即結標
+                                                    </button>
+                                                    <button type="button" class="btn btn-warning rounded-pill"
+                                                            id="bidBtn">
+                                                        我要出價
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12" id="bidHelper">
+                                            <div class="row justify-content-end">
+                                                <div class="col-auto">
+                                                    <div id="bidHelp" style="display:none;">
+                                                        最低出價金額$<span id="minRequest"></span>，全站競標出價增額皆為3%
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12" id="wrongHelper">
+                                            <div class="row justify-content-end">
+                                                <div class="col-auto">
+                                                    <div id="wrongMsg" class="h6">
+                                                        <!--錯誤訊息-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <c:if test="${not empty bidItem.directPrice}">
+                                            <div class="col-12" id="bidBtn_hr">
+                                                <hr>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="row justify-content-end">
+                                                    <div class="col-auto align-vertical">
+                                                    <span>直購價：<span class="h3"
+                                                                       id="directPriceHelp"></span></span>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <button type="button" class="btn btn-danger rounded-pill"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop" id="bidDirectBtn">立即結標
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </c:if>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3 d-flex align-items-baseline">
+                    <div class="fw-bold min-width">新舊程度：</div>
+                    <div class="info-value">${grade}</div>
+                    <div class="fw-bold min-width">商品尺寸：</div>
+                    <div class="info-value">${size}</div>
+                </div>
+
+                <div class="mb-3 d-flex align-items-baseline">
+                    <div class="fw-bold min-width">商品詳述：</div>
+                    <div class="info-value">
+                        <pre>${bidItem.detail}</pre>
+                    </div>
+                </div>
+
             </div>
         </div>
-
-        <div class="col-12" id="wrongHelper">
-            <div class="row justify-content-end">
-                <div class="col-auto">
-                    <div id="wrongMsg" class="h6" style="color: red; display: none"></div>
-                </div>
-            </div>
-        </div>
-
-        <c:if test="${not empty bidItem.directPrice}">
-            <div class="col-12" id="bidBtn_hr">
-                <hr>
-            </div>
-            <div class="col-12">
-                <div class="row justify-content-end">
-                    <div class="col-auto align-vertical">
-                        <span>直購價：<span class="h3" id="directPriceHelp" style="color: red"></span></span>
-                    </div>
-                    <div class="col-auto">
-                        <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop" id="bidDirectBtn">立即結標
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </c:if>
 
     </div>
 </div>
@@ -223,25 +277,26 @@
     </div>
 </div>
 
-<%--<!--出價紀錄-->--%>
-<div class="container">
+<!--出價紀錄-->
+<div class="container custom-table-container mb-4">
     <div class="row">
-        <table class="table table-striped table-hover">
+        <table class="custom-table custom-table-striped">
             <thead>
             <tr>
-                <th class="text-center align-middle">出價者</th>
-                <th class="text-center align-middle">出價金額</th>
-                <th class="text-center align-middle">出價時間</th>
+                <th>出價者</th>
+                <th>出價金額</th>
+                <th>出價時間</th>
             </tr>
             </thead>
             <tbody>
             <c:forEach var="bidRecord" items="${bidRecordList}">
                 <tr>
-                    <td class="text-center align-middle">${mbrMap[bidRecord.mbrId]}</td>
-                    <td class="text-center align-middle">${bidRecord.bidAmount}</td>
-                    <td class="text-center align-middle">${bidRecord.bidTime}</td>
+                    <td>${mbrMap[bidRecord.mbrId]}</td>
+                    <td>${bidRecord.bidAmount}</td>
+                    <td>${bidRecord.bidTime}</td>
                 </tr>
             </c:forEach>
+
             </tbody>
         </table>
     </div>
@@ -267,6 +322,7 @@
     $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
 </script>
 
+<!--下一個JS檔需要的EL變數-->
 <script>
     <c:if test="${bidItem.bidStatus != 4}">
     let isLeagal = false;
@@ -276,163 +332,19 @@
     let isLeagal = true;
     </c:if>
 
-    $(document).ready(function () {
-        if (!isLeagal) $("#staticBackdrop").remove();
-        // 取得價格資訊
-        let startPrice = $("#startPrice").text();
-        let reservePrice = $("#reservePrice").text();
-        let directPrice = $("#directPrice").text();
-        let currentBid = Number($("#currentBid").text().replace(/[\$,]/g, ''));
-        // 計算最低出價金額
-        let minRequestAmount = currentBid == 0 ? Math.round(Number(startPrice) * 1.03) : Math.round(currentBid * 1.03);
-        $("#minRequest").text(minRequestAmount);
-        // 直購金額格式化
-        const directPriceHelp = $("#directPriceHelp").text(formatToMoney(directPrice));
-        // 商品編號&要操作的節點
-        let bidItemId = $("#bidItemId").text();
-        const bidAmountInp = $("#bidAmountInp");
-        const bidHelp = $("#bidHelp");
-        const wrongMsg = $("#wrongMsg");
-        const fakeBtn = $("#fakeBtn");
-        const bidType = $("#bidType");
-        const bidAmount2 = $("#bidAmount2");
+    let needFormat = false;
+    <c:if test="${empty bidRecordList}">
+    needFormat = true;
+    </c:if>
 
-        // 出價框獲得焦點
-        bidAmountInp.on("focus", function () {
-            bidHelp.slideDown(300);
-        })
-        // 出價框失去焦點
-        bidAmountInp.on("blur", function () {
-            bidHelp.slideUp(300);
-        })
+    let endTimeStr = "${bidItem.endTime}";
 
-        // 我要出價按鈕
-        $("#bidBtn").on("click", function (e) {
-            // 判斷商品狀態
-            if (!isLeagal) {
-                Swal.fire("此商品並非上架狀態", "非上架狀態的商品無法操作", "error");
-                return;
-            }
-            // 判斷輸入的金額
-            if (bidAmountInp.val() < minRequestAmount) {
-                wrongMsg.text("出價不能小於最低出價" + formatToMoney(minRequestAmount));
-                wrongMsg.slideDown(300);
-                return;
-            }
-            // 有直購價
-            if (Number(directPrice) !== 0) {
-                if (Number(bidAmountInp.val()) >= Number(directPrice)) {
-                    bidAmountInp.val(directPrice);
-                    bidType.text("立即結標");
-                    bidAmount2.text(formatToMoney(Number(bidAmountInp.val())));
-                    fakeBtn.click();
-                    return;
-                }
-            }
-            // 無直購價
-            bidType.text("直接出價");
-            bidAmount2.text(formatToMoney(Number(bidAmountInp.val())));
-            fakeBtn.click();
-        })
+    let contextPath = "${pageContext.request.contextPath}";
 
-        // 立即結標按鈕
-        $("#bidDirectBtn").on("click", function (e) {
-            // 判斷商品狀態
-            if (!isLeagal) {
-                Swal.fire("此商品並非上架狀態", "非上架狀態的商品無法操作", "error");
-                e.preventDefault();
-                return;
-            }
-            bidType.text("立即結標");
-            bidAmountInp.val(directPrice);
-            bidAmount2.text(formatToMoney(Number(directPrice)));
-        })
-
-        // 確認出價按鈕
-        $("#commitBid").on("click", function () {
-            const cancelBid = $("#cancelBid");
-            // 金額正確,發送請求
-            $.post('${pageContext.request.contextPath}/front/biditem/anyone/bid.check', {
-                bidItemId: bidItemId,
-                bidAmount: bidAmountInp.val(),
-                currentBid: currentBid,
-                bidType: bidType.text()
-            }, function (data) {
-                if (data === "0") {
-                    Swal.fire("您不能對自己的商品出價。", "請對其他商品進行投標，感謝配合。", "error");
-                    bidAmountInp.val(0);
-                    cancelBid.click();
-                    return;
-                }
-                if (data === "1") {
-                    Swal.fire("您的出價金額有誤。", "此次出價無效。請重新出價，感謝配合。", "error");
-                    bidAmountInp.val(0);
-                    cancelBid.click();
-                    return;
-                }
-                if (data === "2") {
-                    Swal.fire({
-                        title: "您已成功出價。",
-                        text: "將刷新頁面，以便您觀察最新出價狀況。",
-                        icon: "success",
-                    }).then(() => {
-                        location.reload();
-                        return;
-                    });
-                }
-                if (data === "3") {
-                    Swal.fire({
-                        title: "恭喜直購價得標！",
-                        text: "請瀏覽您的訂單並繼續後續流程。",
-                        icon: "success",
-                    }).then(() => {
-                        location.reload();
-                        return;
-                    });
-                }
-            }).fail(function (xhr) {
-                if (xhr.status === 403) {
-                    window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
-                }
-            })
-        })
-
-
-        // 價格框按鍵反應
-        $('#bidAmountInp').keydown(function (e) {
-            // 輸入框為空時不能輸入0
-            if ((e.keyCode == 48 || e.keyCode == 96) && $(this).val().length === 0) {
-                e.preventDefault();
-                return;
-            }
-            // 允許數字鍵、退格键、Enter键
-            if (!(
-                // 數字鍵
-                (e.keyCode >= 48 && e.keyCode <= 57) ||
-                // 鍵盤數字區的按鍵
-                (e.keyCode >= 96 && e.keyCode <= 105) ||
-                // 退格鍵
-                e.keyCode == 8 ||
-                // Enter
-                e.keyCode == 13 ||
-                // home、end、左右箭頭
-                (e.keyCode >= 35 && e.keyCode <= 39)
-            )) e.preventDefault();
-
-            if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) wrongMsg.slideUp(300);
-
-            if (e.keyCode == 13) $("#bidBtn").click();
-        });
-    });
-
-    // 數字轉 $xxx,xxx,xxx
-    function formatToMoney(number) {
-        const formatter = new Intl.NumberFormat('zh-TW', {
-            maximumFractionDigits: 0,
-        });
-        return '$' + formatter.format(number);
-    }
-
+    let bidItemId = ${bidItem.bidItemId};
 </script>
+<!--此頁面的JS-->
+<script src="${pageContext.request.contextPath}/js/chengHan/BidItemDetail.js"></script>
+
 </body>
 </html>
