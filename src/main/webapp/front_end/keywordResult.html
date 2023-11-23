@@ -24,6 +24,212 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <!--此頁面的css-->
     <style>
+        body {
+            background-color: #fff8fb;
+        }
+        /* 大標題 */
+        .bigTitle {
+            display: block;
+            background-color: #ffc107;
+            color: #fff;
+            font-size: 30px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 50px;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .bigTitle {
+            background-image: linear-gradient(to right, #ee90aa, #f3c4d2);
+        }
+
+        .bigTitle:hover {
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);
+            background-image: linear-gradient(to right, #f3c4d2, #ee90aa);
+        }
+
+        .bigTitle:before,
+        .bigTitle:after {
+            content: '★';
+            color: #561729;
+            font-size: 36px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .bigTitle:before {
+            left: -45px;
+        }
+
+        .bigTitle:after {
+            right: -45px;
+        }
+
+        /*大標題*/
+
+        /*商品卡片*/
+        .card {
+            display: block;
+            margin-bottom: 20px;
+            line-height: 1.42857143;
+            background-color: #fff;
+            border-radius: 2px;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+            transition: box-shadow .25s;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .img-card {
+            width: 100%;
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
+            display: block;
+            overflow: hidden;
+        }
+
+        .img-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            transition: all .25s ease;
+        }
+
+        .card-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .card .itemName {
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* 限制在兩行內 */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis; /* 文本溢出顯示省略號 */
+            line-height: 1.2em; /* 根據您的需求調整 */
+            max-height: 2.4em; /* line-height 的兩倍，以確保兩行 */
+            word-break: break-word; /* 防止單詞在行末分開 */
+            margin-top: 0px;
+            font-weight: 700;
+            font-size: 1.65em; /* 或其他需要的大小 */
+            text-align: center;
+        }
+
+        .card-read-more {
+            border-top: 2px solid #D4D4D4;
+            text-align: center;
+        }
+
+        .card-content a {
+            color: #000;
+            text-decoration: none !important;
+        }
+
+        .card-read-more a {
+            text-decoration: none !important;
+            padding: 10px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .card .itemPrice {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff3400;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /*競標的特別設定*/
+        .bidItemCard {
+            height: 480px;
+        }
+
+        .bidItemCard .currentBid {
+            font-weight: bold;
+            margin-top: 10px;
+            color: #000;
+        }
+
+        .bidItemCard .currentBid .bidAmount {
+            color: #ff3400;
+            font-size: 24px;
+        }
+
+        .endDate {
+            display: block; /* 使用块级元素以覆盖整个容器宽度 */
+            background-color: #D50000; /* 红色背景 */
+            color: white; /* 白色文字 */
+            padding: 5px 0; /* 上下内边距 */
+            font-size: 20px; /* 文字大小 */
+            font-weight: bold; /* 加粗文字 */
+            text-align: center; /* 文字居中对齐 */
+            position: relative; /* 相对定位，相对于卡片而不是图片 */
+            width: 100%; /* 标签宽度与卡片相同 */
+            box-sizing: border-box; /* 确保内边距不会影响总宽度 */
+            margin-bottom: 10px; /* 调整与下方图片的距离 */
+            border-radius: 10px; /* 圆角效果 */
+        }
+
+        /*競標的特別設定*/
+        /*商品卡片*/
+
+        /*購買按鈕*/
+        .shopNow {
+            padding: 1.1em 2em;
+            border: 2px solid #fff;
+            font-size: 15px;
+            color: #131313;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            border-radius: 12px;
+            background-color: #ecd448;
+            font-weight: bolder;
+            box-shadow: 0 2px 0 2px #000;
+        }
+
+        .shopNow:before {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 120%;
+            background-color: #ff6700;
+            top: 50%;
+            transform: skewX(30deg) translate(-150%, -50%);
+            transition: all 0.5s;
+        }
+
+        .shopNow:hover {
+            background-color: #4cc9f0;
+            color: #fff;
+            box-shadow: 0 2px 0 2px #0d3b66;
+        }
+
+        .shopNow:hover::before {
+            transform: skewX(30deg) translate(150%, -50%);
+            transition-delay: 0.1s;
+        }
+
+        .shopNow:active {
+            transform: scale(0.9);
+        }
+
+        /*購買按鈕*/
 
     </style>
     <!--導覽列css-->
@@ -35,8 +241,36 @@
 <!--放在最前面-->
 <div class="headerHTML"></div>
 
-<!--測試用色塊不用加上-->
-<div class="test-div" style="height: 100px; background-color: #3498db;"></div>
+<!--標題-->
+<div class="container itemTitle">
+    <div class="row">
+        <div class="col text-center">
+            <h2 class="bigTitle">一般商品</h2>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-start showItem">
+        <!-- 動態生成一般商品項目 -->
+    </div>
+</div>
+
+<!--標題-->
+<div class="container bidItemTitle">
+    <div class="row">
+        <div class="col text-center">
+            <h2 class="bigTitle">競標商品</h2>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-start showBidItem">
+        <!-- 動態生成競標商品項目 -->
+    </div>
+</div>
+
 
 <!--放在最後面-->
 <div class="footerHTML"></div>
@@ -60,7 +294,131 @@
 
 <!--此頁面的js-->
 <script>
+    const itemTitle = $(".itemTitle");
+    const bidItemTitle = $(".bidItemTitle");
+    const itemDiv =$(".showItem");
+    const bidItemDiv =$(".showBidItem");
 
+    $(document).ready(function () {
+        // 頁面載入,發出Ajax請求
+        $.get("/TwoClothing/keywordResult", function (data) {
+            const itemList = JSON.parse(data.itemList);
+            const bidItemList = JSON.parse(data.bidItemList);
+            console.log(itemList);
+            createItem(itemList);
+            createBidItem(bidItemList);
+        })
+
+        function createItem(itemList) {
+            itemList.forEach(function (item) {
+                // 卡片主體
+                const card = $("<div>", {class: "card col-2"});
+                // 圖片連結
+                const link = $("<a>", {class: "img-card", href: "/TwoClothing/Itemfront/itemlist?goto=" + item.itemId});
+                const img = $("<img>", {
+                    src: "/TwoClothing/ReadItemIMG/item?id=" + item.itemId + "&position=1",
+                    alt: item.itemName
+                });
+                link.append(img);
+                // 卡片內容
+                const cardContent = $("<div>", {class: "card-content"});
+                const contentLink = $("<a>", {href: "/TwoClothing/Itemfront/itemlist?goto=" + item.itemId});
+                const itemName = $("<h4>", {class: "itemName"}).text(item.itemName);
+                const itemPrice = $("<p>", {class: "itemPrice"}).text(formatAsCurrency(item.price));
+                contentLink.append(itemName, itemPrice);
+                cardContent.append(contentLink);
+                // 底部按鈕
+                const cardReadMore = $("<div>", {class: "card-read-more"});
+                const buttonLink = $("<a>", {href: "/TwoClothing/Itemfront/itemlist?goto=" + item.itemId});
+                const shopNowButton = $("<button>", {class: "shopNow"}).text("Shop now");
+                buttonLink.append(shopNowButton);
+                cardReadMore.append(buttonLink);
+                // 合體
+                card.append(link, cardContent, cardReadMore);
+                itemDiv.append(card);
+            })
+
+        }
+
+        function createBidItem(bidItemList) {
+            bidItemList.forEach(function (bidItem) {
+                // 卡片主體
+                const card = $("<div>", {class: "card bidItemCard col-2"});
+                // 節標日期
+                const endDate = $("<div>", {class: "endDate"}).text(formatMillisToString(bidItem.endTime));
+                // 連結
+                const link = $("<a>", {
+                    class: "img-card",
+                    href: "/TwoClothing/front/biditem/anyone/detail?bidItemId=" + bidItem.bidItemId
+                });
+                // 圖片連結
+                const img = $("<img>", {
+                    src: "/TwoClothing/ReadItemIMG/biditem?id=" + bidItem.bidItemId + "&position=1",
+                    alt: bidItem.itemName
+                });
+                link.append(img);
+                // 卡片內容
+                const cardContent = $("<div>", {class: "card-content"});
+                const contentLink = $("<a>", {href: "/TwoClothing/front/biditem/anyone/detail?bidItemId=" + bidItem.bidItemId});
+                const itemName = $("<h4>", {class: "itemName"}).text(bidItem.bidName);
+                const currentBid = $("<p>", {class: "currentBid"}).text(bidItem.bidAmountType);
+                const bidAmount = $("<span>", {class: "bidAmount"}).text(formatAsCurrency(bidItem.currentBid));
+                currentBid.append(bidAmount);
+                const countDown = $("<div>", {class: "countDown"}).text(bidItem.endTime).attr("data-end-time", bidItem.endTime);
+                contentLink.append(itemName, currentBid, countDown);
+                cardContent.append(contentLink);
+                // 底部按鈕
+                const cardReadMore = $("<div>", {class: "card-read-more"});
+                const buttonLink = $("<a>", {href: "/TwoClothing/front/biditem/anyone/detail?bidItemId=" + bidItem.bidItemId});
+                const shopNowButton = $("<button>", {class: "shopNow"}).text("我要出價");
+                buttonLink.append(shopNowButton);
+                cardReadMore.append(buttonLink);
+                // 合體
+                card.append(endDate, link, cardContent, cardReadMore);
+                bidItemDiv.append(card);
+            })
+
+            // 倒數計時
+            updateCountdowns();
+            setInterval(updateCountdowns, 1000);
+        }
+
+        // 金額格式化
+        function formatAsCurrency(num) {
+            return '$' + num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // 毫秒數格式化 mm/dd結標
+        function formatMillisToString(milliseconds) {
+            let date = new Date(milliseconds);
+            let month = date.getMonth() + 1;
+            let day = date.getDate();
+            let paddedMonth = month < 10 ? '0' + month : month;
+            let paddedDay = day < 10 ? '0' + day : day;
+            return paddedMonth + '/' + paddedDay + '結標';
+        }
+
+        // 結束時間倒數計時
+        function updateCountdowns() {
+            $('.countDown').each(function () {
+                let endTime = $(this).data('endTime');
+                let now = new Date();
+                let timeLeft = endTime - now;
+
+                if (timeLeft > 0) {
+                    let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                    let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                    let countdownText = days + "天" + hours + "時" + minutes + "分" + seconds + "秒结束";
+                    $(this).text(countdownText);
+                } else {
+                    $(this).text('競標已結束');
+                }
+            });
+        }
+    })
 </script>
 </body>
 </html>

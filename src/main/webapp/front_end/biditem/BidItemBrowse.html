@@ -24,6 +24,53 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <!--此頁面css-->
     <style>
+        /* 大標題 */
+        .bigTitle {
+            display: block;
+            background-color: #ffc107;
+            color: #fff;
+            font-size: 30px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 50px;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .bigTitle {
+            background-image: linear-gradient(to right, #ee90aa, #f3c4d2);
+        }
+
+        .bigTitle:hover {
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);
+            background-image: linear-gradient(to right, #f3c4d2, #ee90aa);
+        }
+
+        .bigTitle:before,
+        .bigTitle:after {
+            content: '★';
+            color: #561729;
+            font-size: 36px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .bigTitle:before {
+            left: -45px;
+        }
+
+        .bigTitle:after {
+            right: -45px;
+        }
+
+        /*大標題*/
         /*購買按鈕*/
         .shopNow {
             padding: 1.1em 2em;
@@ -351,8 +398,17 @@
 <!--放在最前面-->
 <div class="headerHTML"></div>
 
+<!--標題-->
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+            <h2 class="bigTitle">競標商品</h2>
+        </div>
+    </div>
+</div>
+
 <!--每頁最大筆數選擇-->
-<div class="container pt-4">
+<div class="container mt-1">
     <div class="row justify-content-start">
         <div class="col-auto maxResult">
             <div class="radio-input">
@@ -452,8 +508,8 @@
             if (isChange) {
                 generatePaginationButtons(totalPage);
             }
-            const bidIItemDTOList = JSON.parse(data.bidIItemDTOList);
-            createCardDiv(bidIItemDTOList);
+            const bidItemDTOList = JSON.parse(data.bidItemDTOList);
+            createCardDiv(bidItemDTOList);
             // 倒數計時
             updateCountdowns();
             setInterval(updateCountdowns, 1000);

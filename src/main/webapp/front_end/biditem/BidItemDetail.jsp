@@ -8,6 +8,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${bidItem.bidName}</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
     <!--bootstrap5 css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
     <!-- google fonts -->
@@ -21,6 +23,9 @@
     </style>
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--此頁面的css-->
 
     <style>
         #bidBtn_hr {
@@ -46,14 +51,24 @@
             border: none;
         }
     </style>
+
+    <!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
 </head>
 <body>
 
-<div class="container text-center">
-    <h1>${bidStatus}</h1>
-</div>
+<!--放在最前面-->
+<div class="headerHTML"></div>
+
+<c:if test="${bidItem.bidStatus != 4}">
+    <div class="container text-center pt-1">
+        <h1>此商品並非上架狀態</h1>
+    </div>
+</c:if>
 <!--商品詳情-->
-<div class="container">
+<div class="container pt-1">
     <div class="row mt-5">
         <div class="col-md-6">
             <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${bidItem.bidItemId}&position=1"
@@ -76,7 +91,7 @@
                     <li class="list-group-item">直購價：$<span id="directPrice">${bidItem.directPrice}</span></li>
                 </c:if>
                 <c:if test="${not empty bidItem.startTime}">
-                    <li class="list-group-item">競標開始時間：<span id="startPrice">${timeArr[0]}</span></li>
+                    <li class="list-group-item">競標開始時間：<span id="startTime">${timeArr[0]}</span></li>
                 </c:if>
                 <c:if test="${not empty bidItem.endTime}">
                     <li class="list-group-item">競標結束時間：<span id="endTime">${timeArr[1]}</span></li>
@@ -159,6 +174,7 @@
                 </div>
             </div>
         </c:if>
+
     </div>
 </div>
 
@@ -178,7 +194,14 @@
                         <tbody>
                         <tr>
                             <th scope="row" class="w-25">下標帳號</th>
-                            <td>直接從session取帳號名稱</td>
+                            <td>
+                                <c:if test="${not empty sessionScope.user.email}">
+                                    ${sessionScope.user.email}
+                                </c:if>
+                                <c:if test="${empty sessionScope.user.email}">
+                                    非會員無法進行出價操作
+                                </c:if>
+                            </td>
                         </tr>
                         <tr>
                             <th scope="row" class="w-25">出價方式</th>
@@ -200,7 +223,7 @@
     </div>
 </div>
 
-<!--出價紀錄-->
+<%--<!--出價紀錄-->--%>
 <div class="container">
     <div class="row">
         <table class="table table-striped table-hover">
@@ -224,22 +247,37 @@
     </div>
 </div>
 
+<!--放在最後面-->
+<div class="footerHTML"></div>
+
 <!--bootstrap5 js-->
 <script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
 <!--jQuery-->
 <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
+<script>
+    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+    });
+
+    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+</script>
 
 <script>
-    // 數字轉 $xxx,xxx,xxx
-    function formatToMoney(number) {
-        const formatter = new Intl.NumberFormat('zh-TW', {
-            maximumFractionDigits: 0,
-        });
-        return '$' + formatter.format(number);
-    }
+    <c:if test="${bidItem.bidStatus != 4}">
+    let isLeagal = false;
+    </c:if>
+
+    <c:if test="${bidItem.bidStatus == 4}">
+    let isLeagal = true;
+    </c:if>
 
     $(document).ready(function () {
+        if (!isLeagal) $("#staticBackdrop").remove();
         // 取得價格資訊
         let startPrice = $("#startPrice").text();
         let reservePrice = $("#reservePrice").text();
@@ -270,6 +308,11 @@
 
         // 我要出價按鈕
         $("#bidBtn").on("click", function (e) {
+            // 判斷商品狀態
+            if (!isLeagal) {
+                Swal.fire("此商品並非上架狀態", "非上架狀態的商品無法操作", "error");
+                return;
+            }
             // 判斷輸入的金額
             if (bidAmountInp.val() < minRequestAmount) {
                 wrongMsg.text("出價不能小於最低出價" + formatToMoney(minRequestAmount));
@@ -293,7 +336,13 @@
         })
 
         // 立即結標按鈕
-        $("#bidDirectBtn").on("click", function () {
+        $("#bidDirectBtn").on("click", function (e) {
+            // 判斷商品狀態
+            if (!isLeagal) {
+                Swal.fire("此商品並非上架狀態", "非上架狀態的商品無法操作", "error");
+                e.preventDefault();
+                return;
+            }
             bidType.text("立即結標");
             bidAmountInp.val(directPrice);
             bidAmount2.text(formatToMoney(Number(directPrice)));
@@ -310,26 +359,36 @@
                 bidType: bidType.text()
             }, function (data) {
                 if (data === "0") {
-                    alert("您不能對自己的商品出價。請對其他商品進行投標，感謝配合。");
+                    Swal.fire("您不能對自己的商品出價。", "請對其他商品進行投標，感謝配合。", "error");
                     bidAmountInp.val(0);
                     cancelBid.click();
                     return;
                 }
                 if (data === "1") {
-                    alert("您的出價金額有誤，故此次出價無效。請重新出價，感謝配合。");
+                    Swal.fire("您的出價金額有誤。", "此次出價無效。請重新出價，感謝配合。", "error");
                     bidAmountInp.val(0);
                     cancelBid.click();
                     return;
                 }
                 if (data === "2") {
-                    alert("您已成功出價，將刷新頁面，以便您觀察最新出價狀況");
-                    location.reload();
-                    return;
+                    Swal.fire({
+                        title: "您已成功出價。",
+                        text: "將刷新頁面，以便您觀察最新出價狀況。",
+                        icon: "success",
+                    }).then(() => {
+                        location.reload();
+                        return;
+                    });
                 }
                 if (data === "3") {
-                    alert("恭喜！您已成功以直購價提前結標。請瀏覽您的訂單並繼續後續流程。");
-                    location.reload();
-                    return;
+                    Swal.fire({
+                        title: "恭喜直購價得標！",
+                        text: "請瀏覽您的訂單並繼續後續流程。",
+                        icon: "success",
+                    }).then(() => {
+                        location.reload();
+                        return;
+                    });
                 }
             }).fail(function (xhr) {
                 if (xhr.status === 403) {
@@ -366,6 +425,13 @@
         });
     });
 
+    // 數字轉 $xxx,xxx,xxx
+    function formatToMoney(number) {
+        const formatter = new Intl.NumberFormat('zh-TW', {
+            maximumFractionDigits: 0,
+        });
+        return '$' + formatter.format(number);
+    }
 
 </script>
 </body>

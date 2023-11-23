@@ -416,28 +416,12 @@
             }
         })
         // 點擊連結查看訊息,標記為已讀
-        $(".noticeDIV").click(function (e) {
+        $(".noticeDIV").click(function () {
             if (!currentRead) {
                 let currentId = $(this).attr("id").replace(/(\d+)/, ':$1');
                 $.post('/TwoClothing/noticeHelper/update', {id: currentId});
             }
         })
-    }
-
-    function updateHeaderNoticeNum(idList) {
-        let count = 0;
-        idList.forEach(function (id) {
-            let currentId = "#" + id.replace(":", "");
-            $(currentId).slideUp(300, function () {
-                $(this).remove();
-            });
-            count++;
-        })
-        // 即時更新header的數字
-        const noticeNum_Span = $(".noticeNum");
-        let currentNum = noticeNum_Span.text();
-        noticeNum_Span.text(currentNum - count);
-        if (noticeNum_Span.text() == 0) noticeNum_Span.hide();
     }
 
     function formatMillisToDate(milliseconds) {
