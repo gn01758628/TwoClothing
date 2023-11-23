@@ -32,7 +32,8 @@
         body { 
              margin: 0; 
              min-height:100vh; 
-             height:100%;  
+             height:100%; 
+/*              background-color: #f9edf2 !important;  */
          } 
 
          html { 
@@ -40,21 +41,96 @@
              --aside-width: 240px; 
              min-height:100vh; 
              height:100%; 
-         } 
-
+         }
+         div#content-wrap{
+			display: flex;
+			justify-content: space-between;
+			background-color: #f9edf2;
+         
+         }
+         
+         div#content-wrap aside.itemSearch{
+         	width: 200px;
+         	border-right: 1px solid #561729;
+    		padding: 20px;
+    		background-color: #f9edf2;
+    		height:725px;
+    		position: sticky;
+		    left: 10px;
+		    top: 10px;
+         }
+         div#content-wrap aside.itemSearch a{
+         	text-decoration: none;
+         	width: 100%;
+         }
+/*          標籤第一層 */
+          div.accordion-item{ 
+/*          	height: 500px; */
+/* 		    display: flex; */
+/* 		    justify-content: flex-start; */
+/* 		    align-items: center; */
+/* 		    flex-direction: column; */
+/* 		    border: 1px solid; */
+ 		    background-color: #f9edf2; 
+          } 
+/*          標籤第二層 */
+         div.accordion-body{
+         	display: flex;
+		    flex-direction: column;
+		    justify-content: center;
+		    align-items: stretch;
+		    padding:11px 0px;
+         }
+         
+         div.accordion-body div.hovered{
+         	border-radius: 10px;
+		    padding: 0 7px;
+		    height: 37px;
+/* 		    border: 1px solid; */
+			display: flex;
+		    justify-content: flex-start;
+		    align-items: center;
+         }
+         
+         div.accordion-item a{
+         	color:#561729;
+         }
+         
+         h5.accordion-header{
+         	border-radius: 10px;
+            padding: 7px;
+         	height: 49px;
+         	margin: 5px 0px;
+         	font-size: 18px;
+         }
+        h5.accordion-header:hover{
+        	border:0px;
+        	border:1px solid #561729; 
+			
+		}
+         
+         button.accordion-button{
+         	color:#561729;
+         }
+         
+         div.accordion-body div.hovered:hover{
+         	border:1px solid #561729;
+         }
+         
         main.main_itemList {
-            border: 1px solid red;
-            width: calc(100% - var(--aside-width));
-            margin-left: var(--aside-width);
+/*             border: 1px solid red; */
+            width: calc(100% - 200px);
+/*             margin-left: var(--aside-width); */
             min-height: calc(100vh - var(--header-height));
             padding: 20px;
             height: auto;
 		    min-height: 1700px;
 		    position: relative;
+		    background-color: #f9edf2;
         }
 
         main.main_itemList ul.itemList {
-            border: 1px solid green;
+/*             border: 1px solid green; */
             list-style: none;
             margin: 0;
             padding: 0;
@@ -65,7 +141,7 @@
         }
 
         main.main_itemList ul.itemList > li {
-        	border:1px solid blue;
+/*         	border:1px solid blue; */
             border: 1px solid black;
             background-color: snow; 
             width: calc(25% - 20px); /* 25% of the container width minus margin */
@@ -85,7 +161,7 @@
 
         main.main_itemList ul.itemList > li a {
             display: block;
-            border: 1px solid wheat;
+/*             border: 1px solid wheat; */
             text-decoration: none;
 /*             width: 100%; */
             height: 100%;
@@ -115,7 +191,7 @@
         
 /*         頁數 */
         div#pagination{
-        	border:1px solid black;
+/*         	border:1px solid black; */
         	display: flex;
 		    justify-content: center;
 		    align-items: center;
@@ -212,30 +288,27 @@
 	    $(".itemSearch").load("${pageContext.request.contextPath}/front_end/itemsearch/itemSearch.html");
 	</script>
 	<script src="${pageContext.request.contextPath}/js/chijung/itemSearch.js"></script>
+	
 	<script>
-	var myList = [
-	    { itemId: 1, itemName: "商品1", price: 20,tagId:1 },
-	    { itemId: 2, itemName: "商品2", price: 30,tagId:2 },
-	    { itemId: 3, itemName: "商品3", price: 25,tagId:3 },
-	    { itemId: 4, itemName: "商品4", price: 15,tagId:4 },
-	    { itemId: 5, itemName: "商品5", price: 40,tagId:5 },
-	    { itemId: 6, itemName: "商品6", price: 50,tagId:6 },
-	    { itemId: 7, itemName: "商品7", price: 35,tagId:3 },
-	    { itemId: 8, itemName: "商品8", price: 28,tagId:3 },
-	    { itemId: 9, itemName: "商品9", price: 22,tagId:2 },
-	    { itemId: 10, itemName: "商品10", price: 18,tagId:7 }
-	];
-	$(document).ready(function() {
-		
+    var myList = [
+        <c:forEach var="item" items="${itemList}" varStatus="loop">
+            {
+                itemId: ${item.itemId},
+                itemName: '${item.itemName}',
+                price: ${item.price},
+                tagId: ${item.tagId}
+            }<c:if test="${!loop.last}">,</c:if>
+        </c:forEach>
+    ];
+	
 
 		function setupPagination(filteredData) {
 	 	  //每頁顯示幾項商品
-		  var itemsPerPage = 2;
+		  var itemsPerPage = 16;
 		  var itemList = $('.itemList');
 		  var pagination = $('#pagination .pagination-list');
 		  //幾個li商品，獲取list長度
 		  var lengthOfList = filteredData.length; 
-// 		  var itemsCount = itemList.find('li').length;
 		  //幾頁
 		  var pageCount = Math.ceil(lengthOfList / itemsPerPage);
 		  var currentPage= 1;
@@ -251,18 +324,18 @@
 		    var endIndex = startIndex + itemsPerPage;
 // 		    清空原li
 		    $('.itemList').empty(); 
-
-		    for (var i = 0; i < filteredData.length; i++) {
+		    var contextPath = '${pageContext.request.contextPath}'
+		    for (var i = startIndex; i < endIndex && i < filteredData.length; i++) {
 		        var itemId = filteredData[i].itemId;
 		        var itemName = filteredData[i].itemName;
 		        var itemPrice = filteredData[i].price;
-		        
+		        console.log("itemId"+itemId);
 		        
 
 		        var newItemHTML = '<li>' +
-		            '<a href="${pageContext.request.contextPath}/Itemfront/itemlist?goto=' + itemId + '">' +
+		            '<a href="' + contextPath + '/Itemfront/itemlist?goto=' + itemId + '">' +
 		            '<div class="imgBlock">' +
-		            '<img id="item_id" src="${pageContext.request.contextPath}/ReadItemIMG/item?id=' + itemId + '&position=1" alt="商品圖片">' +
+		            '<img id="item_id" src="' + contextPath + '/ReadItemIMG/item?id=' + itemId + '&position=1" alt="商品圖片">' +
 		            '</div>' +
 		            '<div class="item_info">' +
 		            '<span>' + itemName + '</span><span class="price">' + itemPrice + '</span>' +
@@ -273,10 +346,10 @@
 		        // 將新的列表項目添加到列表容器中
 		        $('.itemList').append(newItemHTML);
 		    }
-		    console.log(newItemHTML);
+		    console.log($('.itemList').html());
 		    
 		    
-		    itemList.find('li').hide().slice(startIndex, endIndex).show();
+		    $('.itemList').find('li').slice(startIndex, endIndex).show();
 		    pagination.find('a').removeClass('active');
 		    pagination.find('a[data-page="' + page + '"]').addClass('active');
 		    currentPage = page;
@@ -330,49 +403,40 @@
 		  updateNavigationButtons(); 
 			
 		}
-		
-		
-		
-		
-		
-		
-// 	    // 使用 jQuery 綁定事件
-// 	    $('.itemSearch').on('click', 'a', function (event) {
-// 	        event.preventDefault();
-// 	        clickedIdSubsList = [];
-// 	        clickedIdParentsList = [];
 
-// 	        let clickedId = $(this).attr('id');
-// 	        clickedIdSubsList.push(clickedId);
-// 	        findAccordionBody(clickedId);
+	$(document).ready(function() {
+		setupPagination(myList);
+	    // 使用 jQuery 綁定事件
+	    $('.itemSearch').on('click', 'a', function (event) {
+	        event.preventDefault();
+	        clickedIdSubsList = [];
+	        clickedIdParentsList = [];
 
-// 	        clickedIdParentsList.unshift(clickedId);
-// 	        let accordionBodyId = $(this).closest('.accordion-body').attr('id');
-// 	        if (accordionBodyId) {
-// 	            $(this).parents('.accordion-body').each(function () {
-// 	                clickedIdParentsList.unshift(this.id.replace('c', ''));
-// 	            });
-// 	        }
-// 	        console.log("clickedIdSubsList:"+clickedIdSubsList);
-// 	        console.log("clickedIdParentsList:"+clickedIdParentsList);
-// //	        let filteredData = filterItemListByIds(clickedIdSubsList, itemList);
-// 	        let filteredData = filterItemListByIds(clickedIdSubsList, myList);
-// 	        // 遍歷 filteredData 並印出每個對象的內容
-// 			filteredData.forEach(function (item) {
-// 			    console.log("Tag ID: " + item.tagId + ", Other Properties: " + JSON.stringify(item));
-// 			});
-// 			setupPagination(filteredData);
-// 	    });
-		
-		
-		
-		
-		
-		
-		
+	        let clickedId = $(this).attr('id');
+	        clickedIdSubsList.push(clickedId);
+	        findAccordionBody(clickedId);
+
+	        clickedIdParentsList.unshift(clickedId);
+	        let accordionBodyId = $(this).closest('.accordion-body').attr('id');
+	        if (accordionBodyId) {
+	            $(this).parents('.accordion-body').each(function () {
+	                clickedIdParentsList.unshift(this.id.replace('c', ''));
+	            });
+	        }
+	        console.log("clickedIdSubsList:"+clickedIdSubsList);
+	        console.log("clickedIdParentsList:"+clickedIdParentsList);
+//	        let filteredData = filterItemListByIds(clickedIdSubsList, itemList);
+	        let filteredData = filterItemListByIds(clickedIdSubsList, myList);
+	        // 遍歷 filteredData 並印出每個對象的內容
+			filteredData.forEach(function (item) {
+			    console.log("Tag ID: " + item.tagId + ", Other Properties: " + JSON.stringify(item));
+			});
+			setupPagination(filteredData);
+	    
+	    });
+
 	})
 	
 	</script>
 </body>
 </html>
-<!-- var lengthOfList = myList.length; 獲取list長度-->

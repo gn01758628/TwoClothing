@@ -293,9 +293,18 @@ public class ItemCartServlet extends HttpServlet {
 			//取得會員使用點數
 			String mbrPointStr = req.getParameter("mbrPoint");
 			Integer mbrPoint = 0;
-			if(mbrPointStr!=null) {
+			if(mbrPointStr == null) {
+				System.out.println("/"+mbrPointStr);
+				String mbrPointcheck = req.getParameter("mbrPointAll");
+				System.out.println("//"+mbrPointcheck);
+
+				mbrPoint = Integer.valueOf(mbrPointcheck);
+			}else {
 				mbrPoint = Integer.valueOf(mbrPointStr);
+				
 			}
+			
+			System.out.println("mbrPoint"+mbrPoint);
 			
 			//取得會員錢包餘額
 			Integer balanceEableUse = itemService.getMbrBalanceByMbrId(Integer.valueOf(mbrId));
