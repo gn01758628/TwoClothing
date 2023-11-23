@@ -490,7 +490,6 @@
         // 監聽最大顯示筆數選擇按紐
         $('input[name="pageMaxResult"]').change(function () {
             if (currentPage != 1) prevMaxResult = pageMaxResult;
-            console.log(prevMaxResult);
             pageMaxResult = Number($(this).val());
             generateCardDiv(tagId, currentPage, pageMaxResult, true);
         });

@@ -68,6 +68,10 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
             String mbrName = mbr.getMbrName();
             mbrMap.put(record.getMbrId(), mbrName);
         }
+        // 綁定賣家會員資料
+        Members sellerMbr = bidItemService.getMembersByMbrId(bidItem.getMbrId());
+        String[] sellerNameArr = {sellerMbr.getMbrName(),sellerMbr.getEmail() };
+        request.setAttribute("sellerNameArr",sellerNameArr);
         request.setAttribute("mbrMap", mbrMap);
         request.setAttribute("bidRecordList", bidRecordList);
 
@@ -191,7 +195,7 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
             // 賣方
             notice3.setContent("等待買家付款");
             notice3.setLink("/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=" + bidItemMbrId);
-            bidItemService.addNotice(notice3,bidItemMbrId);
+            bidItemService.addNotice(notice3, bidItemMbrId);
 
             // 傳送資料Ajax
             out.print("3");
