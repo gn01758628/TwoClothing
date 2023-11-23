@@ -228,13 +228,13 @@
 	$(document).ready(function() {
 		
 
-		function setupPagination(myList) {
+		function setupPagination(filteredData) {
 	 	  //每頁顯示幾項商品
 		  var itemsPerPage = 2;
 		  var itemList = $('.itemList');
 		  var pagination = $('#pagination .pagination-list');
 		  //幾個li商品，獲取list長度
-		  var lengthOfList = myList.length; 
+		  var lengthOfList = filteredData.length; 
 // 		  var itemsCount = itemList.find('li').length;
 		  //幾頁
 		  var pageCount = Math.ceil(lengthOfList / itemsPerPage);
@@ -252,10 +252,12 @@
 // 		    清空原li
 		    $('.itemList').empty(); 
 
-		    for (var i = 0; i < myList.length; i++) {
-		        var itemId = myList[i].itemId;
-		        var itemName = myList[i].itemName;
-		        var itemPrice = myList[i].price;
+		    for (var i = 0; i < filteredData.length; i++) {
+		        var itemId = filteredData[i].itemId;
+		        var itemName = filteredData[i].itemName;
+		        var itemPrice = filteredData[i].price;
+		        
+		        
 
 		        var newItemHTML = '<li>' +
 		            '<a href="${pageContext.request.contextPath}/Itemfront/itemlist?goto=' + itemId + '">' +
@@ -328,7 +330,46 @@
 		  updateNavigationButtons(); 
 			
 		}
-		setupPagination(myList);
+		
+		
+		
+		
+		
+		
+// 	    // 使用 jQuery 綁定事件
+// 	    $('.itemSearch').on('click', 'a', function (event) {
+// 	        event.preventDefault();
+// 	        clickedIdSubsList = [];
+// 	        clickedIdParentsList = [];
+
+// 	        let clickedId = $(this).attr('id');
+// 	        clickedIdSubsList.push(clickedId);
+// 	        findAccordionBody(clickedId);
+
+// 	        clickedIdParentsList.unshift(clickedId);
+// 	        let accordionBodyId = $(this).closest('.accordion-body').attr('id');
+// 	        if (accordionBodyId) {
+// 	            $(this).parents('.accordion-body').each(function () {
+// 	                clickedIdParentsList.unshift(this.id.replace('c', ''));
+// 	            });
+// 	        }
+// 	        console.log("clickedIdSubsList:"+clickedIdSubsList);
+// 	        console.log("clickedIdParentsList:"+clickedIdParentsList);
+// //	        let filteredData = filterItemListByIds(clickedIdSubsList, itemList);
+// 	        let filteredData = filterItemListByIds(clickedIdSubsList, myList);
+// 	        // 遍歷 filteredData 並印出每個對象的內容
+// 			filteredData.forEach(function (item) {
+// 			    console.log("Tag ID: " + item.tagId + ", Other Properties: " + JSON.stringify(item));
+// 			});
+// 			setupPagination(filteredData);
+// 	    });
+		
+		
+		
+		
+		
+		
+		
 	})
 	
 	</script>

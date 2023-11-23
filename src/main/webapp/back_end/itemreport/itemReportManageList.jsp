@@ -1,7 +1,3 @@
-<%@ page import="com.twoclothing.model.aproduct.itemreport.*"%>
-<%@ page import="com.twoclothing.chi.controller.*"%>
-<%@ page import="com.twoclothing.chi.service.*"%>
-<%@ page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -9,9 +5,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <title>ItemReportList</title>
-    
+    <!--頁籤icon-->
+	<link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+	<!--bootstrap5 css-->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+	<!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+	<style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--css-->
     <style>
 		.table thead th {
 			white-space: nowrap;
@@ -54,8 +66,14 @@
 	    	color: red;
 	    }
 	</style>
+	<!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
 </head>
 <body>
+	<div class="headerHTML"></div>
+
     <div class="container mt-5">
         <h1 class="text-center">商品檢舉清單</h1>
 
@@ -127,12 +145,26 @@
 		    <a class="btn page" href="${pageContext.request.contextPath}/back/itemreport?action=${requestScope.action}&page=${itemReportPageQty}&itemId=${itemId}&mbrId=${mbrId}&empId=${empId}&rStatus=${rStatus}&result=${result}">&gt;&gt;</a>
         </div>
     </div>
+    
+    <div class="footerHTML"></div>
 
-    <script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+	<!--bootstrap5 js-->
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+    <!--jQuery-->
     <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
-
+    <!--Sweet Alert-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+	<!--JS loader-->
+	<script>
+	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+	        // 保證headerHTML加載完才載入header.js
+	        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+	    });
+	
+	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	</script>
     <script>
 	    function showDetail(reportId) {
 	        event.preventDefault();

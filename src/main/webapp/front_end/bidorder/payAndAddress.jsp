@@ -44,6 +44,7 @@
 <!--放在最前面-->
 <div class="headerHTML"></div>
 <script src="<%=request.getContextPath()%>/js/bootstrap5/bootstrap.bundle.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/gordon/twzipcode.js"></script>
 
 <div id="hy_con">
 <div id="con_lf">
@@ -112,11 +113,10 @@
             </c:forEach>
         </select>
         <br><br><br>
-        <label for="receiveAddress">收件地址：</label>
-        <input type="text" name="receiveAddress" id="receiveAddress" size="80" required>
+        <label  style="display: none;"  for="receiveAddress">收件地址：</label>
+        <input type="text" name="receiveAddress" id="receiveAddress" size="80"  style="display: none;"  required>
         <span style="color: deeppink;">${errorMsgs.receiveAddress}</span>
         <br> <br>
-
         <label for="receiveName">收件人姓名：</label>
         <input type="text" name="receiveName" id="receiveName" size="20" required>
         <span style="color: deeppink;">${errorMsgs.receiveName}</span>
@@ -128,6 +128,27 @@
         <input type="text" name="receivePhone" id="receivePhone" size="10" required>
         <span style="color: deeppink;">${errorMsgs.receivePhone}</span>
         </div>
+	<div class="twzipcode">
+		<div class="row">
+			<div class="col-md-6">
+				<label class="control-label col-form-label"> 縣市 </label> <select
+					data-role="county" name="county" class="form-select"></select>
+			</div>
+			<div class="col-md-6">
+				<label class="control-label col-form-label"> 鄉鎮市區 </label> <select
+					data-role="district" name="district" class="form-select"></select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<label class="control-label col-form-label"> 詳細地址 </label> <input
+					type="text" name="address" class="form-control">
+			</div>
+		</div>
+		<input type="hidden" name="zipcode" data-role="zipcode" />
+	</div>
+        <br> <br>
+
         <br><br>
 		<div style=" position: relative; bottom:55px;">
         <label  for="remarks">備註：</label>
@@ -182,7 +203,6 @@
         var receiveAddress = document.querySelector('input[name="receiveAddress"]');
         var receiveName = document.querySelector('input[name="receiveName"]');
         var receivePhone = document.querySelector('input[name="receivePhone"]');
-
         // 監聽下拉選單的變化
         select.addEventListener('change', function() {
             // 獲得選擇的選項
@@ -211,11 +231,65 @@
 
             if (addressMatch) {
                 receiveAddress.value = addressMatch[1];
+ //////////////////////////////////////////////////////////////////放值到表               
+                var receiveAddressElement = document.querySelector('input[name="receiveAddress"]');
+                var addressString = receiveAddressElement.value;
+                console.log("收件地址的值:", addressString);
+                
+             // 找到市的位置
+                var cityIndex = addressString.indexOf("市");
+                var countyIndex = addressString.indexOf("縣");
+                var cityOrCountyIndex = -1;
+
+                // 如果 cityIndex 和 countyIndex 都非負，取第一個出現的索引
+                if (cityIndex >= 0 && countyIndex >= 0) {
+                    cityOrCountyIndex = Math.min(cityIndex, countyIndex);
+                } else {
+                    // 取非負的索引，如果有一個是負的就取另一個
+                    cityOrCountyIndex = Math.max(cityIndex, countyIndex);
+                }
+
+                ////////////////////////////// 使用正則表達式匹配以市或縣結尾的數字部分
+                var match = addressString.match(/(?:市|縣)(\d+)/);
+
+                // 如果有匹配，取得匹配的結果
+                var numberPart = match ? match[1] : null;
+
+                var numberAsInt = parseInt(numberPart, 10);
+                ///////////////////////////////////////// 在控制台上輸出結果
+
+                // 定義可能的行政區域
+                var regions = ["區", "鄉", "鎮", "市"];
+
+                // 初始化變數
+                var regionIndex = -1;
+
+                // 尋找可能的行政區域
+                for (var i = 0; i < regions.length; i++) {
+                    var index = addressString.indexOf(regions[i]);
+                    if (index !== -1 && (regionIndex === -1 || index < regionIndex) && index > cityOrCountyIndex) {
+                        regionIndex = index;
+                    }
+                }
+
+                // 提取行政區域名稱
+                var districtOrTown = addressString.substring(cityOrCountyIndex + 1, regionIndex + 1);
+
+                // 剩下的部分視為具體地址
+                var addressPart = addressString.substring(regionIndex + 1);
+
+
+                	twzipcode.nth(1).set(numberAsInt);
+
+                $('input[name="address"]').val(addressPart);
+                //////////////////////////////////////////////////////////////////放值到表               
+
+
             } else {
                 receiveAddress.value = ''; // 如果未找到地址，將字段設置為空
             }
         });
-        
+      
         
         
         function updatePayInfoFields() {
@@ -273,6 +347,14 @@ let twzipcode = new TWzipcode({
 		}
 	}
 });
+
+
+
+// // 使用 EL 語法獲取後端的值
+// var addressString = "${setting.receiveAddress}";
+
+
+
 </script>
 </body>
 </html>

@@ -11,6 +11,13 @@
 
 
 <style>
+ body {
+    background-image: url('https://bpic.51yuansu.com/pic3/cover/02/51/35/59e6f3938ca55_610.jpg?x-oss-process=image/sharpen,100');
+    background-size: cover; /* 保持圖片覆蓋整個背景 */
+    background-repeat: no-repeat; /* 防止圖片重複 */
+    background-position: center center; /* 將圖片置於中心 */
+    /* 其他你可能需要的背景相關屬性 */
+	}
 * {
 	font-family: 微軟正黑體;
 }
