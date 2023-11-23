@@ -17,15 +17,22 @@ import javax.servlet.http.HttpSession;
 
 import com.twoclothing.chi.service.ItemReportService;
 import com.twoclothing.chi.service.ItemReportServiceImpl;
+import com.twoclothing.huiwen.service.ItemService;
+import com.twoclothing.huiwen.service.ItemServiceImpl;
+import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.aproduct.itemreport.ItemReport;
 
 @WebServlet("/front/itemreport")
 public class ItemReportFrontServlet extends HttpServlet {
 	private ItemReportService itemReportService;
+	
+	private ItemService itemService;
 
 	@Override
 	public void init() throws ServletException {
 		itemReportService = new ItemReportServiceImpl();
+		
+		itemService = new ItemServiceImpl();
 	}
 
 	@Override
@@ -60,14 +67,23 @@ public class ItemReportFrontServlet extends HttpServlet {
 	}
 
 	private String getAllByMbrId(HttpServletRequest req, HttpServletResponse res) {
-//		String mbrIdString = req.getParameter("mbrId");
-//		int mbrId = Integer.parseInt(mbrIdString);
+//		HttpSession session = req.getSession();
+//		Integer mbrId = (Integer) session.getAttribute("mbrId");
 		int mbrId = 1; // 測試用，到時這行可刪
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
 		List<ItemReport> itemReportList = itemReportService.getAllByMbrId(mbrId, currentPage);
 
+		Map<Integer, String> itemNameMap = new HashMap<>();
+		for (ItemReport itemReport : itemReportList) {
+			Integer itemId = itemReport.getItemId();
+	        Item item = itemService.getItemByItemId(itemId);
+	        String itemName = (item != null) ? item.getItemName() : "未知商品";
+	        itemNameMap.put(itemId, itemName);
+	    }
+		req.setAttribute("itemNameMap", itemNameMap);
+		
 		int itemReportPageQty = itemReportService.getPageTotal(mbrId);
 		req.getSession().setAttribute("itemReportPageQty", itemReportPageQty);
 
@@ -79,17 +95,17 @@ public class ItemReportFrontServlet extends HttpServlet {
 		resultMap.put(0, "處分");
 		resultMap.put(1, "不處分");
 
-		ItemReport itemReport = new ItemReport();
-		String note = itemReport.getNote();
-		if (note == null) {
-			note = "";
-		}
+//		ItemReport itemReport = new ItemReport();
+//		String note = itemReport.getNote();
+//		if (note == null) {
+//			note = "";
+//		}
 
 		req.setAttribute("itemReportList", itemReportList);
 		req.setAttribute("currentPage", currentPage);
 		req.setAttribute("rStatusMap", rStatusMap);
 		req.setAttribute("resultMap", resultMap);
-		req.setAttribute("note", note);
+//		req.setAttribute("note", note);
 
 		return "/front_end/itemreport/itemReportList.jsp";
 	}
