@@ -22,7 +22,7 @@ public class AllotedCoupon {
     private Timestamp allotDate;
     private Integer totalQuantity;
     private Integer remainingQuantity;
-    private Integer status; //0正常發放 1終止發放
+    private Integer status; //-1使用時間到 0發放中 1(後台)結束發放 2發放完了
     
 	
 

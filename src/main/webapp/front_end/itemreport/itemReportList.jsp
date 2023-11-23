@@ -1,6 +1,7 @@
 <%@ page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,8 +26,79 @@
     <!--Sweet Alert-->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <!--css-->
-	<link rel="stylesheet" href="">
 	<style>
+		.main {
+			padding-bottom: 20px;
+		}
+		
+		.table thead th, .table tbody td {
+			white-space: nowrap;
+			padding: 15px 10px;
+		}
+		
+		a {
+    		text-decoration: none;
+    		color: #000;
+		}
+		
+		a:hover {
+			color: #a2b5cd;
+		}
+		
+		.table tbody td p {
+			margin: 0;
+		}
+		
+		.table thead th:nth-child(1), .table tbody td:nth-child(1),
+		.table thead th:nth-child(5), .table tbody td:nth-child(5),
+		.table thead th:nth-child(7), .table tbody td:nth-child(7) {
+			min-width: 80px;
+	        max-width: 80px;
+	    }
+	    
+	    .table thead th:nth-child(2), .table tbody td:nth-child(2) {
+	    	min-width: 100px;
+	        max-width: 100px;
+	    }
+	
+	    .table thead th:nth-child(3), .table tbody td:nth-child(3),
+	    .table thead th:nth-child(6), .table tbody td:nth-child(6),
+	    .table thead th:nth-child(4), .table tbody td:nth-child(4),
+	    .table thead th:nth-child(8), .table tbody td:nth-child(8) {
+	   		min-width: 190px;
+	        max-width: 190px;
+	    }
+	
+		.btn {
+ 		    border: none;
+		    padding: 0;
+		    margin: 0;
+		    height: 30px;
+		    width: 50px;
+		    font-size: 14px;
+		    text-align: center;
+	    }
+	    
+	    .btn:hover, .btn:focus, .btn:active, .btn:visited {
+	    	outline: none;
+	    	box-shadow: none !important;
+	    }
+	    
+	    .page-container {
+	    	position: absolute;
+	    	left: 50%;
+    		transform: translateX(-50%);
+    		margin-top: 4px;
+	    }
+	    
+	    .btn.page {
+	    	color: black;
+	    	width: 40px;
+	    }
+	    
+	    .btn.page:hover {
+	    	color: rgb(168, 7, 7);
+	    }
 	</style>
 	<!--導覽列css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
@@ -36,61 +108,103 @@
 <body>
 	<div class="headerHTML"></div>
 
-	<h1>商品檢舉清單</h1>
-	<a href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId&mbrId=${mbrId}">查詢所有商品檢舉</a>
-
-	<c:if test="${not empty errorMsgs}">
-		<font style="color: red">請重新確認</font>
-		<ul>
-			<c:forEach var="message" items="${errorMsgs}">
-				<li style="color: red">${message}</li>
-			</c:forEach>
-		</ul>
-	</c:if>
-
-<!-- 	<div class="page"> -->
-<%-- 		<c:if test="${itemReportPageQty > 0}"> --%>
-<%-- 			<b><font color=red>第${currentPage}/${itemReportPageQty}頁</font></b> --%>
-<%-- 		</c:if> --%>
-<!-- 	</div> -->
-
-	<table style="width: 80%; text-align: center;">
-		<tr>
-			<th>檢舉編號</th>
-			<th>商品名稱</th>
-			<th>檢舉日期</th>
-			<th>檢舉原因</th>
-			<th>審核狀態</th>
-			<th>審核日期</th>
-			<th>審核結果</th>
-			<th>備註</th>
-		</tr>
-		<c:forEach var="itemReport" items="${itemReportList}">
-			<tr>
-				<td>${itemReport.reportId}</td>
-				<td>${itemNameMap[itemReport.itemId]}</td>
-				<td>${itemReport.reportDate}</td>
-				<td>${itemReport.description}</td>
-				<td>${rStatusMap[itemReport.rStatus]}</td>
-				<td>${itemReport.auditDate}</td>
-				<td>${resultMap[itemReport.result]}</td>
-				<td>${itemReport.note}</td>
-			</tr>
-		</c:forEach>
-	</table>
+	<div class="container mt-3 mb-4 main">
+		<c:if test="${not empty errorMsgs}">
+			<font style="color: red">請重新確認</font>
+			<ul>
+				<c:forEach var="message" items="${errorMsgs}">
+					<li style="color: red">${message}</li>
+				</c:forEach>
+			</ul>
+		</c:if>
 	
-	<c:if test="${currentPage > 1}">
-		<a href="${pageContext.request.contextPath}/front/itemreport?action=${requestScope.action}&page=1&mbrId=${mbrId}">至第一頁</a>&nbsp;
-	</c:if>
-	<c:if test="${currentPage - 1 != 0}">
-		<a href="${pageContext.request.contextPath}/front/itemreport?action=${requestScope.action}&page=${currentPage - 1}&mbrId=${mbrId}">上一頁</a>&nbsp;
-	</c:if>
-	<c:if test="${currentPage + 1 <= itemReportPageQty}">
-		<a href="${pageContext.request.contextPath}/front/itemreport?action=${requestScope.action}&page=${currentPage + 1}&mbrId=${mbrId}">下一頁</a>&nbsp;
-	</c:if>
-	<c:if test="${currentPage != itemReportPageQty}">
-		<a href="${pageContext.request.contextPath}/front/itemreport?action=${requestScope.action}&page=${itemReportPageQty}&mbrId=${mbrId}">至最後一頁</a>&nbsp;
-	</c:if>
+	<!-- 	<div class="page"> -->
+	<%-- 		<c:if test="${itemReportPageQty > 0}"> --%>
+	<%-- 			<b><font color=red>第${currentPage}/${itemReportPageQty}頁</font></b> --%>
+	<%-- 		</c:if> --%>
+	<!-- 	</div> -->
+	
+		<table class="table table-hover">
+			<thead class="thead-primary">
+				<tr>
+					<th>檢舉編號</th>
+					<th>商品</th>
+					<th>檢舉日期</th>
+					<th>檢舉原因</th>
+					<th>審核狀態</th>
+					<th>審核日期</th>
+					<th>審核結果</th>
+					<th>備註</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach var="itemReport" items="${itemReportList}">
+					<tr>
+						<td>${itemReport.reportId}</td>
+						<td>
+							<p>
+								<c:choose>
+									<c:when test="${fn:length(itemNameMap[itemReport.itemId]) > 10}">
+										<a href="${pageContext.request.contextPath}/Itemfront/itemlist?goto=${itemReport.itemId}">${fn:substring(itemNameMap[itemReport.itemId], 0, 10)}...</a>
+									</c:when>
+									<c:otherwise>
+										<a href="${pageContext.request.contextPath}/Itemfront/itemlist?goto=${itemReport.itemId}">${itemNameMap[itemReport.itemId]}</a>
+									</c:otherwise>
+								</c:choose>
+							</p>
+						</td>
+						<td>${itemReport.reportDate}</td>
+						<td>
+							<p>
+								<c:choose>
+									<c:when test="${fn:length(itemReport.description) > 10}">
+										${fn:substring(itemReport.description, 0, 10)}...
+									</c:when>
+									<c:otherwise>
+										${itemReport.description}
+									</c:otherwise>
+								</c:choose>
+							</p>
+						</td>
+						<td>${rStatusMap[itemReport.rStatus]}</td>
+						<td>${itemReport.auditDate}</td>
+						<td>${resultMap[itemReport.result]}</td>
+						<td>
+							<p>
+								<c:choose>
+									<c:when test="${fn:length(itemReport.note) > 10}">
+										${fn:substring(itemReport.note, 0, 10)}...
+									</c:when>
+									<c:otherwise>
+										${itemReport.note}
+									</c:otherwise>
+								</c:choose>
+							</p>
+						</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+		
+		<div class="page-container">
+			<c:if test="${not empty itemReportList}">
+			    <a class="btn page" href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId&page=1">&lt;&lt;</a>
+	
+			    <c:forEach var="i" begin="1" end="${itemReportPageQty}">
+			        <c:choose>
+			            <c:when test="${currentPage eq i}">
+			                <a class="btn page" href="#">${i}</a>
+			            </c:when>
+			            <c:otherwise>
+			                <a class="btn page" href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId&page=${i}">${i}</a>
+			            </c:otherwise>
+			        </c:choose>
+			    </c:forEach>
+			    
+			    <a class="btn page" href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId&page=${itemReportPageQty}">&gt;&gt;</a>
+			</c:if>
+		</div>
+	</div>
 	
 	<div class="footerHTML"></div>
 
