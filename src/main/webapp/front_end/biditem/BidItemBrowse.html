@@ -254,18 +254,18 @@
             width: 20px;
             height: 20px;
             border-radius: 3px;
-            background: rgba(216, 216, 216, 0.603);
+            background: rgba(255, 182, 193, 0.6);
         }
 
         .openClose:hover {
-            background: rgba(197, 197, 197, 0.527);
+            background: rgba(255, 105, 180, 0.6);
         }
 
         .openClose .line {
             width: calc(100% - 8px);
             height: 3px;
             left: 4px;
-            background: rgb(58, 58, 58);
+            background: rgb(255, 20, 147);
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
@@ -289,14 +289,56 @@
             border: 1px solid #ccc;
             padding: 10px;
             box-sizing: border-box;
-        }
-
-        .hidden {
-            display: none;
+            font-weight: bold;
         }
 
         .left-half:hover {
             cursor: pointer;
+        }
+
+        /* 依照層級設計不同的樣式 */
+        .categoryTags.level1 {
+            background-color: #fce4ec;
+        }
+
+        .categoryTags.level2 {
+            background-color: #f8bbd0;
+        }
+
+        .categoryTags.level3 {
+            background-color: #f48fb1;
+        }
+
+        .categoryTags.level4 {
+            background-color: #f06292;
+        }
+
+        .categoryTags.level5 {
+            background-color: #ec407a;
+        }
+
+        .categoryTags.level6 {
+            background-color: #e91e63;
+        }
+
+        .categoryTags.level7 {
+            background-color: #d81b60;
+            color: white;
+        }
+
+        .categoryTags.level8 {
+            background-color: #c2185b;
+            color: white;
+        }
+
+        .categoryTags.level9 {
+            background-color: #ad1457;
+            color: white;
+        }
+
+        .categoryTags.level10 {
+            background-color: #880e4f;
+            color: white;
         }
 
     </style>
@@ -332,63 +374,7 @@
         <!--側邊欄-->
         <div class="col-2">
             <div class="clickable-box">
-                <div class="row categoryTags" data-id="1">
-                    <div class="left-half col-8">全部總類</div>
-                </div>
 
-                <div class="row categoryTags" data-id="2" data-parent-id="1">
-                    <div class="left-half col-8">衣服</div>
-                    <div class="right-half col-4">
-                        <label class="openClose">
-                            <input type="checkbox">
-                            <div class="line"></div>
-                            <div class="line line-indicator"></div>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="row categoryTags hidden" data-id="6" data-parent-id="2">
-                    <div class="left-half col-8">T-Shirt</div>
-                    <div class="right-half col-4">
-                        <label class="openClose">
-                            <input type="checkbox">
-                            <div class="line"></div>
-                            <div class="line line-indicator"></div>
-                        </label>
-                    </div>
-                </div>
-                <div class="row categoryTags hidden" data-id="10" data-parent-id="6">
-                    <div class="left-half col-8">卡通T</div>
-                    <div class="right-half col-4">
-                        <label class="openClose">
-                            <input type="checkbox">
-                            <div class="line"></div>
-                            <div class="line line-indicator"></div>
-                        </label>
-                    </div>
-                </div>
-                <div class="row categoryTags hidden" data-id="11" data-parent-id="10">
-                    <div class="left-half col-8">迪士尼</div>
-                </div>
-                <div class="row categoryTags hidden" data-id="7" data-parent-id="2">
-                    <div class="left-half col-8">長袖</div>
-                </div>
-                <div class="row categoryTags" data-id="3" data-parent-id="1">
-                    <div class="left-half col-8">褲子</div>
-                    <div class="right-half col-4">
-                        <label class="openClose">
-                            <input type="checkbox">
-                            <div class="line"></div>
-                            <div class="line line-indicator"></div>
-                        </label>
-                    </div>
-                </div>
-                <div class="row categoryTags hidden" data-id="8" data-parent-id="3">
-                    <div class="left-half col-8">牛仔褲</div>
-                </div>
-                <div class="row categoryTags hidden" data-id="9" data-parent-id="3">
-                    <div class="left-half col-8">休閒褲</div>
-                </div>
             </div>
         </div>
 
@@ -617,6 +603,12 @@
         // 請求商品類別標籤的數據
         $.get("/TwoClothing/front/biditemBrowse/categoryTags", function (data) {
             createTagsDiv(data);
+            // 綁定點擊類別名稱區域事件
+            $(".left-half").click(function () {
+                tagId = Number($(this).closest("div .categoryTags").data('id'));
+                currentPage = 1;
+                generateCardDiv(tagId, currentPage, pageMaxResult, true);
+            })
         })
 
 
@@ -630,7 +622,7 @@
     function toggleSubCategories(parentId, isChecked) {
         if (isChecked) {
             // 勾選，顯示該父標籤的直接子標籤
-            $('.categoryTags[data-parent-id="' + parentId + '"]').slideDown();
+            $('.categoryTags[data-parent-id="' + parentId + '"]').slideDown(200);
         } else {
             // 沒勾選，隱藏該父標籤的所有子孫標籤
             hideSubCategories(parentId);
@@ -639,64 +631,70 @@
 
     function hideSubCategories(parentId) {
         $('.categoryTags[data-parent-id="' + parentId + '"]').each(function () {
-            $(this).slideUp();
+            $(this).slideUp(200);
             const childId = $(this).data('id');
             // 遞迴隱藏所有子孫標籤
             hideSubCategories(childId);
         });
     }
 
-    function createTagsDiv(tagsList) {
+    function createTagsDiv(tagsList, parentTagId = -1, level = 1) {
         let tagsDiv = $(".clickable-box");
-        tagsDiv.empty();
+
+        // 只在初始化清空容器,避免遞迴調用時重複清空
+        if (parentTagId === -1) {
+            tagsDiv.empty();
+        }
 
         tagsList.forEach(function (tag) {
-
-            // 檢查該標籤有沒有子標籤
-            let hasChildren = tagsList.some(function (childTag) {
-                return childTag.superTagId === tag.tagId;
-            });
-
-            // 決定哪些要初始化隱藏
-            let rowClass = 'row categoryTags';
-            if (tag.superTagId !== 1 && tag.superTagId !== -1) {
-                rowClass += ' hidden';
-            }
-            // 生成節點
-            const rowDiv = $('<div>', {
-                'class': rowClass,
-                'data-id': tag.tagId,
-                'data-parent-id': tag.superTagId !== -1 ? tag.superTagId : -1
-            });
-
-            const leftHalfDiv = $('<div>', {
-                'class': 'left-half col-8',
-                'text': tag.categoryName
-            });
-            rowDiv.append(leftHalfDiv);
-
-            if (hasChildren && tag.superTagId !== -1) {
-                let rightHalfDiv = $('<div>', {'class': 'right-half col-4'});
-                let label = $('<label>', {'class': 'openClose'});
-                let checkbox = $('<input>', {
-                    'type': 'checkbox',
+            // 只處理當前層級的類別標籤
+            if (tag.superTagId === parentTagId) {
+                let hasChildren = tagsList.some(function (childTag) {
+                    return childTag.superTagId === tag.tagId;
                 });
-                let lineDiv = $('<div>', {'class': 'line'});
-                let lineIndicatorDiv = $('<div>', {'class': 'line line-indicator'});
 
-                label.append(checkbox, lineDiv, lineIndicatorDiv);
-                rightHalfDiv.append(label);
-                rowDiv.append(rightHalfDiv);
+                // 根據層級給定標籤名稱
+                let rowClass = `row categoryTags level${level}`;
+
+                // 創建最外層的DIV
+                const rowDiv = $('<div>', {
+                    'class': rowClass,
+                    'data-id': tag.tagId,
+                    'data-parent-id': tag.superTagId !== -1 ? tag.superTagId : null
+                });
+
+                // 創建類類別的名稱DIV
+                const leftHalfDiv = $('<div>', {
+                    'class': 'left-half col-8',
+                    'text': tag.categoryName
+                });
+                rowDiv.append(leftHalfDiv);
+
+                // 只有存在子標籤的類別,才添加按鈕(全部總類也不添加按鈕)
+                if (hasChildren && tag.superTagId !== -1) {
+                    let rightHalfDiv = $('<div>', {'class': 'right-half col-4'});
+                    let label = $('<label>', {'class': 'openClose'});
+                    let checkbox = $('<input>', {'type': 'checkbox'});
+                    let lineDiv = $('<div>', {'class': 'line'});
+                    let lineIndicatorDiv = $('<div>', {'class': 'line line-indicator'});
+
+                    label.append(checkbox, lineDiv, lineIndicatorDiv);
+                    rightHalfDiv.append(label);
+                    rowDiv.append(rightHalfDiv);
+                }
+
+                // 隱藏3級以上的標籤
+                tagsDiv.append(rowDiv);
+                if (level > 2) {
+                    rowDiv.hide();
+                }
+
+                // 如果還存在子標籤就遞迴出裡
+                if (hasChildren) {
+                    createTagsDiv(tagsList, tag.tagId, level + 1);
+                }
             }
-            tagsDiv.append(rowDiv);
-        })
-
-        // 綁定點擊類別名稱區域事件
-        $(".left-half").click(function (){
-            tagId = Number($(this).closest("div .categoryTags").data('id'));
-            currentPage = 1;
-            generateCardDiv(tagId, currentPage, pageMaxResult, true);
-        })
+        });
     }
 
 
