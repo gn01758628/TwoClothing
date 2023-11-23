@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.twoclothing.chi.service.ItemReportService;
@@ -163,8 +164,8 @@ public class ItemReportBackServlet extends HttpServlet {
 		Integer reportId = Integer.parseInt(req.getParameter("reportId"));
 		ItemReport itemReport = itemReportService.getByPrimaryKey(reportId);
 
-//		int empId = Integer.parseInt(req.getParameter("empId"));
-		int empId = 1; // 測試用，到時這行可刪
+		HttpSession session = req.getSession();
+		Integer empId = (Integer) session.getAttribute("empId");
 		int result = Integer.parseInt(req.getParameter("result"));
 		String note = req.getParameter("note");
 

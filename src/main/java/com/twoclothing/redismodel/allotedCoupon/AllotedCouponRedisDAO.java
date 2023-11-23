@@ -2,6 +2,7 @@ package com.twoclothing.redismodel.allotedCoupon;
 
 import java.util.List;
 
+import com.google.gson.Gson;
 import com.twoclothing.utils.JedisPoolUtil;
 
 import redis.clients.jedis.Jedis;
@@ -22,7 +23,24 @@ public class AllotedCouponRedisDAO implements AllotedCouponDAO{
 
 	@Override
 	public void allot(AllotedCoupon allotedCoupon) {
-		// TODO Auto-generated method stub
+		
+		try (Jedis jedis = jedisPool.getResource()) {
+	        jedis.select(REDIS_NUMBER);
+
+	        // 根據 KEY 搜尋列表長度
+	        String key = String.valueOf(allotedCoupon.getCpnId());
+	        Long listLength = jedis.llen(key);
+
+	        // 設定 allotedCoupon 的 index 為列表長度 + 1
+	        allotedCoupon.setIndex(listLength.intValue() + 1);
+
+	        // 使用 GSON 將物件轉換成 JSON 字串
+	        Gson gson = new Gson();
+	        String jsonCoupon = gson.toJson(allotedCoupon);
+
+	        // 在列表的最前面新增 JSON 字串
+	        jedis.lpush(key, jsonCoupon);
+	    }
 		
 	}
 

@@ -1,37 +1,43 @@
-<%@ page import="com.twoclothing.model.aproduct.itemreport.*"%>
-<%@ page import="com.twoclothing.chi.controller.*"%>
-<%@ page import="com.twoclothing.chi.service.*"%>
 <%@ page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="">
-<title>ItemReport</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>ItemReport</title>
+	<!--頁籤icon-->
+	<link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+	<!--bootstrap5 css-->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+	<!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+	<style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--css-->
+	<link rel="stylesheet" href="">
+	<style>
+	</style>
+	<!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
 </head>
 <body>
+	<div class="headerHTML"></div>
+
 	<h1>商品檢舉清單</h1>
 	<a href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId&mbrId=${mbrId}">查詢所有商品檢舉</a>
-
-	<form method="post" action="${pageContext.request.contextPath}/front/itemreport">
-		<h3>商品檢舉新增</h3>
-		<h4>到時應刪除 > 帶商品及會員編號，轉回商品頁，放一顆檢舉按鈕放在商品頁</h4>
-		<label>商品編號</label>
-		<input type="text" name="itemId" maxlength=20>
-		<br>
-		<label>會員編號</label>
-		<input type="text" name="mbrId">
-		<br>
-		<label>檢舉原因</label>
-		<input type="text" name="description">
-		<br>
-		<input type="hidden" name="action" value="insert">
-		<input type="submit" value="新增">
-	</form>
-	<hr>
 
 	<c:if test="${not empty errorMsgs}">
 		<font style="color: red">請重新確認</font>
@@ -42,17 +48,16 @@
 		</ul>
 	</c:if>
 
-	<div class="page">
-		<c:if test="${itemReportPageQty > 0}">
-			<b><font color=red>第${currentPage}/${itemReportPageQty}頁</font></b>
-		</c:if>
-	</div>
+<!-- 	<div class="page"> -->
+<%-- 		<c:if test="${itemReportPageQty > 0}"> --%>
+<%-- 			<b><font color=red>第${currentPage}/${itemReportPageQty}頁</font></b> --%>
+<%-- 		</c:if> --%>
+<!-- 	</div> -->
 
 	<table style="width: 80%; text-align: center;">
 		<tr>
 			<th>檢舉編號</th>
-			<th>商品編號</th>
-			<th>會員編號</th>
+			<th>商品名稱</th>
 			<th>檢舉日期</th>
 			<th>檢舉原因</th>
 			<th>審核狀態</th>
@@ -63,14 +68,13 @@
 		<c:forEach var="itemReport" items="${itemReportList}">
 			<tr>
 				<td>${itemReport.reportId}</td>
-				<td>${itemReport.itemId}</td>
-				<td>${itemReport.mbrId}</td>
+				<td>${itemNameMap[itemReport.itemId]}</td>
 				<td>${itemReport.reportDate}</td>
 				<td>${itemReport.description}</td>
 				<td>${rStatusMap[itemReport.rStatus]}</td>
 				<td>${itemReport.auditDate}</td>
 				<td>${resultMap[itemReport.result]}</td>
-				<td>${note}</td>
+				<td>${itemReport.note}</td>
 			</tr>
 		</c:forEach>
 	</table>
@@ -87,10 +91,25 @@
 	<c:if test="${currentPage != itemReportPageQty}">
 		<a href="${pageContext.request.contextPath}/front/itemreport?action=${requestScope.action}&page=${itemReportPageQty}&mbrId=${mbrId}">至最後一頁</a>&nbsp;
 	</c:if>
+	
+	<div class="footerHTML"></div>
 
-	<a href="${pageContext.request.contextPath}">回首頁</a>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
-	<script src="js/jQquery/jquery-3.7.1.min.js"></script>
+	<!--bootstrap5 js-->
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+    <!--jQuery-->
+    <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+    <!--Sweet Alert-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+	<!--JS loader-->
+	<script>
+	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+	        // 保證headerHTML加載完才載入header.js
+	        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+	    });
+	
+	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	</script>
 </body>
 </html>

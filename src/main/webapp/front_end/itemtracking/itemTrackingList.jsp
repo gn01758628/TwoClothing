@@ -27,6 +27,13 @@
     <!--css-->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/chi/list.css">
 	<style>
+		.empty-list-container {
+			color: #7A7A7A;
+			font-size: 30px;
+			margin-top: 45px;
+			margin-left: 70px;
+		}
+	
 		.not-found-container {
 		    position: absolute;
 		    height: 200px;
@@ -104,6 +111,11 @@
 	
 	<main class="main">
 		<ul class="list">
+			<c:if test="${empty itemTrackingList}">
+				<div class="empty-list-container">
+			        <p>暫無收藏</p>
+			    </div>
+			</c:if>
 			<c:forEach var="item" items="${itemTrackingList}">
 				<li>
 					<a href="${pageContext.request.contextPath}/Itemfront/itemlist?goto=${item.itemId}">
@@ -136,20 +148,22 @@
 		</ul>
 		
 		<div class="page-container">
-			<a class="btn page" href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=1">&lt;&lt;</a>
-			    
-			<c:forEach var="i" begin="1" end="${itemTrackingPageQty}">
-			    <c:choose>
-			        <c:when test="${currentPage eq i}">
-			            <a class="btn page" href="#">${i}</a>
-			        </c:when>
-			        <c:otherwise>
-			            <a class="btn page" href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=${i}">${i}</a>
-			        </c:otherwise>
-			    </c:choose>
-			</c:forEach>
-			    
-			<a class="btn page" href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=${itemTrackingPageQty}">&gt;&gt;</a>
+			<c:if test="${not empty itemTrackingList}">
+				<a class="btn page" href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=1">&lt;&lt;</a>
+				    
+				<c:forEach var="i" begin="1" end="${itemTrackingPageQty}">
+				    <c:choose>
+				        <c:when test="${currentPage eq i}">
+				            <a class="btn page" href="#">${i}</a>
+				        </c:when>
+				        <c:otherwise>
+				            <a class="btn page" href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=${i}">${i}</a>
+				        </c:otherwise>
+				    </c:choose>
+				</c:forEach>
+				    
+				<a class="btn page" href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=${itemTrackingPageQty}">&gt;&gt;</a>
+			</c:if>
 		</div>
 	</main>
 	

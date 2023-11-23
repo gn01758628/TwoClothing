@@ -168,7 +168,7 @@
 <body>
 	<div class="headerHTML"></div>
     
-   	<div class="itemSearch"></div>
+   	<aside class="itemSearch"></aside>
     <main class="main_itemList">
         <ul class="itemList">
         <c:forEach var="item" items="${itemList}">
@@ -211,20 +211,22 @@
 	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
 	    $(".itemSearch").load("${pageContext.request.contextPath}/front_end/itemsearch/itemSearch.html");
 	</script>
+	<script src="${pageContext.request.contextPath}/js/chijung/itemSearch.js"></script>
 	<script>
+	var myList = [
+	    { itemId: 1, itemName: "商品1", price: 20,tagId:1 },
+	    { itemId: 2, itemName: "商品2", price: 30,tagId:2 },
+	    { itemId: 3, itemName: "商品3", price: 25,tagId:3 },
+	    { itemId: 4, itemName: "商品4", price: 15,tagId:4 },
+	    { itemId: 5, itemName: "商品5", price: 40,tagId:5 },
+	    { itemId: 6, itemName: "商品6", price: 50,tagId:6 },
+	    { itemId: 7, itemName: "商品7", price: 35,tagId:3 },
+	    { itemId: 8, itemName: "商品8", price: 28,tagId:3 },
+	    { itemId: 9, itemName: "商品9", price: 22,tagId:2 },
+	    { itemId: 10, itemName: "商品10", price: 18,tagId:7 }
+	];
 	$(document).ready(function() {
-// 		var myList = [
-// 		    { itemId: 1, itemName: "商品1", price: 20 },
-// 		    { itemId: 2, itemName: "商品2", price: 30 },
-// 		    { itemId: 3, itemName: "商品3", price: 25 },
-// 		    { itemId: 4, itemName: "商品4", price: 15 },
-// 		    { itemId: 5, itemName: "商品5", price: 40 },
-// 		    { itemId: 6, itemName: "商品6", price: 50 },
-// 		    { itemId: 7, itemName: "商品7", price: 35 },
-// 		    { itemId: 8, itemName: "商品8", price: 28 },
-// 		    { itemId: 9, itemName: "商品9", price: 22 },
-// 		    { itemId: 10, itemName: "商品10", price: 18 }
-// 		];
+		
 
 		function setupPagination(myList) {
 	 	  //每頁顯示幾項商品
