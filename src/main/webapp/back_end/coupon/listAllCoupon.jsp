@@ -38,7 +38,7 @@
 		    "order": [[ 0, "asc" ]],
 		    "columnDefs":[
 		    	{
-		    		targets:[8], orderable:false
+		    		targets:[9], orderable:false
 		    	}
 		    ]
 		    
@@ -68,7 +68,7 @@ body {
 			<th>最低金額條件</th>
 			<th>當前狀態</th>
 			<th>員工編號</th>
-			<th>新增</th>
+			<th>新增發放</th>
 			
 		</tr>
 	</thead>
@@ -99,15 +99,69 @@ body {
 			
 
 			<td>
-			  <FORM METHOD="post" ACTION="<%= servletPath %>" style="margin-bottom: 0px;">
-			     <input type="submit" value="新增發放項目">
-			     <input type="hidden" name="cpnId"  value="${coupon.cpnId}">
-			     <input type="hidden" name="action"	value="add_Coupon">
-		      </FORM>
+				<c:choose>
+					<c:when test="${not empty coupon.expireDate and coupon.expireDate lt now}">
+					</c:when>
+			        <c:otherwise>
+						<input class="allot_Coupon_btn" type="submit" value="新增發放項目">
+			        </c:otherwise>
+		    	</c:choose>
 			</td>
 		</tr>
 	</c:forEach>
 </table>
+<script>
+	$(function(){
+			let servletPath = '<%= servletPath %>';
+			
+		    $('.allot_Coupon_btn').click(async function(){
+		    	let tr = $(this).closest('tr');
 
+		        // 在 tr 元素中找到名為 expireDate 的元素
+		        let cpnId = tr.find('td:eq(0)').text();
+		        let expireDate = tr.find('td:eq(3)').text(); 
+		       
+		    	
+		    	Swal.fire({
+		    		html:'<input type="datetime-local" name="allotDate" id="swal-input1" class="swal2-input" style="width:70%;" required>' +
+		            '<input type="number" name="totalQuantity" value="1"  min="1" id="swal-input2" class="swal2-input" style="width:70%;" required>',
+		        inputAttributes:{
+		            autocapitalize: "off"
+		        },
+		        showCancelButton: true,
+		        confirmButtonText: "確認",
+		        cancelButtonText: "取消",
+		        allowOutsideClick: false,
+		        showLoaderOnConfirm: true,
+    		    preConfirm: async () => {
+    		    	let allotDate = $('#swal-input1').val();
+    	            let totalQuantity = $('#swal-input2').val();
+	
+    		    	let response = await fetch(servletPath, {
+    		    	    method: 'POST',
+    		    	    headers: {
+    		    	        'Content-Type': 'application/x-www-form-urlencoded'
+    		    	    },
+    		    	    body:'cpnId=' + encodeURIComponent(cpnId) + '&allotDate=' + encodeURIComponent(allotDate) + '&totalQuantity=' + encodeURIComponent(totalQuantity)+ '&expireDate=' + encodeURIComponent(expireDate) +'&action=allot_Coupon',
+    		    	});
+
+    		    	if (!response.ok) {
+    		    	    const errorText = await response.text();
+    		    	    Swal.showValidationMessage(errorText);
+    		    	    return false;
+    		    	}
+    		    	// 成功後顯示成功訊息
+    	            Swal.fire({
+    	                title: '成功',
+    	                text: '優惠券新增發放成功',
+    	                icon: 'success'
+    	            });
+	    	            
+    	        }
+	    	    });
+		    	
+		    });
+		});
+</script>
 </body>
 </html>

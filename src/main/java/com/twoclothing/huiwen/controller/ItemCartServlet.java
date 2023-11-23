@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,12 +18,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.internal.build.AllowSysOut;
+
+import com.twoclothing.gordon.service.MembersService;
+import com.twoclothing.gordon.service.MembersServiceImpl;
 import com.twoclothing.huiwen.service.ItemService;
 import com.twoclothing.huiwen.service.ItemServiceImpl;
+import com.twoclothing.huiwen.service.PointHistoryService;
+import com.twoclothing.huiwen.service.PointHistoryServiceImpl;
 import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.coupon.Coupon;
+import com.twoclothing.model.members.Members;
 import com.twoclothing.model.memberscoupon.MembersCoupon;
+import com.twoclothing.model.pointhistory.PointHistory;
 import com.twoclothing.model.shipsetting.ShipSetting;
+import com.twoclothing.redismodel.notice.Notice;
 import com.twoclothing.utils.JedisPoolUtil;
 
 import redis.clients.jedis.Jedis;
@@ -33,10 +43,18 @@ import redis.clients.jedis.JedisPool;
 public class ItemCartServlet extends HttpServlet {
 
 	private ItemService itemService;
+	
+	private PointHistoryService PHSvc;
+	
+	private MembersService memSvc;
+
 
 	public void init() throws ServletException {
 
 		itemService = new ItemServiceImpl();
+		PHSvc = new PointHistoryServiceImpl();
+		memSvc = new MembersServiceImpl();
+
 	}
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -66,11 +84,9 @@ public class ItemCartServlet extends HttpServlet {
 
 			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 			Jedis jedis = jedisPool.getResource();
+			jedis.select(13);
 			try {
-			    jedis.select(13);
-
-			    jedis.hset(mbrId, itemId, quantity); 
-		
+			    jedis.hset(mbrId, itemId, quantity);		        
 				req.setAttribute("item", itemList);
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -85,13 +101,46 @@ public class ItemCartServlet extends HttpServlet {
 		    out.flush();
 
 		}
+		
+		if ("addCartNum".equals(req.getParameter("addCartNum"))) {
+			String itemIdStr = req.getParameter("itemId");
+			
+			List<Integer> keyList = new ArrayList<>();
+			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
+			Jedis jedis = jedisPool.getResource();
+			jedis.select(13);
+			
+			try {
+	
+				HttpSession session = req.getSession();
+				String mbrId = String.valueOf(session.getAttribute("mbrId"));
+				
+			    Set<String> keys = jedis.hkeys(mbrId);
+			    for (String key : keys) {
+			    	keyList.add(Integer.valueOf(key));
+			    }
+			    
+			    System.out.println("keyList"+keyList);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally {
+				jedis.close();	
+			}
+			boolean isItemIdExist = keyList.contains(Integer.valueOf(itemIdStr));
+			String responseData2 = String.valueOf(isItemIdExist); // 將布林值轉為文字
+			PrintWriter out = res.getWriter();
+			out.print(responseData2);
+			out.flush();
+		}
+		
 		//查看購物車
 		if ("cart".equals(req.getParameter("goto"))) {
 			//抓會員存的商品id
 			List<Item> itemList = new ArrayList<>();
 			//抓商品的數量
 			List<String> quantities = new ArrayList<>();
-			
+			Map<Integer, Integer> map = new HashMap<>();//賣家點數判斷用
+
 			HttpSession session = req.getSession();
 			String mbrIdStr = String.valueOf(session.getAttribute("mbrId"));
 			
@@ -109,12 +158,26 @@ public class ItemCartServlet extends HttpServlet {
 					quantities.add(quantity);
 					Item item = itemService.getItemByItemId(Integer.valueOf(itemId));
 					itemList.add(item);
+//					取得商品的賣家與賣家分數						
+					Integer mbrIdSell = item.getMbrId();
+					if (!map.containsKey(mbrIdSell)) {
+						Integer score = itemService.getSellScoreByMbrId(mbrIdSell);
+						map.put(mbrIdSell, score);
+					}
 				}
-
 			}catch(Exception e) {
 				e.printStackTrace();
 			}finally {
 				jedis.close();
+			}
+			
+			//若賣家權限分超過即不可購買該商品
+			List<Integer> itemIdListEnableBuy = new ArrayList<>();//不可買的所有itemId
+			for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+			    if (entry.getValue() == 0) {
+			    	List<Integer> itemIdList = itemService.getItemByMbrId(entry.getKey());
+			    	itemIdListEnableBuy.addAll(itemIdList);
+			    }
 			}
 			
 			//取得會員擁有的點數
@@ -150,7 +213,7 @@ public class ItemCartServlet extends HttpServlet {
 			req.setAttribute("mbrPoint", mbrPoint);
 			req.setAttribute("MembersCouponList", membersCouponList);
 			req.setAttribute("couponList", couponList);
-			
+			req.setAttribute("itemIdListEnableBuy", itemIdListEnableBuy);
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/cartDetail.jsp");
 			dispatcher.forward(req, res);
 			return;
@@ -220,31 +283,128 @@ public class ItemCartServlet extends HttpServlet {
 			}finally {
 				jedis.close();	
 			}
-			
+		
 			//取得會員物流資訊
 			List<ShipSetting> shipSettingList = itemService.getSettingByMbrId(Integer.valueOf(mbrId));
-			ShipSetting shipSetting = shipSettingList.get(0);
+			ShipSetting shipSetting = null;
+			if (!shipSettingList.isEmpty()) {
+				shipSetting = shipSettingList.get(0);
+			}
+			//取得會員使用點數
+			String mbrPointStr = req.getParameter("mbrPoint");
+			Integer mbrPoint = 0;
+			if(mbrPointStr!=null) {
+				mbrPoint = Integer.valueOf(mbrPointStr);
+			}
 			
 			//取得會員錢包餘額
 			Integer balanceEableUse = itemService.getMbrBalanceByMbrId(Integer.valueOf(mbrId));
 			
 			//取得折扣金額
 			Integer cartCount = Integer.valueOf(req.getParameter("cartCount"));
-			
+
 			req.setAttribute("itemList", itemList);
 			req.setAttribute("quantities", quantities);
 			req.setAttribute("shipSetting", shipSetting);
 			req.setAttribute("cartCount", cartCount);
 			req.setAttribute("balanceEableUse", balanceEableUse);
+			req.setAttribute("mbrPoint", mbrPoint);
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/cartToOrder.jsp");
 			dispatcher.forward(req, res);
 			return;
 		}
 		
 		//送去產生訂單
+		//測試，到時放在啟榮的訂單servlet
 //        String requestURI = req.getRequestURI();
 //        
 //        if (requestURI.endsWith("/toOrder")) {
+//			HttpSession session = req.getSession();
+//			String mbrIdStr = String.valueOf(session.getAttribute("mbrId"));
+//			Integer mbrId = 0;
+//			if(mbrIdStr!=null) {
+//				mbrId = Integer.valueOf(mbrIdStr);
+//			}
+//            // 發送通知
+//            Notice notice = new Notice();
+//            notice.setType("訂單通知");
+//            notice.setHead("訂單成立通知");
+//            notice.setContent("感謝您的購買，付款後即通知賣家出貨");
+//            notice.setLink("#");
+//            notice.setImageLink("${pageContext.request.contextPath}/images/cart/placeOrder.jpg");
+//            itemService.addNotice(notice, mbrId);
+//        	
+//        	//購物車清空
+//        	//處理商品id存成陣列
+//            String itemIdStr = req.getParameter("itemId");
+//            String[] parts = itemIdStr.split(",");
+//          
+//            //準備陣列存商品id
+//            List<Integer> itemIdArr = new ArrayList<>();
+//            for (String part:parts) {
+//            	Integer itemId = Integer.parseInt(part);
+//                itemIdArr.add(itemId);              
+//            }  
+//            JedisPool jedisPool = JedisPoolUtil.getJedisPool();
+//            Jedis jedis = jedisPool.getResource();
+//            jedis.select(13);
+//            //該商品扣庫存          
+//			for (Integer Id : itemIdArr) {
+//				String quantityStr = jedis.hget(mbrIdStr, String.valueOf(Id));
+//				
+//				Item item = itemService.getItemByItemId(Id);
+//				Integer newInventory = (item.getQuantity())-(Integer.valueOf(quantityStr));
+//				item.setQuantity(newInventory);
+//				//如果扣完後庫存為0即自動下架
+//				if(newInventory == 0) {
+//					item.setItemStatus(1);
+//				}
+//				Integer success =itemService.updateItem(item);
+//			}
+//            //清購物車
+//			try {
+//				for(Integer itemId:itemIdArr) {
+//					jedis.hdel(String.valueOf(mbrId), String.valueOf(itemId));					
+//				}				
+//			}catch(Exception e) {
+//				e.printStackTrace();
+//			}finally {
+//				jedis.close();
+//			}
+//			
+//			
+//			
+//        	
+//        	
+//        	//若有使用會員點數即扣點與新增異動
+//			String mbrPointStr = req.getParameter("mbrPoint");
+//			Integer mbrPoint = 0;
+//        	if(mbrPointStr!=null) {
+//    			mbrPoint = Integer.valueOf(mbrPointStr);
+//    			//新增異動
+//    			PointHistory pointHistory = new PointHistory();
+////    			if(!req.getParameter("orderId").trim().isEmpty() ) {
+////    				int orderId =Integer.parseInt(req.getParameter("orderId"));
+////    			}
+//    			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+//    			
+//    			pointHistory.setMbrId(mbrId);
+//    			pointHistory.setOrderId(1);//從訂單取
+//    			//異動時間1/訂單完成(+) 2/訂單確認(-)
+//    			pointHistory.setChangeDate(currentTime);			
+//    			pointHistory.setChangeValue(mbrPoint*-1);
+//    			
+//    			int pointHistoryPK = PHSvc.addPH(pointHistory);
+//    			
+//    			//會員表格點數同步扣點
+//            	Members mem=memSvc.getByPrimaryKey(mbrId);
+//            	Integer newPoint = mem.getMbrPoint()-mbrPoint;
+//            	mem.setMbrPoint(newPoint);
+//            	memSvc.updateMembers(mem);
+//        	}
+        	
+        	//=================================================
+        	
 //        	//處理商品id存成陣列
 //            String itemIdStr = req.getParameter("itemId");
 //            String[] parts = itemIdStr.split(",");

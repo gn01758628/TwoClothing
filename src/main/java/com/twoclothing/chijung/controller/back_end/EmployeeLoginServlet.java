@@ -113,6 +113,7 @@ public class EmployeeLoginServlet extends HttpServlet {
         	errorMsgs.put("idOrPassword","編號或密碼輸入錯誤");
         }
 		
+        
         if(!errorMsgs.isEmpty()){
         	res.setContentType("application/json; charset=UTF-8");
     	    PrintWriter out = res.getWriter();
@@ -122,6 +123,20 @@ public class EmployeeLoginServlet extends HttpServlet {
             out.flush();
             return;
         }
+        
+
+        if( emp.getEmpStatus() == 1 ) {
+        	errorMsgs.put("status","離職員工無法登入");
+        	res.setContentType("application/json; charset=UTF-8");
+    	    PrintWriter out = res.getWriter();
+    		res.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 設置響應狀態碼為400
+    		String errorMessage = new Gson().toJson(errorMsgs);
+            out.print(errorMessage);
+            out.flush();
+            return;
+        }
+        	
+        		
         //儲存該員工資料到Session
         HttpSession session = req.getSession();
         session.setAttribute("emp", emp);

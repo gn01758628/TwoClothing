@@ -32,16 +32,18 @@
         }
         main.main{
             width: 100%;
-            height: 690px;
+			min-height: calc(100vh - 309px);
             display: flex;
             justify-content: center;
             flex-direction: column;
             align-items: center;
+            
         }
 	
-	    h3 {
+	    main.main h3 {
             /* margin-bottom: 40px; */
 	        color: #333;
+	        margin-top: 40px;
 	    }
         form{
             display: flex;
@@ -69,7 +71,7 @@
             justify-content: space-around;
             flex-direction: row;
             align-items: center;
-            height:98%;
+            height:535px;
             /* border: 1px solid;
             border-radius: 10px;
             background-color: whitesmoke; */

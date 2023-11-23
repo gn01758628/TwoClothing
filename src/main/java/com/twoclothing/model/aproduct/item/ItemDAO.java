@@ -7,37 +7,46 @@ import javax.persistence.TypedQuery;
 
 
 public interface ItemDAO {
-	
-	 public int insert(Item item);
 
-	 public Item getByPrimaryKey(Integer itemId);
+    public int insert(Item item);
+
+    public Item getByPrimaryKey(Integer itemId);
 
 //	 public List<Item> getAll();
-	 
-	 public List<Item> getAll(int page);
 
-	 public List<Item> getAllByTagId(Integer tagId);
+    public List<Item> getAll(int page);
 
-	 public List<Item> getAllByMbrId(Integer mbrId);
-	 
-	 public List<Item> getAllByItemStatus(Integer itemStatus);
-	 
-	 public List<Item> getAllSubByTagId(Integer tagId);
+    public List<Item> getAllByTagId(Integer tagId);
 
-	 public int update(Item item);
+    public List<Item> getAllByMbrId(Integer mbrId);
 
-	 public long getTotal();
+    public List<Item> getAllByItemStatus(Integer itemStatus);
 
-	 List<Item> getByCompositeQuery(Map<String, String> map, int page);
+    public List<Item> getAllSubByTagId(Integer tagId);
 
-	 public int getResultTotal(Map<String, String> map);
-	
-	 Integer getPointByMbrId(Integer mbrId);
-	 
-	 Integer getbalanceByMbrId(Integer mbrId);
-	 
-	 Integer getMbrIdById(Integer itemId);
-	 
-	 List<Item> getItemByMbrIdAndStatus(Integer mbrId);
+    public int update(Item item);
+
+    public long getTotal();
+
+    List<Item> getByCompositeQuery(Map<String, String> map, int page);
+
+    public int getResultTotal(Map<String, String> map);
+
+    Integer getPointByMbrId(Integer mbrId);
+
+    Integer getSellScoreByMbrId(Integer mbrId);
+
+    Integer getbalanceByMbrId(Integer mbrId);
+
+    Integer getMbrIdById(Integer itemId);
+
+    List<Item> getItemByMbrIdAndStatus(Integer mbrId);
+
+    List<Integer> getItemByMbrId(Integer mbrId);
+
+    // 導覽列搜尋
+    List<Item> getAllActiveByItemName(String itemName);
+
+    int countActiveByItemName(String itemName);
 
 }

@@ -168,6 +168,7 @@
 <body>
 	<div class="headerHTML"></div>
     
+   	<aside class="itemSearch"></aside>
     <main class="main_itemList">
         <ul class="itemList">
         <c:forEach var="item" items="${itemList}">
@@ -208,18 +209,35 @@
 	    });
 	
 	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	    $(".itemSearch").load("${pageContext.request.contextPath}/front_end/itemsearch/itemSearch.html");
 	</script>
+	<script src="${pageContext.request.contextPath}/js/chijung/itemSearch.js"></script>
 	<script>
+	var myList = [
+	    { itemId: 1, itemName: "商品1", price: 20,tagId:1 },
+	    { itemId: 2, itemName: "商品2", price: 30,tagId:2 },
+	    { itemId: 3, itemName: "商品3", price: 25,tagId:3 },
+	    { itemId: 4, itemName: "商品4", price: 15,tagId:4 },
+	    { itemId: 5, itemName: "商品5", price: 40,tagId:5 },
+	    { itemId: 6, itemName: "商品6", price: 50,tagId:6 },
+	    { itemId: 7, itemName: "商品7", price: 35,tagId:3 },
+	    { itemId: 8, itemName: "商品8", price: 28,tagId:3 },
+	    { itemId: 9, itemName: "商品9", price: 22,tagId:2 },
+	    { itemId: 10, itemName: "商品10", price: 18,tagId:7 }
+	];
 	$(document).ready(function() {
-		function setupPagination() {
+		
+
+		function setupPagination(myList) {
 	 	  //每頁顯示幾項商品
-		  var itemsPerPage = 20;
+		  var itemsPerPage = 2;
 		  var itemList = $('.itemList');
 		  var pagination = $('#pagination .pagination-list');
-		  //幾個li商品
-		  var itemsCount = itemList.find('li').length;
+		  //幾個li商品，獲取list長度
+		  var lengthOfList = myList.length; 
+// 		  var itemsCount = itemList.find('li').length;
 		  //幾頁
-		  var pageCount = Math.ceil(itemsCount / itemsPerPage);
+		  var pageCount = Math.ceil(lengthOfList / itemsPerPage);
 		  var currentPage= 1;
 		  // 生成分頁按鈕
 		  function generatePagination() {
@@ -227,11 +245,35 @@
 		    pagination.append('<li><a href="#" data-page="' + currentPage + '">' + currentPage + '</a></li>');
 
 		  }
-		  
 		  // 顯示指定頁碼的內容
 		  function showPage(page) {
 		    var startIndex = (page - 1) * itemsPerPage;
 		    var endIndex = startIndex + itemsPerPage;
+// 		    清空原li
+		    $('.itemList').empty(); 
+
+		    for (var i = 0; i < myList.length; i++) {
+		        var itemId = myList[i].itemId;
+		        var itemName = myList[i].itemName;
+		        var itemPrice = myList[i].price;
+
+		        var newItemHTML = '<li>' +
+		            '<a href="${pageContext.request.contextPath}/Itemfront/itemlist?goto=' + itemId + '">' +
+		            '<div class="imgBlock">' +
+		            '<img id="item_id" src="${pageContext.request.contextPath}/ReadItemIMG/item?id=' + itemId + '&position=1" alt="商品圖片">' +
+		            '</div>' +
+		            '<div class="item_info">' +
+		            '<span>' + itemName + '</span><span class="price">' + itemPrice + '</span>' +
+		            '</div>' +
+		            '</a>' +
+		            '</li>';
+
+		        // 將新的列表項目添加到列表容器中
+		        $('.itemList').append(newItemHTML);
+		    }
+		    console.log(newItemHTML);
+		    
+		    
 		    itemList.find('li').hide().slice(startIndex, endIndex).show();
 		    pagination.find('a').removeClass('active');
 		    pagination.find('a[data-page="' + page + '"]').addClass('active');
@@ -286,9 +328,10 @@
 		  updateNavigationButtons(); 
 			
 		}
-		setupPagination();
+		setupPagination(myList);
 	})
 	
 	</script>
 </body>
 </html>
+<!-- var lengthOfList = myList.length; 獲取list長度-->

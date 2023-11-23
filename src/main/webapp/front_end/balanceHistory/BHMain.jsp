@@ -5,16 +5,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>會員點數異動</title>
+    <title>錢包異動</title>
+    <style>
 
+    </style>
 </head>
 <body>
 
     <div class="container">
     
-    	<a href="${pageContext.request.contextPath}/PointHistory/point?choice=add">新增</a>
+    	<a href="${pageContext.request.contextPath}/BalanceHistory/balance?choice=add">新增</a>
     	<br>
-    	<a href="${pageContext.request.contextPath}/PointHistory/point.check?choice=search">會員點數異動查詢</a>
+    	<a href="${pageContext.request.contextPath}/BalanceHistory/balance.check?choice=searchMbrId">虛擬錢包異動查詢</a>
 
     </div>
 

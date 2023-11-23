@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.twoclothing.chijung.Mapping;
 import com.twoclothing.model.coupon.Coupon;
+import com.twoclothing.redismodel.allotedCoupon.AllotedCoupon;
+import com.twoclothing.redismodel.allotedCoupon.AllotedCouponRedisDAO;
+import com.twoclothing.utils.HibernateUtil;
 import com.twoclothing.utils.JedisPoolUtil;
 import com.twoclothing.utils.generic.GenericService;
 
@@ -90,7 +93,9 @@ public class CouponServlet extends HttpServlet {
             	    } catch (java.text.ParseException e) {
             	        errorMsgs.put("createDate", "日期格式無效");
             	    }
-            	} 
+            	}else {
+            		errorMsgs.put("createDate", "使用日期不得為空");
+            	}
 		        
 
             	Date expireDate = null;
@@ -108,7 +113,6 @@ public class CouponServlet extends HttpServlet {
             	        }
             	        
             	    } catch (java.text.ParseException e) {
-            	        errorMsgs.put("expireDate", "日期格式無效");
             	    }
             	}
             	
@@ -167,9 +171,78 @@ public class CouponServlet extends HttpServlet {
 				break;
 
 			case "allot_Coupon":
+				currentDate = new Date();
+				Date allotDate = null;
+				expireDate = null;
+				String allotDateString = req.getParameter("allotDate");
+		        expireDateString = req.getParameter("expireDate");
+            	
+            	if (allotDateString != null && !allotDateString.isEmpty()) {
+            	    try {
+            	        // 將 allotDateString 轉換為日期對象
+            	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            	        allotDate = dateFormat.parse(allotDateString);
+
+            	        // 檢查 allotDate 是否大於當前時間
+            	        if (!allotDate.after(currentDate)) {
+            	        	res.getWriter().write("發放時間不得小於或等於當前時間");
+        					res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        					return;
+            	        }
+            	        
+            	    } catch (java.text.ParseException e) {
+            	        res.getWriter().write("日期格式無效");
+    					res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    					return;
+            	    }
+            	}else {
+            		res.getWriter().write("發放日期不得為空");
+					res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+					return;
+            	}
+            	
+            	
+            	
+            	if (expireDateString != null && !expireDateString.isEmpty()) {
+            	    try {
+            	        // 將 allotDateString 轉換為日期對象
+            	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+            	        expireDate = dateFormat.parse(expireDateString);
+            	        System.out.println(1);
+            	        
+            	    } catch (java.text.ParseException e) {
+            	    	System.out.println(2);
+            	    }
+            	}
+            	System.out.println(allotDateString);
+            	System.out.println(expireDate);
+            	
+            	// 結束時間比對發布時間
+            	if (allotDateString != null && expireDateString != null && !allotDateString.isEmpty() && !expireDateString.isEmpty()) {
+            	    // 檢查 allotDate 是否大於 expireDate
+            	    if (allotDate.after(expireDate)) {
+            	    	res.getWriter().write("發放日期已超過使用期限");
+    					res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    					return;
+            	    } 
+            	}
 				
-				
-				
+            	//jedisDAO
+            	Integer cpnId = Integer.parseInt(req.getParameter("cpnId"));
+            	Integer totalQuantity = Integer.parseInt(req.getParameter("totalQuantity"));
+            	Integer remainingQuantity = new Integer(totalQuantity);
+//            	
+            	coupon = gs.getByPrimaryKey(Coupon.class, cpnId);
+            	HibernateUtil.getSessionFactory().getCurrentSession().evict(coupon);
+            	AllotedCouponRedisDAO allotedCouponDao = new AllotedCouponRedisDAO();
+            	AllotedCoupon allotedCoupon = new AllotedCoupon(coupon,new Timestamp(allotDate.getTime()),totalQuantity,remainingQuantity);
+            	allotedCouponDao.allot(allotedCoupon);
+//            	
+				res.getWriter().write("新增發放成功");
+				res.setStatus(HttpServletResponse.SC_OK);
+				break;
+			case "turn_To_Allot_Coupon":
+				break;
 			case "get_All_Allot_Coupon":
 				try (Jedis jedis = JedisPoolUtil.getJedisPool().getResource()) {
 		            jedis.select(7);
@@ -177,28 +250,30 @@ public class CouponServlet extends HttpServlet {
 				
 				
 				
-				
+				break;
 			case "stop_Issuing_Coupon":
 				
 				
 				
 				
 				
-				
+				break;
 			case "receive_Coupon":
 				try (Jedis jedis = JedisPoolUtil.getJedisPool().getResource()) {
 		            jedis.select(7);
 		         // Lua腳本
 		            String luaScript = "local key = KEYS[1]\n" +
 		                    "local latestData = redis.call('LINDEX', key, -1)\n" +
-		                    "local parts = {}\n" +
-		                    "for part in string.gmatch(latestData, '([^,]+)') do\n" +
-		                    "    table.insert(parts, part)\n" +
+		                    "local data = cjson.decode(latestData)\n" +
+		                    "if data.status == 1 then\n" +
+		                    "    return -1\n" +
 		                    "end\n" +
-		                    "local remainingQuantity = tonumber(parts[4])\n" +
+		                    "local remainingQuantity = tonumber(data.remainingQuantity)\n" +
 		                    "if remainingQuantity > 0 then\n" +
 		                    "    remainingQuantity = remainingQuantity - 1\n" +
-		                    "    redis.call('LSET', key, -1, string.format('%s,%s,%s,%d,%s', parts[1], parts[2], parts[3], remainingQuantity, parts[5]))\n" +
+		                    "    data.remainingQuantity = remainingQuantity\n" +
+		                    "    local updatedData = cjson.encode(data)\n" +
+		                    "    redis.call('LSET', key, -1, updatedData)\n" +
 		                    "    return remainingQuantity\n" +
 		                    "else\n" +
 		                    "    return 0\n" +
@@ -216,7 +291,7 @@ public class CouponServlet extends HttpServlet {
 		        }
 				
 				
-				
+				break;
 				
 		}
 		if(!forwardPath.isEmpty()) {

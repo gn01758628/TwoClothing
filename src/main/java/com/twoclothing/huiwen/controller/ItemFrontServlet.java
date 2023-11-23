@@ -18,7 +18,7 @@ import com.twoclothing.huiwen.service.ItemServiceImpl;
 import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.aproduct.itemtracking.ItemTracking;
 
-@WebServlet("/Itemfront/*")
+@WebServlet("/Itemfront/itemlist")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 2 * 1024 * 1024, maxRequestSize = 2 * 2 * 1024 * 1024)
 public class ItemFrontServlet extends HttpServlet{
 	
@@ -44,7 +44,6 @@ public class ItemFrontServlet extends HttpServlet{
 		res.setContentType("text; charset=UTF-8");
 		
 		//商品列表 到 商品詳情頁
-		System.out.println("!!!"+req.getParameter("goto"));
 		String goTo = req.getParameter("goto");
 		int itemId = Integer.valueOf(goTo);
 		Item item = itemService.getItemByItemId(itemId);

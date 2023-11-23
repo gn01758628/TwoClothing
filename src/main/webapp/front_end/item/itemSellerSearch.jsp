@@ -31,7 +31,7 @@
             box-sizing: border-box;
         }
         main.main{
-            border: 1px solid black;
+/*             border: 1px solid black; */
             width: 100%;
             height: 100%;
             display: flex;

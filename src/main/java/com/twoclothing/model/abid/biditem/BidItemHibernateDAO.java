@@ -190,4 +190,21 @@ public class BidItemHibernateDAO implements BidItemDAO {
                 .getSingleResult();
         return count.intValue();
     }
+
+    // 導覽列搜尋
+
+    @Override
+    public List<BidItem> getAllActiveByBidItemName(String bidName) {
+        return getSession().createQuery("from BidItem where bidName like :bidName and bidStatus = 4", BidItem.class)
+                .setParameter("bidName", "%" + bidName + "%")
+                .list();
+    }
+
+    @Override
+    public int countActiveByBidItemName(String bidName) {
+        Long count = (Long) getSession().createQuery("select count(*) from BidItem where bidName like :bidName and bidStatus = 4")
+                .setParameter("bidName", "%" + bidName + "%")
+                .getSingleResult();
+        return count.intValue();
+    }
 }
