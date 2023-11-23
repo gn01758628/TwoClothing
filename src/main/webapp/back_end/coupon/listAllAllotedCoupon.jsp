@@ -56,60 +56,57 @@ body {
 <%
     String servletPath = request.getContextPath() + "/back_end/coupon/CouponServlet.do";
 %>
-<!-- <table id="example" class="display" style="width: 100%"> -->
-<!-- 	<thead > -->
-<!-- 		<tr> -->
-<!-- 			<th>優惠卷編號</th> -->
-<!-- 			<th>優惠卷名稱</th> -->
-<!-- 			<th>優惠卷使用日期</th> -->
-<!-- 			<th>優惠卷失效日期</th> -->
-<!-- 			<th>折扣類型</th> -->
-<!-- 			<th>折抵數值</th> -->
-<!-- 			<th>最低金額條件</th> -->
-<!-- 			<th>當前狀態</th> -->
-<!-- 			<th>員工編號</th> -->
-<!-- 			<th>新增發放</th> -->
+<table id="example" class="display" style="width: 100%">
+	<thead >
+		<tr>
+			<th>優惠卷編號</th>
+			<th>優惠卷名稱</th>
+			<th>發放總量</th>
+			<th>已領取數量</th>
+			<th>剩餘數量</th>
+			<th>當前狀態</th>
+			<th>終止發放</th>
 			
-<!-- 		</tr> -->
-<!-- 	</thead> -->
-<%-- 	<c:forEach var="coupon" items="${couponList}"> --%>
+		</tr>
+	</thead>
+	<c:forEach var="allotedCoupon" items="${allotedCouponList}">
 		
-<!-- 		<tr> -->
-<%-- 			<td>${coupon.cpnId}</td> --%>
-<%-- 			<td>${coupon.cpnName}</td> --%>
-<%-- 			<td>${coupon.createDate}</td> --%>
-<%-- 			<td>${coupon.expireDate}</td> --%>
-<%-- 			<td>${couponDisTypeMap[coupon.disType]}</td> --%>
-<%-- 			<td>${coupon.disValue}</td> --%>
-<%-- 			<td>${coupon.minAmount}</td> --%>
+		<tr>
+			<td>${allotedCoupon.cpnId}</td>
+			<td>${allotedCoupon.cpnName}</td>
+			<td>${allotedCoupon.createDate}</td>
+			<td>${allotedCoupon.expireDate}</td>
+			<td>${couponDisTypeMap[coupon.disType]}</td>
+			<td>${coupon.disValue}</td>
+			<td>${coupon.minAmount}</td>
 			
-<%-- 			<c:choose> --%>
-<%-- 		        <c:when test="${coupon.createDate gt now}"> --%>
-<!-- 		                <td>尚未生效</td> -->
-<%-- 		        </c:when> --%>
-<%-- 		        <c:when test="${not empty coupon.expireDate and coupon.expireDate lt now}"> --%>
-<!-- 				    <td>已失效</td> -->
-<%-- 				</c:when> --%>
-<%-- 		        <c:otherwise> --%>
-<!-- 		                <td>生效中</td> -->
-<%-- 		        </c:otherwise> --%>
-<%-- 		    </c:choose> --%>
+			<c:choose>
+		        <c:when test="${coupon.createDate gt now}">
+		                <td>尚未生效</td>
+		        </c:when>
+		        <c:when test="${not empty coupon.expireDate and coupon.expireDate lt now}">
+				    <td>已失效</td>
+				</c:when>
+		        <c:otherwise>
+		                <td>生效中</td>
+		        </c:otherwise>
+		    </c:choose>
 			
-<%-- 			<td>${coupon.empId}</td> --%>
+			<td>${coupon.empId}</td>
 			
 
-<!-- 			<td> -->
-<%-- 				<c:choose> --%>
-<%-- 					<c:when test="${not empty coupon.expireDate and coupon.expireDate lt now}"> --%>
-<%-- 					</c:when> --%>
-<%-- 			        <c:otherwise> --%>
-<!-- 						<input class="allot_Coupon_btn" type="submit" value="新增發放項目"> -->
-<%-- 			        </c:otherwise> --%>
-<%-- 		    	</c:choose> --%>
-<!-- 			</td> -->
-<!-- 		</tr> -->
-<%-- 	</c:forEach> --%>
-<!-- </table> -->
+			<td>
+				<c:choose>
+					<c:when test="${not empty coupon.expireDate and coupon.expireDate lt now}">
+					</c:when>
+			        <c:otherwise>
+						<input class="allot_Coupon_btn" type="submit" value="新增發放項目">
+			        </c:otherwise>
+		    	</c:choose>
+			</td>
+		</tr>
+	</c:forEach>
+</table>
 <script>
 // 	$(function(){
 <%-- 			let servletPath = '<%= servletPath %>'; --%>
