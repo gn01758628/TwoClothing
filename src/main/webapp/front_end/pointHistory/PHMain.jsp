@@ -14,7 +14,7 @@
     
     	<a href="${pageContext.request.contextPath}/PointHistory/point?choice=add">新增</a>
     	<br>
-    	<a href="${pageContext.request.contextPath}/PointHistory/point?choice=search">查詢(會員用))</a>
+    	<a href="${pageContext.request.contextPath}/PointHistory/point.check?choice=search">會員點數異動查詢</a>
 
     </div>
 

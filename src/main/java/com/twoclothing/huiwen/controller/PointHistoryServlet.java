@@ -46,7 +46,7 @@ public class PointHistoryServlet extends HttpServlet {
 			
 		}
 		
-		//連去搜尋，直接顯示查全部
+		//連去搜尋，直接顯示查全部(會員用)
 		if("search".equals(choice)) {
 //			List<PointHistory> PHList = PHSvc.getAllPH();
 			HttpSession session = req.getSession();
