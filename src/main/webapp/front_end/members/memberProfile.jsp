@@ -31,6 +31,7 @@
 
 
 <style>
+
 	#avatarContainer {
         position: relative;
         top: -793px; 
@@ -132,16 +133,8 @@
 <div id="con_lf">
 <br>
 <h2>帳戶管理</h2>
-<ul>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">物流設定</a></li>
-</ul> 
+<!--=============================================插入連結的地方-->
 
-<h2>訂單管理</h2>
-<ul>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">買家訂單</a></li>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">賣家訂單</a></li>
-</ul>
 
 </div>
 <div id="con_rh">
@@ -409,7 +402,19 @@ var contextPath = "${pageContext.request.contextPath}";
     });
 
     
-    
+    $(document).ready(function () {
+        // 使用 AJAX 請求加載其他內容
+        $.ajax({
+            url: "${pageContext.request.contextPath}/sideMembers.jsp",
+            method: "GET",
+            success: function (data) {
+                $("#con_lf").html(data);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error loading content:", error);
+            }
+        });
+    });
 
 	</script>
 	

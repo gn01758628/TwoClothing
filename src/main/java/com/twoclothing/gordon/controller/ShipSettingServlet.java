@@ -97,7 +97,7 @@ public class ShipSettingServlet extends HttpServlet{
 		    String district = req.getParameter("district");
 		    String zipcode = req.getParameter("zipcode");
 		    String address = req.getParameter("address").trim();
-		    String receiveAddress =  county.concat(district).concat(zipcode).concat(address);
+		    String receiveAddress =  county.concat(zipcode).concat(district).concat(address);
 			String receivePhone = null;
 			try {
 			    String receivePhoneStr = req.getParameter("receivePhone").trim();
@@ -171,7 +171,7 @@ public class ShipSettingServlet extends HttpServlet{
 			}
 		    
 //		    String receiveAddress = req.getParameter("receiveAddress");
-		    String receiveAddress =  county.concat(district).concat(zipcode).concat(address);
+		    String receiveAddress =  county.concat(zipcode).concat(district).concat(address);
 	
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/front_end/shipsetting/addShipSetting.jsp");

@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
-<html lang="zh-hant" xmlns="http://www.w3.org/1999/html">
+<html lang="zh-hant" >
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -41,22 +41,14 @@
 
 <div id="hy_con">
 <div id="con_lf">
-<br>
-<h2>帳戶管理</h2>
-<ul>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">物流設定</a></li>
-</ul> 
+<!--=============================================插入連結的地方-->
 
-<h2>訂單管理</h2>
-<ul>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">買家訂單</a></li>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">賣家訂單</a></li>
-</ul>
 </div>
 <div id="con_rh">
 <div class="con_rh_con"><br></br>
 <p class="rh_title">物流設定</p>
+
+
 <table id="myTable"class="rh_tab2">
 <thead>
     <tr>
@@ -108,7 +100,7 @@
 <div class="clear"></div>
 <div id="footer"></div>
 
-
+<br><br><br><br><br><br><br>
 <div class="footerHTML"></div>
 <!--bootstrap5 js-->
 <script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
@@ -125,6 +117,56 @@
     });
 
     $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+    
+    $(document).ready(function () {
+        // 使用 AJAX 請求加載其他內容
+        $.ajax({
+            url: "${pageContext.request.contextPath}/sideMembers.jsp",
+            method: "GET",
+            success: function (data) {
+                $("#con_lf").html(data);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error loading content:", error);
+            }
+        });
+    });
+    
+//     $(document).ready(function () {
+//         // 檢查本地存儲中是否有 headerHTML，如果有，則使用它，否則請求載入
+//         var storedHeader = localStorage.getItem('headerHTML');
+//         if (storedHeader) {
+//             $("#headerContainer").html(storedHeader);
+//         } else {
+//             loadAndStoreHTML('headerHTML', '#headerContainer');
+//         }
+
+//         // 檢查本地存儲中是否有 footerHTML，如果有，則使用它，否則請求載入
+//         var storedFooter = localStorage.getItem('footerHTML');
+//         if (storedFooter) {
+//             $("#footerContainer").html(storedFooter);
+//         } else {
+//             loadAndStoreHTML('footerHTML', '#footerContainer');
+//         }
+
+//         // 函數：載入 HTML 並存儲到本地存儲
+//         function loadAndStoreHTML(filename, container) {
+//             $.ajax({
+//                 url: "${pageContext.request.contextPath}/" + filename + ".html",
+//                 method: "GET",
+//                 success: function (data) {
+//                     $(container).html(data);
+
+//                     // 存儲 HTML 到本地存儲
+//                     localStorage.setItem(filename, data);
+//                 },
+//                 error: function (xhr, status, error) {
+//                     console.error("Error loading " + filename + ":", error);
+//                 }
+//             });
+//         }
+//     });
+
 </script>
 </body>
 </html>
