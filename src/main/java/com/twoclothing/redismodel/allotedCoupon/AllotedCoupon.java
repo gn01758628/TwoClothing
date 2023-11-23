@@ -36,7 +36,7 @@ public class AllotedCoupon {
 	
 	
 	
-	public AllotedCoupon(Coupon coupon,Integer index,Timestamp allotDate, Integer totalQuantity,
+	public AllotedCoupon(Coupon coupon,Timestamp allotDate, Integer totalQuantity,
 			Integer remainingQuantity) {
 		super();
 		cpnId = coupon.getCpnId();
@@ -47,7 +47,6 @@ public class AllotedCoupon {
 	    disValue = coupon.getDisValue();
 	    minAmount = coupon.getMinAmount();
 		
-		this.index = index;
 		this.allotDate = allotDate;
 		this.totalQuantity = totalQuantity;
 		this.remainingQuantity = remainingQuantity;

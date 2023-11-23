@@ -1,7 +1,7 @@
 package com.twoclothing.chenghan.controller;
 
 import com.google.gson.Gson;
-import com.twoclothing.chenghan.dto.BidIItemDTO;
+import com.twoclothing.chenghan.dto.BidItemDTO;
 import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.abid.biditem.BidItemDAO;
 import com.twoclothing.model.abid.biditem.BidItemHibernateDAO;
@@ -55,7 +55,7 @@ public class BidItemBrowseServlet extends HttpServlet {
         Integer currentPage = Integer.parseInt(request.getParameter("currentPage"));
         Integer pageMaxResult = Integer.parseInt(request.getParameter("pageMaxResult"));
         Map<String, String> data = new HashMap<>();
-        List<BidIItemDTO> bidIItemDTOList;
+        List<BidItemDTO> bidItemDTOList;
         List<BidItem> bidItemList;
         int resultCount, quotient, totalPage;
         if (1 == tagId) {
@@ -74,10 +74,10 @@ public class BidItemBrowseServlet extends HttpServlet {
             // 根據currentPage,pageMaxResult查詢資料
             bidItemList = bidItemDAO.getAllByTagsLimit(currentPage, pageMaxResult, tagId);
         }
-        bidIItemDTOList = getDTOList(bidItemList);
+        bidItemDTOList = getDTOList(bidItemList);
         // 傳送資料
         data.put("totalPage", String.valueOf(totalPage));
-        data.put("bidIItemDTOList", gson.toJson(bidIItemDTOList));
+        data.put("bidItemDTOList", gson.toJson(bidItemDTOList));
         out.write(gson.toJson(data));
     }
 
@@ -90,11 +90,11 @@ public class BidItemBrowseServlet extends HttpServlet {
         out.write(gson.toJson(tagsList));
     }
 
-    private static List<BidIItemDTO> getDTOList(List<BidItem> bidItemList) {
-        List<BidIItemDTO> bidIItemDTOList = new ArrayList<>();
+    private static List<BidItemDTO> getDTOList(List<BidItem> bidItemList) {
+        List<BidItemDTO> bidItemDTOList = new ArrayList<>();
         if (bidItemList != null && !bidItemList.isEmpty()) {
             for (BidItem bidItem : bidItemList) {
-                BidIItemDTO dto = new BidIItemDTO();
+                BidItemDTO dto = new BidItemDTO();
                 Integer bidItemId = bidItem.getBidItemId();
                 dto.setBidItemId(bidItemId);
                 dto.setEndTime(bidItem.getEndTime().getTime());
@@ -109,9 +109,9 @@ public class BidItemBrowseServlet extends HttpServlet {
                     dto.setBidAmountType("起標金額：");
                     dto.setCurrentBid(bidItem.getStartPrice());
                 }
-                bidIItemDTOList.add(dto);
+                bidItemDTOList.add(dto);
             }
         }
-        return bidIItemDTOList;
+        return bidItemDTOList;
     }
 }

@@ -441,6 +441,14 @@
 	<script>
 		$(document).ready(function() {
 			$(".close_x").click(function() {
+				//購物車icon-1
+				var carNum= parseInt($("li.nav-item span.carNum").text());
+				carNum-=1;
+				$("li.nav-item span.carNum").text(carNum);
+				if(carNum == 0){
+					$("li.nav-item span.carNum").hide();
+				}
+				
 				// 找到包含 "X" 按鈕的父元素，即 detailBox
 				var $detailBox = $(this).closest(".detailBox");
 
@@ -450,9 +458,9 @@
 				// 從該元素中獲取 itemId 的值
 				var itemId = $itemIdElement.data("item-id");
 				
-				 let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=" + itemId + "&delCart=delCart&mbrId=2";
+				 let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=" + itemId + "&delCart=delCart";
 				    console.log(url);
-				    fetch(url)
+				fetch(url)
 	            .then(function(response){
 	              return response.text();
 	            })
@@ -465,8 +473,7 @@
 
 				// 然後刪除整個 detailBox 元素
 				$detailBox.remove();
-				    
-
+				    						    
 				//購物車是否有商品，若無則顯示購物圖片
 				var leftMain = $(".leftMain");
 				if (leftMain.find('.detailBox').length === 0) {

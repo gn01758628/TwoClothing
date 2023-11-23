@@ -18,11 +18,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.twoclothing.chijung.Mapping;
 import com.twoclothing.model.coupon.Coupon;
-import com.twoclothing.model.employee.Employee;
+import com.twoclothing.redismodel.allotedCoupon.AllotedCoupon;
+import com.twoclothing.redismodel.allotedCoupon.AllotedCouponRedisDAO;
+import com.twoclothing.utils.HibernateUtil;
 import com.twoclothing.utils.JedisPoolUtil;
 import com.twoclothing.utils.generic.GenericService;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import redis.clients.jedis.Jedis;
 
 
@@ -92,7 +93,9 @@ public class CouponServlet extends HttpServlet {
             	    } catch (java.text.ParseException e) {
             	        errorMsgs.put("createDate", "日期格式無效");
             	    }
-            	} 
+            	}else {
+            		errorMsgs.put("createDate", "使用日期不得為空");
+            	}
 		        
 
             	Date expireDate = null;
@@ -173,7 +176,6 @@ public class CouponServlet extends HttpServlet {
 				expireDate = null;
 				String allotDateString = req.getParameter("allotDate");
 		        expireDateString = req.getParameter("expireDate");
-            	System.out.println(expireDateString);
             	
             	if (allotDateString != null && !allotDateString.isEmpty()) {
             	    try {
@@ -193,7 +195,13 @@ public class CouponServlet extends HttpServlet {
     					res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     					return;
             	    }
+            	}else {
+            		res.getWriter().write("發放日期不得為空");
+					res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+					return;
             	}
+            	
+            	
             	
             	if (expireDateString != null && !expireDateString.isEmpty()) {
             	    try {
@@ -220,8 +228,16 @@ public class CouponServlet extends HttpServlet {
             	}
 				
             	//jedisDAO
-            	
-            	
+            	Integer cpnId = Integer.parseInt(req.getParameter("cpnId"));
+            	Integer totalQuantity = Integer.parseInt(req.getParameter("totalQuantity"));
+            	Integer remainingQuantity = new Integer(totalQuantity);
+//            	
+            	coupon = gs.getByPrimaryKey(Coupon.class, cpnId);
+            	HibernateUtil.getSessionFactory().getCurrentSession().evict(coupon);
+            	AllotedCouponRedisDAO allotedCouponDao = new AllotedCouponRedisDAO();
+            	AllotedCoupon allotedCoupon = new AllotedCoupon(coupon,new Timestamp(allotDate.getTime()),totalQuantity,remainingQuantity);
+            	allotedCouponDao.allot(allotedCoupon);
+//            	
 				res.getWriter().write("新增發放成功");
 				res.setStatus(HttpServletResponse.SC_OK);
 				break;

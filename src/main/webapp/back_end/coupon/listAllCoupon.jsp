@@ -118,11 +118,13 @@ body {
 		    	let tr = $(this).closest('tr');
 
 		        // 在 tr 元素中找到名為 expireDate 的元素
+		        let cpnId = tr.find('td:eq(0)').text();
 		        let expireDate = tr.find('td:eq(3)').text(); 
+		       
 		    	
 		    	Swal.fire({
-		    		html:'<input type="datetime-local" name="allotDate" id="swal-input1" class="swal2-input" style="width:70%;">' +
-		            '<input type="number" name="disvalue" value="1"  min="1" id="swal-input2" class="swal2-input" style="width:70%;">',
+		    		html:'<input type="datetime-local" name="allotDate" id="swal-input1" class="swal2-input" style="width:70%;" required>' +
+		            '<input type="number" name="totalQuantity" value="1"  min="1" id="swal-input2" class="swal2-input" style="width:70%;" required>',
 		        inputAttributes:{
 		            autocapitalize: "off"
 		        },
@@ -133,14 +135,14 @@ body {
 		        showLoaderOnConfirm: true,
     		    preConfirm: async () => {
     		    	let allotDate = $('#swal-input1').val();
-    	            let disvalue = $('#swal-input2').val();
+    	            let totalQuantity = $('#swal-input2').val();
 	
     		    	let response = await fetch(servletPath, {
     		    	    method: 'POST',
     		    	    headers: {
     		    	        'Content-Type': 'application/x-www-form-urlencoded'
     		    	    },
-    		    	    body: 'allotDate=' + encodeURIComponent(allotDate) + '&disvalue=' + encodeURIComponent(disvalue)+ '&expireDate=' + encodeURIComponent(expireDate) +'&action=allot_Coupon',
+    		    	    body:'cpnId=' + encodeURIComponent(cpnId) + '&allotDate=' + encodeURIComponent(allotDate) + '&totalQuantity=' + encodeURIComponent(totalQuantity)+ '&expireDate=' + encodeURIComponent(expireDate) +'&action=allot_Coupon',
     		    	});
 
     		    	if (!response.ok) {

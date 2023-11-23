@@ -1,7 +1,7 @@
 package com.twoclothing.chenghan.controller;
 
 import com.google.gson.Gson;
-import com.twoclothing.chenghan.dto.BidIItemDTO;
+import com.twoclothing.chenghan.dto.BidItemDTO;
 import com.twoclothing.chenghan.dto.ItemDTO;
 import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.abid.biditem.BidItemDAO;
@@ -94,13 +94,13 @@ public class WelcomeServlet extends HttpServlet {
         String tagId = request.getParameter("tagId");
         List<BidItem> bidItemList;
         List<BidItem> randomSubList;
-        List<BidIItemDTO> bidIItemDTOList = new ArrayList<>();
+        List<BidItemDTO> bidItemDTOList = new ArrayList<>();
 
         if (tagId == null) {
             bidItemList = bidItemDAO.getAllByBidStatus(4);
             randomSubList = getRandomSubList(bidItemList, 10);
             for (BidItem item : randomSubList) {
-                BidIItemDTO dto = new BidIItemDTO();
+                BidItemDTO dto = new BidItemDTO();
                 Integer bidItemId = item.getBidItemId();
                 dto.setBidItemId(bidItemId);
                 dto.setEndTime(item.getEndTime().getTime());
@@ -115,14 +115,14 @@ public class WelcomeServlet extends HttpServlet {
                     dto.setBidAmountType("起標金額：");
                     dto.setCurrentBid(item.getStartPrice());
                 }
-                bidIItemDTOList.add(dto);
+                bidItemDTOList.add(dto);
 
             }
         } else {
             bidItemList = bidItemDAO.getAllSubByTagId(Integer.parseInt(tagId));
             randomSubList = getRandomSubList(bidItemList, 10);
             for (BidItem item : randomSubList) {
-                BidIItemDTO dto = new BidIItemDTO();
+                BidItemDTO dto = new BidItemDTO();
                 Integer bidItemId = item.getBidItemId();
                 dto.setBidItemId(bidItemId);
                 dto.setEndTime(item.getEndTime().getTime());
@@ -137,11 +137,11 @@ public class WelcomeServlet extends HttpServlet {
                     dto.setBidAmountType("起標金額：");
                     dto.setCurrentBid(item.getStartPrice());
                 }
-                bidIItemDTOList.add(dto);
+                bidItemDTOList.add(dto);
             }
         }
 
-        out.write(gson.toJson(bidIItemDTOList));
+        out.write(gson.toJson(bidItemDTOList));
     }
 
     static <T> List<T> getRandomSubList(List<T> sourceList, int itemsToSelect) {

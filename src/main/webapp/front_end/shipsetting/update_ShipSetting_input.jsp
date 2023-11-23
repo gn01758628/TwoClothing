@@ -45,18 +45,8 @@
 
 <div id="hy_con">
 <div id="con_lf">
-<br>
-<h2>帳戶管理</h2>
-<ul>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">物流設定</a></li>
-</ul> 
+<!--=============================================插入連結的地方-->
 
-<h2>訂單管理</h2>
-<ul>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">買家訂單</a></li>
-<li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">賣家訂單</a></li>
-</ul>
 </div>
 <div id="con_rh">
 <div class="con_rh_con"><br></br>
@@ -87,7 +77,7 @@
 					data-role="county" name="county" class="form-select"></select>
 			</div>
 			<div class="col-md-6">
-				<label class="control-label col-form-label"> 鄉鎮區 </label> <select
+				<label class="control-label col-form-label"> 鄉鎮市區 </label> <select
 					data-role="district" name="district" class="form-select"></select>
 			</div>
 		</div>
@@ -118,6 +108,8 @@
 <div id="footer">
 
 </div>
+<br><br><br><br><br><br><br>
+
 <!--放在最後面-->
 <div class="footerHTML"></div>
 <script>
@@ -144,6 +136,80 @@ let twzipcode = new TWzipcode({
     });
 
     $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+    
+    
+    
+    
+    // 使用 EL 語法獲取後端的值
+    var addressString = "${param.receiveAddress}";
+    // 找到市的位置
+	var cityIndex = addressString.indexOf("市");
+	var countyIndex = addressString.indexOf("縣");
+	var cityOrCountyIndex = -1;
+	
+	// 如果 cityIndex 和 countyIndex 都非負，取第一個出現的索引
+	if (cityIndex >= 0 && countyIndex >= 0) {
+	    cityOrCountyIndex = Math.min(cityIndex, countyIndex);
+	} else {
+	    // 取非負的索引，如果有一個是負的就取另一個
+	    cityOrCountyIndex = Math.max(cityIndex, countyIndex);
+	}
+
+ ////////////////////////////// 使用正則表達式匹配以市或縣結尾的數字部分
+    var match = addressString.match(/(?:市|縣)(\d+)/);
+
+    // 如果有匹配，取得匹配的結果
+    var numberPart = match ? match[1] : null;
+
+    var numberAsInt = parseInt(numberPart, 10);
+ ///////////////////////////////////////// 在控制台上輸出結果
+    
+    // 定義可能的行政區域
+    var regions = ["區", "鄉", "鎮", "市"];
+
+    // 初始化變數
+    var regionIndex = -1;
+
+    // 尋找可能的行政區域
+    for (var i = 0; i < regions.length; i++) {
+        var index = addressString.indexOf(regions[i]);
+        if (index !== -1 && (regionIndex === -1 || index < regionIndex) && index > cityOrCountyIndex) {
+            regionIndex = index;
+        }
+    }
+
+    // 提取行政區域名稱
+    var districtOrTown = addressString.substring(cityOrCountyIndex + 1, regionIndex + 1);
+
+    // 剩下的部分視為具體地址
+    var addressPart = addressString.substring(regionIndex + 1);
+
+    
+   	twzipcode.nth(1).set(numberAsInt);
+
+    $('input[name="address"]').val(addressPart);
+
+    
+    
+    
+    
+    
+    
+    
+    
+    $(document).ready(function () {
+        // 使用 AJAX 請求加載其他內容
+        $.ajax({
+            url: "${pageContext.request.contextPath}/sideMembers.jsp",
+            method: "GET",
+            success: function (data) {
+                $("#con_lf").html(data);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error loading content:", error);
+            }
+        });
+    });
 </script>
 </body>
 </html>

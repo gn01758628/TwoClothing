@@ -168,7 +168,7 @@
 <body>
 	<div class="headerHTML"></div>
     
-   	<div class="itemSearch"></div>
+   	<aside class="itemSearch"></aside>
     <main class="main_itemList">
         <ul class="itemList">
         <c:forEach var="item" items="${itemList}">
@@ -211,28 +211,30 @@
 	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
 	    $(".itemSearch").load("${pageContext.request.contextPath}/front_end/itemsearch/itemSearch.html");
 	</script>
+	<script src="${pageContext.request.contextPath}/js/chijung/itemSearch.js"></script>
 	<script>
+	var myList = [
+	    { itemId: 1, itemName: "商品1", price: 20,tagId:1 },
+	    { itemId: 2, itemName: "商品2", price: 30,tagId:2 },
+	    { itemId: 3, itemName: "商品3", price: 25,tagId:3 },
+	    { itemId: 4, itemName: "商品4", price: 15,tagId:4 },
+	    { itemId: 5, itemName: "商品5", price: 40,tagId:5 },
+	    { itemId: 6, itemName: "商品6", price: 50,tagId:6 },
+	    { itemId: 7, itemName: "商品7", price: 35,tagId:3 },
+	    { itemId: 8, itemName: "商品8", price: 28,tagId:3 },
+	    { itemId: 9, itemName: "商品9", price: 22,tagId:2 },
+	    { itemId: 10, itemName: "商品10", price: 18,tagId:7 }
+	];
 	$(document).ready(function() {
-// 		var myList = [
-// 		    { itemId: 1, itemName: "商品1", price: 20 },
-// 		    { itemId: 2, itemName: "商品2", price: 30 },
-// 		    { itemId: 3, itemName: "商品3", price: 25 },
-// 		    { itemId: 4, itemName: "商品4", price: 15 },
-// 		    { itemId: 5, itemName: "商品5", price: 40 },
-// 		    { itemId: 6, itemName: "商品6", price: 50 },
-// 		    { itemId: 7, itemName: "商品7", price: 35 },
-// 		    { itemId: 8, itemName: "商品8", price: 28 },
-// 		    { itemId: 9, itemName: "商品9", price: 22 },
-// 		    { itemId: 10, itemName: "商品10", price: 18 }
-// 		];
+		
 
-		function setupPagination(myList) {
+		function setupPagination(filteredData) {
 	 	  //每頁顯示幾項商品
 		  var itemsPerPage = 2;
 		  var itemList = $('.itemList');
 		  var pagination = $('#pagination .pagination-list');
 		  //幾個li商品，獲取list長度
-		  var lengthOfList = myList.length; 
+		  var lengthOfList = filteredData.length; 
 // 		  var itemsCount = itemList.find('li').length;
 		  //幾頁
 		  var pageCount = Math.ceil(lengthOfList / itemsPerPage);
@@ -250,10 +252,12 @@
 // 		    清空原li
 		    $('.itemList').empty(); 
 
-		    for (var i = 0; i < myList.length; i++) {
-		        var itemId = myList[i].itemId;
-		        var itemName = myList[i].itemName;
-		        var itemPrice = myList[i].price;
+		    for (var i = 0; i < filteredData.length; i++) {
+		        var itemId = filteredData[i].itemId;
+		        var itemName = filteredData[i].itemName;
+		        var itemPrice = filteredData[i].price;
+		        
+		        
 
 		        var newItemHTML = '<li>' +
 		            '<a href="${pageContext.request.contextPath}/Itemfront/itemlist?goto=' + itemId + '">' +
@@ -326,7 +330,46 @@
 		  updateNavigationButtons(); 
 			
 		}
-		setupPagination(myList);
+		
+		
+		
+		
+		
+		
+// 	    // 使用 jQuery 綁定事件
+// 	    $('.itemSearch').on('click', 'a', function (event) {
+// 	        event.preventDefault();
+// 	        clickedIdSubsList = [];
+// 	        clickedIdParentsList = [];
+
+// 	        let clickedId = $(this).attr('id');
+// 	        clickedIdSubsList.push(clickedId);
+// 	        findAccordionBody(clickedId);
+
+// 	        clickedIdParentsList.unshift(clickedId);
+// 	        let accordionBodyId = $(this).closest('.accordion-body').attr('id');
+// 	        if (accordionBodyId) {
+// 	            $(this).parents('.accordion-body').each(function () {
+// 	                clickedIdParentsList.unshift(this.id.replace('c', ''));
+// 	            });
+// 	        }
+// 	        console.log("clickedIdSubsList:"+clickedIdSubsList);
+// 	        console.log("clickedIdParentsList:"+clickedIdParentsList);
+// //	        let filteredData = filterItemListByIds(clickedIdSubsList, itemList);
+// 	        let filteredData = filterItemListByIds(clickedIdSubsList, myList);
+// 	        // 遍歷 filteredData 並印出每個對象的內容
+// 			filteredData.forEach(function (item) {
+// 			    console.log("Tag ID: " + item.tagId + ", Other Properties: " + JSON.stringify(item));
+// 			});
+// 			setupPagination(filteredData);
+// 	    });
+		
+		
+		
+		
+		
+		
+		
 	})
 	
 	</script>
