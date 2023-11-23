@@ -22,7 +22,7 @@ import com.twoclothing.utils.generic.GenericService;
 
 
 
-@WebServlet("/front_end/itemsearch")
+@WebServlet("/front_end/itemsearchServlet")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class ItemSearchServlet extends HttpServlet{
 	

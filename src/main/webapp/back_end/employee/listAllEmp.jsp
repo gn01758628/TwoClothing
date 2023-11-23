@@ -91,7 +91,7 @@ body {
 			     <input type="hidden" name="action"	value="getOne_For_Update">
 		     </FORM>
 <%-- 		     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/employee/Employee.do" style="margin-bottom: 0px;"> --%>
-			     <input id="change_Password_btn" type="submit" value="修改密碼">
+			     <input class="change_Password_btn" type="submit" value="修改密碼">
 <!-- 			     <button type="button" style="border-width">修改密碼</button> -->
 <%-- 			     <input type="hidden" name="empId"  value="${employee.empId}"> --%>
 <%-- 			     <input type="hidden" name="empName"  value="${employee.empName}"> --%>
@@ -112,7 +112,7 @@ body {
 <script>
 	$(function(){
 		let servletPath = '<%= servletPath %>';
-	    $('#change_Password_btn').click(async function(){
+	    $('.change_Password_btn').click(async function(){
 	    	// 找到最近的 tr 元素
 	        let tr = $(this).closest('tr');
 	        // 在 tr 元素中找到名為 empId 的 input 元素

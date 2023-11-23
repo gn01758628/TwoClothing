@@ -3,7 +3,7 @@ package com.twoclothing.model.coupon;
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface CouponJeidsDAO {
+public interface CouponDAO {
 	void insert(Coupon coupon);
 
 	Coupon getByPrimaryKey(Integer cpnId);
