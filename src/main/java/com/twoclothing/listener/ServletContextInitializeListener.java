@@ -4,8 +4,11 @@ import com.twoclothing.chijung.controller.front_end.CategoryTagsSorter;
 import com.twoclothing.model.categorytags.CategoryTags;
 import com.twoclothing.model.categorytags.CategoryTagsDAO;
 import com.twoclothing.model.categorytags.CategoryTagsHibernateDAO;
+import com.twoclothing.model.employee.Employee;
 import com.twoclothing.utils.HibernateUtil;
 import com.twoclothing.utils.JedisPoolUtil;
+import com.twoclothing.utils.generic.GenericService;
+
 import org.hibernate.SessionFactory;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -44,14 +47,19 @@ public class ServletContextInitializeListener implements ServletContextListener 
         }
         // 初始資料綁定
         ServletContext servletContext = sce.getServletContext();
+        GenericService gs = GenericService.getInstance();
         CategoryTagsDAO categoryTagsDAO = new CategoryTagsHibernateDAO(sessionFactory);
         try {
             sessionFactory.getCurrentSession().beginTransaction();
             List<CategoryTags> categoryTags = categoryTagsDAO.getAll();
+            List<Employee> employeeList = gs.getBy(Employee.class, "empStatus", 1);
+            List<Integer> resignedEmployeeList = employeeList.stream()
+                    .map(Employee::getEmpId)
+                    .collect(Collectors.toList());
             sessionFactory.getCurrentSession().getTransaction().commit();
             servletContext.setAttribute("categoryTags", categoryTags);
-            
             servletContext.setAttribute("categoryTagsSortedList", CategoryTagsSorter.sortCategoryTags(categoryTags.stream().collect(Collectors.toList())));
+            servletContext.setAttribute("resignedEmployeeList", resignedEmployeeList);
         } catch (Exception e) {
             sessionFactory.getCurrentSession().getTransaction().rollback();
             e.printStackTrace();

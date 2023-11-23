@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>折叠式菜单</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js'></script>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css'>
+    
+    <style>
+        .itemSearch{
+            max-width:100%;
+        }
+        .accordion-header {
+            display:flex;
+            align-items:center;
+        }
+        .accordion-button {
+            margin-left: auto;
+            width: auto;
+            background-color: rgba(0,0,0,0);
+        }
+        .accordion-button:not(.collapsed) {
+		    color: #0c63e4;
+		    background-color: unset;
+		    box-shadow: unset;
+		}
+        .accordion-item{
+        	border:unset;
+            border-bottom: 1px solid rgba(0,0,0,.125);
+        }
+		.accordion-body {
+			padding:0;
+		    padding-left: 0.75rem;
+		}
+        .itemsearch a{
+			font-size: 1.25rem;
+			color: #000000;
+			text-decoration: none;
+		}
+		.hovered:hover{
+			background-color:var(--bs-gray-200);
+		}
+    </style>
+</head>
+
+<body>
+
+    <aside class="itemSearch">
+    </aside>
+
+<!--     <script src="/TwoClothing/js/chijung/itemSearch.js"></script> -->
+
+
+</body>
+
+</html>

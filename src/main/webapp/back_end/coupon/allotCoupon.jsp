@@ -2,12 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 
-
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<title>新增優惠券</title>
+<title>發放優惠券</title>
 
 <style>
   table#table-1 {
@@ -44,46 +43,29 @@
 </head>
 <body bgcolor='white'>
 
-<h3>資料新增:</h3>
+<h3>發放項目新增:</h3>
 
 <FORM METHOD="post" ACTION="CouponServlet.do" name="form" >
 <table>
 
 	<tr>
 		<td>優惠券名稱:</td>
-		<td><input type="TEXT" name="cpnName" value="${cpnName}" size="45" required/></td> <td>${errorMsgs.cpnName}</td>
+		<td>${cpnName}"</td>
 	</tr>
 	<tr>
-		<td>使用日期:</td>
+		<td>發放日期:</td>
 		
-		<td><input type="datetime-local" id="startDate" name="createDate"  value="${createDate}" size="45" required/></td> <td>${errorMsgs.createdate}</td>
+		<td><input type="datetime-local" id="startDate" name="allotDate"  value="${allotDate}" size="45" required/></td> <td>${errorMsgs.allotDate}</td>
 	</tr>
 	<tr>
-		<td>失效日期:</td>
-		<td><input type="datetime-local" id="endDate" name="expireDate"  value="${expireDate}" size="45" required/></td> <td>${errorMsgs.expireDate}</td>
-	</tr>
-	<tr>
-		<td>折扣類型:<font color=red><b>*</b></font></td>
-		<td>
-			<select size="1" name="distype">
-				<c:forEach var="entry" items="${couponDisTypeMap.entrySet()}">
-				    <option value="${entry.key}"${(entry.key==distype)? 'selected':'' } >${entry.value}
-				</c:forEach>
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td>折扣額度:</td>
-		<td><input type="number" name="disvalue"  min="0" value="${disvalue}"   size="45" required/></td> <td>${errorMsgs.disvalue}</td>
-	</tr>
-	<tr>
-		<td>最低金額條件:</td>
-		<td><input type="number" name="minamount" min="0"  value="${not empty minamount ? minamount : 0}"   size="45" required/></td> <td>${errorMsgs.minamount}</td>
+		<td>發放數量:</td>
+		<td><input type="number" name="disvalue"  min="0" value="${totalQuantity}"   size="45" required/></td> <td>${errorMsgs.totalQuantity}</td>
 	</tr>
 	
 </table>
 <br>
-<input type="hidden" name="action" value="insert_Coupon">
+<input type="hidden" name="action" value="allot_Coupon">
+
 <input type="submit" id="submit-button" value="送出新增"></FORM>${success}
 
 </body>
@@ -104,9 +86,6 @@
 
 	    // 設定開始日期和時間的最小值為現在的日期和時間
 	    document.getElementById("startDate").min = formattedNow;
-
-	    // 設定結束日期和時間的最小值為現在的日期和時間
-	    document.getElementById("endDate").min = formattedNow;
 
 	});
 	

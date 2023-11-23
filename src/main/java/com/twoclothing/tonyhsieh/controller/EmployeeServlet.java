@@ -68,12 +68,15 @@ public class EmployeeServlet extends HttpServlet {
 			
 			Integer empId = Integer.valueOf(req.getParameter("empId"));
 			Employee emp = gs.getByPrimaryKey(Employee.class, empId);
+			List<Integer> resignedEmployeeList = (List<Integer>) req.getServletContext().getAttribute("resignedEmployeeList");
 			String url;
 			if( 0 == emp.getEmpStatus()) {
 				emp.setEmpStatus(1);
+				resignedEmployeeList.add(empId);
 				url = "/back_end/employee/Employee.do?action=get_On_Duty";
 			}else {
 				emp.setEmpStatus(0);
+				resignedEmployeeList.remove(empId);
 				url = "/back_end/employee/Employee.do?action=get_Not_On_Duty";
 			}
 			resp.sendRedirect(req.getContextPath() + url);

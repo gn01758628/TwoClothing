@@ -168,6 +168,7 @@
 <body>
 	<div class="headerHTML"></div>
     
+   	<div class="itemSearch"></div>
     <main class="main_itemList">
         <ul class="itemList">
         <c:forEach var="item" items="${itemList}">
@@ -208,6 +209,7 @@
 	    });
 	
 	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	    $(".itemSearch").load("${pageContext.request.contextPath}/front_end/itemsearch/itemSearch.html");
 	</script>
 	<script>
 	$(document).ready(function() {

@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.internal.build.AllowSysOut;
+
 import com.twoclothing.gordon.service.MembersService;
 import com.twoclothing.gordon.service.MembersServiceImpl;
 import com.twoclothing.huiwen.service.ItemService;
@@ -82,11 +84,9 @@ public class ItemCartServlet extends HttpServlet {
 
 			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
 			Jedis jedis = jedisPool.getResource();
+			jedis.select(13);
 			try {
-			    jedis.select(13);
-
-			    jedis.hset(mbrId, itemId, quantity); 
-		
+			    jedis.hset(mbrId, itemId, quantity);		        
 				req.setAttribute("item", itemList);
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -101,6 +101,38 @@ public class ItemCartServlet extends HttpServlet {
 		    out.flush();
 
 		}
+		
+		if ("addCartNum".equals(req.getParameter("addCartNum"))) {
+			String itemIdStr = req.getParameter("itemId");
+			
+			List<Integer> keyList = new ArrayList<>();
+			JedisPool jedisPool = JedisPoolUtil.getJedisPool();
+			Jedis jedis = jedisPool.getResource();
+			jedis.select(13);
+			
+			try {
+	
+				HttpSession session = req.getSession();
+				String mbrId = String.valueOf(session.getAttribute("mbrId"));
+				
+			    Set<String> keys = jedis.hkeys(mbrId);
+			    for (String key : keys) {
+			    	keyList.add(Integer.valueOf(key));
+			    }
+			    
+			    System.out.println("keyList"+keyList);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally {
+				jedis.close();	
+			}
+			boolean isItemIdExist = keyList.contains(Integer.valueOf(itemIdStr));
+			String responseData2 = String.valueOf(isItemIdExist); // 將布林值轉為文字
+			PrintWriter out = res.getWriter();
+			out.print(responseData2);
+			out.flush();
+		}
+		
 		//查看購物車
 		if ("cart".equals(req.getParameter("goto"))) {
 			//抓會員存的商品id
@@ -283,6 +315,7 @@ public class ItemCartServlet extends HttpServlet {
 		}
 		
 		//送去產生訂單
+		//測試，到時放在啟榮的訂單servlet
 //        String requestURI = req.getRequestURI();
 //        
 //        if (requestURI.endsWith("/toOrder")) {
