@@ -148,7 +148,6 @@
 		
 		button.close_x img{
 			width:35px;
-			height:35px;
 		}
 		
 		div.rightMain {
@@ -182,6 +181,23 @@
 			width: 100%;
 			padding-bottom: 20px;
 			color:#561729;
+		}
+		div.rightMain div.rightInner label.checkPoint{
+			text-align: center;
+/* 		    border: 1px solid; */
+		    width: 100%;
+		}
+		
+		div.rightMain div.rightInner label.checkPoint input.insertPoint{
+			width: 100%;
+		    padding: 2px 15px;
+		    margin-top: 12px;
+		    border-radius: 1rem;
+		    height: 35px;
+		} 
+		
+		div.rightMain div.rightInner label.checkPoint input#point{
+			margin-right: 6px;
 		}
 		
 		div.rightMain div.rightInner>div {
@@ -297,7 +313,7 @@
 					</table>
 	
 					<div class="del-box">
-						<button class="close_x"><img src="${pageContext.request.contextPath}/images/cart/garbage1.png"></button>
+						<button class="close_x"><img src="${pageContext.request.contextPath}/images/cart/trash.png"></button>
 					</div>
 				</div>
 			</c:forEach>
@@ -307,8 +323,9 @@
 		<div class="rightMain">
 			<div class="rightInner">
 				<label class="checkPoint">
-					<input type="checkbox" name="mbrPoint" id="point" onchange="countEverything()" value="${mbrPoint}">
-					使用會員點數 <span>${mbrPoint}</span>點
+					<input type="checkbox" name="mbrPointAll" id="point" onchange="countEverything()" value="0">
+					使用會員點數  可使用${mbrPoint}點<input type="text" name="mbrPoint" value="0" class="insertPoint" onchange="countEverything()">
+<%-- 					<span>${mbrPoint}</span>點 --%>
 				</label>
 				<button id="countBtn" class="choice_cou" type="button" class="btn btn-primary"
 					data-bs-toggle="modal" data-bs-target="#exampleModal">選取優惠券</button>
@@ -544,24 +561,48 @@
 			distypeVal = $(".coupon_radio:checked").closest(".Coupon").find(".coupon_distype").val(); // 找到該優惠券的折扣種
 			disValue = $(".coupon_radio:checked").closest(".Coupon").find(".coupon_disvalue").val(); // 找到該優惠券的折扣金額或%數
 		}; 
-        
-        if(distypeVal){
+        console.log("distypeVal:"+distypeVal);
+        console.log("disValue:"+disValue);
+        if(parseInt(distypeVal)){
+        console.log("total:"+total);
         	total *= (1-(disValue/100));
         	total = Math.round(total);
         } else {
         	total -= disValue;
         }
-
 		// 3 Member Point
-		if($('input[name="mbrPoint"]').is(":checked")){
-			var mbrPoint = parseInt($(".checkPoint span").text());
+		var mbrPoint =0;
+		var pointTotal = parseInt("${mbrPoint}");
+// 		console.log(pointTotal);
+	    var pointCheckbox = $('input[name="mbrPointAll"]');
+	    var pointInput = $('input[name="mbrPoint"]');
+		
+		if (pointCheckbox.is(":checked")){
+			pointInput.prop('disabled', true);
+			mbrPoint = pointTotal;
+			pointCheckbox.val(mbrPoint);
+			console.log("c"+mbrPoint);
+			pointInput.val(0);
+			
 		}else{
-			var mbrPoint = 0;
-		}
+			pointInput.prop('disabled', false);			
+			mbrPoint = parseInt(pointInput.val());
+			console.log("I"+mbrPoint);
+			pointCheckbox.val(pointTotal);
+			console.log(pointInput.val());
+	        if ((pointInput.val()) && parseInt(pointInput.val()) > parseInt(pointTotal)) {
+	        	pointCheckbox.prop('checked', true);
+	        	pointInput.val(0);
+	        	pointInput.prop('disabled', true);
+	        	mbrPoint = pointTotal;
+	        }
+        }
+
 		total -= mbrPoint;
 		if(total < 0){
 			total = 0;
 		}
+		console.log("total"+total);
 		// 4 Total Show on HTML
 		$(".total span").text(total);
 		$(".count span").text(originalTotal - total);

@@ -19,7 +19,7 @@
 		}
 		main.main{
 
-			height: 100%;
+			height: 100vh;
 			width: 100%;
 			display: flex;
 			align-items: center;
@@ -45,7 +45,7 @@
 		
 		form.form_update{
 			width:90%;
-			height:100%;
+			height:90%;
 			position: relative;
 		}
 		table thead.head tr{
@@ -53,6 +53,11 @@
 			background-color: rgb(255, 234, 208);
 			height: 40px;
 
+		}
+		
+		tbody.body tr{
+			background-color:white;
+		
 		}
 		
 
@@ -74,7 +79,8 @@
 			font-size: 16px;
 			border: 2px solid gray;
 			position: absolute;
-    		right: 0px;
+    		right: 10px;
+    		bottom: 10px;
 		}
 		button:hover{
 			box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.2);
