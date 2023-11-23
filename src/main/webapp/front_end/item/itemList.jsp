@@ -156,6 +156,41 @@
     		color:#561729;
     		border-radius: 6px;
     		
+    		
+    		
+    	.itemSearch{
+            max-width:100%;
+        }
+        .accordion-header {
+            display:flex;
+            align-items:center;
+        }
+        .accordion-button {
+            margin-left: auto;
+            width: auto;
+            background-color: rgba(0,0,0,0);
+        }
+        .accordion-button:not(.collapsed) {
+		    color: #0c63e4;
+		    background-color: unset;
+		    box-shadow: unset;
+		}
+        .accordion-item{
+        	border:unset;
+            border-bottom: 1px solid rgba(0,0,0,.125);
+        }
+		.accordion-body {
+			padding:0;
+		    padding-left: 0.75rem;
+		}
+        .itemsearch a{
+			font-size: 1.25rem;
+			color: #000000;
+			text-decoration: none;
+		}
+		.hovered:hover{
+			background-color:var(--bs-gray-200);
+		}
     	}
 	</style>
     <!--導覽列css-->
@@ -168,7 +203,7 @@
 <body>
 	<div class="headerHTML"></div>
     
-   	<div class="itemSearch"></div>
+   	<aside class="itemSearch"></aside>
     <main class="main_itemList">
         <ul class="itemList">
         <c:forEach var="item" items="${itemList}">
@@ -201,6 +236,7 @@
 	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
 	<!--Sweet Alert-->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+	
 	<!--JS loader-->
 	<script>
 	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
@@ -211,6 +247,7 @@
 	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
 	    $(".itemSearch").load("${pageContext.request.contextPath}/front_end/itemsearch/itemSearch.html");
 	</script>
+	<script src="${pageContext.request.contextPath}/js/chijung/itemSearch.js"></script>
 	<script>
 	$(document).ready(function() {
 // 		var myList = [
@@ -327,6 +364,34 @@
 			
 		}
 		setupPagination(myList);
+		
+		
+		
+		// 使用 jQuery 綁定事件
+        $('.itemSearch').on('click', 'a', function (event) {
+            event.preventDefault();
+            clickedIdSubsList = [];
+            clickedIdParentsList = [];
+
+            let clickedId = $(this).attr('id');
+            clickedIdSubsList.push(clickedId);
+            findAccordionBody(clickedId);
+
+            clickedIdParentsList.unshift(clickedId);
+            let accordionBodyId = $(this).closest('.accordion-body').attr('id');
+            if (accordionBodyId) {
+                $(this).parents('.accordion-body').each(function () {
+                    clickedIdParentsList.unshift(this.id.replace('c', ''));
+                });
+            }
+            console.log("clickedIdSubsList:"+clickedIdSubsList);
+            console.log("clickedIdParentsList:"+clickedIdParentsList);
+            let filteredData = filterItemListByIds(clickedIdSubsList, itemList);
+            // 遍歷 filteredData 並印出每個對象的內容
+    		filteredData.forEach(function (item) {
+    		    console.log("Tag ID: " + item.tagId + ", Other Properties: " + JSON.stringify(item));
+    		});
+        });
 	})
 	
 	</script>
