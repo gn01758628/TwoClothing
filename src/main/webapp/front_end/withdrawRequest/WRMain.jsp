@@ -14,9 +14,9 @@
 
     <div class="container">
     
-    	<a href="${pageContext.request.contextPath}/WithdrawRequest/withdraw.check?choice=add">提出申請</a>
+    	<a href="${pageContext.request.contextPath}/WithdrawRequest/withdraw.check?choice=add">虛擬錢包提款申請</a>
     	<br>
-    	<a href="${pageContext.request.contextPath}/WithdrawRequest/withdraw.check?choice=search">會員查詢(前台)</a>
+    	<a href="${pageContext.request.contextPath}/WithdrawRequest/withdraw.check?choice=search">會員虛擬錢包申請查詢</a>
     	<br>
 <%--     	<a href="${pageContext.request.contextPath}/WithdrawRequest/withdraw?choice=getAll">員工查詢(後台)</a> --%>
 
