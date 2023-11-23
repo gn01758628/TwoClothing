@@ -58,12 +58,13 @@ public class AllotedCouponRedisDAO implements AllotedCouponDAO{
 		    jedis.select(REDIS_NUMBER);
 		    Set<String> keys = jedis.keys(COUPON_PREFIX);
 
-		    List<AllotedCoupon> allotedCouponJsonList = (List<AllotedCoupon>) jedis.eval(GETALL_LUA_SCRIPT, 1, COUPON_PREFIX);
+		    allotedCouponList = (List<AllotedCoupon>) jedis.eval(GETALL_LUA_SCRIPT, 1, COUPON_PREFIX);
 
 		    // 处理返回的 allotedCouponList
 		    Gson gson = new Gson();
-		    for (String jsonCoupon : allotedCouponJsonList) {
-		        AllotedCoupon allotedCoupon = gson.fromJson(jsonCoupon, AllotedCoupon.class);
+		    for (AllotedCoupon allotedCoupon : allotedCouponList) {
+//		        AllotedCoupon allotedCoupon = gson.fromJson(jsonCoupon, AllotedCoupon.class);
+		    	System.out.println(allotedCoupon);
 		        allotedCouponList.add(allotedCoupon);
 		    }
 		    
