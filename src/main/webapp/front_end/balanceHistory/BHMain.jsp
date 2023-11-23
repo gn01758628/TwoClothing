@@ -16,7 +16,7 @@
     
     	<a href="${pageContext.request.contextPath}/BalanceHistory/balance?choice=add">新增</a>
     	<br>
-    	<a href="${pageContext.request.contextPath}/BalanceHistory/balance?choice=searchMbrId">查詢</a>
+    	<a href="${pageContext.request.contextPath}/BalanceHistory/balance.check?choice=searchMbrId">虛擬錢包異動查詢</a>
 
     </div>
 

@@ -641,6 +641,7 @@
 		});
 	    
 		$(".buy-button").on("click",function(){
+// 			$("span.carNum").val();
 			quantities = $("#input_num").val();
 			let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&quantity="+quantities+"&gotoCart=gotoCart";
 			console.log(url);
@@ -649,6 +650,7 @@
             	return response.text();
             })
             .then(function(data){
+//             	var responseData =;
             	Swal.fire({
             		  title: data,
             		  confirmButtonText: "確認",
@@ -659,6 +661,37 @@
             .catch(function(error){
             	alert("加入購物車失敗！");
             })
+			
+			//購物車icon顯示數量
+			let url2="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&addCartNum=addCartNum";
+			console.log(url2);
+			fetch(url2)
+            .then(function(response){
+            	return response.text();
+            })
+            .then(function(data){
+            	
+			var carNum= parseInt($("li.nav-item span.carNum").text());
+			console.log("carNum"+carNum);//NaN
+			if(!carNum){
+				carNum=0;
+			}
+				if(data == "true"){
+// 					console.log("有相同商品");
+					
+				}else if(data == "false"){
+					carNum += 1;
+					$("li.nav-item span.carNum").text(carNum).show();
+					if(carNum == 0){
+						$("li.nav-item span.carNum").hide();
+					}
+				}
+            })
+            .catch(function(error){
+//             	alert("");
+            })
+			
+			
 		})
 		
 		let isTracked = ${isItemTracked};

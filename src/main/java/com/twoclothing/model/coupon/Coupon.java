@@ -30,21 +30,21 @@ public class Coupon implements Serializable {
 	private Timestamp expireDate;
 	
 	@Column(name = "distype" , columnDefinition = "TINYINT")
-	private int disType;
+	private Integer disType;
 	
 	@Column(name = "disvalue")
-	private int disValue;
+	private Integer disValue;
 	
 	@Column(name = "minamount")
-	private int minAmount;
+	private Integer minAmount;
 
 	public Coupon() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Coupon(String cpnName, Integer tagId, Integer empId, Timestamp createDate, Timestamp expireDate, int disType,
-			int disValue, int minAmount) {
+	public Coupon(String cpnName, Integer tagId, Integer empId, Timestamp createDate, Timestamp expireDate, Integer disType,
+			Integer disValue, Integer minAmount) {
 		super();
 		this.cpnName = cpnName;
 		this.tagId = tagId;
@@ -104,7 +104,7 @@ public class Coupon implements Serializable {
 		this.expireDate = expireDate;
 	}
 
-	public int getDisType() {
+	public Integer getDisType() {
 		return disType;
 	}
 
@@ -112,7 +112,7 @@ public class Coupon implements Serializable {
 		this.disType = disType;
 	}
 
-	public int getDisValue() {
+	public Integer getDisValue() {
 		return disValue;
 	}
 
@@ -120,7 +120,7 @@ public class Coupon implements Serializable {
 		this.disValue = disValue;
 	}
 
-	public int getMinAmount() {
+	public Integer getMinAmount() {
 		return minAmount;
 	}
 
