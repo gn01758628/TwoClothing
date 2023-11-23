@@ -93,8 +93,8 @@ $(document).ready(function () {
                         title: "對不起，沒有找到符合條件的商品",
                         text: "我們這裡仍有眾多商品等待您的發掘",
                         imageUrl: "/TwoClothing/images/ItemNotFound.png",
-                        imageWidth: 500,
-                        imageHeight: 500,
+                        imageWidth: 400,
+                        imageHeight: 400,
                         imageAlt: "Custom image",
                         confirmButtonColor: "#561729",
                         confirmButtonText: "嘗試其他關鍵詞"
@@ -198,9 +198,6 @@ function alreadyLogin(mbrId) {
     shoppingCar_A.attr("href", "/TwoClothing/ItemCart/cartlist.check?goto=cart&mbrId=" + mbrId);
     const carNum_Span = $(".carNum");
     // 系統通知相關節點
-    const notice_A = $(".notice");
-    // TODO 瀏覽系統通知畫面還沒做
-    notice_A.attr("href", "#");
     const noticeNum_Span = $(".noticeNum");
     // 即時通相關節點
     const messageNum_Span = $(".messageNum");
@@ -233,7 +230,6 @@ function alreadyLogin(mbrId) {
     });
     // 更新賣東西選項的連結
     $(".beSeller").removeAttr("href");
-    const beSellerDrop = $(".beSellerDrop");
     // 更新系統通知的連結
     $(".noticeList").attr("href", "/TwoClothing/front_end/notice/noticeList.html");
 }

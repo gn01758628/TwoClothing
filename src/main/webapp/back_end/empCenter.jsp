@@ -140,7 +140,7 @@
               <a href="${pageContext.request.contextPath}/back_end/coupon/CouponServlet.do?action=get_All_Coupon"><i class="ion-ios-information-outline"></i>優惠券管理</a>
             </li>
             <li>
-              <a href=""><i class="ion-android-star-outline"></i></a>
+              <a href="${pageContext.request.contextPath}/back_end/coupon/CouponServlet.do?action=get_All_Allot_Coupon"><i class="ion-android-star-outline"></i>優惠券發放管理</a>
             </li>
           </ul>
           
@@ -151,7 +151,7 @@
           
           <ul class="nav-flyout">
             <li>
-              <a href=""><i class="ion-ios-flame-outline"></i></a>
+              <a href="${pageContext.request.contextPath}/back/itemreport?action=compositeQuery"><i class="ion-ios-flame-outline"></i>一般商品檢舉管理</a>
             </li>
             <li>
               <a href=""><i class="ion-ios-lightbulb-outline"></i></a>

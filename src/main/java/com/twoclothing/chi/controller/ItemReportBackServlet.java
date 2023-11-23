@@ -101,7 +101,7 @@ public class ItemReportBackServlet extends HttpServlet {
 		req.setAttribute("rStatusMap", rStatusMap);
 		req.setAttribute("resultMap", resultMap);
 
-		return "/back_end/itemreport/itemReportManageList.jsp";
+		return "/back_end/itemreport/itemReportManageIndex.jsp";
 
 	}
 
@@ -141,7 +141,7 @@ public class ItemReportBackServlet extends HttpServlet {
 			System.out.println("map.sizes() == 0");
 		}
 
-		return "/back_end/itemreport/itemReportManageList.jsp";
+		return "/back_end/itemreport/itemReportManageIndex.jsp";
 	}
 
 	private void getItemReport(HttpServletRequest req, HttpServletResponse res) throws IOException {
