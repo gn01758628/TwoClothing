@@ -61,7 +61,6 @@ public class ItemServlet extends HttpServlet {
 		PrintWriter out = res.getWriter();
 
 		String choice = req.getParameter("choice");
-//		System.out.println("choice:" + choice);
 		String forwardPath = "";
 		if (choice != null) {
 			switch (choice) {
@@ -418,7 +417,6 @@ public class ItemServlet extends HttpServlet {
 	//查全部不分頁
 	public String getAllListNoPage(HttpServletRequest req, HttpServletResponse res) {
 		List<Item> itemList = itemService.getAllByStatus(0);
-//		System.out.println("...."+itemList);
 		req.setAttribute("itemList", itemList);
 		return "/front_end/item/itemList.jsp";
 	}
@@ -426,11 +424,19 @@ public class ItemServlet extends HttpServlet {
 	// 複合查詢
 	private String getCompositeItemQuery(HttpServletRequest req, HttpServletResponse res) {
 
+		
 		Map<String, String[]> map = new HashMap<>(req.getParameterMap());
 
 		String page = req.getParameter("page");
 		int pageNow = (page == null) ? 1 : Integer.parseInt(page);
-
+		
+		HttpSession session = req.getSession();
+		String mbrId = String.valueOf(session.getAttribute("mbrId"));
+		
+		if (mbrId != null) {
+			map.put("mbrId", new String[] { mbrId });
+		}
+		
 		// 第一次進來
 		if (page == null) {
 			String itemNameSearch = req.getParameter("itemNameSearch");
@@ -449,8 +455,7 @@ public class ItemServlet extends HttpServlet {
 			req.getSession().setAttribute("itemSize", itemSize);
 			
 			String tagId = req.getParameter("tagId");
-			req.getSession().setAttribute("tagId", tagId);
-			
+			req.getSession().setAttribute("tagId", tagId);			
 			
 			String itemQuantity = req.getParameter("itemQuantity");
 
@@ -517,7 +522,6 @@ public class ItemServlet extends HttpServlet {
 		}
 
 		if (map.size() != 0) {
-
 			List<Item> itemList = itemService.getItemByCompositeQuery(map, pageNow);
 			
 			//取類別標籤
@@ -536,7 +540,6 @@ public class ItemServlet extends HttpServlet {
 			req.setAttribute("pageNow", pageNow);
 			req.setAttribute("itemList", itemList);
 		} else {
-			System.out.println("map.sizes()==0");
 
 		}
 		return "/front_end/item/itemSellerListCompositeQuery.jsp";

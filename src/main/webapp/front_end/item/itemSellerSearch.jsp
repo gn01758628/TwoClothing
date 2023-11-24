@@ -252,7 +252,7 @@
         <div class="main_inner">
             <h2>商品查詢</h2>
 
-            <form class="form_search" method="post" action="/TwoClothing/Item/search">
+            <form class="form_search" method="post" action="${pageContext.request.contextPath}/Item/search">
                 <div class="up_area">
                     <div class="namearea">
                         <label>商品名稱</label>

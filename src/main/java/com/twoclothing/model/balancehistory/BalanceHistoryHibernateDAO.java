@@ -38,7 +38,7 @@ public class BalanceHistoryHibernateDAO implements BalanceHistoryDAO{
 
 	@Override
 	public List<BalanceHistory> getAllByMbrId(Integer mbrId) {
-		return getSession().createQuery("from BalanceHistory where mbrId = :mbrId", BalanceHistory.class).setParameter("mbrId", mbrId).list();
+		return getSession().createQuery("from BalanceHistory where mbrId = :mbrId order by balanceId desc", BalanceHistory.class).setParameter("mbrId", mbrId).list();
 
 	}
 
