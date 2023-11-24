@@ -118,19 +118,19 @@
                                 </td>
                                 <td class="text-center align-middle td-empName">${employeeMap[bidItem.bidItemId].empName}</td>
                                 <td class="text-center align-middle">
-                                    <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">商品詳情</a>
+                                    <a href="#" class="btn btn-primary btn-sm mt-2 mb-2">商品詳情</a>
                                     <br>
                                     <c:if test="${bidItem.bidStatus == 0}">
                                         <input type="hidden" value="${bidItem.bidName}">
-                                        <button class="btn btn-outline-success btn-sm mt-2 mb-2 btn_agree">批准上架
+                                        <button class="btn btn-success btn-sm mt-2 mb-2 btn_agree">批准上架
                                         </button>
-                                        <button class="btn btn-outline-danger btn-sm mt-2 mb-2 btn_reject">拒絕上架
+                                        <button class="btn btn-danger btn-sm mt-2 mb-2 btn_reject">拒絕上架
                                         </button>
                                         <input type="hidden" value="${bidItem.bidItemId}">
                                     </c:if>
                                     <c:if test="${bidItem.bidStatus == 4}">
                                         <input type="hidden" value="${bidItem.bidName}">
-                                        <button class="btn btn-outline-danger btn-sm mt-2 mb-2 btn_reject_enforce">強制下架
+                                        <button class="btn btn-danger btn-sm mt-2 mb-2 btn_reject_enforce">強制下架
                                         </button>
                                         <input type="hidden" value="${bidItem.bidItemId}">
                                     </c:if>
@@ -153,7 +153,7 @@
 <!--Sweet Alert-->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
-
+<!--審核操作-->
 <script>
     $(function () {
         // 批准上架
@@ -324,7 +324,7 @@
         })
     });
 </script>
-
+<!--儲存搜尋條件-->
 <script>
     $(document).ready(function () {
         $("#searchForm").submit(function (event) {
@@ -362,19 +362,19 @@
                 bidStatusValue === "" &&
                 empIdValue === ""
             ) {
-                alert("至少填寫一項搜尋條件");
+                Swal.fire("搜尋條件出現錯誤","至少填寫一項搜尋條件","error");
                 event.preventDefault();
             }
 
             // 2. 如果有會員編號，則必須是有效數字
             if (mbrIdValue !== "" && !/^[1-9]\d*$/.test(mbrIdValue)) {
-                alert("會員編號必須是有效數字");
+                Swal.fire("搜尋條件出現錯誤","會員編號必須是有效數字","error");
                 event.preventDefault();
             }
 
             // 3. 如果有競標商品編號，則必須是有效數字
             if (bidItemIdValue !== "" && !/^[1-9]\d*$/.test(bidItemIdValue)) {
-                alert("競標商品編號必須是有效數字");
+                Swal.fire("搜尋條件出現錯誤","商品編號必須是有效數字","error");
                 event.preventDefault();
             }
         });
