@@ -47,24 +47,10 @@
 	<div id="hy_con">
 		<div id="con_lf">
 		<br>
-			<h2>帳戶管理</h2>
-				<ul>
-					<li class="lf_li1"><a href="<%=request.getContextPath()%>/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>
-					<li class="lf_li1"><a href="<%=request.getContextPath()%>/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">物流設定</a></li>
-				</ul> 
-			<h2>賣家競標商品訂單</h2>
-			<ul>
-				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">待付款</a></li>
-				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder1&sellMbrId=${user.mbrId}">待出貨</a></li>
-				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder2&sellMbrId=${user.mbrId}">待收貨</a></li>
-				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder3&sellMbrId=${user.mbrId}">訂單完成</a></li>
-				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder4&sellMbrId=${user.mbrId}">訂單不成立</a></li>
-			</ul>
+<!--=============================================插入連結的地方-->
+<!--=============================================插入連結的地方-->
+<!--=============================================插入連結的地方-->
+<!--=============================================插入連結的地方-->
 		</div>
 		<div id="con_rh">
 			<div class="con_rh_con">
@@ -187,6 +173,21 @@
             return false; // 阻止繼續執行 onclick 的默認行為
         });
     }
+    
+    //插入左側連結
+    $(document).ready(function () {
+        // 使用 AJAX 請求加載其他內容
+        $.ajax({
+            url: "${pageContext.request.contextPath}/front_end/bidorder/sideSellBidorder.jsp",
+            method: "GET",
+            success: function (data) {
+                $("#con_lf").html(data);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error loading content:", error);
+            }
+        });
+    });
     </script>
 </body>
 </html>

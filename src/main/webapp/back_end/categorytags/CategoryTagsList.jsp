@@ -21,7 +21,8 @@
     </style>
     <!--Font Awesome-->
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
-
+    <!--此頁面的CSS-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/CategoryTagsList.css">
 </head>
 <body>
 
@@ -29,10 +30,19 @@
     <table class="table">
         <thead>
         <tr>
-            <th class="text-center align-middle">標籤編號</th>
-            <th class="text-center align-middle">父類別標籤</th>
+            <th class="text-center align-middle sort-header">標籤編號 </th>
+            <th class="text-center align-middle">
+                父類別標籤
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+                <div class="category-dropdown">
+                    <a href="#" id="showAll">全部顯示</a>
+                    <c:forEach var="tags" items="${haveSubTagsList}">
+                        <a href="#" class="dropdown-item">${tags.categoryName}</a>
+                    </c:forEach>
+                </div>
+            </th>
             <th class="text-center align-middle">類別名稱</th>
-            <th class="text-center align-middle">員工編號</th>
+            <th class="text-center align-middle sort-header">員工編號 </th>
             <th class="text-center align-middle">操作</th>
         </tr>
         </thead>
@@ -45,8 +55,8 @@
                 <td class="text-center align-middle">${tags.empId}：${empName[tags.empId]}</td>
                 <td class="text-center align-middle">
                     <a href="${pageContext.request.contextPath}/back_end/servlet/categoryTags/modify?tagId=${tags.tagId}"
-                       class="btn btn-outline-primary btn-sm mt-2 mb-2">修改</a>
-                    <button type="button" class="btn btn-outline-primary btn-sm mt-2 mb-2">詳情</button>
+                       class="btn btn-success btn-sm mt-2 mb-2">修改</a>
+                    <button type="button" class="btn btn-info btn-sm mt-2 mb-2">詳情</button>
                 </td>
             </tr>
             <tr class="tags_path" style="display: none">
@@ -60,7 +70,7 @@
 <div class="container">
     <div class="row">
         <a href="${pageContext.request.contextPath}/back_end/categorytags/CategoryTagsAdd.jsp"
-           class="btn btn-outline-primary btn-lg">新增標籤</a>
+           class="btn btn-primary btn-lg">新增標籤</a>
     </div>
 </div>
 
@@ -84,7 +94,6 @@
         const category = data.find((item) => item.id === categoryId);
         if (category.parentId !== "") {
             const parentCategory = getFullCategoryName(category.parentId, data);
-            console.log(parentCategory);
             return parentCategory + '　➽　' + category.name;
         }
         return category.name;
@@ -94,12 +103,81 @@
 
         $(".tags_data button").click(function () {
             let tagId = Number($(this).closest("tr").find('td:first').text());
-            console.log(tagId);
             const tags_path = $(this).closest("tr").next("tr")
             tags_path.find("td").text(getFullCategoryName(tagId, categoryData));
-            console.log(tags_path.find("td"));
             tags_path.toggle();
         })
+
+
+        // 排序功能
+        const tagsInfo = $(".tags_path");
+        // 添加排序圖標
+        $('.sort-header').append('<i class="fa-solid fa-sort" aria-hidden="true"></i>')
+
+        // 綁定點擊事件
+        $('.sort-header').on('click', function () {
+            tagsInfo.hide();
+            let icon = $(this).find('i');
+            let table = $(this).parents('table').eq(0);
+            let rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()));
+
+            this.asc = !this.asc;
+            rows = rows.reverse();
+            console.log(rows);
+
+            if (!this.asc) {
+                icon.removeClass('fa-solid fa-sort');
+                icon.removeClass('fa-solid fa-sort-up').addClass('fa-solid fa-sort-down');
+            } else {
+                icon.removeClass('fa-solid fa-sort');
+                icon.removeClass('fa-solid fa-sort-down').addClass('fa-solid fa-sort-up');
+            }
+
+            for (let i = 0; i < rows.length; i++) {
+                table.append(rows[i]);
+            }
+        });
+
+        function comparer(index) {
+            return function (a, b) {
+                let valA = getCellValue(a, index), valB = getCellValue(b, index);
+
+                // 標籤編號和員工編號的特殊處理
+                if (index === 0 || index === 3) { // 假設標籤編號是第0列，員工編號是第3列
+                    valA = parseInt(valA);
+                    valB = parseInt(valB);
+                }
+
+                // 進行比較
+                return (valA < valB) ? -1 : (valA > valB) ? 1 : 0;
+            };
+        }
+
+        function getCellValue(row, index) {
+            return $(row).children('td').eq(index).text();
+        }
+
+        // 绑定点击事件到“全部显示”链接
+        $('#showAll').click(function(e) {
+            e.preventDefault();
+            tagsInfo.hide();
+            $('.tags_data').show();
+        });
+
+        // 點擊選項進行過濾
+        $('.category-dropdown .dropdown-item').click(function (e) {
+            e.preventDefault();
+            tagsInfo.hide();
+            let selectedCategory = $(this).text();
+            $('tr.tags_data').each(function () {
+                if ($(this).find('td:eq(1)').text() === selectedCategory || selectedCategory === '全部') {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+
     })
 </script>
 

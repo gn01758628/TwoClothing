@@ -200,7 +200,7 @@ let twzipcode = new TWzipcode({
     $(document).ready(function () {
         // 使用 AJAX 請求加載其他內容
         $.ajax({
-            url: "${pageContext.request.contextPath}/sideMembers.jsp",
+            url: "${pageContext.request.contextPath}/front_end/members/sideMembers.jsp",
             method: "GET",
             success: function (data) {
                 $("#con_lf").html(data);
