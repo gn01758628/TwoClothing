@@ -30,7 +30,7 @@
         }
         main.main_container{
 /*             border: 1px solid black; */
-            height: 100%;
+/*             height: 100%; */
 /*             margin: 50px; */
             display: flex;
             align-items: center;

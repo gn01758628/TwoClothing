@@ -347,7 +347,7 @@
 	   			}
 	   			output[0] = Math.floor(output[0]);
 	   		}
-	   		console.log(output);
+// 	   		console.log(output);
 	   			
 	   		//取得付款方式
 		   	$('input[type="radio"]').change(function() {
@@ -388,6 +388,10 @@
 				alert("請選擇付款方式");
 				return;	
 			}
+			if(!($('p.information input#receiveName').val()) || !($('p.information input#receivePhone').val()) || !($('p.information input#receiveAddress').val())){
+				alert("送貨資訊不可空白");
+				return;	
+			}
 	   		let cartData={
 	   				itemId : eachitemId,
 	   				quantity : eachquantities,
@@ -401,7 +405,7 @@
 	   				mbrPoint : "${mbrPoint}",
 	   				totalPay : ($(".add_price input").val()) - ($(".count input").val())
 	   		};
-	   		console.log(cartData);
+// 	   		console.log(cartData);
    			
 	   		let formDataUrlEncoded = new URLSearchParams(cartData);
 	   		
@@ -410,7 +414,7 @@
                 body: formDataUrlEncoded
             })
             .then(function (response) {
-            	return response.text();
+            	console.log(response);
             })
             .then(function (data) {
             	console.log(data);
