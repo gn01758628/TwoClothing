@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>競標商品瀏覽紀錄</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="/TwoClothing/images/Mainicon.png" type="image/png">
+    <!--bootstrap5-->
+    <link rel="stylesheet" href="/TwoClothing/css/bootstrap5/bootstrap.min.css">
+    <!--google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!--Font Awesome-->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--此頁面css-->
+    <style>
+        /* 大標題 */
+        .bigTitle {
+            display: block;
+            background-color: #ffc107;
+            color: #fff;
+            font-size: 30px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 50px;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .bigTitle {
+            background-image: linear-gradient(to right, #ee90aa, #f3c4d2);
+        }
+
+        .bigTitle:hover {
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);
+            background-image: linear-gradient(to right, #f3c4d2, #ee90aa);
+        }
+
+        .bigTitle:before,
+        .bigTitle:after {
+            content: '★';
+            color: #561729;
+            font-size: 36px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .bigTitle:before {
+            left: -45px;
+        }
+
+        .bigTitle:after {
+            right: -45px;
+        }
+        /*大標題*/
+
+        .pushable {
+            position: relative;
+            background: transparent;
+            padding: 0px;
+            border: none;
+            cursor: pointer;
+            outline-offset: 4px;
+            outline-color: deeppink;
+            transition: filter 250ms;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        .shadow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: hsl(226, 25%, 69%);
+            border-radius: 8px;
+            filter: blur(2px);
+            will-change: transform;
+            transform: translateY(2px);
+            transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+        }
+
+        .edge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            border-radius: 8px;
+            background: linear-gradient(
+                    to right,
+                    hsl(248, 39%, 39%) 0%,
+                    hsl(248, 39%, 49%) 8%,
+                    hsl(248, 39%, 39%) 92%,
+                    hsl(248, 39%, 29%) 100%
+            );
+        }
+
+        .front {
+            display: block;
+            position: relative;
+            border-radius: 8px;
+            background: hsl(248, 53%, 58%);
+            padding: 8px 16px;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 18px;
+            transform: translateY(-4px);
+            transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+        }
+
+        .pushable:hover {
+            filter: brightness(110%);
+        }
+
+        .pushable:hover .front {
+            transform: translateY(-6px);
+            transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+        }
+
+        .pushable:active .front {
+            transform: translateY(-2px);
+            transition: transform 34ms;
+        }
+
+        .pushable:hover .shadow {
+            transform: translateY(4px);
+            transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+        }
+
+        .pushable:active .shadow {
+            transform: translateY(1px);
+            transition: transform 34ms;
+        }
+
+        .pushable:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+
+        /*商品卡片*/
+        .card {
+            display: block;
+            margin-bottom: 20px;
+            line-height: 1.42857143;
+            background-color: #fff;
+            border-radius: 2px;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+            transition: box-shadow .25s;
+            height: 420px;
+            width: 300px;
+            overflow: hidden;
+            margin-right: 20px;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .img-card {
+            width: 100%;
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
+            display: block;
+            overflow: hidden;
+        }
+
+        .img-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+            transition: all .25s ease;
+        }
+
+        .card-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .card .itemName {
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* 限制在兩行內 */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis; /* 文本溢出顯示省略號 */
+            line-height: 1.2em; /* 根據您的需求調整 */
+            max-height: 2.4em; /* line-height 的兩倍，以確保兩行 */
+            word-break: break-word; /* 防止單詞在行末分開 */
+            margin-top: 0px;
+            font-weight: 700;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .card-read-more {
+            border-top: 2px solid #D4D4D4;
+            text-align: center;
+        }
+
+        .card-content a {
+            color: #000;
+            text-decoration: none !important;
+        }
+
+        .card-read-more a {
+            text-decoration: none !important;
+            padding: 10px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .card .currentBid {
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 18px;
+            color: #000;
+        }
+
+        .card .bidAmount {
+            color: #ff3400;
+            font-size: 24px;
+        }
+
+        .card .endDate {
+            display: block;
+            background-color: #D50000;
+            color: white;
+            padding: 5px 0;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            border-radius: 10px;
+        }
+
+        .countDown {
+            font-size: 18px;
+        }
+
+        /*商品卡片*/
+
+        /*購買按鈕*/
+        .shopNow {
+            padding: 1.1em 2em;
+            border: 2px solid #fff;
+            font-size: 15px;
+            color: #131313;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            border-radius: 12px;
+            background-color: #ecd448;
+            font-weight: bolder;
+            box-shadow: 0 2px 0 2px #000;
+        }
+
+        .shopNow:before {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 120%;
+            background-color: #ff6700;
+            top: 50%;
+            transform: skewX(30deg) translate(-150%, -50%);
+            transition: all 0.5s;
+        }
+
+        .shopNow:hover {
+            background-color: #4cc9f0;
+            color: #fff;
+            box-shadow: 0 2px 0 2px #0d3b66;
+        }
+
+        .shopNow:hover::before {
+            transform: skewX(30deg) translate(150%, -50%);
+            transition-delay: 0.1s;
+        }
+
+        .shopNow:active {
+            transform: scale(0.9);
+        }
+
+        /*購買按鈕*/
+    </style>
+    <!--導覽列css-->
+    <link rel="stylesheet" href="/TwoClothing/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="/TwoClothing/css/chengHan/footer.css">
+</head>
+<body>
+<!--放在最前面-->
+<div class="headerHTML"></div>
+
+<!--連結按鈕-->
+<div class="container pt-4">
+    <div class="row justify-content-start">
+        <div class="col-auto">
+            <a href="#" class="memberCenter2">
+                <button class="pushable me-4">
+                    <span class="shadow"></span>
+                    <span class="edge"></span>
+                    <span class="front">回到會員中心</span>
+                </button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!--標題-->
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+            <h2 class="bigTitle">競標商品瀏覽紀錄</h2>
+        </div>
+    </div>
+</div>
+
+<!--商品陳列-->
+<div class="container">
+    <div class="row justify-content-start showBidItem">
+        <!-- 動態生成競標商品項目 -->
+    </div>
+</div>
+
+<!--放在最後面-->
+<div class="footerHTML"></div>
+
+<!--bootstrap5-->
+<script src="/TwoClothing/js/bootstrap5/popper.min.js"></script>
+<script src="/TwoClothing/js/bootstrap5/bootstrap.min.js"></script>
+<!--jQuery-->
+<script src="/TwoClothing/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
+<script>
+    $(".headerHTML").load("/TwoClothing/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("/TwoClothing/js/chengHan/header.js");
+    });
+
+    $(".footerHTML").load("/TwoClothing/footerHTML.html");
+</script>
+
+<!--此頁面的js-->
+<script>
+    const showBidItem = $(".showBidItem");
+
+    $(document).ready(function () {
+        $.get("/TwoClothing/bidItemViewHistory.check", function (data) {
+            createBidItem(JSON.parse(data[0]));
+            console.log(JSON.parse(data[0]))
+            $(".memberCenter2").attr("href", "/TwoClothing/members/Members.do?action=memberProfile&mbrId=" + data[1]);
+        }).fail(function (xhr) {
+            if (xhr.status === 403) {
+                window.location.href = "/TwoClothing/front_end/members/registerLogin.jsp";
+            }
+        })
+    })
+
+    function createBidItem(bidItemList) {
+        bidItemList.forEach(function (bidItem) {
+            // 取得變數
+            let endDate = formatMillisToString(bidItem.endTime);
+            let linkUrl = "/TwoClothing/front/biditem/anyone/detail?bidItemId=" + bidItem.bidItemId;
+            let imgUrl = "/TwoClothing/ReadItemIMG/biditem?id=" + bidItem.bidItemId + "&position=1";
+            let itemName = bidItem.bidName;
+            let bidAmountType = bidItem.bidAmountType;
+            let bidAmount = formatAsCurrency(bidItem.currentBid);
+            let countDown = bidItem.endTime;
+            // 生成節點
+            const cardDiv = $('<div>', {class: 'card col-3'});
+            cardDiv.append($('<div>', {class: 'endDate'}).text(endDate));
+
+            const link = $('<a>', {href: linkUrl, class: 'img-card'});
+            link.append($('<img>', {src: imgUrl, alt: itemName}));
+            cardDiv.append(link);
+
+            const cardContent = $('<div>', {class: 'card-content'});
+            const contentLink = $('<a>', {href: linkUrl});
+            contentLink.append($('<h4>', {class: 'itemName'}).text(itemName));
+            contentLink.append($('<p>', {class: 'currentBid'}).text(bidAmountType).append($('<span>', {class: 'bidAmount'}).text(bidAmount)));
+            contentLink.append($('<div>', {class: 'countDown', 'data-end-time': countDown}).text(countDown));
+            cardContent.append(contentLink);
+            cardDiv.append(cardContent);
+
+            const cardReadMore = $('<div>', {class: 'card-read-more'});
+            const buttonLink = $('<a>', {href: linkUrl});
+            buttonLink.append($('<button>', {class: 'shopNow'}).text('我要出價'));
+            cardReadMore.append(buttonLink);
+            cardDiv.append(cardReadMore);
+
+            showBidItem.append(cardDiv);
+        })
+
+        // 倒數計時
+        updateCountdowns();
+        setInterval(updateCountdowns, 1000);
+    }
+
+    // 金額格式化
+    function formatAsCurrency(num) {
+        return '$' + num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // 毫秒數格式化 mm/dd結標
+    function formatMillisToString(milliseconds) {
+        let date = new Date(milliseconds);
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+        let paddedMonth = month < 10 ? '0' + month : month;
+        let paddedDay = day < 10 ? '0' + day : day;
+        return paddedMonth + '/' + paddedDay + '結標';
+    }
+
+    // 結束時間倒數計時
+    function updateCountdowns() {
+        $('.countDown').each(function () {
+            let endTime = $(this).data('endTime');
+            let now = new Date();
+            let timeLeft = endTime - now;
+
+            if (timeLeft > 0) {
+                let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                let countdownText = days + "天" + hours + "時" + minutes + "分" + seconds + "秒结束";
+                $(this).text(countdownText);
+            } else {
+                $(this).text('競標已結束');
+            }
+        });
+    }
+</script>
+</body>
+</html>
