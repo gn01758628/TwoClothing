@@ -30,7 +30,6 @@ public class InsertItemImage extends HttpServlet {
             in.close();
         }
         for (int i = 21; i <= 40; i++) {
-            System.out.println(filepathHead + (i - 20) + filepathTail);
             InputStream in = getServletContext().getResourceAsStream(filepathHead + (i - 20) + filepathTail);
             byte[] bytes = in.readAllBytes();
             ItemImage itemImage = new ItemImage(i, bytes);

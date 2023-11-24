@@ -120,6 +120,16 @@
                     </c:if>
                 </div>
 
+                <div class="mb-3 d-flex align-items-baseline">
+                    <div class="fw-bold min-width">賣家：</div>
+                    <div class="info-value">
+                        <a href="${pageContext.request.contextPath}/SellerHome/home?mbrId=${bidItem.mbrId}">
+                        ${sellerNameArr[0]}(${sellerNameArr[1]})
+                            <strong>前往賣家賣場</strong>
+                        </a>
+                    </div>
+                </div>
+
                 <!-- 出價框 -->
                 <div class="mb-3 mt-3">
                     <div class="container">
