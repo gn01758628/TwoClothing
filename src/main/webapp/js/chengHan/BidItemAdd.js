@@ -50,6 +50,45 @@ $(document).ready(function () {
         hiddenInput.val(formattedText);
     });
 
+    // 圖片預覽
+    function readURL(input, previewId, cancelBtnId) {
+        if (input.files && input.files[0]) {
+            let reader = new FileReader();
+
+            reader.onload = function (e) {
+                $(previewId).attr('src', e.target.result).show();
+                $(cancelBtnId).show();
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            $(previewId).hide();
+            $(cancelBtnId).hide();
+        }
+    }
+
+    function clearImage(inputId, previewId, cancelBtnId) {
+        $(inputId).val('');
+        $(previewId).hide();
+        $(cancelBtnId).hide();
+    }
+
+    $("#image01").change(function () {
+        readURL(this, '#previewImage01', '#cancelImage01');
+    });
+
+    $("#cancelImage01").click(function () {
+        clearImage('#image01', '#previewImage01', '#cancelImage01');
+    });
+
+    $("#image02").change(function () {
+        readURL(this, '#previewImage02', '#cancelImage02');
+    });
+
+    $("#cancelImage02").click(function () {
+        clearImage('#image02', '#previewImage02', '#cancelImage02');
+    });
+
 
     // 判斷價格,即時顯示錯誤訊息
     const moneyInputs = $('.money');
@@ -145,61 +184,86 @@ $(document).ready(function () {
     $('form').on('submit', function (e) {
         e.preventDefault();
 
-        if (window.confirm("您確定要提交申請了嗎?")) {
-            let firstInvalidInput = null;
-            let errorMessage = '';
+        Swal.fire({
+            title: "您確定要提交申請了嗎?",
+            text: "競標案需經過管理員審核",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "確認",
+            cancelButtonText: "取消"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let firstInvalidInput = null;
+                let errorMessage = '';
 
-            // 檢查類別標籤有無選擇
-            const categorySelect = $('#categorySelect');
-            if (categorySelect.val().trim() === '') {
-                firstInvalidInput = categorySelect;
-                errorMessage = '請選擇商品類別標籤';
-            }
+                // 檢查類別標籤有無選擇
+                const categorySelect = $('#categorySelect');
+                if (categorySelect.val().trim() === '') {
+                    firstInvalidInput = categorySelect;
+                    errorMessage = '請選擇商品類別標籤';
+                }
 
-            // 檢查價格欄位是否錯誤
-            const priceInputs = $('.money');
-            for (let i = 0; i < priceInputs.length; i++) {
-                const input = $(priceInputs[i]);
-                const value = input.val();
-                if (value.trim() !== '' && !/^(0|[1-9]\d*)$/.test(value)) {
-                    if (firstInvalidInput === null) {
-                        firstInvalidInput = input;
-                        errorMessage = '銷售資訊裡的價格欄位，請填有效數字(整數)';
+                // 檢查價格欄位是否錯誤
+                const priceInputs = $('.money');
+                for (let i = 0; i < priceInputs.length; i++) {
+                    const input = $(priceInputs[i]);
+                    const value = input.val();
+                    if (value.trim() !== '' && !/^(0|[1-9]\d*)$/.test(value)) {
+                        if (firstInvalidInput === null) {
+                            firstInvalidInput = input;
+                            errorMessage = '銷售資訊裡的價格欄位，請填有效數字(整數)';
+                        }
                     }
                 }
-            }
 
-            // 檢查價格關係
-            const startPrice = parseInt($('#startprice').val(), 10);
-            const reserverPrice = parseInt($('#reserverprice').val(), 10);
-            const directPrice = parseInt($('#directprice').val(), 10);
+                // 檢查價格關係
+                const startPrice = parseInt($('#startprice').val(), 10);
+                const reserverPrice = parseInt($('#reserverprice').val(), 10);
+                const directPrice = parseInt($('#directprice').val(), 10);
 
-            if (!isNaN(reserverPrice) && reserverPrice < startPrice) {
-                firstInvalidInput = $('#reserverprice');
-                errorMessage = '拍賣底價不可低於起標價格';
-            }
+                if (!isNaN(reserverPrice) && reserverPrice < startPrice) {
+                    firstInvalidInput = $('#reserverprice');
+                    errorMessage = '拍賣底價不可低於起標價格';
+                }
 
-            if (!isNaN(directPrice)) {
-                if (!isNaN(reserverPrice) && directPrice <= reserverPrice) {
-                    firstInvalidInput = $('#directprice');
-                    errorMessage = '立即結標價必須高於拍賣底價';
-                } else if (directPrice <= startPrice) {
-                    firstInvalidInput = $('#directprice');
-                    errorMessage = '立即結標價必須高於起標價格';
+                if (!isNaN(directPrice)) {
+                    if (!isNaN(reserverPrice) && directPrice <= reserverPrice) {
+                        firstInvalidInput = $('#directprice');
+                        errorMessage = '立即結標價必須高於拍賣底價';
+                    } else if (directPrice <= startPrice) {
+                        firstInvalidInput = $('#directprice');
+                        errorMessage = '立即結標價必須高於起標價格';
+                    }
+                }
+
+                // 根據第一個錯誤的欄位alert和滾動視窗
+                if (firstInvalidInput !== null) {
+                    Swal.fire({
+                        title: "您提交的資料存在以下問題",
+                        text: errorMessage,
+                        icon: "error",
+                        confirmButtonColor: "#d33",
+                        confirmButtonText: "我知道了",
+                        allowOutsideClick: false
+                    }).then(() => {
+                        firstInvalidInput.focus();
+                        // 滾動視窗到第一個錯誤欄位
+                        const position = firstInvalidInput.offset().top - 100;
+                        $('html, body').animate({scrollTop: position}, 500);
+                    })
+
+                } else {
+                    Swal.fire({
+                        title: "提交成功",
+                        text: "競標案審核將會在兩天內完成審核",
+                        icon: "success"
+                    }).then(() => {
+                        this.submit();
+                    })
                 }
             }
-
-            // 根據第一個錯誤的欄位alert和滾動視窗
-            if (firstInvalidInput !== null) {
-                alert(errorMessage);
-                firstInvalidInput.focus();
-
-                // 滾動視窗到第一個錯誤欄位
-                const position = firstInvalidInput.offset().top - 100;
-                $('html, body').animate({scrollTop: position}, 500);
-            } else {
-                this.submit();
-            }
-        }
+        });
     });
 })
