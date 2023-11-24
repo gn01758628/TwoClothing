@@ -11,6 +11,8 @@ public interface ItemReportDAO {
 	List<ItemReport> getAll(int currentPage);
 
 	List<ItemReport> getAllByMbrId(Integer mbrId, int currentPage);
+	
+	List<ItemReport> getAllByMbrId(Integer mbrId);
 
 	long getTotal(Integer mbrId);
 

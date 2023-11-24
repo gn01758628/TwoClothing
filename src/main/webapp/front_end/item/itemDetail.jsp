@@ -232,11 +232,8 @@
         	background-color: #f2f2f2;
         	width: 250px;
         }
-		
-		.custom-title-class {
-			font-size: 20px;
-		}
         
+        /* 檢舉 */ 
         .report-container {
         	position: absolute;
   			left: 170px;
@@ -541,7 +538,7 @@
 									<td>
 										<div class="title-description">檢舉原因</div></td>
 									<td>
-										<input type="text" id="inputDescription" class="inputDescription" name="inputDescription" size="72"/>
+										<input type="text" id="inputDescription" class="inputDescription" name="inputDescription" size="63"/>
 									</td>
 								</tr>
 							</table>
@@ -650,9 +647,11 @@
             })
             .then(function(data){
             	Swal.fire({
+            		  backdrop: false,
             		  title: data,
             		  confirmButtonText: "確認",
-            		  icon: "success"
+            		  icon: "success",
+            		  iconColor: '#b0c4de',
             		});
             })
             .catch(function(error){
@@ -730,12 +729,12 @@
 		        url: url,
 		        success: function (data) {
 		        	Swal.fire ({
+		        		backdrop: false,
 		        		title: "移除成功",
 		        		timer: 900,
 		        		showConfirmButton: false,
 		        		customClass: {
 		        			popup: 'custom-popup-class',
-		        		    title: 'custom-title-class',
 		        		}
 		        	});
 		            isTracked = false;
@@ -746,10 +745,17 @@
 		    });
 		}
 		
+		<% Integer mbrId = (Integer) session.getAttribute("mbrId"); %>
 		function showDetail(itemId) {
 		    event.preventDefault();
+		    
+		    <c:if test="${mbrId == null}">
+	        	window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
+	    	</c:if>
+	    	
 		    $('#itemId').text(itemId);
 		    let html = `<li class="list-group-item" id="report">An itemreport</li>`;
+		    
 		    $('#itemReportModal').modal('show');
 		}
 		
@@ -768,6 +774,7 @@
 					$('#itemReportModal').modal('hide');
 					
 					Swal.fire({
+						backdrop: false,
 				        title: "檢舉成功",
 				        text: "請至我的檢舉查看",
 				        icon: "success",
@@ -775,7 +782,6 @@
 		        		showConfirmButton: false,
 				        customClass: {
 				        	popup: 'report-custom-popup-class',
-				            title: 'custom-title-class',
 				        },
 				        iconColor: '#b0c4de',
 				        didClose: () => {
@@ -784,11 +790,7 @@
 				    });
 				},
 				error: function (xhr) {
-					if (xhr.status === 403) {
-						window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
-					} else {
-						console.log(xhr);
-					}
+					console.log(xhr);
 				}
 			});
 		}

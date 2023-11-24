@@ -50,6 +50,12 @@ public class ItemReportHibernateDAO implements ItemReportDAO {
 	}
 
 	@Override
+	public List<ItemReport> getAllByMbrId(Integer mbrId) {
+		return getSession().createQuery("from ItemReport where mbrId = :mbrId", ItemReport.class)
+				.setParameter("mbrId", mbrId).list();
+	}
+
+	@Override
 	public long getTotal(Integer mbrId) {
 		if (mbrId != -1) {
 			return getSession().createQuery("select count(*) from ItemReport where mbrId = :mbrId", Long.class)

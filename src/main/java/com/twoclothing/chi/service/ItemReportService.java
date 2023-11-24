@@ -10,6 +10,8 @@ public interface ItemReportService {
 	void addItemReport(ItemReport itemReport);
 
 	List<ItemReport> getAllByMbrId(Integer mbrId, int currentPage);
+	
+	List<ItemReport> getAllByMbrId(Integer mbrId);
 
 	int getPageTotal(Integer mbrId);
 
