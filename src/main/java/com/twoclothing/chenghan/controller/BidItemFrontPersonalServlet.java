@@ -293,6 +293,7 @@ public class BidItemFrontPersonalServlet extends HttpServlet {
         List<BidRecord> bidRecordList = bidItemService.getAllBidRecordByBidItemId(bidItemId);
         if ("流標".equals(action)) {
             bidItem.setBidStatus(3);
+            bidItem.setEndTime(new Timestamp(System.currentTimeMillis()));
             bidItemService.updateBidItem(bidItem);
             // 發送通知,所有參與投標者
             for (BidRecord bidRecord : bidRecordList) {
