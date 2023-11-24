@@ -53,7 +53,7 @@ public class BidItemViewHistoryJedisDAO implements BidItemViewHistoryDAO {
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.select(REDIS_NUMBER);
             Set<String> bidItemIdSet = jedis.zrevrange(MBR_PREFIX + mbrId + MBR_SUFFIX, 0, -1);
-            if (bidItemIdSet != null) {
+            if (bidItemIdSet != null && !bidItemIdSet.isEmpty()) {
                 for (String id : bidItemIdSet) {
                     bidItemIdList.add(Integer.valueOf(id.replace(BIDITEM_PREFIX, "")));
                 }
