@@ -38,7 +38,9 @@ public class BidRecordJedisDAO implements BidRecordDAO {
             } else {
                 jedis.lpush(key, bidRecordJson);
             }
-            jedis.sadd(MBR_PREFIX + bidRecord.getMbrId() + MBR_SUFFIX, String.valueOf(bidItemId));
+            String key2 = MBR_PREFIX + bidRecord.getMbrId() + MBR_SUFFIX;
+            double timestamp = (double) System.currentTimeMillis();
+            jedis.zadd(key2, timestamp, String.valueOf(bidItemId));
         }
     }
 
@@ -74,5 +76,21 @@ public class BidRecordJedisDAO implements BidRecordDAO {
             mbrIdSet.add(record.getMbrId());
         }
         return mbrIdSet;
+    }
+
+    @Override
+    public List<Integer> getAllBitItemIdByMbrId(Integer mbrId) {
+        String key = MBR_PREFIX + mbrId + MBR_SUFFIX;
+        List<Integer> bitItemIdList = new ArrayList<>();
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(REDIS_NUMBER);
+            Set<String> bidItemIdSet = jedis.zrevrange(key, 0, -1);
+            if (bidItemIdSet != null && !bidItemIdSet.isEmpty()) {
+                for (String bidItemId : bidItemIdSet) {
+                    bitItemIdList.add(Integer.valueOf(bidItemId));
+                }
+            }
+        }
+        return bitItemIdList;
     }
 }

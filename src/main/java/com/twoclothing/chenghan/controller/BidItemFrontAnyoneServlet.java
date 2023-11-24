@@ -68,6 +68,10 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
             String mbrName = mbr.getMbrName();
             mbrMap.put(record.getMbrId(), mbrName);
         }
+        // 綁定賣家會員資料
+        Members sellerMbr = bidItemService.getMembersByMbrId(bidItem.getMbrId());
+        String[] sellerNameArr = {sellerMbr.getMbrName(),sellerMbr.getEmail() };
+        request.setAttribute("sellerNameArr",sellerNameArr);
         request.setAttribute("mbrMap", mbrMap);
         request.setAttribute("bidRecordList", bidRecordList);
 
@@ -143,6 +147,9 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
         if ("立即結標".equals(bidType)) {
             // 改變商品狀態
             bidItem.setBidStatus(2);
+            bidItem.setEndTime(new Timestamp(System.currentTimeMillis()));
+            bidItemService.updateBidItem(bidItem);
+            // 改變商品結束時間
             // 添加出價紀錄
             String now = FormatUtil.timestampDateTime(new Timestamp(System.currentTimeMillis()));
             BidRecord bidRecord = new BidRecord(mbrId, FormatUtil.numberThousandsSeparators(bidAmount), now);
@@ -191,7 +198,7 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
             // 賣方
             notice3.setContent("等待買家付款");
             notice3.setLink("/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=" + bidItemMbrId);
-            bidItemService.addNotice(notice3,bidItemMbrId);
+            bidItemService.addNotice(notice3, bidItemMbrId);
 
             // 傳送資料Ajax
             out.print("3");

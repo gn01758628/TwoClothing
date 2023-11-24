@@ -7,6 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>新增競標商品</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
     <!--bootstrap5 css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
     <!-- google fonts -->
@@ -20,59 +22,26 @@
     </style>
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
-
-    <style>
-        ul, ul li {
-            list-style: none;
-        }
-
-        ul {
-            margin-top: 10px;
-        }
-
-        .selectable::before {
-            content: "🌟";
-            padding-right: 5px;
-        }
-
-        .selectable:hover::before, .selectable:hover {
-            content: "🔯";
-            cursor: pointer;
-        }
-
-        .non-selectable::before {
-            content: "🢂";
-            padding-right: 5px;
-            color: #561729;
-        }
-
-        .non-selectable:hover::before, .non-selectable:hover {
-            content: "🢆";
-            padding-right: 0;
-            cursor: not-allowed;
-        }
-
-        .modal-content {
-            background-color: rgb(249, 237, 242);
-            color: #00302e;
-        }
-
-        .fixed-button {
-            position: sticky;
-            bottom: 20px;
-            right: 10px;
-            float: right;
-            z-index: 1000;
-        }
-
-        .text-danger {
-            margin-left: 5px;
-            font-size: 20px;
-        }
-    </style>
+    <!--此頁面的css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/BidItemAdd.css">
+    <!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
 </head>
 
-<body style="background-color:#fff8fb">
+<body>
+<!--放在最前面-->
+<div class="headerHTML"></div>
+
+<!--大標題-->
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+            <h2 class="bigTitle">競標案申請</h2>
+        </div>
+    </div>
+</div>
 
 <!--錯誤訊息模態框-->
 <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel"
@@ -98,7 +67,7 @@
 
 
 <div class="container">
-    <div class="row justify-content-center my-5">
+    <div class="row justify-content-center">
         <div class="col-12">
             <form action="${pageContext.request.contextPath}/front/biditem/personal/save.check" method="post"
                   enctype="multipart/form-data">
@@ -186,7 +155,9 @@
                         <div id="image01Help" class="form-text">每個商品都必須要有主圖片</div>
                         <img id="previewImage01" src="#" alt="主圖片預覽"
                              style="display: none; max-width: 25%; height: auto;margin-top: 10px"/>
-                        <button type="button" id="cancelImage01" class="btn btn-danger btn-sm" style="display: none; margin-top: 10px;">取消圖片</button>
+                        <button type="button" id="cancelImage01" class="btn btn-danger btn-sm"
+                                style="display: none; margin-top: 10px;">取消圖片
+                        </button>
                     </div>
 
                     <div class="mb-3">
@@ -195,7 +166,9 @@
                                accept="image/jpeg, image/png">
                         <img id="previewImage02" src="#" alt="補充圖片預覽"
                              style="display: none; max-width: 25%; height: auto; margin-top: 10px"/>
-                        <button type="button" id="cancelImage02" class="btn btn-danger btn-sm" style="display: none; margin-top: 10px;">取消圖片</button>
+                        <button type="button" id="cancelImage02" class="btn btn-danger btn-sm"
+                                style="display: none; margin-top: 10px;">取消圖片
+                        </button>
                     </div>
 
                 </div>
@@ -244,82 +217,50 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-success btn-lg fixed-button rounded-3">確定提出申請</button>
+                <button type="submit" class="btn btn-success btn-lg fixed-button rounded-3 mb-3">確定提出申請</button>
 
             </form>
         </div>
     </div>
 </div>
 
+<!--放在最後面-->
+<div class="footerHTML"></div>
+
 <!--bootstrap5 js-->
 <script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
 <!--jQuery-->
 <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
-
-<!--輸入錯誤訊息的資料(必須在引用標籤js檔之前宣告)-->
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
 <script>
+    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+    });
+
+    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+</script>
+
+<!--此頁面的js-->
+<script>
+    // 輸入錯誤訊息的資料(必須在引用標籤js檔之前宣告)
     const messages = [];
     <c:forEach var="errorMsg" items="${errorMessages}">
     messages.push("${errorMsg}");
     </c:forEach>
-</script>
-<!--此頁面的js-->
-<script src="${pageContext.request.contextPath}/js/chengHan/addBid.js" type="text/javascript"></script>
-<script>
-    // 圖片預覽
-    $(document).ready(function() {
-        function readURL(input, previewId, cancelBtnId) {
-            if (input.files && input.files[0]) {
-                let reader = new FileReader();
 
-                reader.onload = function(e) {
-                    $(previewId).attr('src', e.target.result).show();
-                    $(cancelBtnId).show();
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                $(previewId).hide();
-                $(cancelBtnId).hide();
-            }
-        }
-
-        function clearImage(inputId, previewId, cancelBtnId) {
-            $(inputId).val(''); // 清除输入字段的值
-            $(previewId).hide();
-            $(cancelBtnId).hide();
-        }
-
-        $("#image01").change(function() {
-            readURL(this, '#previewImage01', '#cancelImage01');
-        });
-
-        $("#cancelImage01").click(function() {
-            clearImage('#image01', '#previewImage01', '#cancelImage01');
-        });
-
-        $("#image02").change(function() {
-            readURL(this, '#previewImage02', '#cancelImage02');
-        });
-
-        $("#cancelImage02").click(function() {
-            clearImage('#image02', '#previewImage02', '#cancelImage02');
-        });
-    });
-
-</script>
-
-
-<!--輸入類別標籤的資料結構(必須在引用標籤js檔之前宣告)-->
-<script>
+    // 輸入類別標籤的資料結構(必須在引用標籤js檔之前宣告)
     const categoryData = [
         <c:forEach var="tags" items="${applicationScope.categoryTags}" begin="1">
         {id:${tags.tagId}, name: '${tags.categoryName}', parentId:${tags.superTagId}},
         </c:forEach>
     ];
 </script>
-
+<!--此頁面的js-->
+<script src="${pageContext.request.contextPath}/js/chengHan/BidItemAdd.js"></script>
 <!--商品類別標籤的js-->
 <script src="${pageContext.request.contextPath}/js/chengHan/addBidCategoryTags.js"></script>
 

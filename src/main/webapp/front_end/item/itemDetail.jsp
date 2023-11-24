@@ -34,7 +34,7 @@
             padding: 0;
         }
         
-        form {
+        form.form_detail {
             padding: 10px;
             width: 100%;
             display: flex;
@@ -44,7 +44,7 @@
             min-height: calc(100vh - 309px);
         }
 
-        div.body_container {
+        form.form_detail div.body_container {
             max-width: 800px;
             width: 100%;
             display: flex;
@@ -52,7 +52,7 @@
 /*             max-height: 412px; */
         }
 
-        div.downarea {
+        form.form_detail div.downarea {
             border-top:4px solid white;
             max-width: 800px;
             width: 100%;
@@ -62,7 +62,7 @@
             align-items: center;
         }
 
-        div.downarea table {
+        form.form_detail div.downarea table {
             width: 100%;
             height: 100px;
             table-layout: fixed;
@@ -70,17 +70,17 @@
             border-collapse: separate;
         }
 
-        div.downarea table tr td, th {
+        form.form_detail div.downarea table tr td, th {
             padding: 2px 10px;
             flex:1;
             text-align: left;
         }
 
-        div.downarea table tr th {
+        form.form_detail div.downarea table tr th {
             border-bottom: 2px solid gray;            
         }
 
-        div.body_container div.product-image {
+        form.form_detail div.body_container div.product-image {
             flex: 1;
             min-width: 50%;
             display: flex;
@@ -88,14 +88,14 @@
     		background-color: #f2f2f2;
         }
 
-        div.body_container div.product-image img {
+        form.form_detail div.body_container div.product-image img {
 /*             border: 1px solid black; */
              max-width: 100%; 
              height: 100%;
             display: block;
         }
 
-        div.body_container div.product-info {
+        form.form_detail div.body_container div.product-info {
             flex: 1;
             background-color: #f2f2f2;
             padding: 0px;
@@ -106,7 +106,7 @@
             position: relative;
         }
         
-        div.body_container div.product-info ul {
+        form.form_detail div.body_container div.product-info ul {
             list-style-type: none;
             display: flex;
             justify-content: center;
@@ -115,7 +115,7 @@
             padding: 0px;
         }
         
-        div.body_container div.product-info ul li {
+        form.form_detail div.body_container div.product-info ul li {
             margin: 10px 4px;
             display: flex;
             justify-content: center;
@@ -124,12 +124,12 @@
             padding: 5px;
         }
         
-        div.body_container div.product-info ul li h1 {
+        form.form_detail div.body_container div.product-info ul li h1 {
             font-size: 24px;
             margin: 0;
         }
 
-        div.body_container div.product-info ul li p {
+        form.form_detail div.body_container div.product-info ul li p {
             font-size: 16px;
             display: inline-block;
             margin: 2px 0;
@@ -289,27 +289,27 @@
 	    	box-shadow: none !important;
         }
         
-        div.body_container div.product-info ul li.li_num {
+        form.form_detail div.body_container div.product-info ul li.li_num {
             margin-bottom: 0px;
             padding-bottom: 0px;
         }
         
-        div.body_container div.product-info ul li.li_quantity {
+        form.form_detail div.body_container div.product-info ul li.li_quantity {
             display: inline-block;
             margin-top: 0px;
             padding-top: 0px;
 
         }
         
-        div.body_container div.product-info ul li p.p_quantity {
+        form.form_detail div.body_container div.product-info ul li p.p_quantity {
             font-size: 12px;
         }
         
-        div.body_container div.product-info ul li.li_quantity p:nth-child(2) {
+        form.form_detail div.body_container div.product-info ul li.li_quantity p:nth-child(2) {
             margin-left: 5px;
         }
 
-        div.body_container div.product-info ul li p.price {
+        form.form_detail div.body_container div.product-info ul li p.price {
             font-size: 20px;
         }
 
@@ -641,7 +641,6 @@
 		});
 	    
 		$(".buy-button").on("click",function(){
-// 			$("span.carNum").val();
 			quantities = $("#input_num").val();
 			let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&quantity="+quantities+"&gotoCart=gotoCart";
 			console.log(url);
@@ -650,19 +649,17 @@
             	return response.text();
             })
             .then(function(data){
-//             	var responseData =;
             	Swal.fire({
             		  title: data,
             		  confirmButtonText: "確認",
             		  icon: "success"
             		});
-//	            	location.reload();
             })
             .catch(function(error){
             	alert("加入購物車失敗！");
             })
 			
-			var carNum=$("span.carNum").val();
+			//購物車icon顯示數量
 			let url2="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&addCartNum=addCartNum";
 			console.log(url2);
 			fetch(url2)
@@ -670,14 +667,18 @@
             	return response.text();
             })
             .then(function(data){
+            	
+			var carNum= parseInt($("li.nav-item span.carNum").text());
+			if(!carNum){
+				carNum=0;
+			}
 				if(data == "true"){
-					console.log("有相同商品");
 					
-				}else{
-					console.log("無相同商品");
+				}else if(data == "false"){
 					carNum += 1;
+					$("li.nav-item span.carNum").text(carNum).show();
 					if(carNum == 0){
-						$("span.carNum").hide();
+						$("li.nav-item span.carNum").hide();
 					}
 				}
             })

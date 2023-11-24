@@ -2,7 +2,7 @@ package com.twoclothing.chenghan.dto;
 
 import java.io.Serializable;
 
-public class BidIItemDTO implements Serializable {
+public class BidItemDTO implements Serializable {
 
     private Integer bidItemId;
 

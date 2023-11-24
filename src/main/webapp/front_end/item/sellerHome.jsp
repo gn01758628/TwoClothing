@@ -267,13 +267,19 @@
                 <div class="cateImgContainer" id="blouse">
                     <img src="${pageContext.request.contextPath}/images/sellerHome/blouse.jpg" alt="">
                 </div>
-                <span>上衣</span>
+                <span>衣服</span>
             </div>
             <div class="bottoms">
                 <div class="cateImgContainer" id="bottoms">
                     <img src="${pageContext.request.contextPath}/images/sellerHome/bottoms.jpg" alt="">
                 </div>
-                <span>下身</span>
+                <span>褲子</span>
+            </div>
+            <div class="shoes">
+                <div class="cateImgContainer" id="shoes">
+                    <img src="${pageContext.request.contextPath}/images/sellerHome/shoes.jpg" alt="">
+                </div>
+                <span>鞋子</span>
             </div>
             <div class="accessories">
                 <div class="cateImgContainer" id="accessories">
@@ -281,16 +287,10 @@
                 </div>
                 <span>飾品</span>
             </div>
-            <div class="other">
-                <div class="cateImgContainer" id="other">
-                    <img src="${pageContext.request.contextPath}/images/sellerHome/other.jpg" alt="">
-                </div>
-                <span>其他</span>
-            </div>
         </div>
-        <div class="bidItem">
-            <a href="#">商品競標中<br>去看看</a>
-        </div>
+<!--         <div class="bidItem"> -->
+<!--             <a href="#">商品競標中<br>去看看</a> -->
+<!--         </div> -->
         <div class="itemarea">
             <ul class="itemList">
             <c:forEach var="itemWithCategory" items="${itemListWithCategory}" >      
@@ -339,7 +339,7 @@
 	    	$(".li_area").each(function(){
 	            var supertagId = $(this).data("supertagid");
 				console.log(supertagId);
-	            if(supertagId === 2 || supertagId === 5){ 
+	            if(supertagId === 2){ 
 	                $(this).show(); 
 	            } else {
 	                $(this).hide();
@@ -357,11 +357,22 @@
 	            }
 	    	});
 	    });
-	    $("#accessories").click(function(){
+	    $("#shoes").click(function(){
 	    	$(".li_area").each(function(){
 	    		var supertagId = $(this).data("supertagid");
 				console.log(supertagId);
 	            if(supertagId === 4){ 
+	                $(this).show(); 
+	            } else {
+	                $(this).hide();
+	            }
+	    	});
+	    });
+	    $("#accessories").click(function(){
+	    	$(".li_area").each(function(){
+	    		var supertagId = $(this).data("supertagid");
+				console.log(supertagId);
+	            if(supertagId === 5){ 
 	                $(this).show(); 
 	            } else {
 	                $(this).hide();

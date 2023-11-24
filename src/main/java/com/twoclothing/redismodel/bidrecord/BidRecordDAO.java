@@ -13,4 +13,6 @@ public interface BidRecordDAO {
     BidRecord getIndexRecordByKey(Integer bidItemId, int index);
 
     Set<Integer> getAllMbrIdByKey(Integer bidItemId);
+
+    List<Integer> getAllBitItemIdByMbrId(Integer mbrId);
 }

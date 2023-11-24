@@ -148,7 +148,6 @@
 		
 		button.close_x img{
 			width:35px;
-			height:35px;
 		}
 		
 		div.rightMain {
@@ -182,6 +181,23 @@
 			width: 100%;
 			padding-bottom: 20px;
 			color:#561729;
+		}
+		div.rightMain div.rightInner label.checkPoint{
+			text-align: center;
+/* 		    border: 1px solid; */
+		    width: 100%;
+		}
+		
+		div.rightMain div.rightInner label.checkPoint input.insertPoint{
+			width: 100%;
+		    padding: 2px 15px;
+		    margin-top: 12px;
+		    border-radius: 1rem;
+		    height: 35px;
+		} 
+		
+		div.rightMain div.rightInner label.checkPoint input#point{
+			margin-right: 6px;
 		}
 		
 		div.rightMain div.rightInner>div {
@@ -297,7 +313,7 @@
 					</table>
 	
 					<div class="del-box">
-						<button class="close_x"><img src="${pageContext.request.contextPath}/images/cart/garbage1.png"></button>
+						<button class="close_x"><img src="${pageContext.request.contextPath}/images/cart/trash.png"></button>
 					</div>
 				</div>
 			</c:forEach>
@@ -307,8 +323,9 @@
 		<div class="rightMain">
 			<div class="rightInner">
 				<label class="checkPoint">
-					<input type="checkbox" name="mbrPoint" id="point" onchange="countEverything()" value="${mbrPoint}">
-					使用會員點數 <span>${mbrPoint}</span>點
+					<input type="checkbox" name="mbrPointAll" id="point" onchange="countEverything()" value="${mbrPoint}">
+					使用全部點數  可使用${mbrPoint}點<input type="text" name="mbrPoint" value="0" class="insertPoint" onchange="countEverything()">
+<%-- 					<span>${mbrPoint}</span>點 --%>
 				</label>
 				<button id="countBtn" class="choice_cou" type="button" class="btn btn-primary"
 					data-bs-toggle="modal" data-bs-target="#exampleModal">選取優惠券</button>
@@ -382,7 +399,6 @@
         	var hasShownAlert = false;
 	        $(".checkboxLeft").each(function() {
 	            var itemId = parseInt($(this).val());
-	        	console.log(typeof itemId);
 	            if (arrayData.includes(itemId)) {
 	                $(this).prop("checked", false);
 	                $(this).prop("disabled", true);
@@ -441,6 +457,14 @@
 	<script>
 		$(document).ready(function() {
 			$(".close_x").click(function() {
+				//購物車icon-1
+				var carNum= parseInt($("li.nav-item span.carNum").text());
+				carNum-=1;
+				$("li.nav-item span.carNum").text(carNum);
+				if(carNum == 0){
+					$("li.nav-item span.carNum").hide();
+				}
+				
 				// 找到包含 "X" 按鈕的父元素，即 detailBox
 				var $detailBox = $(this).closest(".detailBox");
 
@@ -450,9 +474,8 @@
 				// 從該元素中獲取 itemId 的值
 				var itemId = $itemIdElement.data("item-id");
 				
-				 let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=" + itemId + "&delCart=delCart&mbrId=2";
-				    console.log(url);
-				    fetch(url)
+				 let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=" + itemId + "&delCart=delCart";
+				fetch(url)
 	            .then(function(response){
 	              return response.text();
 	            })
@@ -465,8 +488,7 @@
 
 				// 然後刪除整個 detailBox 元素
 				$detailBox.remove();
-				    
-
+				    						    
 				//購物車是否有商品，若無則顯示購物圖片
 				var leftMain = $(".leftMain");
 				if (leftMain.find('.detailBox').length === 0) {
@@ -488,7 +510,6 @@
 		  	let itemId = $currentDetailBox.find(".item-id").data("item-id");
 		 	let quantity = $(this).val();
 			let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=" + itemId + "&updateCart=updateCart&quantity=" + quantity + "";
-		    console.log(url);
 		    fetch(url)
 		    .then(function(response){
 		      return response.text();
@@ -537,20 +558,48 @@
 			distypeVal = $(".coupon_radio:checked").closest(".Coupon").find(".coupon_distype").val(); // 找到該優惠券的折扣種
 			disValue = $(".coupon_radio:checked").closest(".Coupon").find(".coupon_disvalue").val(); // 找到該優惠券的折扣金額或%數
 		}; 
-        
-        if(distypeVal){
+
+        if(parseInt(distypeVal)){
         	total *= (1-(disValue/100));
         	total = Math.round(total);
         } else {
         	total -= disValue;
         }
-
+        
 		// 3 Member Point
-		if($('input[name="mbrPoint"]').is(":checked")){
-			var mbrPoint = parseInt($(".checkPoint span").text());
-		}else{
-			var mbrPoint = 0;
-		}
+		var mbrPoint =0;
+		var pointTotal = parseInt("${mbrPoint}");
+	    var pointCheckbox = $('input[name="mbrPointAll"]');
+	    var pointInput = $('input[name="mbrPoint"]');
+	    
+	    if(pointTotal < total){
+	    	if(pointCheckbox.is(":checked")){
+	    		pointInput.val(pointTotal);
+	    		mbrPoint = pointInput.val();
+	    	}else{
+	    		if(pointInput.val()>total || pointInput.val()>pointTotal){
+	    			alert("使用全部");
+	    			pointCheckbox.prop('checked', true)
+		    		pointInput.val(pointTotal);
+	    		}
+	    		mbrPoint = pointInput.val();
+
+	    	}
+	    }
+	    
+	    if(pointTotal > total){
+	    	if(pointCheckbox.is(":checked")){
+	    		pointInput.val(total);
+	    		mbrPoint = pointInput.val();
+	    	}else{
+	    		if(pointInput.val()>total){
+	    			alert("請檢查點數不可超過總額");
+		    		pointInput.val(0);
+	    		}
+	    		mbrPoint = pointInput.val();
+	    	}
+	    }
+		
 		total -= mbrPoint;
 		if(total < 0){
 			total = 0;

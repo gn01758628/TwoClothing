@@ -2,7 +2,7 @@ package com.twoclothing.chi.controller;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Enumeration;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +20,9 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.Gson;
 import com.twoclothing.chi.service.ItemReportService;
 import com.twoclothing.chi.service.ItemReportServiceImpl;
+import com.twoclothing.huiwen.service.ItemService;
+import com.twoclothing.huiwen.service.ItemServiceImpl;
+import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.aproduct.itemreport.ItemReport;
 import com.twoclothing.redismodel.notice.Notice;
 
@@ -27,10 +30,14 @@ import com.twoclothing.redismodel.notice.Notice;
 @MultipartConfig
 public class ItemReportBackServlet extends HttpServlet {
 	private ItemReportService itemReportService;
+	
+	private ItemService itemService;
 
 	@Override
 	public void init() throws ServletException {
 		itemReportService = new ItemReportServiceImpl();
+		
+		itemService = new ItemServiceImpl();
 	}
 
 	@Override
@@ -43,11 +50,6 @@ public class ItemReportBackServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		String url = "";
-		
-		Enumeration<String> names = req.getParameterNames();
-		while (names.hasMoreElements()) {
-			System.out.println(names.nextElement());
-		}
 
 		switch (action) {
 		case "getAll":
@@ -56,11 +58,6 @@ public class ItemReportBackServlet extends HttpServlet {
 			break;
 		case "compositeQuery":
 			req.setAttribute("action", action);
-			req.getParameter("itemId");
-			req.getParameter("mbrId");
-			req.getParameter("empId");
-			req.getParameter("rStatus");
-			req.getParameter("result");
 			url = getCompositeQuery(req, res);
 			break;
 		case "getOne":
@@ -87,6 +84,15 @@ public class ItemReportBackServlet extends HttpServlet {
 
 		int itemReportPageQty = itemReportService.getPageTotal(mbrId);
 		req.getSession().setAttribute("itemReportPageQty", itemReportPageQty);
+		
+		Map<Integer, String> itemNameMap = new HashMap<>();
+		for (ItemReport itemReport : itemReportList) {
+			Integer itemId = itemReport.getItemId();
+	        Item item = itemService.getItemByItemId(itemId);
+	        String itemName = (item != null) ? item.getItemName() : "未知商品";
+	        itemNameMap.put(itemId, itemName);
+	    }
+		req.setAttribute("itemNameMap", itemNameMap);
 
 		Map<Integer, String> rStatusMap = new HashMap<>();
 		rStatusMap.put(0, "待審核");
@@ -101,8 +107,7 @@ public class ItemReportBackServlet extends HttpServlet {
 		req.setAttribute("rStatusMap", rStatusMap);
 		req.setAttribute("resultMap", resultMap);
 
-		return "/back_end/itemreport/itemReportManageList.jsp";
-
+		return "/back_end/itemreport/itemReportManageIndex.jsp";
 	}
 
 	private String getCompositeQuery(HttpServletRequest req, HttpServletResponse res) {
@@ -111,9 +116,22 @@ public class ItemReportBackServlet extends HttpServlet {
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 		List<String> errorMsgs = new LinkedList<String>();
 
+        Map<String, Object> convertedMap = new HashMap<>();
+        for (Map.Entry<String, String[]> entry : map.entrySet()) {
+            String key = entry.getKey();
+            String[] values = entry.getValue();
+
+            if (values.length == 1) {
+                convertedMap.put(key, values[0]);
+            } else {
+                convertedMap.put(key, Arrays.asList(values));
+            }
+        }
+        req.setAttribute("convertedMap", convertedMap);
+		
 		if (map != null) {
 			List<ItemReport> itemReportList = itemReportService.getByCompositeQuery(map, currentPage);
-
+			
 			if (itemReportList.size() == 0) {
 				errorMsgs.add("查無資料");
 			}
@@ -132,16 +150,23 @@ public class ItemReportBackServlet extends HttpServlet {
 			Map<Integer, String> resultMap = new HashMap<>();
 			resultMap.put(0, "處分");
 			resultMap.put(1, "不處分");
+			
+			Map<Integer, String> itemNameMap = new HashMap<>();
+			for (ItemReport itemReport : itemReportList) {
+				Integer itemId = itemReport.getItemId();
+		        Item item = itemService.getItemByItemId(itemId);
+		        String itemName = (item != null) ? item.getItemName() : "未知商品";
+		        itemNameMap.put(itemId, itemName);
+		    }
+			req.setAttribute("itemNameMap", itemNameMap);
 
 			req.setAttribute("itemReportList", itemReportList);
 			req.setAttribute("currentPage", currentPage);
 			req.setAttribute("rStatusMap", rStatusMap);
 			req.setAttribute("resultMap", resultMap);
-		} else {
-			System.out.println("map.sizes() == 0");
 		}
 
-		return "/back_end/itemreport/itemReportManageList.jsp";
+		return "/back_end/itemreport/itemReportManageIndex.jsp";
 	}
 
 	private void getItemReport(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -164,10 +189,16 @@ public class ItemReportBackServlet extends HttpServlet {
 		Integer reportId = Integer.parseInt(req.getParameter("reportId"));
 		ItemReport itemReport = itemReportService.getByPrimaryKey(reportId);
 
+		int itemId = Integer.parseInt(req.getParameter("itemId"));
+		int mbrId = Integer.parseInt(req.getParameter("mbrId"));
 		HttpSession session = req.getSession();
 		Integer empId = (Integer) session.getAttribute("empId");
 		int result = Integer.parseInt(req.getParameter("result"));
 		String note = req.getParameter("note");
+		
+		if (result == 0 && (note == null || note.trim().isEmpty())) {
+	        note = "檢舉成功，商品已被移除";
+	    }
 
 //		List<String> errorMsgs = new LinkedList<String>();
 
@@ -186,13 +217,28 @@ public class ItemReportBackServlet extends HttpServlet {
 		Notice notice = new Notice();
 		notice.setType("檢舉審核結果");
 		notice.setHead("請確認商品檢舉審核結果");
+		
+		Item item = itemService.getItemByItemId(itemId);
+		Notice noticeItemDelete = new Notice();
+		noticeItemDelete.setType("檢舉審核結果");
+		noticeItemDelete.setHead("請確認商品檢舉審核結果");
+		noticeItemDelete.setContent("商品「" + item.getItemName() + "」，檢舉審核為「處分」結果，已強制移除。");
+		noticeItemDelete.setLink("#");
+		noticeItemDelete.setImageLink("/ReadItemIMG/item?id=" + itemId + "&position=1");
 
 		if (result == 0) {
 			notice.setContent("商品檢舉審核為「處分」結果，請至「我的檢舉」查看。");
+			notice.setLink("/front/itemreport?action=getAllByMbrId");
 			notice.setImageLink("/images/report0.png");
+			itemService.addNotice(notice, mbrId);
+			item.setItemStatus(2);
+			int sellMbr = item.getMbrId();
+			itemService.addNotice(noticeItemDelete, sellMbr);
 		} else if (result == 1) {
 			notice.setContent("商品檢舉審核為「不處分」結果，請至「我的檢舉」查看。");
+			notice.setLink("/front/itemreport?action=getAllByMbrId");
 			notice.setImageLink("/images/report1.png");
+			itemService.addNotice(notice, mbrId);
 		}
 
 		notice.setLink("/front/itemreport?action=getAllByMbrId&mbrId=${mbrId}"); // 到時加上連結至(會員前台)我的檢舉
