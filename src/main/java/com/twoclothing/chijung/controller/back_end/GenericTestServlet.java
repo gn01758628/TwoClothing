@@ -1,8 +1,6 @@
 package com.twoclothing.chijung.controller.back_end;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -11,19 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.twoclothing.chijung.service.MembersCouponService;
-import com.twoclothing.chijung.service.MembersCouponServiceImpl;
-import com.twoclothing.model.aproduct.item.Item;
-import com.twoclothing.model.aproduct.item.ItemDAO;
-import com.twoclothing.model.aproduct.item.ItemHibernateDAO;
-import com.twoclothing.model.dto.MembersCouponDTO;
-import com.twoclothing.model.employee.Employee;
-import com.twoclothing.model.permissions.Permissions;
-import com.twoclothing.utils.HibernateUtil;
-import com.twoclothing.utils.generic.DAOSelector;
-import com.twoclothing.utils.generic.GenericDAO;
+import com.twoclothing.model.memberscoupon.MembersCoupon;
+import com.twoclothing.model.memberscoupon.MembersCoupon.MembersCouponCompositeDetail;
 import com.twoclothing.utils.generic.GenericService;
-import com.twoclothing.utils.generic.QueryCondition;
 
 // @MultipartConfig
 //  fileSizeThreshold = 檔案小於這個值,檔案寫入內存,提高效率
@@ -122,15 +110,19 @@ public class GenericTestServlet extends HttpServlet {
 //		}
 //		
 //		System.out.println("==================================");
-		MembersCouponService mcs = new MembersCouponServiceImpl();
-		List<MembersCouponDTO> mcList = mcs.getAllMembersCouponDTOByMemberId(1);
-		
-		for(MembersCouponDTO item : mcList) {
-			System.out.println(item);
-		}
+//		MembersCouponService mcs = new MembersCouponServiceImpl();
+//		List<MembersCouponDTO> mcList = mcs.getAllMembersCouponDTOByMemberId(1);
+//		
+//		for(MembersCouponDTO item : mcList) {
+//			System.out.println(item);
+//		}
 		
 		//新增判斷是否關聯到資料庫 如果沒有就在console印出XXX類別沒有關聯資料庫不予受理
-		GenericDAO dao1 = DAOSelector.getDAO(String.class);
+//		GenericDAO dao1 = DAOSelector.getDAO(String.class);
 		
+//		MembersCouponCompositeDetail mcd = new MembersCouponCompositeDetail();
+//		mcd.setCouponId(1);
+//		mcd.setMemberId(1);
+//		System.out.println(gs.getByPrimaryKey(MembersCoupon.class, mcd));
 	}
 }

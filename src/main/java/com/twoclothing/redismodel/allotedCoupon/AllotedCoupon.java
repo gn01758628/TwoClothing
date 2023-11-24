@@ -11,18 +11,18 @@ import com.twoclothing.model.coupon.Coupon;
 public class AllotedCoupon {
     private Integer cpnId;
     private String cpnName;
-    private Timestamp createDate;
-    private Timestamp expireDate;
+    private Long createDate;
+    private Long expireDate;
     private Integer disType;
     private Integer disValue;
-    private Integer minAmount;
+    private Integer minAmount;//0折抵金額 1折%數
     
     
     private Integer index;
-    private Timestamp allotDate;
+    private Long allotDate;
     private Integer totalQuantity;
     private Integer remainingQuantity;
-    private Integer status; //-1使用時間到 0發放中 1(後台)停止發放 2發放完了
+    private Integer status; //-1使用期限已到 0尚未發放 1發放中 2停止發放 3發放完了
     
 	
 
@@ -36,16 +36,16 @@ public class AllotedCoupon {
 	
 	
 	
-	public AllotedCoupon(Coupon coupon,Timestamp allotDate, Integer totalQuantity,
+	public AllotedCoupon(Coupon coupon,Long allotDate, Integer totalQuantity,
 			Integer remainingQuantity) {
 		super();
-		cpnId = coupon.getCpnId();
-	    cpnName = coupon.getCpnName();
-	    createDate = coupon.getCreateDate();
-	    expireDate = coupon.getExpireDate();
-	    disType = coupon.getDisType();
-	    disValue = coupon.getDisValue();
-	    minAmount = coupon.getMinAmount();
+		this.cpnId = coupon.getCpnId();
+		this.cpnName = coupon.getCpnName();
+		this.createDate = (coupon.getCreateDate() != null) ? coupon.getCreateDate().getTime() : null;
+		this.expireDate = (coupon.getExpireDate() != null) ? coupon.getExpireDate().getTime() : null;
+		this.disType = coupon.getDisType();
+		this.disValue = coupon.getDisValue();
+		this.minAmount = coupon.getMinAmount();
 		
 		this.allotDate = allotDate;
 		this.totalQuantity = totalQuantity;
@@ -79,26 +79,26 @@ public class AllotedCoupon {
 
 
 
-	public Timestamp getCreateDate() {
+	public Long getCreateDate() {
 		return createDate;
 	}
 
 
 
 	public void setCreateDate(Timestamp createDate) {
-		this.createDate = createDate;
+		this.createDate = createDate.getTime();
 	}
 
 
 
-	public Timestamp getExpireDate() {
+	public Long getExpireDate() {
 		return expireDate;
 	}
 
 
 
 	public void setExpireDate(Timestamp expireDate) {
-		this.expireDate = expireDate;
+		this.expireDate = expireDate.getTime();
 	}
 
 
@@ -151,14 +151,14 @@ public class AllotedCoupon {
 
 
 
-	public Timestamp getAllotDate() {
+	public Long getAllotDate() {
 		return allotDate;
 	}
 
 
 
 	public void setAllotDate(Timestamp allotDate) {
-		this.allotDate = allotDate;
+		this.allotDate = allotDate.getTime();
 	}
 
 

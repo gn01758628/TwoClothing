@@ -15,12 +15,13 @@
 <script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              <!-- ●●js  for jquery datatables 用 -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" /> <!-- ●●css for jquery datatables 用 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@latest"></script><!-- 引入 SweetAlert2 -->
 <!-- ●● jquery datatables 設定 -->
 <script>
 	$(document).ready(function() {
 		$('#example').DataTable({
 			"lengthMenu": [5, 10, 20, 50, 100],
+			"pageLength": 10,
 			"searching": true,  //搜尋功能, 預設是開啟
 		    "paging": true,     //分頁功能, 預設是開啟
 		    "ordering": true,   //排序功能, 預設是開啟
@@ -95,7 +96,11 @@ body {
 			        empMissionsList: empMissionsList
 			    },
 			    success: function(res){
-			        alert(res);
+			    	Swal.fire({
+    	                title: '成功',
+    	                text: '更新成功!',
+    	                icon: 'success'
+    	            });
 			    },
 			    error: function(xhr, status, error){
 			    	alert("更新失敗：" + error);
