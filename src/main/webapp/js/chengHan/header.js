@@ -121,11 +121,14 @@ $(document).ready(function () {
     $("#logoutButton").click(function (e) {
         e.preventDefault();
         Swal.fire({
-            title: "您确定要登出吗？",
-            icon: "warning",
+            imageUrl: "/TwoClothing/images/LogOut.png",
+            imageWidth: 400,
+            imageHeight: 400,
+            title: "您確定要登出嗎？",
+            text:"還有無數未被發掘的獨特時尚，等著您來發現！",
             showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
+            confirmButtonColor: "#561729",
+            cancelButtonColor: "#117f7c",
             confirmButtonText: "登出",
             cancelButtonText: "取消"
         }).then((result) => {

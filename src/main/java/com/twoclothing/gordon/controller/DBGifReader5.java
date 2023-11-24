@@ -32,6 +32,13 @@ public class DBGifReader5 extends HttpServlet {
 			    mbrid = mbridValue.trim();
 			}
 			
+			String bidOrderId = null;
+			String bidOrderIdValue = req.getParameter("bidOrderId");
+			if (bidOrderIdValue != null) {
+				// 現在你可以安全地在 parameterValue 上調用 trim() 方法
+				bidOrderId = bidOrderIdValue.trim();
+			}
+			
 			String imgType = null;
 	        String imgTypeValue = req.getParameter("imgType");
 	        if (imgTypeValue != null) {
@@ -56,6 +63,9 @@ public class DBGifReader5 extends HttpServlet {
 			if(imageid != null) 	
 				rs = stmt.executeQuery(
 						"SELECT " + imgType + " FROM twoclothing.bidorderratingimage where imageid=" + imageid);
+			if(bidOrderId != null) 	
+				rs = stmt.executeQuery(
+						"SELECT " + imgType + " FROM twoclothing.bidorderratingimage where bidOrderId=" + bidOrderId);
 			
 			
 

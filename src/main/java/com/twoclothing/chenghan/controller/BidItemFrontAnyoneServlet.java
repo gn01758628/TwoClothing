@@ -147,6 +147,9 @@ public class BidItemFrontAnyoneServlet extends HttpServlet {
         if ("立即結標".equals(bidType)) {
             // 改變商品狀態
             bidItem.setBidStatus(2);
+            bidItem.setEndTime(new Timestamp(System.currentTimeMillis()));
+            bidItemService.updateBidItem(bidItem);
+            // 改變商品結束時間
             // 添加出價紀錄
             String now = FormatUtil.timestampDateTime(new Timestamp(System.currentTimeMillis()));
             BidRecord bidRecord = new BidRecord(mbrId, FormatUtil.numberThousandsSeparators(bidAmount), now);

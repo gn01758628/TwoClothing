@@ -67,6 +67,20 @@ public class CategoryTagsHibernateDAO implements CategoryTagsDAO {
     }
 
     @Override
+    public List<CategoryTags> getAllHaveSubTags() {
+        return getSession().createQuery(
+                "SELECT ct " +
+                        "FROM CategoryTags ct " +
+                        "WHERE ct.tagId IN (" +
+                        "   SELECT DISTINCT c.superTagId " +
+                        "   FROM CategoryTags c " +
+                        "   WHERE c.superTagId IS NOT NULL) " +
+                        "OR ct.superTagId IS NULL",
+                CategoryTags.class
+        ).getResultList();
+    }
+
+    @Override
     public boolean update(CategoryTags categoryTags) {
         try {
             getSession().update(categoryTags);

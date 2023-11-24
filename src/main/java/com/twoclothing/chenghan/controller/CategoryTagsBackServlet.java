@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @WebServlet("/back_end/servlet/categoryTags/*")
 public class CategoryTagsBackServlet extends HttpServlet {
@@ -67,8 +66,11 @@ public class CategoryTagsBackServlet extends HttpServlet {
         for (Employee emp : employeeList) {
             empName.put(emp.getEmpId(),emp.getEmpName());
         }
+        // 綁定有子標籤的標籤
+        List<CategoryTags> haveSubTagsList = categoryTagsDAO.getAllHaveSubTags();
         request.setAttribute("tagsName", tagsName);
         request.setAttribute("empName", empName);
+        request.setAttribute("haveSubTagsList", haveSubTagsList);
         request.getRequestDispatcher("/back_end/categorytags/CategoryTagsList.jsp").forward(request, response);
     }
 

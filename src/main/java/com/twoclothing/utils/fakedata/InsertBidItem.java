@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -27,6 +28,8 @@ public class InsertBidItem extends HttpServlet {
         BidItemDAO bidItemDAO = new BidItemHibernateDAO(sessionFactory);
         CategoryTagsDAO categoryTagsDAO = new CategoryTagsHibernateDAO(sessionFactory);
         List<Integer> tagIdList = categoryTagsDAO.getTagIdsWithoutChildren();
+        Timestamp timestamp = Timestamp.valueOf("2023-11-26 12:05:00");
+        Calendar cal = Calendar.getInstance();
         Random random = new Random();
         for (int i = 1; i <= 50; i++) {
             BidItem bidItem = new BidItem();
@@ -65,9 +68,12 @@ public class InsertBidItem extends HttpServlet {
 //            bidItem.setStartTime(timestamp);
             // 指定開始時間與結束時間(測試用)
             bidItem.setBidStatus(4);
+
+            cal.setTimeInMillis(timestamp.getTime());
+            cal.add(Calendar.DATE, 1);
+            timestamp = new Timestamp(cal.getTimeInMillis());
             bidItem.setStartTime(Timestamp.valueOf("2023-11-19 12:00:00"));
-            bidItem.setEndTime(Timestamp.valueOf("2023-11-26 12:05:00"));
-            bidItem.setEmpId(1);
+            bidItem.setEndTime(timestamp);
             bidItemDAO.insert(bidItem);
         }
     }

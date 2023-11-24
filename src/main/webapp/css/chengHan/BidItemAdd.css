@@ -1,0 +1,99 @@
+body {
+    background-color: #fff8fb;
+}
+
+ul, ul li {
+    list-style: none;
+}
+
+ul {
+    margin-top: 10px;
+}
+
+.selectable::before {
+    content: "🌟";
+    padding-right: 5px;
+}
+
+.selectable:hover::before, .selectable:hover {
+    content: "🔯";
+    cursor: pointer;
+}
+
+.non-selectable::before {
+    content: "🢂";
+    padding-right: 5px;
+    color: #561729;
+}
+
+.non-selectable:hover::before, .non-selectable:hover {
+    content: "🢆";
+    padding-right: 0;
+    cursor: not-allowed;
+}
+
+.modal-content {
+    background-color: rgb(249, 237, 242);
+    color: #00302e;
+}
+
+.fixed-button {
+    position: sticky;
+    bottom: 20px;
+    right: 10px;
+    float: right;
+    z-index: 1000;
+}
+
+.text-danger {
+    margin-left: 5px;
+    font-size: 20px;
+}
+
+/* 大標題 */
+.bigTitle {
+    display: block;
+    background-color: #ffc107;
+    color: #fff;
+    font-size: 30px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 50px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.bigTitle {
+    background-image: linear-gradient(to right, #ee90aa, #f3c4d2);
+}
+
+.bigTitle:hover {
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);
+    background-image: linear-gradient(to right, #f3c4d2, #ee90aa);
+}
+
+.bigTitle:before,
+.bigTitle:after {
+    content: '★';
+    color: #561729;
+    font-size: 36px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.bigTitle:before {
+    left: -45px;
+}
+
+.bigTitle:after {
+    right: -45px;
+}
+
+/*大標題*/
