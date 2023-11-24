@@ -81,7 +81,7 @@
             border-radius: 2px;
             box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
             transition: box-shadow .25s;
-            height: 400px;
+            height: 420px;
             width: 300px;
             overflow: hidden;
             margin-right: 20px;
@@ -122,7 +122,7 @@
             word-break: break-word; /* 防止單詞在行末分開 */
             margin-top: 0px;
             font-weight: 700;
-            font-size: 20px;
+            font-size: 24px;
             text-align: center;
         }
 
@@ -330,7 +330,7 @@
 </div>
 
 <!--標題-->
-<div class="container itemTitle">
+<div class="container">
     <div class="row">
         <div class="col text-center">
             <h2 class="bigTitle">參與中的競標商品</h2>
@@ -368,13 +368,11 @@
 <!--此頁面的JS-->
 <script>
     const showBidItem = $(".showBidItem");
-    let mbrID;
 
     $(document).ready(function () {
         $.get("/TwoClothing/bidItemParticipate.check", function (data) {
             createBidItem(JSON.parse(data[0]));
-            mbrID = data[1];
-            $(".memberCenter").attr("href", "/TwoClothing/members/Members.do?action=memberProfile&mbrId=" + mbrID);
+            $(".memberCenter").attr("href", "/TwoClothing/members/Members.do?action=memberProfile&mbrId=" + data[1]);
         }).fail(function (xhr) {
             if (xhr.status === 403) {
                 window.location.href = "/TwoClothing/front_end/members/registerLogin.jsp";
@@ -387,7 +385,7 @@
                 let endDate = formatMillisToString(bidItem.endTime);
                 let linkUrl = "/TwoClothing/front/biditem/anyone/detail?bidItemId=" + bidItem.bidItemId;
                 let imgUrl = "/TwoClothing/ReadItemIMG/biditem?id=" + bidItem.bidItemId + "&position=1";
-                let itemName = bidItem.itemName;
+                let itemName = bidItem.bidName;
                 let bidAmountType = bidItem.bidAmountType;
                 let bidAmount = formatAsCurrency(bidItem.currentBid);
                 let countDown = bidItem.endTime;

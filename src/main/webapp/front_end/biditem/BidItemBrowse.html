@@ -123,7 +123,7 @@
             border-radius: 2px;
             box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
             transition: box-shadow .25s;
-            height: 355px;
+            height: 380px;
             width: 240px;
             overflow: hidden;
             margin-right: 20px;
@@ -164,7 +164,7 @@
             word-break: break-word; /* 防止單詞在行末分開 */
             margin-top: 0px;
             font-weight: 700;
-            font-size: 20px;
+            font-size: 24px;
             text-align: center;
         }
 
@@ -388,6 +388,91 @@
             color: white;
         }
 
+        .pushable {
+            position: relative;
+            background: transparent;
+            padding: 0px;
+            border: none;
+            cursor: pointer;
+            outline-offset: 4px;
+            outline-color: deeppink;
+            transition: filter 250ms;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        .shadow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: hsl(226, 25%, 69%);
+            border-radius: 8px;
+            filter: blur(2px);
+            will-change: transform;
+            transform: translateY(2px);
+            transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+        }
+
+        .edge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            border-radius: 8px;
+            background: linear-gradient(
+                    to right,
+                    hsl(248, 39%, 39%) 0%,
+                    hsl(248, 39%, 49%) 8%,
+                    hsl(248, 39%, 39%) 92%,
+                    hsl(248, 39%, 29%) 100%
+            );
+        }
+
+        .front {
+            display: block;
+            position: relative;
+            border-radius: 8px;
+            background: hsl(248, 53%, 58%);
+            padding: 8px 16px;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 18px;
+            transform: translateY(-4px);
+            transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+        }
+
+        .pushable:hover {
+            filter: brightness(110%);
+        }
+
+        .pushable:hover .front {
+            transform: translateY(-6px);
+            transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+        }
+
+        .pushable:active .front {
+            transform: translateY(-2px);
+            transition: transform 34ms;
+        }
+
+        .pushable:hover .shadow {
+            transform: translateY(4px);
+            transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+        }
+
+        .pushable:active .shadow {
+            transform: translateY(1px);
+            transition: transform 34ms;
+        }
+
+        .pushable:focus:not(:focus-visible) {
+            outline: none;
+        }
+
     </style>
     <!--導覽列css-->
     <link rel="stylesheet" href="/TwoClothing/css/chengHan/header.css">
@@ -409,7 +494,7 @@
 
 <!--每頁最大筆數選擇-->
 <div class="container mt-1">
-    <div class="row justify-content-start">
+    <div class="row justify-content-between">
         <div class="col-auto maxResult">
             <div class="radio-input">
                 <input value="4" name="pageMaxResult" id="value-1" type="radio">
@@ -421,6 +506,15 @@
                 <input value="32" name="pageMaxResult" id="value-4" type="radio">
                 <label for="value-4">每頁32筆</label>
             </div>
+        </div>
+        <div class="col-auto">
+            <a href="/TwoClothing/front_end/biditem/BidItemViewHistory.html">
+                <button class="pushable me-4">
+                    <span class="shadow"></span>
+                    <span class="edge"></span>
+                    <span class="front">我的瀏覽紀錄</span>
+                </button>
+            </a>
         </div>
     </div>
 </div>
@@ -524,7 +618,8 @@
             let endDate = formatMillisToString(bidItem.endTime);
             let linkUrl = "/TwoClothing/front/biditem/anyone/detail?bidItemId=" + bidItem.bidItemId;
             let imgUrl = "/TwoClothing/ReadItemIMG/biditem?id=" + bidItem.bidItemId + "&position=1";
-            let itemName = bidItem.itemName;
+            let itemName = bidItem.bidName;
+            console.log(itemName);
             let bidAmountType = bidItem.bidAmountType;
             let bidAmount = formatAsCurrency(bidItem.currentBid);
             let countDown = bidItem.endTime;
