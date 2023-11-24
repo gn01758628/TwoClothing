@@ -74,7 +74,7 @@
         background-color: white;
         color: rgb(232, 138, 107);
         text-align: center;
-        font-size: 26px;
+        font-size: 20px;
         font-weight: bold;
 		margin: 40px 0;
         padding: 10px 0;
@@ -178,7 +178,8 @@
         	<h3>虛擬錢包<span>提款申請</span></h3>
             
              <div class="overage">
-                 <span>餘額：$<span>${balance}</span></span>
+                 <span>錢包餘額：$<span>${balance}</span></span>
+                 <span id="canWR">尚可申請：$<span id="inner_canWR">${balance}</span></span>
              </div>
              <div class="div_main">
 	             <div>
@@ -236,24 +237,21 @@
 	</script>
 
     <script>
-	    var balance=parseInt($(".overage span span").text());
+	    var balance=parseInt($(".overage span#canWR span#inner_canWR").text());
 	    var newBalance;
 	    $(document).ready(function() {
 	        //目前餘額(要扣掉申請中的總額)
-	        var reqing =0;
+	        var reqing = 0;
 	        reqing=${reqing};
 	        console.log(reqing);
 	        newBalance = balance - reqing;
-	        $(".overage span span").text(newBalance);
+	        $(".overage span#canWR span#inner_canWR").text(newBalance);
 		
 		})
     	function form_add_submit(e){
         	
 //         	提款金額不可超過餘額
-//         	let balance=parseInt($(".overage span span").text());
-        	console.log("/"+balance);
         	let amount = parseInt($("input[name='amount']").val());
-        	console.log("+"+amount);
 
         	if(newBalance<amount){
         		alert("餘額不足");
@@ -267,6 +265,13 @@
                 return;
 
             }
+            //帳號輸入判斷
+            const accountRegex = /^\d{10,16}$/;
+			const accountValue = $('input[name="mbrAccount"]').val();
+			if (!(accountRegex.test(accountValue))) {
+				 alert("帳號錯誤");
+				 return;
+			}
 
 	   		var formData = $(".form_add").serialize();
    			

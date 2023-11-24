@@ -32,7 +32,7 @@
         main.main{
 /*             border: 1px solid black; */
             width: 100%;
-            height: 100%;
+            min-height:calc(100vh - 309px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -40,7 +40,7 @@
             background-color: rgb(224, 224, 224);
 
         }
-        main.main h2{
+        main.main h2#search_h2{
             margin-top: 40px;
             margin-bottom: 3px;
         }
@@ -75,7 +75,7 @@
 		    align-items: center;
         }
         
-        tr.tr_data:hover{
+        tbody tr.tr_data:hover{
             background-color: white;
             box-shadow: 0px 0px 7px 4px rgba(181, 181, 181, 0.8);
 
@@ -88,7 +88,7 @@
 		    padding: 0px;
         }
 
-        div a{
+        div.page_area div.pagination a{
             padding: 5px;
             color: white;
             text-decoration: none;
@@ -145,7 +145,7 @@
             background-color: #f9edf2;
             color:black;
         }
-		img {
+		td.img img {
    			height: 50px;
 		}
 		.text_color{
@@ -161,7 +161,7 @@
 <body>
 	<div class="headerHTML"></div>
     <main class="main">
-        <h2>商品列表</h2>
+        <h2 id="search_h2">商品列表</h2>
         
             <!-- <c:if test="${itemPageQty > 0}"> -->
                 

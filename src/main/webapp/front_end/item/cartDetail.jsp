@@ -323,8 +323,8 @@
 		<div class="rightMain">
 			<div class="rightInner">
 				<label class="checkPoint">
-					<input type="checkbox" name="mbrPointAll" id="point" onchange="countEverything()" value="0">
-					使用會員點數  可使用${mbrPoint}點<input type="text" name="mbrPoint" value="0" class="insertPoint" onchange="countEverything()">
+					<input type="checkbox" name="mbrPointAll" id="point" onchange="countEverything()" value="${mbrPoint}">
+					使用全部點數  可使用${mbrPoint}點<input type="text" name="mbrPoint" value="0" class="insertPoint" onchange="countEverything()">
 <%-- 					<span>${mbrPoint}</span>點 --%>
 				</label>
 				<button id="countBtn" class="choice_cou" type="button" class="btn btn-primary"
@@ -399,7 +399,6 @@
         	var hasShownAlert = false;
 	        $(".checkboxLeft").each(function() {
 	            var itemId = parseInt($(this).val());
-	        	console.log(typeof itemId);
 	            if (arrayData.includes(itemId)) {
 	                $(this).prop("checked", false);
 	                $(this).prop("disabled", true);
@@ -476,7 +475,6 @@
 				var itemId = $itemIdElement.data("item-id");
 				
 				 let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=" + itemId + "&delCart=delCart";
-				    console.log(url);
 				fetch(url)
 	            .then(function(response){
 	              return response.text();
@@ -512,7 +510,6 @@
 		  	let itemId = $currentDetailBox.find(".item-id").data("item-id");
 		 	let quantity = $(this).val();
 			let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=" + itemId + "&updateCart=updateCart&quantity=" + quantity + "";
-		    console.log(url);
 		    fetch(url)
 		    .then(function(response){
 		      return response.text();
@@ -561,48 +558,52 @@
 			distypeVal = $(".coupon_radio:checked").closest(".Coupon").find(".coupon_distype").val(); // 找到該優惠券的折扣種
 			disValue = $(".coupon_radio:checked").closest(".Coupon").find(".coupon_disvalue").val(); // 找到該優惠券的折扣金額或%數
 		}; 
-        console.log("distypeVal:"+distypeVal);
-        console.log("disValue:"+disValue);
+
         if(parseInt(distypeVal)){
-        console.log("total:"+total);
         	total *= (1-(disValue/100));
         	total = Math.round(total);
         } else {
         	total -= disValue;
         }
+        
 		// 3 Member Point
 		var mbrPoint =0;
 		var pointTotal = parseInt("${mbrPoint}");
-// 		console.log(pointTotal);
 	    var pointCheckbox = $('input[name="mbrPointAll"]');
 	    var pointInput = $('input[name="mbrPoint"]');
-		
-		if (pointCheckbox.is(":checked")){
-			pointInput.prop('disabled', true);
-			mbrPoint = pointTotal;
-			pointCheckbox.val(mbrPoint);
-			console.log("c"+mbrPoint);
-			pointInput.val(0);
-			
-		}else{
-			pointInput.prop('disabled', false);			
-			mbrPoint = parseInt(pointInput.val());
-			console.log("I"+mbrPoint);
-			pointCheckbox.val(pointTotal);
-			console.log(pointInput.val());
-	        if ((pointInput.val()) && parseInt(pointInput.val()) > parseInt(pointTotal)) {
-	        	pointCheckbox.prop('checked', true);
-	        	pointInput.val(0);
-	        	pointInput.prop('disabled', true);
-	        	mbrPoint = pointTotal;
-	        }
-        }
+	    
+	    if(pointTotal < total){
+	    	if(pointCheckbox.is(":checked")){
+	    		pointInput.val(pointTotal);
+	    		mbrPoint = pointInput.val();
+	    	}else{
+	    		if(pointInput.val()>total || pointInput.val()>pointTotal){
+	    			alert("使用全部");
+	    			pointCheckbox.prop('checked', true)
+		    		pointInput.val(pointTotal);
+	    		}
+	    		mbrPoint = pointInput.val();
 
+	    	}
+	    }
+	    
+	    if(pointTotal > total){
+	    	if(pointCheckbox.is(":checked")){
+	    		pointInput.val(total);
+	    		mbrPoint = pointInput.val();
+	    	}else{
+	    		if(pointInput.val()>total){
+	    			alert("請檢查點數不可超過總額");
+		    		pointInput.val(0);
+	    		}
+	    		mbrPoint = pointInput.val();
+	    	}
+	    }
+		
 		total -= mbrPoint;
 		if(total < 0){
 			total = 0;
 		}
-		console.log("total"+total);
 		// 4 Total Show on HTML
 		$(".total span").text(total);
 		$(".count span").text(originalTotal - total);

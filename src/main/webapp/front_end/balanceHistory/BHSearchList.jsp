@@ -30,13 +30,13 @@
         }
         main.main_container{
 /*             border: 1px solid black; */
-            height: 100%;
+/*             height: 700px; */
 /*             margin: 50px; */
             display: flex;
             align-items: center;
             flex-direction: column;
             background-color: whitesmoke;
-            min-height: calc(100vh - 309px);
+            min-height: calc(100vh - 409px);
         }
          main.main_container h3{
          	margin:30px;
@@ -87,7 +87,7 @@
             border: 1px solid gray;
             font-size: 20px;
             width: 100%;
-            height: 100%;
+            height: 55px;
             flex: 1;
             display: flex;
             align-items: center;

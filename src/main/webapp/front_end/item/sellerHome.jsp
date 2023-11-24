@@ -288,9 +288,9 @@
                 <span>飾品</span>
             </div>
         </div>
-        <div class="bidItem">
-            <a href="#">商品競標中<br>去看看</a>
-        </div>
+<!--         <div class="bidItem"> -->
+<!--             <a href="#">商品競標中<br>去看看</a> -->
+<!--         </div> -->
         <div class="itemarea">
             <ul class="itemList">
             <c:forEach var="itemWithCategory" items="${itemListWithCategory}" >      
