@@ -22,6 +22,8 @@ public interface CategoryTagsDAO {
      */
     List<CategoryTags> getAllSubByPrimaryKey(Integer tagId);
 
+    List<CategoryTags> getAllHaveSubTags();
+
     /**
      * @return 修改是否成功
      */

@@ -1,0 +1,525 @@
+ul, li {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+.message-area {
+    height: 100vh;
+    overflow: hidden;
+    padding: 30px 0;
+    background: #f5f5f5;
+}
+
+.chat-area {
+    position: relative;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 0.3rem;
+    height: 90vh;
+    overflow: hidden;
+    min-height: calc(100% - 1rem);
+}
+
+.chatlist {
+    outline: 0;
+    height: 100%;
+    overflow: hidden;
+    width: 300px;
+    float: left;
+    padding: 15px;
+}
+
+.chat-area .modal-content {
+    border: none;
+    border-radius: 0;
+    outline: 0;
+    height: 100%;
+}
+
+.chat-area .modal-dialog-scrollable {
+    height: 100% !important;
+}
+
+.chatbox {
+    width: auto;
+    overflow: hidden;
+    height: 100%;
+    border-left: 1px solid #ccc;
+}
+
+.msg-search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+
+.chat-list .mbrInfo-1, .chat-list .mbrInfo-2 {
+    position: relative;
+}
+
+/*chatlist分隔*/
+.chat-list {
+    background-color: #f4f7f6; /* 背景顏色 */
+    border-radius: 15px; /* 邊框圓角 */
+    margin-bottom: 15px; /* 與下一個列表項目的下邊距 */
+    padding: 10px; /* 內邊距 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 盒子陰影效果 */
+}
+
+/*chatlist的會員名稱*/
+.chat-list h3 {
+    color: #222; /* 文字顏色 */
+    font-size: 14px; /* 文字大小 */
+    font-weight: 500; /* 文字粗細 */
+    line-height: 1.5; /* 行高 */
+    margin-bottom: 0; /* 下邊距，移除預設的 margin */
+}
+
+/*最後一條訊息*/
+.chat-list .last-message {
+    color: #555; /* 文字顏色 */
+    font-size: 14px; /* 文字大小 */
+    font-weight: 400; /* 文字粗細 */
+    line-height: 1.4; /* 行高 */
+    text-transform: capitalize; /* 首字母大小寫 */
+    margin-top: 4px; /* 上邊距 */
+    margin-bottom: 0; /* 下邊距，移除預設的 margin */
+    display: -webkit-box; /* 顯示為 Webkit 盒子，用於多行文本截斷 */
+    -webkit-box-orient: vertical; /* 盒子的方向為垂直 */
+    -webkit-line-clamp: 2; /* 限制文本顯示的行數為 2 */
+    overflow: hidden; /* 隱藏溢出的內容 */
+    text-overflow: ellipsis; /* 溢出文本顯示省略號 */
+    max-height: 2.8em; /* 最大高度，基於行高的兩倍 */
+}
+
+/*最後訊息的時間文字*/
+.chat-list .message-time {
+    position: absolute; /* 絕對定位 */
+    top: 0; /* 距離頂部的位置 */
+    right: 0; /* 距離右側的位置 */
+    margin-top: 2px; /* 頂部的邊距 */
+    margin-right: 8px; /* 右側的邊距 */
+    color: #999; /* 文字顏色 */
+    font-size: 12px; /* 文字大小 */
+    line-height: 1.4; /* 行高 */
+    display: block; /* 區塊顯示方式 */
+}
+
+/*chatlist會員大頭貼*/
+.chat-list .mbrAvatar {
+    position: relative; /* 相對定位 */
+    height: 65px; /* 高度 */
+    width: 65px;
+    border-radius: 50%; /* 圓形邊框 */
+    object-fit: cover; /* 圖片填充方式 */
+}
+
+.chatbox .modal-content {
+    position: relative;
+}
+
+.chat-list a.d-flex {
+    text-decoration: none;
+    color: inherit;
+}
+
+.chat-list .active {
+    position: absolute;
+    display: block;
+    content: '';
+    clear: both;
+    bottom: 0px;
+    left: 45px;
+    height: 15px;
+    width: 15px;
+    background: #00DB75;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+.chat-list .not-active {
+    position: absolute;
+    display: block;
+    content: '';
+    clear: both;
+    bottom: 0px;
+    left: 45px;
+    height: 15px;
+    width: 15px;
+    background: #8289a2;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+.msg-head h3 {
+    color: #222;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+.msg-head p {
+    color: #343434;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-transform: capitalize;
+    margin-bottom: 0;
+}
+
+.msg-head {
+    padding: 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+.msg-body ul {
+    overflow: hidden;
+}
+
+.msg-body ul li {
+    list-style: none;
+    margin: 15px 0;
+    width: 100%;
+    display: flex;
+}
+
+.msg-body ul div.msg-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    margin: 0 10px;
+    color: #a1a1a1;
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+.msg-body ul li.sender {
+    width: 100%;
+    position: relative;
+}
+
+.msg-body ul li.sender p {
+    color: #000;
+    max-width: 80%;
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 400;
+    padding: 15px;
+    background: #f5f5f5;
+    display: inline-block;
+    border-radius: 20px;
+    margin-bottom: 0;
+    word-wrap: break-word;
+}
+
+.msg-body ul li.reply {
+    flex-direction: row-reverse;
+    width: 100%;
+    text-align: right;
+    position: relative;
+}
+
+.msg-body ul li.reply p {
+    color: #fff;
+    max-width: 80%;
+    font-size: 16px;
+    text-align: left;
+    line-height: 1.5;
+    font-weight: 400;
+    padding: 15px;
+    background: #4b7bec;
+    display: inline-block;
+    border-radius: 20px;
+    margin-bottom: 0;
+    word-wrap: break-word;
+}
+
+.msg-content {
+    white-space: pre-wrap;
+}
+
+.msg-body ul li.divider {
+    position: relative;
+    justify-content: center;
+    text-align: center;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 1.5;
+    display: flex;
+    padding: 0.25em 0;
+    margin: 0.5em 0;
+}
+
+.time-divider {
+    color: #8b8989;
+    background-color: #e8e8e8;
+    border-radius: 1em;
+    padding: 0.25em 1em;
+    width: auto;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+.chat-icon {
+    display: none;
+}
+
+.closess i {
+    display: none;
+}
+
+/**********送出按鈕css**********/
+#sendButton {
+    font-family: inherit;
+    font-size: 20px;
+    background: royalblue;
+    color: white;
+    padding: 0.7em 1em;
+    padding-left: 0.9em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.2s;
+    cursor: pointer;
+    width: 90%;
+}
+
+#sendButton span {
+    display: block;
+    margin-left: 0.3em;
+    transition: all 0.3s ease-in-out;
+}
+
+#sendButton svg {
+    display: block;
+    transform-origin: center center;
+    transition: transform 0.3s ease-in-out;
+}
+
+#sendButton:hover .svg-wrapper {
+    animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+#sendButton:hover svg {
+    transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+
+#sendButton:hover span {
+    transform: translateX(5em);
+}
+
+#sendButton:active {
+    transform: scale(0.95);
+}
+
+@keyframes fly-1 {
+    from {
+        transform: translateY(0.1em);
+    }
+
+    to {
+        transform: translateY(-0.1em);
+    }
+}
+
+/*給定class名稱來模擬hover跟active*/
+.sendButton-hovered .svg-wrapper {
+    animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+.sendButton-hovered svg {
+    transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+
+.sendButton-hovered span {
+    transform: translateX(5em);
+}
+
+.sendButton-active {
+    transform: scale(0.95);
+}
+
+/**********送出按鈕css**********/
+
+/**********回到底部按鈕css**********/
+#scrollToBottomBtn {
+    position: absolute;
+    bottom: 100px;
+    right: 35px;
+    z-index: 1000;
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    background-color: #00ccff;
+    border: none;
+    border-radius: 50px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#scrollToBottomBtn::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-color: #57575700;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.4s ease;
+    z-index: -1;
+}
+
+#scrollToBottomBtn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+    background-size: 30px 30px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+#scrollToBottomBtn:hover {
+    background-color: #239ccc;
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+}
+
+#scrollToBottomBtn:hover::before {
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+#scrollToBottomBtn:hover::after {
+    opacity: 1;
+}
+
+#scrollToBottomBtn:active {
+    background-color: rgb(13, 130, 207);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transform: translateY(2px);
+}
+
+/**********回到底部按鈕css**********/
+
+.input {
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    padding: 1em;
+    background-color: #ccc;
+    box-shadow: inset 2px 5px 10px rgba(0, 0, 0, 0.3);
+    transition: 300ms ease-in-out;
+    height: 30px;
+}
+
+.input:focus {
+    background-color: white;
+    transform: scale(1.1);
+}
+
+@media (min-width: 992px) {
+    .chat-area {
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .chatlist {
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        flex: 1;
+    }
+
+    .chatbox {
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        flex: 2;
+    }
+}
+
+@media (max-width: 991px) {
+    .chat-icon {
+        display: block;
+        margin-right: 15px;
+    }
+
+    .chatlist {
+        width: 100%;
+    }
+
+    .chatbox {
+        width: 100%;
+        position: absolute;
+        left: 1000px;
+        right: 0;
+        background: #fff;
+        transition: all 0.5s ease;
+        border-left: none;
+    }
+
+    .showbox {
+        left: 0 !important;
+        transition: all 0.5s ease;
+    }
+
+    .msg-head h3 {
+        font-size: 14px;
+    }
+
+    .msg-head p {
+        font-size: 12px;
+    }
+
+    .msg-head .flex-shrink-0 img {
+        height: 30px;
+    }
+
+    .chat-list h3 {
+        font-size: 14px;
+    }
+
+    .chat-list p {
+        font-size: 12px;
+    }
+
+    .msg-body ul li.sender p {
+        font-size: 13px;
+        padding: 8px;
+        border-radius: 10px;
+    }
+
+    .msg-body ul li.reply p {
+        font-size: 13px;
+        padding: 8px;
+        border-radius: 10px;
+    }
+}

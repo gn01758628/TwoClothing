@@ -130,9 +130,9 @@
 
 
 <div id="hy_con">
-<div id="con_lf">
+<div id="con_lf" style=" width: 166px;">
 <br>
-<h2>帳戶管理</h2>
+
 <!--=============================================插入連結的地方-->
 
 
@@ -401,11 +401,10 @@ var contextPath = "${pageContext.request.contextPath}";
         });
     });
 
-    
     $(document).ready(function () {
         // 使用 AJAX 請求加載其他內容
         $.ajax({
-            url: "${pageContext.request.contextPath}/sideMembers.jsp",
+            url: "${pageContext.request.contextPath}/front_end/members/sideMembers.jsp",
             method: "GET",
             success: function (data) {
                 $("#con_lf").html(data);
@@ -415,6 +414,7 @@ var contextPath = "${pageContext.request.contextPath}";
             }
         });
     });
+
 
 	</script>
 	

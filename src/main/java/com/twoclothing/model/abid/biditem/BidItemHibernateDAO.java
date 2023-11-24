@@ -11,6 +11,7 @@ import javax.persistence.criteria.Root;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -87,9 +88,8 @@ public class BidItemHibernateDAO implements BidItemDAO {
 
     @Override
     public List<BidItem> getAllLegalByMbrId(Integer mbrId) {
-        return getSession().createQuery("from BidItem where bidStatus not in (:statuses1,:statuses2) and mbrId = :mbrId order by bidItemId", BidItem.class)
-                .setParameter("statuses1", 5)
-                .setParameter("statuses2", 6)
+        return getSession().createQuery("from BidItem where bidStatus in (:statuses) and mbrId = :mbrId order by bidItemId", BidItem.class)
+                .setParameterList("statuses", Arrays.asList(0, 1, 2, 4))
                 .setParameter("mbrId", mbrId)
                 .list();
     }
