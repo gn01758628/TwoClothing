@@ -121,7 +121,7 @@
     $(document).ready(function () {
         // 使用 AJAX 請求加載其他內容
         $.ajax({
-            url: "${pageContext.request.contextPath}/sideMembers.jsp",
+            url: "${pageContext.request.contextPath}/front_end/members/sideMembers.jsp",
             method: "GET",
             success: function (data) {
                 $("#con_lf").html(data);
@@ -132,40 +132,7 @@
         });
     });
     
-//     $(document).ready(function () {
-//         // 檢查本地存儲中是否有 headerHTML，如果有，則使用它，否則請求載入
-//         var storedHeader = localStorage.getItem('headerHTML');
-//         if (storedHeader) {
-//             $("#headerContainer").html(storedHeader);
-//         } else {
-//             loadAndStoreHTML('headerHTML', '#headerContainer');
-//         }
 
-//         // 檢查本地存儲中是否有 footerHTML，如果有，則使用它，否則請求載入
-//         var storedFooter = localStorage.getItem('footerHTML');
-//         if (storedFooter) {
-//             $("#footerContainer").html(storedFooter);
-//         } else {
-//             loadAndStoreHTML('footerHTML', '#footerContainer');
-//         }
-
-//         // 函數：載入 HTML 並存儲到本地存儲
-//         function loadAndStoreHTML(filename, container) {
-//             $.ajax({
-//                 url: "${pageContext.request.contextPath}/" + filename + ".html",
-//                 method: "GET",
-//                 success: function (data) {
-//                     $(container).html(data);
-
-//                     // 存儲 HTML 到本地存儲
-//                     localStorage.setItem(filename, data);
-//                 },
-//                 error: function (xhr, status, error) {
-//                     console.error("Error loading " + filename + ":", error);
-//                 }
-//             });
-//         }
-//     });
 
 </script>
 </body>

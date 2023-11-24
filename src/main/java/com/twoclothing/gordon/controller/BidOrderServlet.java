@@ -437,10 +437,21 @@ public class BidOrderServlet extends HttpServlet {
 		/*********************** 查買家競標待付款 *************************/
 		/*********************** 查買家競標待付款 *************************/
 		/*********************** 查買家競標待付款 *************************/
+		
 		if ("buyBidOrder0".equals(action)) {
 			/*************************** 1.接收請求參數 ***************************************/
-
-			Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
+			HttpSession session = req.getSession();
+			Object userObject = session.getAttribute("user");
+			 Members members = null;
+			if (userObject instanceof Members) {
+			     members = (Members) userObject;
+			    System.out.println("aaaaaaaaaaaaaa");
+			    
+			} else {
+			    System.out.println("Session 中的 'user' 對象不是 Members 類型。");
+			}
+			Integer buyMbrId =members.getMbrId();
+//			Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
 			Integer OrderStatus = 0;
 			/*************************** 2.開始查詢資料 ****************************************/
 			List<BidOrder> bidOrder = bidOrderServiceImpl.getAllOrderStatusAndBuyer(OrderStatus, buyMbrId);
@@ -1028,8 +1039,18 @@ System.out.println("aaaa");
 
 		if ("sellBidOrder0".equals(action)) {
 			/*************************** 1.接收請求參數 ***************************************/
-			
-			Integer sellMbrId = Integer.valueOf(req.getParameter("sellMbrId"));
+			HttpSession session = req.getSession();
+			Object userObject = session.getAttribute("user");
+			 Members members = null;
+			if (userObject instanceof Members) {
+			     members = (Members) userObject;
+			    System.out.println("aaaaaaaaaaaaaa");
+			    
+			} else {
+			    System.out.println("Session 中的 'user' 對象不是 Members 類型。");
+			}
+			Integer sellMbrId =members.getMbrId();
+//			Integer sellMbrId = Integer.valueOf(req.getParameter("sellMbrId"));
 			Integer OrderStatus = 0;
 			/*************************** 2.開始查詢資料 ****************************************/
 			

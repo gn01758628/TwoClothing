@@ -322,9 +322,8 @@ public class MembersServlet extends HttpServlet {
             members.setLastLogin(loginDate);
             membersServiceImpl.updateMembers(members);
 
-            sendResponse(res, response, errorMsgs, true);
- //TODO           
-//        	// 在登入成功後處理記住我功能
+            //TODO           
+        	// 在登入成功後處理記住我功能
 //            if (rememberMeCheckboxIsChecked) {
 //                // 設定長期有效的 cookie，例如過期時間設為一個月
 //                Cookie rememberMeCookie = new Cookie("rememberMe", "true");
@@ -334,6 +333,7 @@ public class MembersServlet extends HttpServlet {
 //            
 //            response.put("rememberMe", rememberMeCheckboxIsChecked);
 //TODO 
+            sendResponse(res, response, errorMsgs, true);
 
         }
 
