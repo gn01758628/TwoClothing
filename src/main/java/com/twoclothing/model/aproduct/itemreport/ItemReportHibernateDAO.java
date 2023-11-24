@@ -74,8 +74,8 @@ public class ItemReportHibernateDAO implements ItemReportDAO {
 		List<Predicate> predicates = new ArrayList<>();
 
 		for (Map.Entry<String, String> row : map.entrySet()) {
-			if ("itemId".equals(row.getKey())) {
-				predicates.add(builder.equal(root.get("itemId"), new BigDecimal(row.getValue())));
+			if ("reportId".equals(row.getKey())) {
+				predicates.add(builder.equal(root.get("reportId"), new BigDecimal(row.getValue())));
 			}
 			if ("mbrId".equals(row.getKey())) {
 				predicates.add(builder.equal(root.get("mbrId"), new BigDecimal(row.getValue())));
@@ -107,8 +107,8 @@ public class ItemReportHibernateDAO implements ItemReportDAO {
 		List<Predicate> predicates = new ArrayList<>();
 
 		for (Map.Entry<String, String> row : map.entrySet()) {
-			if ("itemId".equals(row.getKey())) {
-				predicates.add(builder.equal(root.get("itemId"), new BigDecimal(row.getValue())));
+			if ("reportId".equals(row.getKey())) {
+				predicates.add(builder.equal(root.get("reportId"), new BigDecimal(row.getValue())));
 			}
 			if ("mbrId".equals(row.getKey())) {
 				predicates.add(builder.equal(root.get("mbrId"), new BigDecimal(row.getValue())));

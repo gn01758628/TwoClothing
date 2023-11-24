@@ -33,7 +33,7 @@
         main.main{
 /*             border: 1px solid black; */
             width: 100%;
-            height: 100%;
+            height:500px;
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -49,7 +49,7 @@
         table{
             /* border: 2px solid rgb(224, 224, 224); */
             width: 80%;
-            height: 250px;
+            height: 100%;
             border-collapse: collapse;
             background-color: rgb(255, 255, 255);
             margin: 10px;
@@ -64,12 +64,12 @@
             position: relative;
             min-height: calc(100vh - 409px);
         }
-        th,td{
+        table th,td{
             text-align: center;
             padding: 5px;
             width: 100px;
         }
-        tr{
+        table tr{
             height: 50px;
             /* box-shadow: 5px 2px 5px rgb(208, 208, 208); */
             background-color: rgb(255, 255, 255);
@@ -89,14 +89,14 @@
 		    align-items: center;
 		    padding: 0px;
         }
-        div a{
-            padding: 5px;
-            color: white;
-            text-decoration: none;
-            color:darkblue;
-            font-weight: bolder;
-            margin: 2px 5px;
-        }
+/*         div a{ */
+/*             padding: 5px; */
+/*             color: white; */
+/*             text-decoration: none; */
+/*             color:darkblue; */
+/*             font-weight: bolder; */
+/*             margin: 2px 5px; */
+/*         } */
       /*   div.page_area{ 
 			border: 1px solid red; 
             display: flex; 
