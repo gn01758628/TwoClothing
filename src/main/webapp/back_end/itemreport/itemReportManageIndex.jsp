@@ -59,7 +59,7 @@
 	
 	.container {
 		margin-right: 0;
-		margin-left: 10px;
+		margin-left: 15px;
 	}
 	
 	.table thead th, .table tbody td {
@@ -157,17 +157,36 @@
 	    color: rgb(168, 7, 7);
 	}
 	
+	.btn.page.active {
+    	color: rgb(168, 7, 7);
+    	text-decoration: underline;
+	}
+	
 	.update, .close {
 		height: 30px;
 		width: 50px;
 		font-size: 14px;
 		margin-left: 10px;
 	}
+	
+	::-webkit-scrollbar {
+    	width: 0;
+	}
+	
+	.modal-dialog {
+        width: 100%;
+    }
+        
+    .modal-body {
+  		display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 	</style>
 </head>
 <body>
 	<div class="compositequery">
-		<form method="post" action="${pageContext.request.contextPath}/back/itemreport">
+		<form method="post" action="${pageContext.request.contextPath}/back/itemreport" onsubmit="removeWhitespace()">
 			<input type="text" name="reportId" id="reportIdInput" placeholder="檢舉編號" value="${convertedMap.reportId}">
 			
 			<input type="text" name="mbrId" id="mbrIdInput" placeholder="會員編號" value="${convertedMap.mbrId}">
@@ -284,7 +303,7 @@
 				    <c:forEach var="i" begin="1" end="${itemReportPageQty}">
 				        <c:choose>
 				            <c:when test="${currentPage eq i}">
-				                <a class="btn page" href="#">${i}</a>
+				                <a class="btn page active" href="#">${i}</a>
 				            </c:when>
 				            <c:otherwise>
 				                <a class="btn page" href="${pageContext.request.contextPath}/back/itemreport?action=${convertedMap.action}&page=${i}&reportId=${convertedMap.reportId}&mbrId=${convertedMap.mbrId}&empId=${convertedMap.empId}&rStatus=${convertedMap.rStatus}&result=${convertedMap.result}">${i}</a>
@@ -368,6 +387,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
     
     <script>
+	    function removeWhitespace() {
+	        var inputs = document.getElementsByTagName('input');
+	        for (var i = 0; i < inputs.length; i++) {
+	            if (inputs[i].type === 'text') {
+	                inputs[i].value = inputs[i].value.trim();
+	            }
+	        }
+	    }
+    
     	document.getElementById('rStatusSelect').value = "${convertedMap.rStatus}";
     	document.getElementById('resultSelect').value = "${convertedMap.result}";
     	
@@ -377,6 +405,8 @@
             document.getElementById('empIdInput').value = '';
             document.getElementById('rStatusSelect').value = '';
             document.getElementById('resultSelect').value = '';
+            
+            document.querySelector('form').submit();
     	}
     	
     	function showDetail(reportId) {

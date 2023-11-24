@@ -77,7 +77,7 @@
                            class="link-no-style">
                             <button type="button" class="btn btn-success me-2">聯絡賣家</button>
                         </a>
-                        <button type="button" class="btn btn-danger" id="reportBtn">檢舉</button>
+                        <button type="button" class="btn btn-danger" id="reportBtn" onclick="showDetail(${bidItem.bidItemId})">檢舉</button>
                     </div>
                 </div>
 
@@ -302,6 +302,42 @@
     </div>
 </div>
 
+<!-- 檢舉模態框 -->
+<div class="modal fade" id="biditemReportModal" tabindex="-1" aria-labelledby="biditemReportModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+	      	<div class="modal-header">
+	      		<h5 class="modal-title" id="biditemReportModalLabel">商品檢舉</h5>
+	      	</div>
+	      		
+	      	<div class="modal-body">
+			    <div class="card" style="width: 45rem;">
+				    <div class="card-body">
+					    <table>
+							<tr>
+								<td>商品編號</td>
+								<td id="biditemId" class="biditemId"></td>
+							</tr>
+							<tr>
+								<td>
+									<div class="title-description">檢舉原因</div></td>
+								<td>
+									<input type="text" id="inputDescription" class="inputDescription" name="inputDescription" size="72"/>
+								</td>
+							</tr>
+						</table>
+				    </div>
+		        </div>
+		   </div>
+		      	
+		   <div class="modal-footer">
+		      	<button class="btn btn-secondary" id="insert" onclick="insertReport()">送出</button>
+			    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <!--放在最後面-->
 <div class="footerHTML"></div>
 
@@ -342,6 +378,56 @@
     let contextPath = "${pageContext.request.contextPath}";
 
     let bidItemId = ${bidItem.bidItemId};
+    
+    <% Integer mbrId = (Integer) session.getAttribute("mbrId"); %>
+    function showDetail(bidItemId) {
+	    event.preventDefault();
+
+	    <c:if test="${mbrId == null}">
+        	window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
+    	</c:if>
+    	
+	    $('#biditemId').text(biditemId);
+	    let html = `<li class="list-group-item" id="report">An biditemreport</li>`;
+	    $('#biditemReportModal').modal('show');
+	}
+	
+	function insertReport() {
+		if ($('#inputDescription').val() == "") {
+			alert("請填寫原因");
+			return;
+		}
+		
+		var url = "${pageContext.request.contextPath}/front/biditemreport?action=insert&itemId=${item.itemId}&description=" + $('#inputDescription').val();
+					
+		$.ajax({
+			type: "POST",
+			url: url,
+			success: function (data) {
+				$('#biditemReportModal').modal('hide');
+				
+				Swal.fire({
+					backdrop: false,
+			        title: "檢舉成功",
+			        text: "請至我的檢舉查看",
+			        icon: "success",
+			        timer: 2700,
+	        		showConfirmButton: false,
+			        customClass: {
+			        	popup: 'report-custom-popup-class',
+			            title: 'custom-title-class',
+			        },
+			        iconColor: '#b0c4de',
+			        didClose: () => {
+			            location.reload();
+			        }
+			    });
+			},
+			error: function (xhr) {
+				console.log(xhr);
+			}
+		});
+	}
 </script>
 <!--此頁面的JS-->
 <script src="${pageContext.request.contextPath}/js/chengHan/BidItemDetail.js"></script>

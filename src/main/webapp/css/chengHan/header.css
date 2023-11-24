@@ -76,6 +76,10 @@ body::-webkit-scrollbar-thumb {
     transition: width 0.1s;
 }
 
+.fixed-top {
+    width: 100vw;
+}
+
 /*搜尋框*/
 header .searchBox {
     display: flex;
