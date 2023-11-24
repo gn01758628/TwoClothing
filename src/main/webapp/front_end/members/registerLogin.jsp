@@ -166,6 +166,20 @@
             content: '😳';
         }
 
+#togglePassword1 {
+	position: absolute;
+	right: 30px;
+	top: 27%;
+	transform: translateY(-50%);
+	cursor: pointer;
+}
+#togglePassword2 {
+	position: absolute;
+	right: 30px;
+	top: 37%;
+	transform: translateY(-50%);
+	cursor: pointer;
+}
     </style>
 
 </head>
@@ -184,9 +198,8 @@
                 <input type="text" id="email2" name="email2" placeholder="email"
                        required><span id="loginEemailError" style="color: red;"></span>
                 <div class="tab"></div>
-                <input type="text" id="pswdHash2" name="pswdHash2" placeholder="密碼"
-                       required><span id="loginPpswdHashError"
-                                      style="color: red;"></span>
+                <input type="password" id="pswdHash2" name="pswdHash2" placeholder="密碼" required><span id="loginPpswdHashError" style="color: red;"></span>
+                <span id="togglePassword1" onclick="togglePasswordVisibility()">🔒</span>
                 <div class="tab"></div>
                 <label for="rememberMe">記住我</label>
                 <input type="checkbox" id="rememberMe">
@@ -223,11 +236,14 @@
                 <input type="password" id="pswdHash" name="pswdHash"
                        placeholder="密碼" required> <span id="registerPpswdHashError"
                                                           style="color: red;"></span>
-
+			    <span id="togglePassword1" onclick="togglePasswordVisibility()">🔒</span>
+			
                 <!-- 确认密码输入字段 -->
                 <input type="password" id="comfirm_password"
                        name="comfirm_password" placeholder="確認密碼" required> <span
                     id="comfirm_passwordError" style="color: red;"></span>
+                <span id="togglePassword2" onclick="togglecomfirm_passwordInputVisibility()">🔒</span> 
+                    
                 <!-- 	圖片驗證	===================				 -->
                 <input id="VerificationCode" type="text" name="VerificationCode" size=10 placeholder=驗證碼>
                 <span id="VerificationCodeError" style="color: red;"></span>
@@ -246,6 +262,8 @@
     <!-- container2 end -->
 </div>
 <!-- signup_page end -->
+<!--忘記密碼==================================================================-->
+<!--忘記密碼==================================================================-->
 <!--忘記密碼==================================================================-->
 <div id="forgotPasswordModal" class="modal" style="display: none;">
     <div class="modal-content">
@@ -512,7 +530,33 @@
         forgotPasswordModal.style.display = "none";
     }
 
+	function togglePasswordVisibility() {
+		var password2Input = document.getElementById('pswdHash2');
+		var password1Input = document.getElementById('pswdHash');
+		var toggleIcon1 = document.getElementById('togglePassword1');
 
+		if (password2Input.type === 'password'|| password1Input.type === 'password') {
+			password2Input.type = 'text';
+			password1Input.type = 'text';
+			toggleIcon1.textContent = '👁️';
+		} else {
+			password2Input.type = 'password';
+			password1Input.type = 'password';
+			toggleIcon1.textContent = '🔒';
+		}
+	}
+	function togglecomfirm_passwordInputVisibility() {
+		var comfirm_passwordInput = document.getElementById('comfirm_password');
+		var toggleIcon2 = document.getElementById('togglePassword2');
+
+		if (comfirm_passwordInput.type === 'password') {
+			comfirm_passwordInput.type = 'text';
+			toggleIcon2.textContent = '👁️';
+		} else {
+			comfirm_passwordInput.type = 'password';
+			toggleIcon2.textContent = '🔒';
+		}
+	}
 </script>
 
 </body>

@@ -68,26 +68,15 @@
     <div class="row mt-5">
         <div class="col-md-6">
             <img src="${pageContext.request.contextPath}/ReadItemIMG/biditem?id=${BidItem.bidItemId}&position=1"
-                 alt="商品主图" class="img-fluid">
+                 alt="商品主圖" class="img-fluid">
         </div>
+        
         <div class="col-md-6">
             <ul class="list-group">
                 <li class="list-group-item">競標商品訂單編號：<span id="bidItemId">${BidOrder.bidOrderId}</span></li>
                 <li class="list-group-item">競標商品編號：<span id="bidItemId">${BidOrder.bidItemId}</span></li>
                 <li class="list-group-item">競標商品名稱：${BidItem.bidName}</li>
                 <li class="list-group-item">賣家會員編號：${BidOrder.sellMbrId}</li>
-                <c:if test="${not empty BidOrder.buyStar}">
-				    <li class="list-group-item">買家評價星數：<span id="reservePrice">${BidOrder.buyStar}</span></li>
-				</c:if>
-                <c:if test="${not empty BidOrder.buyerRatingDesc}">
-				    <li class="list-group-item">買家評價內容：<span id="reservePrice">${BidOrder.buyerRatingDesc}</span></li>
-				</c:if>
-                <c:if test="${not empty BidOrder.sellStar}">
-				    <li class="list-group-item">買家評價星數：<span id="reservePrice">${BidOrder.sellStar}</span></li>
-				</c:if>
-                <c:if test="${not empty BidOrder.sellerRatingDesc}">
-				    <li class="list-group-item">買家評價內容：<span id="reservePrice">${BidOrder.sellerRatingDesc}</span></li>
-				</c:if>
                 <li class="list-group-item">訂單日期：${BidOrder.orderDate}</li>
                 <c:if test="${not empty BidOrder.payType}">
 				    <li class="list-group-item">付款方式：
@@ -121,13 +110,38 @@
 				    <li class="list-group-item">收件手機：<span id="reservePrice">${BidOrder.receivePhone}</span></li>
 				</c:if>
                 <c:if test="${not empty BidOrder.remarks}">
-				    <li class="list-group-item">備註：$<span id="reservePrice">${BidOrder.remarks}</span></li>
+				    <li class="list-group-item">備註：<span id="reservePrice">${BidOrder.remarks}</span></li>
 				</c:if>
+                <c:if test="${not empty BidOrder.buyStar}">
+				    <li class="list-group-item">買家評價星數：<span id="reservePrice">${BidOrder.buyStar}</span></li>
+				</c:if>
+                <c:if test="${not empty BidOrder.buyerRatingDesc}">
+				    <li class="list-group-item">買家評價內容：<span id="reservePrice">${BidOrder.buyerRatingDesc}</span></li>
+				</c:if>
+                <c:if test="${not empty BidOrder.sellStar}">
+				    <li class="list-group-item">買家評價星數：<span id="reservePrice">${BidOrder.sellStar}</span></li>
+				</c:if>
+                <c:if test="${not empty BidOrder.sellerRatingDesc}">
+				    <li class="list-group-item">買家評價內容：<span id="reservePrice">${BidOrder.sellerRatingDesc}</span></li>
+				</c:if>
+				<li class="list-group-item">
+				    買家評價圖片:
+				    <span id="imageContainer">
+				        <img
+				            id="bidOrderImage"
+				            src="<%=request.getContextPath() %>/DBGifReader5?bidOrderId=${BidOrder.bidOrderId}&imgType=image"
+				            alt="訂單評價"
+				            class="img-fluid"
+				            onerror="handleImageError()"
+				        >
+				    </span>
+				</li>
             </ul>
         </div>
     </div>
 </div>
-<br>
+
+
 <!--放在最後面-->
 <div class="footerHTML"></div>
 
@@ -147,6 +161,22 @@
     });
 
     $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+    
+    
+    
+    
+    function handleImageError() {
+        var bidOrderImage = document.getElementById("bidOrderImage");
+        var imageContainer = document.getElementById("imageContainer");
+
+        // 隱藏圖片元素
+        bidOrderImage.style.display = "none";
+
+        // 顯示替代文字
+        var noImageText = document.createElement("span");
+        noImageText.textContent = "無圖片";
+        imageContainer.appendChild(noImageText);
+    }
 </script>
 
 </body>

@@ -182,6 +182,20 @@
                 preview.innerHTML = '';
             }
         }
+        //插入左側連結
+        $(document).ready(function () {
+            // 使用 AJAX 請求加載其他內容
+            $.ajax({
+                url: "${pageContext.request.contextPath}/front_end/bidorder/sideBuyBidorder.jsp",
+                method: "GET",
+                success: function (data) {
+                    $("#con_lf").html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error loading content:", error);
+                }
+            });
+        });
     </script>
 </body>
 </html>

@@ -31,7 +31,7 @@ input{ vertical-align:middle;}
 #head .menu ul li.menu_selected{ background-color:#1672a3;}
 #head .menu ul li a:hover{ text-decoration:underline;}
 #hy_con{ width:1000px; margin:0px auto;}
-#hy_con #con_lf{ width:156px; float:left; height:375px; margin-top:-13px; background:url(../images/lf_bj.png) 0px 0px no-repeat; padding:5px 15px 0px 15px;}
+#hy_con #con_lf{ width:166px; float:left; height:375px; margin-top:-13px; background:url(../images/lf_bj.png) 0px 0px no-repeat; padding:5px 15px 0px 15px;}
 #hy_con #con_lf h2{ font-size:14px; color:#084c74; line-height:30px; border-bottom:1px solid #90c31f; font-weight:normal; padding-left:5px; height:30px;}
 #hy_con #con_lf ul{ padding-top:10px;}
 #hy_con #con_lf ul li{ line-height:30px; font-size:13px;}
