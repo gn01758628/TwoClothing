@@ -10,9 +10,24 @@
 	<link rel="stylesheet" href="">
 	<title>新增一般商品</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-<!--     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script> -->
-    
-<%--     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/addBid.css"> --%>
+
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
 
 		<style>
 		*{
@@ -23,22 +38,29 @@
 		    flex-direction: column;
 		    justify-content: center;
 		    align-items: center;
-		    height:90%;
+		    height:100%;
+		    background-color: #f9edf2;
+		    
 		}
 		form.form_add{
-			width: 72%;
-			position: relative;	
-		}
-		div.main_container{
+			width: 82%;
 			display: flex;
-			flex-direction:row;
-
+		    flex-direction: column;
+		    justify-content: center;
+		    align-items: center;
+		    height: 600px;
+		    margin:30px;
 		}
 		
 		form.form_add div.main_container  {
 		    margin: 0 auto;
-		    width: 1000px;
+		    width: 100%;
 		    padding: 20px;
+		    display: flex;
+			flex-direction:row;
+			justify-content: space-evenly;
+    		align-items: stretch;
+    		height: 100%;
 		}
 /* 		類別標籤的input */
 		div.mb-3 {		      
@@ -53,59 +75,63 @@
 
 		form.form_add div.main_container div.main_right{
 			display:flex;
-		    flex-direction:row;
-			justify-content: center;
-		    align-items: center;
-		}
-
-		form.form_add div.main_container div.main_right div.rightimg{
-			height: 100%;
-			display:flex;
 		    flex-direction:column;
 			justify-content: center;
 		    align-items: center;
-			padding: 0px 14px
+/* 		    border: 1px solid; */
+		    width: 50%;
+
+		}
+
+		form.form_add div.main_container div.main_right div.rightimg{
+			height: 30%;
+			display:flex;
+		    flex-direction:row;
+			justify-content: space-around;
+		    align-items: flex-start;
+/* 			border: 1px solid green; */
+		    width: 100%;
+
 
 		}
 
 		form.form_add div.main_container div.main_right div.rightimg > div{
-			height: 100%;
+			height: 100%;;
+			width: 50%;
 			display:flex;
 		    flex-direction:column;
-			justify-content: center;
+			justify-content: flex-start;
 		    align-items: center;
+/* 		    border: 1px solid yellow; */
 		}
 
 
 		form.form_add div.main_container div.main_right div.right_rightimg{
 			display:flex;
-		    flex-direction:column;
-			justify-content: center;
+		    flex-direction:row;
+			justify-content: space-around;
 		    align-items: center;
-			height: 440px;
-			width: 200px;
+			height: 70%;
+		    width: 100%;
+/* 		    border: 1px solid red; */
 			
 		}
 
 		form.form_add div.main_container div.main_right div.right_rightimg div{
-/* 			border: 1px solid black; */
-		    /* height: 100%; */
-		    width: 162px;
-		    margin: 10px 0px;
-		    max-height: 195px;
+		    width:50%; 
 		    text-align: center;
+		    height: 100%;
 		}
-		
-/* 		form.form_add div.main_container div.main_right div.right_rightimg div img{ */
-/* 			height: 100%; */
-/* 			width: 100%; */
-/* 		} */
 
 		form.form_add div.main_container div.main_left{
 			display:flex;
 		    flex-direction:column;
-			justify-content: space-between;
-		    align-items: center
+			justify-content: space-evenly;
+		    align-items: center;
+		    border: 1px solid #561729;
+		    padding: 10px;
+		    border-radius: 20px;
+		    background-color: white;
 
 		}
 		form.form_add div.main_container div.main_left div.inner_sel{
@@ -133,8 +159,7 @@
 		select.sel_grade, select.sel_size, input.input_price, input.input_num{
 			width: 210px;
 		    padding: 10px;
-		    margin: 10px 5px;
-			
+		    margin: 10px 5px;			
 		    border: 1px solid #ccc;
 		    border-radius: 5px;
 			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -152,24 +177,24 @@
 		
 		/* 調整提交按鈕的樣式 */
 		input.input_submit {
-		    background-color: #2860f9c8;
-		    color: #fff;
+		    background-color: #561729;
+		    color: white;
 		    padding: 10px 20px;
-		    border: none;
-		    border-radius: 5px;
+		    border-radius: 10px;
 		    cursor: pointer;
 		    font-weight: bold;
-			position: absolute;
-    		right: 30px;
+    		margin: 20px;
+		}
+		input.input_submit:hover{
+			background-color: #f9edf2;
+			border:1px solid #561729;
+			color:#561729;
 		}
 		
 		/* 標題樣式 */
-		h1 {
+		div.main h1 {
 		    font-size: 24px;
-			text-align: left;
-    		width: 1000px;
-    		padding: 75px;
-    		padding-bottom: 0px;
+		    margin:20px;
 		}
 		
 		.form-control {
@@ -179,22 +204,31 @@
 		    border: 1px solid #ccc;
 		    border-radius: 5px;
 			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			background-color: white !important;
 		}
 		
 		.form-control[type=file] {
 			width:200px;
 		}
 		
-		img{
-			width:175px;
-			max-width:100%;
-			max-height:100%;
+		div.right_rightimg img{
+ 			max-width:100%; 
+			max-height:100%; 
 		}
 		
 		input.form-control{
 			width:430px;
 		}
 		
+		div#errarea{
+			padding: 10px;
+    		border: 1px solid #561729;
+    		border-radius: 20px;
+		}
+		div#errarea ul li{
+			list-style-type: none;
+		
+		}
 /*		.modal-content {
     background-color: rgb(249, 237, 242);
     color: #00302e;
@@ -224,24 +258,32 @@
 		
 		
 	</style>
+	<!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
+	
 </head>
 <body>
+<div class="headerHTML"></div>
 
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red">請修正以下錯誤:</font>
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
 
 
 <%-- <form class="form_add" method="post" action="${pageContext.request.contextPath}/Item/add" enctype="multipart/form-data"> --%>
 <div class="main">
 	<h1>一般商品資訊</h1>
-	<form class="form_add" method="post" action="${pageContext.request.contextPath}/Item/add" enctype="multipart/form-data">
+	<form class="form_add" method="post" action="${pageContext.request.contextPath}/Item/add.check" enctype="multipart/form-data">
 		<div class="main_container">
+<c:if test="${not empty errorMsgs}">
+<div id="errarea">
+	<font style="color:#561729">請修正以下錯誤:</font>
+	<ul>
+		<c:forEach var="message" items="${errorMsgs}">
+			<li style="color:#561729">${message}</li>
+		</c:forEach>
+	</ul>
+</div>
+</c:if>
 			<div class="main_left">
 <%-- value="${empty empVO ? 'MANAGER' : empVO.job}" --%>
 
@@ -271,25 +313,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
-<!-- 				<select class="sel_tagid" name="tagId">  -->
-<!-- 					<option value="1" disabled selected>所有種類</option > -->
-<!-- 						<optgroup value="2" label="上衣"> -->
-<!-- 							<optgroup value="5" label="&nbsp;&nbsp;&nbsp;&nbsp;短袖"> -->
-<!-- 								<option value="9">&nbsp;&nbsp;&nbsp;男短袖</option> -->
-<!-- 								<option value="10">&nbsp;&nbsp;&nbsp;女短袖</option> -->
-<!-- 							</optgroup> -->
-<!-- 						<option value="6">&nbsp;&nbsp;&nbsp;&nbsp;長袖</option> -->
-<!-- 						</optgroup> -->
-						
-<!-- 						<optgroup value="3" label="褲子"> -->
-<!-- 							<option value="7">短褲</option> -->
-<!-- 							<option value="8">長褲</option> -->
-<!-- 						</optgroup > -->
-<!-- 						<option value="4">飾品</option> -->
-<!-- 				</select> -->
 
 				<div class="inner_sel">
 					<select class="sel_grade" name="grade">
@@ -350,20 +373,30 @@
 	<input class="input_submit" type="submit" value="送出新增">
 	</form>	
 </div>
-<%--     <a href="${pageContext.request.contextPath}/front_end/item/itemSellerSearch.jsp">查詢</a> --%>
-
+<div class="footerHTML"></div>
 <!--bootstrap5 js-->
 <script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
 <!--jQuery-->
 <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
-<!--輸入錯誤訊息的資料(必須在引用標籤js檔之前宣告)-->
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
 <script>
-//     const messages = [];
-//     <c:forEach var="errorMsgs" items="${errorMsgs}">
-//     messages.push("${errorMsgs}");
-//     </c:forEach>
+    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+    });
+
+    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
 </script>
+
+<!-- <!--bootstrap5 js-->
+<%-- <script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script> --%>
+<%-- <script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script> --%>
+<!-- <!--jQuery-->
+<%-- <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script> --%>
+
 <!--此頁面的js-->
 <%-- <script src="${pageContext.request.contextPath}/js/chengHan/addBid.js" type="text/javascript"></script> --%>
 <script>

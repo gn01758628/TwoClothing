@@ -49,4 +49,6 @@ public interface ItemDAO {
 
     int countActiveByItemName(String itemName);
 
+	Integer getPriceById(Integer itemId);
+
 }

@@ -26,13 +26,55 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <!-- css -->
 	<style>
+		h5 {
+			margin: 30px auto 0 65px;
+		}
+	
 		.main {
-			padding-bottom: 20px;
+			padding: 0 0 20px 0;
+		}
+		
+		div.search_status {
+			margin: 20px auto 0 65px;
+			font-size: 0;
+		}
+
+	    div.search_status > div { 
+            border: 1px solid gray;
+            font-size: 17px;
+            width: 120px;
+            height: 50px;
+            display: inline-block;
+            line-height: 50px;
+            text-align: center;
+	    }
+
+        div.search_status > div:hover {
+            background-color: #f9edf2;
+            cursor: pointer;
+            box-shadow: inset -2px -2px 8px rgba(0, 0, 0, 0.2)
+        }
+
+        .clickCondition {
+            box-shadow: inset -2px -2px 8px rgba(0, 0, 0, 0.2);
+            background-color: #f9edf2;
+        }
+         
+		div.search_status > div:nth-child(1) { 
+			border-radius: 10px 0 0 10px; 
+		}
+		
+		div.search_status > div:nth-child(3) { 
+			border-radius: 0 10px 10px 0; 
 		}
 		
 		.table thead th, .table tbody td {
 			white-space: nowrap;
 			padding: 15px 10px;
+		}
+		
+		.table thead th {
+			padding-top: 8px;
 		}
 		
 		a {
@@ -48,24 +90,36 @@
 			margin: 0;
 		}
 		
-		.table thead th:nth-child(1), .table tbody td:nth-child(1),
-		.table thead th:nth-child(5), .table tbody td:nth-child(5),
-		.table thead th:nth-child(7), .table tbody td:nth-child(7) {
+		.statusloop {
+			display: none;
+		}
+		
+		.table thead th:nth-child(1), .table tbody td:nth-child(2) {
+			min-width: 55px;
+	        max-width: 55px;
+		}
+		
+		.table thead th:nth-child(5), .table tbody td:nth-child(6),
+		.table thead th:nth-child(7), .table tbody td:nth-child(8) {
 			min-width: 80px;
 	        max-width: 80px;
 	    }
 	    
-	    .table thead th:nth-child(2), .table tbody td:nth-child(2) {
+	    .table thead th:nth-child(2), .table tbody td:nth-child(3) {
 	    	min-width: 100px;
 	        max-width: 100px;
 	    }
 	
-	    .table thead th:nth-child(3), .table tbody td:nth-child(3),
-	    .table thead th:nth-child(4), .table tbody td:nth-child(4),
-	    .table thead th:nth-child(6), .table tbody td:nth-child(6),
-	    .table thead th:nth-child(8), .table tbody td:nth-child(8) {
+	    .table thead th:nth-child(3), .table tbody td:nth-child(4),
+	    .table thead th:nth-child(4), .table tbody td:nth-child(5),
+	    .table thead th:nth-child(6), .table tbody td:nth-child(7) {
 	   		min-width: 190px;
 	        max-width: 190px;
+	    }
+	    
+	    .table thead th:nth-child(8), .table tbody td:nth-child(9) {
+	   		min-width: 205px;
+	        max-width: 205px;
 	    }
 	
 		.btn {
@@ -106,8 +160,22 @@
 </head>
 <body>
 	<div class="headerHTML"></div>
+	
+	<h5>我的檢舉</h5>
+	
+    <div class="search_status">
+        <div class="search clickCondition">
+        	<span>全部</span>
+        </div>
+        <div class="search">
+        	<span>待審核</span>
+        </div>
+        <div class="search">
+        	<span>已審核</span>
+        </div>
+    </div>
 
-	<div class="container mt-3 mb-4 main">
+	<div class="container mt-3 main">
 		<c:if test="${not empty errorMsgs}">
 			<font style="color: red">請重新確認</font>
 			<ul>
@@ -126,7 +194,7 @@
 		<table class="table table-hover">
 			<thead class="thead-primary">
 				<tr>
-					<th>檢舉編號</th>
+					<th>編號</th>
 					<th>商品</th>
 					<th>檢舉日期</th>
 					<th>檢舉原因</th>
@@ -137,8 +205,9 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="itemReport" items="${itemReportList}">
+				<c:forEach var="itemReport" items="${itemReportList}" varStatus="loop">
 					<tr>
+						<td class="statusloop">${loop.index+1}</td>
 						<td>${itemReport.reportId}</td>
 						<td>
 							<p>
@@ -165,14 +234,14 @@
 								</c:choose>
 							</p>
 						</td>
-						<td>${rStatusMap[itemReport.rStatus]}</td>
+						<td class="status">${rStatusMap[itemReport.rStatus]}</td>
 						<td>${itemReport.auditDate}</td>
 						<td>${resultMap[itemReport.result]}</td>
 						<td>
 							<p>
 								<c:choose>
-									<c:when test="${fn:length(itemReport.note) > 10}">
-										${fn:substring(itemReport.note, 0, 10)}...
+									<c:when test="${fn:length(itemReport.note) > 11}">
+										${fn:substring(itemReport.note, 0, 11)}...
 									</c:when>
 									<c:otherwise>
 										${itemReport.note}
@@ -185,24 +254,24 @@
 			</tbody>
 		</table>
 		
-		<div class="page-container">
-			<c:if test="${not empty itemReportList}">
-			    <a class="btn page" href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId&page=1">&lt;&lt;</a>
+<!-- 		<div class="page-container"> -->
+<%-- 			<c:if test="${not empty itemReportList}"> --%>
+<%-- 			    <a class="btn page" href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId&page=1">&lt;&lt;</a> --%>
 	
-			    <c:forEach var="i" begin="1" end="${itemReportPageQty}">
-			        <c:choose>
-			            <c:when test="${currentPage eq i}">
-			                <a class="btn page" href="#">${i}</a>
-			            </c:when>
-			            <c:otherwise>
-			                <a class="btn page" href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId&page=${i}">${i}</a>
-			            </c:otherwise>
-			        </c:choose>
-			    </c:forEach>
+<%-- 			    <c:forEach var="i" begin="1" end="${itemReportPageQty}"> --%>
+<%-- 			        <c:choose> --%>
+<%-- 			            <c:when test="${currentPage eq i}"> --%>
+<%-- 			                <a class="btn page" href="#">${i}</a> --%>
+<%-- 			            </c:when> --%>
+<%-- 			            <c:otherwise> --%>
+<%-- 			                <a class="btn page" href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId&page=${i}">${i}</a> --%>
+<%-- 			            </c:otherwise> --%>
+<%-- 			        </c:choose> --%>
+<%-- 			    </c:forEach> --%>
 			    
-			    <a class="btn page" href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId&page=${itemReportPageQty}">&gt;&gt;</a>
-			</c:if>
-		</div>
+<%-- 			    <a class="btn page" href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId&page=${itemReportPageQty}">&gt;&gt;</a> --%>
+<%-- 			</c:if> --%>
+<!-- 		</div> -->
 	</div>
 	
 	<div class="footerHTML"></div>
@@ -223,6 +292,27 @@
 	    });
 	
 	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	</script>
+	
+	<script>
+		$(".search").click(function(){
+	        $(".search").removeClass("clickCondition");
+	        $(this).addClass("clickCondition");
+	        var clickCount = 0;
+	        
+	        var searchCondition = $(this).find("span").text();
+
+	        $(".status").each(function() {
+	           var statusObject = $(this).text();
+	           if (searchCondition === "全部" || statusObject === searchCondition || (searchCondition === "待審核" && statusObject === "待審核") || (searchCondition === "已審核" && statusObject === "已審核")) {
+	        	   clickCount++;
+	        	   $(this).closest("tr").show();
+	        	   $(this).closest("tr").find("td:first").text(clickCount);
+	           } else {
+	               $(this).closest("tr").hide();
+	           }             
+	       });
+	    });
 	</script>
 </body>
 </html>

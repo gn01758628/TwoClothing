@@ -63,7 +63,7 @@
         th,td{
             text-align: center;
             padding: 5px;
-            width: 100px;
+            width: 10%;
         }
         tr{
             height: 50px;
@@ -73,6 +73,7 @@
             display: flex;
 		    justify-content: center;
 		    align-items: center;
+		    width: 100%;
         }
         
         tbody tr.tr_data:hover{

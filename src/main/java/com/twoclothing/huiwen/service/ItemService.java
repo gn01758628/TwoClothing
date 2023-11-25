@@ -67,6 +67,8 @@ public interface ItemService {
     List<Integer> getItemByMbrId(Integer mbrId);
 
 	void addNotice(Notice notice, Integer mbrId);
+
+	Integer getItemPriceByItemId(Integer itemId);
     
     
     

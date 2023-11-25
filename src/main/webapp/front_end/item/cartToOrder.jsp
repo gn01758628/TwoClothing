@@ -347,7 +347,7 @@
 	   			}
 	   			output[0] = Math.floor(output[0]);
 	   		}
-// 	   		console.log(output);
+	   		console.log("output"+output);
 	   			
 	   		//取得付款方式
 		   	$('input[type="radio"]').change(function() {
@@ -403,6 +403,7 @@
 	   				count : $(".count input").val(),
 	   				eachCount : output,
 	   				mbrPoint : "${mbrPoint}",
+	   				cpnId : "${cpnId}",
 	   				totalPay : ($(".add_price input").val()) - ($(".count input").val())
 	   		};
 // 	   		console.log(cartData);

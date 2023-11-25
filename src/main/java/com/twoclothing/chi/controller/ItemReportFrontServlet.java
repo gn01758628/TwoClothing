@@ -48,8 +48,11 @@ public class ItemReportFrontServlet extends HttpServlet {
 		String url = "";
 
 		switch (action) {
-		case "getAllByMbrId":
+		case "getAllByMbrIdPage":
 			req.setAttribute("mbrId", mbrId);
+			url = getAllByMbrIdPage(req, res);
+			break;
+		case "getAllByMbrId":
 			url = getAllByMbrId(req, res);
 			break;
 		case "insert":
@@ -66,10 +69,10 @@ public class ItemReportFrontServlet extends HttpServlet {
 		successView.forward(req, res);
 	}
 
-	private String getAllByMbrId(HttpServletRequest req, HttpServletResponse res) {
-//		HttpSession session = req.getSession();
-//		Integer mbrId = (Integer) session.getAttribute("mbrId");
-		int mbrId = 1; // 測試用，到時這行可刪
+	private String getAllByMbrIdPage(HttpServletRequest req, HttpServletResponse res) {
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer) session.getAttribute("mbrId");
+//		int mbrId = 1; // 測試用，到時這行可刪
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
@@ -106,6 +109,36 @@ public class ItemReportFrontServlet extends HttpServlet {
 		req.setAttribute("rStatusMap", rStatusMap);
 		req.setAttribute("resultMap", resultMap);
 //		req.setAttribute("note", note);
+
+		return "/front_end/itemreport/itemReportList.jsp";
+	}
+	
+	private String getAllByMbrId(HttpServletRequest req, HttpServletResponse res) {
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer) session.getAttribute("mbrId");
+
+		List<ItemReport> itemReportList = itemReportService.getAllByMbrId(mbrId);
+
+		Map<Integer, String> itemNameMap = new HashMap<>();
+		for (ItemReport itemReport : itemReportList) {
+			Integer itemId = itemReport.getItemId();
+	        Item item = itemService.getItemByItemId(itemId);
+	        String itemName = (item != null) ? item.getItemName() : "未知商品";
+	        itemNameMap.put(itemId, itemName);
+	    }
+		req.setAttribute("itemNameMap", itemNameMap);
+
+		Map<Integer, String> rStatusMap = new HashMap<>();
+		rStatusMap.put(0, "待審核");
+		rStatusMap.put(1, "已審核");
+
+		Map<Integer, String> resultMap = new HashMap<>();
+		resultMap.put(0, "處分");
+		resultMap.put(1, "不處分");
+
+		req.setAttribute("itemReportList", itemReportList);
+		req.setAttribute("rStatusMap", rStatusMap);
+		req.setAttribute("resultMap", resultMap);
 
 		return "/front_end/itemreport/itemReportList.jsp";
 	}

@@ -31,10 +31,13 @@ import com.twoclothing.model.balancehistory.BalanceHistory;
 import com.twoclothing.model.coupon.Coupon;
 import com.twoclothing.model.members.Members;
 import com.twoclothing.model.memberscoupon.MembersCoupon;
+import com.twoclothing.model.memberscoupon.MembersCoupon.MembersCouponCompositeDetail;
 import com.twoclothing.model.pointhistory.PointHistory;
 import com.twoclothing.model.shipsetting.ShipSetting;
 import com.twoclothing.redismodel.notice.Notice;
 import com.twoclothing.utils.JedisPoolUtil;
+import com.twoclothing.utils.generic.DAOSelector;
+import com.twoclothing.utils.generic.GenericDAO;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -50,6 +53,8 @@ public class ItemCartServlet extends HttpServlet {
 	private BalanceHistoryService BHSvc;
 	
 	private MembersService memSvc;
+	
+	private GenericDAO couponDAO;
 
 
 	public void init() throws ServletException {
@@ -58,7 +63,7 @@ public class ItemCartServlet extends HttpServlet {
 		PHSvc = new PointHistoryServiceImpl();
 		memSvc = new MembersServiceImpl();
 		BHSvc = new BalanceHistoryServiceImpl();
-
+		couponDAO = DAOSelector.getDAO(MembersCoupon.class);
 	}
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -81,7 +86,6 @@ public class ItemCartServlet extends HttpServlet {
 			itemList.add(item);
 
 			String quantity = req.getParameter("quantity");
-			System.out.println("quantity" + quantity);
 
 			HttpSession session = req.getSession();
 			String mbrId = String.valueOf(session.getAttribute("mbrId"));
@@ -123,8 +127,7 @@ public class ItemCartServlet extends HttpServlet {
 			    for (String key : keys) {
 			    	keyList.add(Integer.valueOf(key));
 			    }
-			    
-			    System.out.println("keyList"+keyList);
+
 			}catch(Exception e) {
 				e.printStackTrace();
 			}finally {
@@ -307,13 +310,20 @@ public class ItemCartServlet extends HttpServlet {
 			
 			//取得折扣金額
 			Integer cartCount = Integer.valueOf(req.getParameter("cartCount"));
-
+			
+			//取得被選到的優惠券
+			String cpnIdStr = req.getParameter("cpnName");
+			Integer cpnId = 0;
+			if(cpnIdStr!=null) {
+				cpnId = Integer.valueOf(cpnIdStr);
+			}
 			req.setAttribute("itemList", itemList);
 			req.setAttribute("quantities", quantities);
 			req.setAttribute("shipSetting", shipSetting);
 			req.setAttribute("cartCount", cartCount);
 			req.setAttribute("balanceEableUse", balanceEableUse);
 			req.setAttribute("mbrPoint", mbrPoint);
+			req.setAttribute("cpnId", cpnId);
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/cartToOrder.jsp");
 			dispatcher.forward(req, res);
 			return;
@@ -354,8 +364,9 @@ public class ItemCartServlet extends HttpServlet {
             JedisPool jedisPool = JedisPoolUtil.getJedisPool();
             Jedis jedis = jedisPool.getResource();
             jedis.select(13);
-            //該商品扣庫存          
+                     
 			for (Integer Id : itemIdArr) {
+				//該商品扣庫存 
 				String quantityStr = jedis.hget(mbrIdStr, String.valueOf(Id));
 				
 				Item item = itemService.getItemByItemId(Id);
@@ -366,6 +377,32 @@ public class ItemCartServlet extends HttpServlet {
 					item.setItemStatus(1);
 				}
 				Integer success =itemService.updateItem(item);
+				
+				//賣家錢包++
+				Integer mbrIdBalanceAdd = itemService.getMbrIdByItemId(Id);
+				Integer itemPrice = itemService.getItemPriceByItemId(Id);
+            	Members mem = memSvc.getByPrimaryKey(mbrIdBalanceAdd);
+            	Integer newBalance = mem.getBalance()+itemPrice;
+            	mem.setBalance(newBalance);
+            	memSvc.updateMembers(mem);
+            	
+            	//賣家錢包異動紀錄++
+            	BalanceHistory balanceHistory = new BalanceHistory();
+    			
+    			//取訂單編號
+//    			if(!req.getParameter("orderId").trim().isEmpty() ) {
+//    				int orderId =Integer.parseInt(req.getParameter("orderId"));
+//    			}
+    			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+    			
+    			balanceHistory.setMbrId(mbrIdBalanceAdd);
+    			balanceHistory.setOrderId(1);//從訂單取
+    			//異動時間1/訂單完成(+) 2/訂單確認(-)
+    			balanceHistory.setChangeDate(currentTime);			
+    			balanceHistory.setChangeValue(itemPrice);
+    			
+    			int balanceHistoryPK = BHSvc.addBH(balanceHistory);
+
 			}
             //清購物車
 			try {
@@ -378,7 +415,7 @@ public class ItemCartServlet extends HttpServlet {
 				jedis.close();
 			}
  	
-        	//若有使用會員點數即扣點與新增異動
+        	//買家若有使用會員點數即扣點與新增異動
 			String mbrPointStr = req.getParameter("mbrPoint");
 			Integer mbrPoint = 0;
         	if(!(mbrPointStr.trim().equals("0") && mbrPointStr!=null)) {
@@ -408,10 +445,9 @@ public class ItemCartServlet extends HttpServlet {
         		
         	}
 
-        	//若用虛擬錢包，扣錢包與新增異動//如果==2代表選擇虛擬錢包付款
+        	//買家若用虛擬錢包，扣錢包與新增異動//如果==2代表選擇虛擬錢包付款
             Integer payment = Integer.valueOf(req.getParameter("payment"));//付款方式
             Integer totalPay = Integer.valueOf(req.getParameter("totalPay"));//要付總額
-            System.out.println("payMethod"+payment);
             if(payment == 2) {
             	Members mem=memSvc.getByPrimaryKey(mbrId);
             	Integer newBalance = mem.getBalance()-totalPay;
@@ -436,6 +472,24 @@ public class ItemCartServlet extends HttpServlet {
     			
     			int balanceHistoryPK = BHSvc.addBH(balanceHistory);            	
             }
+            
+            //使用後的優惠券改變狀態
+            String cpnIdStr = req.getParameter("cpnId");
+            Integer cpnId = 0;
+            if(cpnIdStr!=null) {
+            	cpnId = Integer.valueOf(cpnIdStr);
+            }
+			MembersCouponCompositeDetail memcoupon = new MembersCouponCompositeDetail();
+			memcoupon.setCouponId(cpnId);
+			memcoupon.setMemberId(mbrId);
+			
+			MembersCoupon membersCoupon = (MembersCoupon)couponDAO.getByPrimaryKey(memcoupon);
+			
+			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+			membersCoupon.setCouponStatus(1);
+			membersCoupon.setUseDate(currentTime);
+			boolean boo = couponDAO.update(membersCoupon);
+            
         	
         	//測試結束=============================================================
         	//以下是取jsp資料，請忽略=================================================
