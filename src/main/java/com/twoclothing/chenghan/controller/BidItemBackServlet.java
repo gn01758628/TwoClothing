@@ -59,7 +59,7 @@ public class BidItemBackServlet extends HttpServlet {
         Members member = bidItemService.getMembersByMbrId(mbrId);
         boolean isDoubleIMG = bidItemService.isDoubleImaged(bidItemId);
         Map<String,String> messages = new HashMap<>();
-        messages.put("bidItem",gson.toJson(bidItem));
+
 
         Timestamp startTime = bidItem.getStartTime();
         String startTimeStr = "0";
@@ -72,6 +72,8 @@ public class BidItemBackServlet extends HttpServlet {
             endTimeStr = String.valueOf(endTime.getTime());
         }
 
+        messages.put("isDoubleIMG",String.valueOf(isDoubleIMG));
+        messages.put("bidItem",gson.toJson(bidItem));
         messages.put("startTime",startTimeStr);
         messages.put("endTime",endTimeStr);
         messages.put("mbrName",member.getMbrName());
