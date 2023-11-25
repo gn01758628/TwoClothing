@@ -19,29 +19,27 @@ body {
 }
 
 #content {
-    
-      width: calc(100% - var(--aside-width));
-      margin-left:var(--aside-width);
-      height: 100%;
-      border: none; /* 可以去掉 iframe 的邊框 */
-      display:block;
+  width: calc(100% - var(--aside-width));
+  margin-left:var(--aside-width);
+  height: 100%;
+  border: none; /* 可以去掉 iframe 的邊框 */
+  display:block;
 }
 
 
-
-/* Sidebar樣式 */
-.sidebar {
+.sidebar 
+{
   position: fixed; /* 相對於最近的定位父元素 */
   width: var(--aside-width); /* 設定寬度 */
   height: 100vh; /* 設定高度為視窗的100% */
   top: 0; /* 與父元素上方對齊 */
-  overflow: hidden; /* 隱藏溢出內容 */
+  overflow-x: visible; /* 允許水平方向的內容超出容器 */
   background-color: #19222a; /* 設定背景顏色 */
   transform: translateZ(0); /* 創建3D效果，解決WebKit渲染問題 */
   visibility: visible; /* 設定可見性 */
   backface-visibility: hidden; /* 在3D空間中隱藏背面 */
 }
-
+		
 .sidebar a {
   text-decoration: none; /* 移除超連結的下劃線 */
   transition: all 0.6s ease; /* 定義所有屬性的過渡效果為0.6秒，使用緩動函數 */
@@ -85,7 +83,7 @@ body {
   font-size:0.8em;
 }
 
-
+		
 /* Sidebar內部導航樣式 */
 .sidebar-nav {
   position: fixed; /* 固定定位 */
@@ -93,10 +91,9 @@ body {
   height: 100%; /* 設定高度為視窗的100% */
   font-weight: 400; /* 設定字體粗細 */
   font-size: 1em; /* 設定字體大小 */
-  overflow: auto; /* 溢出內容時顯示滾動條 */
+ 	  overflow-x: visible; /* 允許水平方向的內容超出容器 */
   padding-bottom: 6em; /* 底部留出6em的空間 */
   z-index: 9; /* 設定堆疊順序 */
-  overflow: hidden; /* 隱藏溢出內容 */
   -webkit-overflow-scrolling: touch; /* 支援觸控裝置的滾動效果 */
 }
 
@@ -148,14 +145,13 @@ body {
 
 /* 滑鼠懸停時顯示的下拉菜單 */
 .sidebar-nav .nav-flyout {
+  display:none;
   position: absolute; /* 絕對定位 */
   background-color: #080D11; /* 設定背景顏色 */
   z-index: 9; /* 設定堆疊順序 */
   left: 2.5em; /* 與父元素左邊2.5em的位置對齊 */
   top: 0; /* 與父元素上方對齊 */
   height: 100vh; /* 設定高度為視窗的100% */
-  transform: translateX(100%); /* 將元素移至右側看不見 */
-  transition: all 0.5s ease; /* 定義所有屬性的過渡效果為0.5秒，使用緩動函數 */
 }
 
 .sidebar-nav .nav-flyout a:hover {
@@ -163,7 +159,6 @@ body {
 }
 
 .sidebar-nav > ul > li:hover .nav-flyout {
-  transform: translateX(0);
-  transition: all 0.5s ease;
+  display:block;
+  transform: translateX(100%);
 }
-

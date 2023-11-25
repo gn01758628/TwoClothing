@@ -12,7 +12,8 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 <title>員工資料新增 - addEmp.jsp</title>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-twzipcode@1.7.14/jquery.twzipcode.min.js"></script>
 <style>
   table#table-1 {
     width: 450px;
@@ -45,12 +46,14 @@
   }
 </style>
 
+
+
 </head>
 <body bgcolor='white'>
 
 <table id="table-1">
 	<tr><td>
-		 <h3>員工資料新增 - addEmp.jsp</h3></td><td>
+		 <h3>員工資料新增</h3></td><td>
 		 <h4><a href="${pageContext.request.contextPath}/back_end/employee/Employee.do?action=get_On_Duty">返回在職員工頁面</a></h4>
 	</td></tr>
 </table>
@@ -89,8 +92,18 @@
 		<td>電話:</td>
 		<td><input type="TEXT" name="phone"   value="${param.phone}"   size="45"/></td> <td>${errorMsgs.phone}</td>
 	</tr>
+	
+	
 	<tr>
 		<td>地址:</td>
+		<td>
+			<div id="twzipcode">
+			</div>
+		</td>
+		
+	</tr>
+	<tr>
+		<td></td>
 		<td><input type="TEXT" name="address"   value="${param.address}"   size="45"/></td> <td>${errorMsgs.address}</td>
 	</tr>
 	<tr>
@@ -132,41 +145,65 @@
 <!-- =========================================以下為 datetimepicker 之相關設定========================================== -->
 
 <% 
-  java.sql.Date hiredate = null;
-  try {
-	    hiredate = java.sql.Date.valueOf(request.getParameter("hiredate").trim());
-   } catch (Exception e) {
-	    hiredate = new java.sql.Date(System.currentTimeMillis());
-   }
+//   java.sql.Date hiredate = null;
+//   try {
+// 	    hiredate = java.sql.Date.valueOf(request.getParameter("hiredate").trim());
+//    } catch (Exception e) {
+// 	    hiredate = new java.sql.Date(System.currentTimeMillis());
+//    }
 %>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
-<script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
+<%-- <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" /> --%>
+<%-- <script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script> --%>
+<%-- <script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script> --%>
 
-<style>
-  .xdsoft_datetimepicker .xdsoft_datepicker {
-           width:  300px;   /* width:  300px; */
-  }
-  .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
-           height: 151px;   /* height:  151px; */
-  }
-</style>
+<!-- <style> -->
+<!--   .xdsoft_datetimepicker .xdsoft_datepicker { -->
+<!--            width:  300px;   /* width:  300px; */ -->
+<!--   } -->
+<!--   .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box { -->
+<!--            height: 151px;   /* height:  151px; */ -->
+<!--   } -->
+<!-- </style> -->
 
 <script>
-		
-		
-        $.datetimepicker.setLocale('zh');
-        $('#f_date1').datetimepicker({
- 	       theme: '',              //theme: 'dark',
-	       timepicker:false,       //timepicker:true,
-	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
-	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
-		   value: '<%=hiredate%>', // value:   new Date(),
-           //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
-           //startDate:	            '2017/07/10',  // 起始日
-           //minDate:               '-1970-01-01', // 去除今日(不含)之前
-           //maxDate:               '+1970-01-01'  // 去除今日(不含)之後
+	$(function(){
+		$("#twzipcode").twzipcode({
         });
+		
+		// 定義一個函數來更新 <input> 元素的值
+		function updateAddressInput() {
+		    // 獲取county、district和zipcode的值
+		    // 抓取 select 元素的值
+			let countyValue = $("select[name='county']").val();
+			let districtValue = $("select[name='district']").val();
+			
+			// 抓取 input 元素的值
+			let zipcodeValue = $("input[name='zipcode']").val();
+
+
+
+		    // 將這些值動態添加到<input>元素中
+		    $("input[name='address']").val(zipcodeValue + countyValue + districtValue);
+		}
+
+		$("select[name='county'], select[name='district'], input[name='zipcode']").change(function() {
+		    updateAddressInput();
+		});
+	});
+		
+		
+//         $.datetimepicker.setLocale('zh');
+//         $('#f_date1').datetimepicker({
+//  	       theme: '',              //theme: 'dark',
+// 	       timepicker:false,       //timepicker:true,
+// 	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
+// 	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
+<%-- 		   value: '<%=hiredate%>', // value:   new Date(), --%>
+//            //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+//            //startDate:	            '2017/07/10',  // 起始日
+//            //minDate:               '-1970-01-01', // 去除今日(不含)之前
+//            //maxDate:               '+1970-01-01'  // 去除今日(不含)之後
+//         });
         
         
    

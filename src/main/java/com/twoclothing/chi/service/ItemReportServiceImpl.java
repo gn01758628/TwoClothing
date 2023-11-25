@@ -31,6 +31,11 @@ public class ItemReportServiceImpl implements ItemReportService {
 	public List<ItemReport> getAllByMbrId(Integer mbrId, int currentPage) {
 		return dao.getAllByMbrId(mbrId, currentPage);
 	}
+	
+	@Override
+	public List<ItemReport> getAllByMbrId(Integer mbrId) {
+		return dao.getAllByMbrId(mbrId);
+	}
 
 	@Override
 	public int getPageTotal(Integer mbrId) {
