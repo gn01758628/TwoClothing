@@ -124,6 +124,7 @@
                 <c:if test="${not empty BidOrder.sellerRatingDesc}">
 				    <li class="list-group-item">買家評價內容：<span id="reservePrice">${BidOrder.sellerRatingDesc}</span></li>
 				</c:if>
+				<c:if test="${not empty BidOrder.buyStar}">
 				<li class="list-group-item">
 				    買家評價圖片:
 				    <span id="imageContainer">
@@ -136,6 +137,7 @@
 				        >
 				    </span>
 				</li>
+				</c:if>
             </ul>
         </div>
     </div>

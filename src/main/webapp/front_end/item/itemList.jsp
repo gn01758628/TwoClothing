@@ -304,7 +304,7 @@
 
 		function setupPagination(filteredData) {
 	 	  //每頁顯示幾項商品
-		  var itemsPerPage = 16;
+		  var itemsPerPage = 20;
 		  var itemList = $('.itemList');
 		  var pagination = $('#pagination .pagination-list');
 		  //幾個li商品，獲取list長度

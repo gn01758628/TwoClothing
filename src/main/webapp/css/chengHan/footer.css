@@ -8,6 +8,14 @@ footer {
     background-color: #f9edf2;
 }
 
+/*移除a標籤的預設樣式*/
+
+footer a {
+    text-decoration: none;
+    color: inherit;
+    font-size: inherit;
+}
+
 /*假的分享連結按鈕*/
 footer .parent {
     width: 100%;

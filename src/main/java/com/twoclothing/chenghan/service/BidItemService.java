@@ -58,4 +58,6 @@ public interface BidItemService {
 
     boolean updateBidItem(BidItem bidItem);
 
+    boolean isDoubleImaged(Integer bidItemId);
+
 }

@@ -13,18 +13,26 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.twoclothing.chenghan.service.BidItemService;
+import com.twoclothing.chenghan.service.BidItemServiceImpl;
 import com.twoclothing.chi.service.BidItemReportService;
 import com.twoclothing.chi.service.BidItemReportServiceImpl;
+import com.twoclothing.model.abid.biditem.BidItem;
 import com.twoclothing.model.abid.biditemreport.BidItemReport;
 
 @WebServlet("/front/biditemreport")
 public class BidItemReportFrontServlet extends HttpServlet {
 	private BidItemReportService bidItemReportService;
+	
+	private BidItemService bidItemService;
 
 	@Override
 	public void init() throws ServletException {
 		bidItemReportService = new BidItemReportServiceImpl();
+		
+		bidItemService = new BidItemServiceImpl();
 	}
 
 	@Override
@@ -45,8 +53,8 @@ public class BidItemReportFrontServlet extends HttpServlet {
 			url = getAllByMbrId(req, res);
 			break;
 		case "insert":
-			url = addBidItemReport(req, res);
-			break;
+			addBidItemReport(req, res);
+			return;
 		default:
 			url = "/front_end/bidIitemreport/bidItemReportList.jsp";
 		}
@@ -57,41 +65,36 @@ public class BidItemReportFrontServlet extends HttpServlet {
 	}
 
 	private String getAllByMbrId(HttpServletRequest req, HttpServletResponse res) {
-//		String mbrIdString = req.getParameter("mbrId");
-//		int mbrId = Integer.parseInt(mbrIdString);
-		int mbrId = 1; // 測試用，到時這行可刪
-		String page = req.getParameter("page");
-		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer) session.getAttribute("mbrId");
 
-		List<BidItemReport> bidItemReportList = bidItemReportService.getAllByMbrId(mbrId, currentPage);
+		List<BidItemReport> bidItemReportList = bidItemReportService.getAllByMbrId(mbrId);
 
-		int bidItemReportPageQty = bidItemReportService.getPageTotal(mbrId);
-		req.getSession().setAttribute("bidItemReportPageQty", bidItemReportPageQty);
+		Map<Integer, String> bidItemNameMap = new HashMap<>();
+		for (BidItemReport bidItemReport : bidItemReportList) {
+			Integer bidItemId = bidItemReport.getBidItemId();
+	        BidItem bidItem = bidItemService.getBidItemByBidItemId(bidItemId);
+	        String bidItemName = (bidItem != null) ? bidItem.getBidName() : "未知商品";
+	        bidItemNameMap.put(bidItemId, bidItemName);
+	    }
+		req.setAttribute("bidItemNameMap", bidItemNameMap);
 
-		Map<Integer, String> rStatusMap = new HashMap<>();
-		rStatusMap.put(0, "待審核");
-		rStatusMap.put(1, "已審核");
+		Map<Integer, String> statusMap = new HashMap<>();
+		statusMap.put(0, "待審核");
+		statusMap.put(1, "已審核");
 
 		Map<Integer, String> resultMap = new HashMap<>();
 		resultMap.put(0, "處分");
 		resultMap.put(1, "不處分");
 
-		BidItemReport bidItemReport = new BidItemReport();
-		String note = bidItemReport.getNote();
-		if (note == null) {
-			note = "";
-		}
-
 		req.setAttribute("bidItemReportList", bidItemReportList);
-		req.setAttribute("currentPage", currentPage);
-		req.setAttribute("rStatusMap", rStatusMap);
+		req.setAttribute("statusMap", statusMap);
 		req.setAttribute("resultMap", resultMap);
-		req.setAttribute("note", note);
 
-		return "/front_end/bidItemreport/bidItemReportList.jsp";
+		return "/front_end/biditemreport/bidItemReportList.jsp";
 	}
 
-	private String addBidItemReport(HttpServletRequest req, HttpServletResponse res) {
+	private void addBidItemReport(HttpServletRequest req, HttpServletResponse res) {
 		String bidItemId = req.getParameter("bidItemId");
 		String mbrId = req.getParameter("mbrId");
 		String description = req.getParameter("description");
@@ -115,7 +118,5 @@ public class BidItemReportFrontServlet extends HttpServlet {
 		bidItemReport.setBidStatus(0);
 
 		bidItemReportService.addBidItemReport(bidItemReport);
-
-		return "/front/biditemreport?action=getAllByMbrId";
 	}
 }

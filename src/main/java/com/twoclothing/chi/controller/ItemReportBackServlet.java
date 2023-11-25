@@ -20,10 +20,13 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.Gson;
 import com.twoclothing.chi.service.ItemReportService;
 import com.twoclothing.chi.service.ItemReportServiceImpl;
+import com.twoclothing.gordon.service.MembersService;
+import com.twoclothing.gordon.service.MembersServiceImpl;
 import com.twoclothing.huiwen.service.ItemService;
 import com.twoclothing.huiwen.service.ItemServiceImpl;
 import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.aproduct.itemreport.ItemReport;
+import com.twoclothing.model.members.Members;
 import com.twoclothing.redismodel.notice.Notice;
 
 @WebServlet("/back/itemreport")
@@ -32,12 +35,16 @@ public class ItemReportBackServlet extends HttpServlet {
 	private ItemReportService itemReportService;
 	
 	private ItemService itemService;
+	
+	private MembersService membersService;
 
 	@Override
 	public void init() throws ServletException {
 		itemReportService = new ItemReportServiceImpl();
 		
 		itemService = new ItemServiceImpl();
+		
+		membersService = new MembersServiceImpl();
 	}
 
 	@Override
@@ -77,7 +84,8 @@ public class ItemReportBackServlet extends HttpServlet {
 	}
 
 	private String getAll(HttpServletRequest req, HttpServletResponse res) {
-		int mbrId = -1;
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer) session.getAttribute("mbrId");
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 		List<ItemReport> itemReportList = itemReportService.getAll(currentPage);
@@ -198,6 +206,8 @@ public class ItemReportBackServlet extends HttpServlet {
 		
 		if (result == 0 && (note == null || note.trim().isEmpty())) {
 	        note = "檢舉成功，商品已被移除";
+	    } else if (result == 1 && (note == null || note.trim().isEmpty())) {
+	    	note = "";
 	    }
 
 //		List<String> errorMsgs = new LinkedList<String>();
@@ -219,6 +229,10 @@ public class ItemReportBackServlet extends HttpServlet {
 		notice.setHead("請確認商品檢舉審核結果");
 		
 		Item item = itemService.getItemByItemId(itemId);
+		int sellMbr = item.getMbrId();
+		Members members = membersService.getByPrimaryKey(sellMbr);
+		int sellScore =  members.getSellScore();
+		
 		Notice noticeItemDelete = new Notice();
 		noticeItemDelete.setType("檢舉審核結果");
 		noticeItemDelete.setHead("請確認商品檢舉審核結果");
@@ -230,19 +244,16 @@ public class ItemReportBackServlet extends HttpServlet {
 			notice.setContent("商品檢舉審核為「處分」結果，請至「我的檢舉」查看。");
 			notice.setLink("/front/itemreport?action=getAllByMbrId");
 			notice.setImageLink("/images/report0.png");
-			itemService.addNotice(notice, mbrId);
+			itemReportService.addNotice(notice, mbrId);
 			item.setItemStatus(2);
-			int sellMbr = item.getMbrId();
-			itemService.addNotice(noticeItemDelete, sellMbr);
+			members.setSellScore(sellScore - 2);
+			itemReportService.addNotice(noticeItemDelete, sellMbr);
 		} else if (result == 1) {
 			notice.setContent("商品檢舉審核為「不處分」結果，請至「我的檢舉」查看。");
 			notice.setLink("/front/itemreport?action=getAllByMbrId");
 			notice.setImageLink("/images/report1.png");
-			itemService.addNotice(notice, mbrId);
+			itemReportService.addNotice(notice, mbrId);
 		}
-
-		notice.setLink("/front/itemreport?action=getAllByMbrId&mbrId=${mbrId}"); // 到時加上連結至(會員前台)我的檢舉
-		itemReportService.addNotice(notice, itemReport.getMbrId());
 //		}
 
 //		if (!errorMsgs.isEmpty()) {

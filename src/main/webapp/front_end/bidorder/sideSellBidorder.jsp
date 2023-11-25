@@ -22,6 +22,8 @@
 <body>
 
 <br><br>
+<h2><a href="${pageContext.request.contextPath}/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">會員中心</a></h2>
+
 <h2 id="accountHeading">帳戶管理</h2>
 <ul  class="account-menu">
     <li class="lf_li1"><a href="${pageContext.request.contextPath}/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>

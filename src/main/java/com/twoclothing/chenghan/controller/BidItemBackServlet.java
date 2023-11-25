@@ -1,5 +1,6 @@
 package com.twoclothing.chenghan.controller;
 
+import com.google.gson.Gson;
 import com.twoclothing.chenghan.NumberMapping;
 import com.twoclothing.chenghan.service.BidItemService;
 import com.twoclothing.chenghan.service.BidItemServiceImpl;
@@ -26,6 +27,8 @@ public class BidItemBackServlet extends HttpServlet {
     // 一個Servlet物件對應一個Service物件
     private BidItemService bidItemService;
 
+    private final Gson gson = new Gson();
+
     @Override
     public void init() throws ServletException {
         bidItemService = new BidItemServiceImpl();
@@ -41,7 +44,42 @@ public class BidItemBackServlet extends HttpServlet {
             case "/search" -> doSearch(request, response);
             case "/find" -> doFind(request, response);
             case "/vent" -> doVent(request, response);
+            case "/findGiven" -> doFindGiven(request, response);
         }
+    }
+
+    private void doFindGiven(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        Integer bidItemId = Integer.parseInt(request.getParameter("bidItemId"));
+        BidItem bidItem = bidItemService.getBidItemByBidItemId(bidItemId);
+        Integer mbrId = bidItem.getMbrId();
+        Members member = bidItemService.getMembersByMbrId(mbrId);
+        boolean isDoubleIMG = bidItemService.isDoubleImaged(bidItemId);
+        Map<String,String> messages = new HashMap<>();
+
+
+        Timestamp startTime = bidItem.getStartTime();
+        String startTimeStr = "0";
+        if (startTime != null) {
+            startTimeStr = String.valueOf(startTime.getTime());
+        }
+        Timestamp endTime = bidItem.getEndTime();
+        String endTimeStr = "0";
+        if (endTime != null) {
+            endTimeStr = String.valueOf(endTime.getTime());
+        }
+
+        messages.put("isDoubleIMG",String.valueOf(isDoubleIMG));
+        messages.put("bidItem",gson.toJson(bidItem));
+        messages.put("startTime",startTimeStr);
+        messages.put("endTime",endTimeStr);
+        messages.put("mbrName",member.getMbrName());
+        messages.put("mbrEmail",member.getEmail());
+        messages.put("mbrId",String.valueOf(mbrId));
+        out.write(gson.toJson(messages));
     }
 
     private void doSearch(HttpServletRequest request, HttpServletResponse response)

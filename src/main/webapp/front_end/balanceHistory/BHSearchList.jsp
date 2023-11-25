@@ -35,11 +35,19 @@
             display: flex;
             align-items: center;
             flex-direction: column;
-            background-color: whitesmoke;
+/*             background-color: whitesmoke; */
             min-height: calc(100vh - 92px - 275px);
         }
          main.main_container h3{
-         	margin:30px;
+         	margin-bottom: 20px;
+		    border: 1px solid #561729;
+		    padding: 7px;
+		    border-radius: 10px;
+		    background-color: #f9edf2;
+		    color: #561729;
+		    font-size: 22px;
+         	
+         	
          }
         main.main_container div.bh_number{
             /* border: 1px solid green; */
@@ -47,7 +55,7 @@
             margin-top: 10px;
             margin-bottom: 20px;
             color:white;
-            width: 200px;
+            width: 170px;
             font-weight:600;
             display: flex;
             justify-content: center;
@@ -78,7 +86,7 @@
             flex-direction: row;
             align-items: center;
             justify-content:center;
-            width: 80%;
+            width: 90%;
             height: 60px;
             margin: 20px 0px;
         }
@@ -117,7 +125,7 @@
 
         div.search_list{
             /* border: 1px solid blue; */
-            width: 80%;
+            width: 90%;
             margin-top: 20px;
             height: 100%;
 
@@ -157,7 +165,7 @@
 
         div.search_list table tbody tr{
             margin: 10px 0px;
-            background-color: white;
+            background-color: whitesmoke;
 
         }
         div.search_list table tbody tr:hover{
@@ -168,6 +176,8 @@
         	color:red;
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
+    
     <!--導覽列css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
     <!--頁尾css-->
@@ -176,6 +186,14 @@
 </head>
 <body>
 	<div class="headerHTML"></div>
+
+	<div id="hy_con">
+	<div id="con_lf">
+	<!--=============================================插入連結的地方-->
+	
+	</div>
+	<div id="con_rh">
+	<div class="con_rh_con"><br></br>
 
     <main class="main_container">
         <h3>虛擬錢包異動查詢</h3>
@@ -219,6 +237,16 @@
         </div>
 
     </main>
+    
+    </div>
+	</div>
+	</div>
+	
+	<div class="clear"></div>
+	<div id="footer"></div>
+	
+	<br><br><br><br><br><br><br>
+    
     <div class="footerHTML"></div>
     <!--bootstrap5 js-->
 	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
@@ -235,6 +263,20 @@
 	    });
 	
 	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	    
+	    $(document).ready(function () {
+	        // 使用 AJAX 請求加載其他內容
+	        $.ajax({
+	            url: "${pageContext.request.contextPath}/front_end/members/sideMembers.jsp",
+	            method: "GET",
+	            success: function (data) {
+	                $("#con_lf").html(data);
+	            },
+	            error: function (xhr, status, error) {
+	                console.error("Error loading content:", error);
+	            }
+	        });
+	    });
 	</script>
     
     <script>

@@ -149,7 +149,7 @@ public class BidOrderNotifyServlet extends HttpServlet {
 			notice.setImageLink("/images/Mainicon.png");
 			noticeJedisDAO.insert(notice, buyMbrId);
 			
-			String sellUrl = "/bidorder/BidOrder.do?action=buyBidOrder1&sellMbrId="+sellMbrId;
+			String sellUrl = "/bidorder/BidOrder.do?action=sellBidOrder1&sellMbrId="+sellMbrId;
 			notice.setType(type);
 			notice.setHead(title);
 			notice.setContent(sellContent);
@@ -179,8 +179,8 @@ public class BidOrderNotifyServlet extends HttpServlet {
 		Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
 		String type = "競標訂單通知";
 		String title = "競標訂單完成";
-		String sellContent = "競標訂單完成";
-		String buyContent = "競標訂單完成已取得款項";
+		String buyContent = "競標訂單完成";
+		String sellContent = "競標訂單完成已取得款項";
 			
 		Timestamp notifyDate = null;
 		notifyDate = new Timestamp(currentDate.getTime());

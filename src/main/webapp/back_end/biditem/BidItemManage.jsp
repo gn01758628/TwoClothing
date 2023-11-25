@@ -22,8 +22,119 @@
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
     <!--Sweet Alert-->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+
+        .infoModal .product-info > div {
+            display: flex;
+            align-items: baseline; /* 確保內容在基線對齊 */
+        }
+
+        .infoModal .info-value {
+            flex-grow: 1; /* 允許元素增長填充可用空間 */
+            text-align: left; /* 文本向左對齊 */
+            margin-left: 10px; /* 與左側標籤的間距 */
+        }
+
+
+        .infoModal .smallIMG {
+            max-height: 150px; /* 縮略圖的最大高度 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* 平滑過渡效果 */
+            border-radius: 50px; /* 輕微的邊角圓滑化 */
+            border: 2px solid transparent; /* 初始時透明的框線 */
+        }
+
+        /* 滑鼠懸停在小圖上時的樣式 */
+        .infoModal .smallIMG:hover {
+            transform: scale(1.05); /* 輕微放大 */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 增加陰影 */
+            border-color: #007bff; /* 改變框線顏色 */
+        }
+
+        /* 滑鼠點擊小圖時的樣式 */
+        .infoModal .smallIMG:active {
+            transform: scale(0.95); /* 輕微縮小 */
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* 增加陰影 */
+        }
+
+        /* 縮略圖容器的設定 */
+        .infoModal .thumbnails-container {
+            display: flex;
+            justify-content: center; /* 縮略圖在容器中央對齊 */
+            gap: 50px; /* 縮略圖之間的間隙 */
+        }
+
+        /* 縮略圖的對齊設定 */
+        .infoModal .thumbnail-left {
+            margin-right: auto; /* 左邊縮略圖向右邊界靠攏 */
+        }
+
+        .infoModal .thumbnail-right {
+            margin-left: auto; /* 右邊縮略圖向左邊界靠攏 */
+        }
+    </style>
 </head>
 <body>
+
+<!--商品詳情模態框-->
+<div class="modal fade" id="bidItemInfoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body infoModal mb-3">
+                <div class="container pt-5">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <!-- 圖片 -->
+                            <div class="thumbnails-container">
+                                <div class="thumbnail-right">
+                                    <img src="${pageContext.request.contextPath}/images/clothing/clothing-1.jpg"
+                                         class="img-fluid smallIMG" alt="商品主圖">
+                                </div>
+                                <div class="thumbnail-left">
+                                    <img src="${pageContext.request.contextPath}/images/clothing/clothing-2.jpg"
+                                         class="img-fluid smallIMG" alt="商品附圖">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-7">
+                            <!-- 商品資訊 -->
+                            <div class="product-info">
+                                <div class="row mb-3">
+                                    <div class="col-md-8 d-flex align-items-center">
+                                        <h2>商品名稱</h2>
+                                    </div>
+                                </div>
+
+
+                                <div class="mb-3 d-flex align-items-baseline">
+                                    <div class="fw-bold min-width">新舊程度：</div>
+                                    <div class="info-value">新舊程度</div>
+                                    <div class="fw-bold min-width">商品尺寸：</div>
+                                    <div class="info-value">商品尺寸</div>
+                                </div>
+
+                                <div class="mb-3 d-flex align-items-baseline">
+                                    <div class="fw-bold min-width">商品詳述：</div>
+                                    <div class="info-value">
+                                        <pre>商品詳述</pre>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="container mt-5 ">
     <div class="text-center mb-4">
@@ -118,19 +229,24 @@
                                 </td>
                                 <td class="text-center align-middle td-empName">${employeeMap[bidItem.bidItemId].empName}</td>
                                 <td class="text-center align-middle">
-                                    <a href="#" class="btn btn-outline-primary btn-sm mt-2 mb-2">商品詳情</a>
+                                    <a href="#" class="btn btn-primary btn-sm mt-2 mb-2 bidItemInfo"
+                                       data-bid-item-id="${bidItem.bidItemId}"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#bidItemInfoModal">
+                                        商品詳情
+                                    </a>
                                     <br>
                                     <c:if test="${bidItem.bidStatus == 0}">
                                         <input type="hidden" value="${bidItem.bidName}">
-                                        <button class="btn btn-outline-success btn-sm mt-2 mb-2 btn_agree">批准上架
+                                        <button class="btn btn-success btn-sm mt-2 mb-2 btn_agree">批准上架
                                         </button>
-                                        <button class="btn btn-outline-danger btn-sm mt-2 mb-2 btn_reject">拒絕上架
+                                        <button class="btn btn-danger btn-sm mt-2 mb-2 btn_reject">拒絕上架
                                         </button>
                                         <input type="hidden" value="${bidItem.bidItemId}">
                                     </c:if>
                                     <c:if test="${bidItem.bidStatus == 4}">
                                         <input type="hidden" value="${bidItem.bidName}">
-                                        <button class="btn btn-outline-danger btn-sm mt-2 mb-2 btn_reject_enforce">強制下架
+                                        <button class="btn btn-danger btn-sm mt-2 mb-2 btn_reject_enforce">強制下架
                                         </button>
                                         <input type="hidden" value="${bidItem.bidItemId}">
                                     </c:if>
@@ -153,7 +269,7 @@
 <!--Sweet Alert-->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
-
+<!--審核操作-->
 <script>
     $(function () {
         // 批准上架
@@ -324,7 +440,7 @@
         })
     });
 </script>
-
+<!--儲存搜尋條件-->
 <script>
     $(document).ready(function () {
         $("#searchForm").submit(function (event) {
@@ -362,19 +478,19 @@
                 bidStatusValue === "" &&
                 empIdValue === ""
             ) {
-                alert("至少填寫一項搜尋條件");
+                Swal.fire("搜尋條件出現錯誤", "至少填寫一項搜尋條件", "error");
                 event.preventDefault();
             }
 
             // 2. 如果有會員編號，則必須是有效數字
             if (mbrIdValue !== "" && !/^[1-9]\d*$/.test(mbrIdValue)) {
-                alert("會員編號必須是有效數字");
+                Swal.fire("搜尋條件出現錯誤", "會員編號必須是有效數字", "error");
                 event.preventDefault();
             }
 
             // 3. 如果有競標商品編號，則必須是有效數字
             if (bidItemIdValue !== "" && !/^[1-9]\d*$/.test(bidItemIdValue)) {
-                alert("競標商品編號必須是有效數字");
+                Swal.fire("搜尋條件出現錯誤", "商品編號必須是有效數字", "error");
                 event.preventDefault();
             }
         });
@@ -396,6 +512,28 @@
             $("#empId").val(formData.empIdValue);
         }
     });
+</script>
+<!--查看商品詳情-->
+<script>
+    $(document).ready(function () {
+        const bidItemInfo_BTN = $(".bidItemInfo");
+        bidItemInfo_BTN.click(function (e) {
+            e.preventDefault();
+            let bidItemId = $(this).data('bid-item-id');
+            // Ajax請求商品詳情
+            $.get("${pageContext.request.contextPath}/back_end/servlet/biditem/findGiven", {
+                bidItemId: bidItemId,
+            }, function (data) {
+                const bidItem = JSON.parse(data.bidItem);
+                let startTime = data.startTime;
+                let endTime = data.endTime;
+                let mbrName = data.mbrName;
+                let mbrEmail = data.mbrEmail;
+                let mbrId = data.mbrId;
+                let isDoubleIMG = data.isDoubleIMG;
+            })
+        })
+    })
 </script>
 
 </body>
