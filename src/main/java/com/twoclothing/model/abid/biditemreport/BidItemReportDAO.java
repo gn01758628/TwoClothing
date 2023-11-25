@@ -21,6 +21,8 @@ public interface BidItemReportDAO {
 	List<BidItemReport> getAll(int currentPage);
 
 	List<BidItemReport> getAllByMbrId(Integer mbrId, int currentPage);
+	
+	List<BidItemReport> getAllByMbrId(Integer mbrId);
 
 	long getTotal(Integer mbrId);
 
