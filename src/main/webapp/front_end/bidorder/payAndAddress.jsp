@@ -48,20 +48,10 @@
 
 <div id="hy_con">
 <div id="con_lf">
-<br>
-<h2>買家競標商品訂單</h2>
-			<ul>
-				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">待付款</a></li>
-				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder1&buyMbrId=${user.mbrId}">未出貨</a></li>
-				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder2&buyMbrId=${user.mbrId}">待收貨</a></li>
-				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder3&buyMbrId=${user.mbrId}">訂單完成</a></li>
-				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder4&buyMbrId=${user.mbrId}">訂單不成立</a></li>
-			</ul>
+<!--=============================================插入連結的地方-->
+<!--=============================================插入連結的地方-->
+<!--=============================================插入連結的地方-->
+<!--=============================================插入連結的地方-->
 </div>
 <div id="con_rh">
 <div class="con_rh_con"><br></br>
@@ -71,7 +61,7 @@
     
    
 <div style="color: red;" >付款金額：<span>${param.amount}</span>元</div> <br>
-    <form action="<%=request.getContextPath()%>/bidorder/BidOrder.do" method="post" onsubmit="return validateForm()">
+    <form action="<%=request.getContextPath()%>/bidorder/BidOrder.do" id="from"method="post" onsubmit="return validateForm()">
         <label for="payType">付款方式：</label> 
         <select name="payType" id="payType" onchange="updatePayInfoFields()" required>
             <option value="">請選擇付款方式</option>
@@ -83,7 +73,14 @@
         
 		<div id="creditCardInfo" style="display: none;">
 		<h2>信用卡資料：</h2>
-		<input type="text" name="creditCard" id="creditCard">
+			<label for="cardNumber">信用卡號碼</label>
+		    <input type="text" id="cardNumber" name="cardNumber" placeholder="請輸入信用卡號碼" required>
+		<br>
+		    <label for="expirationDate">有效期限</label>
+		    <input type="text" id="expirationDate" name="expirationDate" placeholder="MM / YY" required>
+		<br>
+		    <label for="cvv">CVV</label>
+		    <input type="text" id="cvv" name="cvv" placeholder="請輸入 CVV" required>
 		</div>
 
 		<div id="bankAccountInfo" style="display: none;">
@@ -347,7 +344,32 @@ let twzipcode = new TWzipcode({
 		}
 	}
 });
+//信用卡驗證
+function validateCardNumber(cardNumber) {
+  // 使用正則表達式檢查信用卡號碼
+  const cardNumberRegex = /^\d{16}$/; // 16位數字
+  return cardNumberRegex.test(cardNumber);
+}
 
+
+function validateCVV(cvv) {
+	  // 使用正則表達式檢查 CVV
+	  const cvvRegex = /^\d{3}$/; // 三位數字
+	  return cvvRegex.test(cvv);
+	}
+document.getElementById('from').addEventListener('submit', function (event) {
+	  const cardNumber = document.getElementById('cardNumber').value;
+	  const cvv = document.getElementById('cvv').value;
+
+	  // 進行整體驗證
+	  if (!validateCardNumber(cardNumber)) {
+	    alert('請輸入有效的信用卡號碼！');
+	    event.preventDefault();
+	  } else if (!validateCVV(cvv)) {
+	    alert('請輸入有效的 CVV！');
+	    event.preventDefault();
+	  }
+	});
 
 
 // // 使用 EL 語法獲取後端的值
