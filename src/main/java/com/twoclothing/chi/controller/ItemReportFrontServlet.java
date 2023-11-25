@@ -70,9 +70,9 @@ public class ItemReportFrontServlet extends HttpServlet {
 	}
 
 	private String getAllByMbrIdPage(HttpServletRequest req, HttpServletResponse res) {
-//		HttpSession session = req.getSession();
-//		Integer mbrId = (Integer) session.getAttribute("mbrId");
-		int mbrId = 1; // 測試用，到時這行可刪
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer) session.getAttribute("mbrId");
+//		int mbrId = 1; // 測試用，到時這行可刪
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
@@ -114,9 +114,8 @@ public class ItemReportFrontServlet extends HttpServlet {
 	}
 	
 	private String getAllByMbrId(HttpServletRequest req, HttpServletResponse res) {
-//		HttpSession session = req.getSession();
-//		Integer mbrId = (Integer) session.getAttribute("mbrId");
-		int mbrId = 1; // 測試用，到時這行可刪
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer) session.getAttribute("mbrId");
 
 		List<ItemReport> itemReportList = itemReportService.getAllByMbrId(mbrId);
 
