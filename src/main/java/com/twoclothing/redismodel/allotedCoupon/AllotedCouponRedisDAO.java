@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.twoclothing.utils.JedisPoolUtil;
 
@@ -43,10 +45,13 @@ public class AllotedCouponRedisDAO implements AllotedCouponDAO{
 		try (Jedis jedis = jedisPool.getResource()) {
 		    jedis.select(REDIS_NUMBER);
 		    Set<String> keys = jedis.keys(COUPON_PREFIX);
-
-	        String jsonList = (String)jedis.eval(GETALL_LUA_SCRIPT, 1, COUPON_PREFIX);
-
-	        allotedCouponList = new Gson().fromJson(jsonList, new TypeToken<List<AllotedCoupon>>() {}.getType());
+		    
+		    
+		    String jsonString = (String)jedis.eval(GETALL_LUA_SCRIPT, 1, COUPON_PREFIX);
+		    
+		    if (!isEmptyJsonObject(jsonString)) {
+		    	allotedCouponList = new Gson().fromJson(jsonString, new TypeToken<List<AllotedCoupon>>() {}.getType());	     	        	
+	        }
 		}
 		return allotedCouponList;
     }
@@ -204,4 +209,15 @@ public class AllotedCouponRedisDAO implements AllotedCouponDAO{
             "end\n" +
             "\n" +
             "return nil";
+    
+    // 檢查 JSON 字串是否為空物件
+    private static boolean isEmptyJsonObject(String jsonString) {
+        try {
+            JsonObject jsonObject = new Gson().fromJson(jsonString, JsonObject.class);
+            return jsonObject.entrySet().isEmpty();
+        } catch (JsonSyntaxException e) {
+            // 處理 JSON 解析錯誤
+            return false;
+        }
+    }
 }
