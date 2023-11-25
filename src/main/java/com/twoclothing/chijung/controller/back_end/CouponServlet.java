@@ -301,9 +301,4 @@ public class CouponServlet extends HttpServlet {
     	}
 	}
 	
-	private void receiveCoupon(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		return;
-		
-	}
-	
 }

@@ -71,7 +71,7 @@ public class MemberCouponServlet extends HttpServlet{
 		    	AllotedCoupon allotedCoupon = new AllotedCoupon();
 		    	allotedCoupon.setCpnId(cpnId);
 		    	allotedCoupon.setIndex(index);
-				System.out.println();
+				System.out.println(allotedCoupon);
 				allotedCouponDao.receiveCoupon(allotedCoupon);
 				break;
 				

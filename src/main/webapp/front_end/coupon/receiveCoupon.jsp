@@ -127,6 +127,8 @@ body {
 			
 	        let cpnId = allotedCoupon.find('.cpnId').val();
 	        let index = allotedCoupon.find('.index').val(); 
+	        console.log(cpnId);
+	        console.log(index);
 	       
 	    	
 	    	Swal.fire({

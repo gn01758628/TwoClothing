@@ -63,8 +63,11 @@ public class AllotedCouponRedisDAO implements AllotedCouponDAO{
 	            jedis.select(REDIS_NUMBER);
 
 	            // 設定KEYS和ARGV
-	            String key = String.valueOf(allotedCoupon.getCpnId());
+	            String key = String.valueOf(COUPON_PREFIX+allotedCoupon.getCpnId());
 	            String index = String.valueOf(allotedCoupon.getIndex());
+	            System.out.println("========");
+	            System.out.println(key);
+	            System.out.println(index);
 	            
 	            // 執行Lua腳本
 	            Long result = (Long) jedis.eval(RECEIVE_LUA_SCRIPT, 1, key, index);
@@ -144,37 +147,90 @@ public class AllotedCouponRedisDAO implements AllotedCouponDAO{
 	
 	
 	//如果 發放完畢 後台終止發放 或是 優惠券使用期限結束 回傳-1 其餘回傳剩餘數量
-    private static final String  RECEIVE_LUA_SCRIPT = 
-    		"redis.replicate_commands()" +
-    		"local key = KEYS[1]\n" +
-            "local index = ARGV[1]\n" +
-            "local currentTime = redis.call('TIME') " +
-            "local currentTimestamp = tonumber(currentTime[1]) " +	
+    private static final String  RECEIVE_LUA_SCRIPT ="redis.replicate_commands()\n" +
+            "local key = KEYS[1]\n" +
+            "local index = tonumber(ARGV[1])\n" +
+            "local currentTime = redis.call('TIME')\n" +
+            "local currentTimestamp = tonumber(currentTime[1])\n" +
+            "\n" +
+            "redis.log(redis.LOG_NOTICE, 'key: ' .. key)\n" +
+            "redis.log(redis.LOG_NOTICE, 'index: ' .. index)\n" +
+            "redis.log(redis.LOG_NOTICE, 'currentTimestamp: ' .. currentTimestamp)\n" +
+            "\n" +
             "for i, jsonData in ipairs(redis.call('LRANGE', key, 0, -1)) do\n" +
             "    local item = cjson.decode(jsonData)\n" +
+            "    redis.log(redis.LOG_NOTICE, 'item: ' .. cjson.encode(item))\n" +
+            "\n" +
             "    if item.index == index then\n" +
-			"        if item.expireDate ~= nil then\r\n" +
-			"       	 local luaExpireDate = item.expireDate / 1000 " +
-            "        	 if item.status == 1 and luaExpireDate and currentTimestamp > luaExpireDate then\n" +
-            "            	 item.status = -1\n" +
-            "            	 redis.call('LSET', key, i - 1, cjson.encode(item))\n" +
-            "            	 return -1\n" +
-            "        	 end\n" +
+            "        if item.expireDate ~= nil then\n" +
+            "            local luaExpireDate = item.expireDate / 1000\n" +
+            "            redis.log(redis.LOG_NOTICE, 'luaExpireDate: ' .. luaExpireDate)\n" +
+            "\n" +
+            "            if item.status == 1 and luaExpireDate and currentTimestamp > luaExpireDate then\n" +
+            "                item.status = -1\n" +
+            "                redis.call('LSET', key, i - 1, cjson.encode(item))\n" +
+            "                redis.log(redis.LOG_NOTICE, 'Status set to -1')\n" +
+            "                return -1\n" +
+            "            end\n" +
             "        end\n" +
+            "\n" +
             "        if item.status ~= 1 then\n" +
+            "            redis.log(redis.LOG_NOTICE, 'Returning status: ' .. item.status)\n" +
             "            return item.status\n" +
             "        end\n" +
+            "\n" +
             "        if item.remainingQuantity > 0 then\n" +
             "            item.remainingQuantity = item.remainingQuantity - 1\n" +
+            "\n" +
             "            if item.remainingQuantity == 0 then\n" +
-            "                item.status = 3" +       
-            "        	 end\n" +
+            "                item.status = 3\n" +
+            "            end\n" +
+            "\n" +
             "            redis.call('LSET', key, i - 1, cjson.encode(item))\n" +
+            "            redis.log(redis.LOG_NOTICE, 'Remaining Quantity updated: ' .. item.remainingQuantity)\n" +
             "            return item.remainingQuantity\n" +
             "        end\n" +
             "    end\n" +
             "end\n" +
+            "\n" +
+            "redis.log(redis.LOG_NOTICE, 'No matching item found')\n" +
             "return -2";
+    		
+    		
+    		
+    		
+    		
+//    		"redis.replicate_commands()" +
+//    		"local key = KEYS[1]\n" +
+//            "local index = tonumber(ARGV[1])\n" +
+//            "local currentTime = redis.call('TIME') " +
+//            "local currentTimestamp = tonumber(currentTime[1]) " +	
+//            "for i, jsonData in ipairs(redis.call('LRANGE', key, 0, -1)) do\n" +
+//            "    local item = cjson.decode(jsonData)\n" +
+//            "    if item.index == index then\n" +
+//			"        if item.expireDate ~= nil then\r\n" +
+//			"        if item.expireDate ~= nil then\r\n" +
+//			"       	 local luaExpireDate = item.expireDate / 1000 " +
+//            "        	 if item.status == 1 and luaExpireDate and currentTimestamp > luaExpireDate then\n" +
+//            "            	 item.status = -1\n" +
+//            "            	 redis.call('LSET', key, i - 1, cjson.encode(item))\n" +
+//            "            	 return -1\n" +
+//            "        	 end\n" +
+//            "        end\n" +
+//            "        if item.status ~= 1 then\n" +
+//            "            return item.status\n" +
+//            "        end\n" +
+//            "        if item.remainingQuantity > 0 then\n" +
+//            "            item.remainingQuantity = item.remainingQuantity - 1\n" +
+//            "            if item.remainingQuantity == 0 then\n" +
+//            "                item.status = 3" +       
+//            "        	 end\n" +
+//            "            redis.call('LSET', key, i - 1, cjson.encode(item))\n" +
+//            "            return item.remainingQuantity\n" +
+//            "        end\n" +
+//            "    end\n" +
+//            "end\n" +
+//            "return -2";
 	
     private static final String STOP_ISSUING_COUPON_LUA_SCRIPT = 
     		"redis.replicate_commands()\n" +
