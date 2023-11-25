@@ -67,7 +67,7 @@
         table th,td{
             text-align: center;
             padding: 5px;
-            width: 100px;
+            width: 10%;
         }
         table tr{
             height: 50px;
@@ -77,6 +77,7 @@
             display: flex;
 		    justify-content: center;
 		    align-items: center;
+		    width: 100%;
         }
         tr.tr_data:hover{
             background-color: white;

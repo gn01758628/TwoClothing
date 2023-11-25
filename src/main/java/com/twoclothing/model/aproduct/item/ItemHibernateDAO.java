@@ -8,6 +8,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpSession;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +108,11 @@ public class ItemHibernateDAO implements ItemDAO {
         if (map.containsKey("itemQuantityStart") && map.containsKey("itemQuantityEnd")) {
             predicates.add(builder.between(root.get("quantity"), new BigDecimal(map.get("itemQuantityStart")), new BigDecimal(map.get("itemQuantityEnd"))));
         }
+        
+        
+//        if (map.containsKey("mbrId")) {
+//            predicates.add(builder.equal(root.get("mbrId"), Integer.valueOf(map.get("mbrId"))));
+//        }
 
         boolean hasItemStatusCondition = false; // 用來檢查是否已經有添加 itemStatus 的條件
 
@@ -144,12 +151,20 @@ public class ItemHibernateDAO implements ItemDAO {
             if ("tagId".equals(row.getKey())) {
                 predicates.add(builder.equal(root.get("tagId"), new BigDecimal(row.getValue())));
             }
+			if ("mbrId".equals(row.getKey())) {
+				predicates.add(builder.equal(root.get("mbrId"), new BigDecimal(row.getValue())));
+			}
 
         }
+
+        
+        
+        
         // 如果沒有添加 itemStatus 的條件，則添加一個不等於 2 的條件
         if (!hasItemStatusCondition) {
             predicates.add(builder.notEqual(root.get("itemStatus"), new BigDecimal(2)));
-        }
+        }        
+        
         criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
         criteria.orderBy(builder.asc(root.get("itemId")));
         TypedQuery<Item> query = getSession().createQuery(criteria);
@@ -180,6 +195,10 @@ public class ItemHibernateDAO implements ItemDAO {
         if (map.containsKey("itemQuantityStart") && map.containsKey("itemQuantityEnd")) {
             predicates.add(builder.between(root.get("quantity"), new BigDecimal(map.get("itemQuantityStart")), new BigDecimal(map.get("itemQuantityEnd"))));
         }
+        
+//        if (map.containsKey("mbrId")) {
+//            predicates.add(builder.equal(root.get("mbrId"), Integer.valueOf(map.get("mbrId"))));
+//        }
         boolean hasItemStatusCondition = false; // 用來檢查是否已經有添加 itemStatus 的條件
 
         for (Map.Entry<String, String> row : map.entrySet()) {
@@ -216,6 +235,9 @@ public class ItemHibernateDAO implements ItemDAO {
             if ("tagId".equals(row.getKey())) {
                 predicates.add(builder.equal(root.get("tagId"), new BigDecimal(row.getValue())));
             }
+			if ("mbrId".equals(row.getKey())) {
+				predicates.add(builder.equal(root.get("mbrId"), new BigDecimal(row.getValue())));
+			}
         }
         if (!hasItemStatusCondition) {
             predicates.add(builder.notEqual(root.get("itemStatus"), new BigDecimal(2)));
@@ -266,6 +288,11 @@ public class ItemHibernateDAO implements ItemDAO {
     @Override
     public Integer getMbrIdById(Integer itemId) {
         return (Integer) getSession().createQuery("select mbrId from Item where itemId = :itemId").setParameter("itemId", itemId).uniqueResult();
+    }
+    
+    @Override
+    public Integer getPriceById(Integer itemId) {
+    	return (Integer) getSession().createQuery("select price from Item where itemId = :itemId").setParameter("itemId", itemId).uniqueResult();
     }
 
     @Override

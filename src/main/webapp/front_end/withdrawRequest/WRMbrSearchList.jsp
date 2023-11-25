@@ -30,14 +30,14 @@
             box-sizing: border-box;
         }
         main.main_container{
-            border: 1px solid black;
-            min-height: calc(100vh - 409px);
+/*             border: 1px solid black; */
+            min-height: calc(100vh - 92px - 275px);
 /*             margin: 50px; */
             display: flex;
             align-items: center;
             flex-direction: column;
             background-color: whitesmoke;
-/*             height:700px; */
+            height:100%;
         }
         
          main.main_container h3{
