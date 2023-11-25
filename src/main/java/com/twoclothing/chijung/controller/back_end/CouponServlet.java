@@ -65,53 +65,11 @@ public class CouponServlet extends HttpServlet {
 				allotCoupon(req,res);
 				break;
 			case "get_All_Allot_Coupon":
-				
-				List<AllotedCoupon> allotedCouponList= allotedCouponDao.getAll();
-				req.setAttribute("allotedCouponList", allotedCouponList);
-				forwardPath = "/back_end/coupon/listAllAllotedCoupon.jsp";
+				forwardPath = getAllAllotCoupon(req,res);
 				break;
 			case "stop_Issuing_Coupon":
-				
-				
-				
-				
-				
+				stopIssuingCoupon(req,res);
 				break;
-			case "receive_Coupon":
-				try (Jedis jedis = JedisPoolUtil.getJedisPool().getResource()) {
-		            jedis.select(7);
-		         // Lua腳本
-		            String luaScript = "local key = KEYS[1]\n" +
-		                    "local latestData = redis.call('LINDEX', key, -1)\n" +
-		                    "local data = cjson.decode(latestData)\n" +
-		                    "if data.status == 1 then\n" +
-		                    "    return -1\n" +
-		                    "end\n" +
-		                    "local remainingQuantity = tonumber(data.remainingQuantity)\n" +
-		                    "if remainingQuantity > 0 then\n" +
-		                    "    remainingQuantity = remainingQuantity - 1\n" +
-		                    "    data.remainingQuantity = remainingQuantity\n" +
-		                    "    local updatedData = cjson.encode(data)\n" +
-		                    "    redis.call('LSET', key, -1, updatedData)\n" +
-		                    "    return remainingQuantity\n" +
-		                    "else\n" +
-		                    "    return 0\n" +
-		                    "end";
-
-		            // 設定KEYS和ARGV
-		            String key = "coupon123";
-		            String[] keys = {key};
-
-		            // 執行Lua腳本
-		            Object result = jedis.eval(luaScript, 1, keys);
-
-		            // 輸出結果
-		            System.out.println("Remaining Quantity: " + result);
-		        }
-				
-				
-				break;
-				
 		}
 		if(!forwardPath.isEmpty()) {
 			res.setContentType("text/html; charset=UTF-8");
@@ -305,7 +263,7 @@ public class CouponServlet extends HttpServlet {
 //    	
     	Coupon coupon = gs.getByPrimaryKey(Coupon.class, cpnId);
     	HibernateUtil.getSessionFactory().getCurrentSession().evict(coupon);
-    	AllotedCoupon allotedCoupon = new AllotedCoupon(coupon,new Timestamp(allotDate.getTime()),totalQuantity,remainingQuantity);
+    	AllotedCoupon allotedCoupon = new AllotedCoupon(coupon,allotDate.getTime(),totalQuantity,remainingQuantity);
     	allotedCouponDao.allot(allotedCoupon);
 //    	
 		res.getWriter().write("新增發放成功");
@@ -316,16 +274,34 @@ public class CouponServlet extends HttpServlet {
 	}
 	
 	private String getAllAllotCoupon(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		return null;
+		List<AllotedCoupon> allotedCouponList= allotedCouponDao.getAll();
+		req.setAttribute("allotedCouponList", allotedCouponList);
+		req.setAttribute("AllotedCouponStatusMap", Mapping.AllotedCouponStatusMap);
+		return "/back_end/coupon/listAllAllotedCoupon.jsp";
 		
 	}
 	
-	private void stop_Issuing_Coupon(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		return;
-		
+	private void stopIssuingCoupon(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		Integer cpnId = Integer.parseInt(req.getParameter("cpnId"));
+    	Integer index = Integer.parseInt(req.getParameter("index"));
+    	
+    	Coupon coupon = gs.getByPrimaryKey(Coupon.class, cpnId);
+    	HibernateUtil.getSessionFactory().getCurrentSession().evict(coupon);
+    	AllotedCoupon allotedCoupon = new AllotedCoupon();
+    	allotedCoupon.setCpnId(cpnId);
+    	allotedCoupon.setIndex(index);
+    	int status = allotedCouponDao.stopIssuingCoupon(allotedCoupon);
+    	
+    	if( status == 2) {
+    		res.getWriter().write(String.valueOf(status));
+			res.setStatus(HttpServletResponse.SC_OK);
+    	}else {
+    		res.getWriter().write(String.valueOf(status));
+			res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    	}
 	}
 	
-	private void receive_Coupon(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	private void receiveCoupon(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		return;
 		
 	}

@@ -13,6 +13,6 @@ public interface AllotedCouponDAO {
 
 	void receiveCoupon(AllotedCoupon allotedCoupon);
 
-	void delete(AllotedCoupon allotedCoupon);
+	int stopIssuingCoupon(AllotedCoupon allotedCoupon);
 	
 }

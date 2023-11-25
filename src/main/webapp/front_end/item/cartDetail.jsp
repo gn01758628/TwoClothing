@@ -341,7 +341,7 @@
 <!-- 				<button name="pay">去買單</button> -->
 			</div>
 		</div>
-	</form>
+	
 
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1"
@@ -356,7 +356,7 @@
 				<div class="modal-body">
 					<c:forEach var="coupon" items="${couponList}" varStatus="loop">
 						<label class="Coupon"> 
-							<input class="coupon_radio" id="coupon_radio_${loop.index}" type="radio" name="cpnName" id="Coupon" disabled> 
+							<input class="coupon_radio" id="coupon_radio_${loop.index}" type="radio" name="cpnName" id="Coupon" disabled value="${coupon.cpnId}"> 
 							<input class="coupon_minAmount" id="coupon_minAmount_${loop.index}" type="hidden" name="minAmount" value="${coupon.minAmount}"> 
 							<input class="coupon_distype" id="coupon_distype_${loop.index}" type="hidden" name="disType" value="${coupon.disType}"> 
 							<input class="coupon_disvalue" id="coupon_disvalue_${loop.index}" type="hidden" name="disValue" value="${coupon.disValue}">
@@ -373,6 +373,7 @@
 			</div>
 		</div>
 	</div>
+	</form>
 	<div class="footerHTML"></div>
 	
 	<!--bootstrap5 js-->
