@@ -35,9 +35,9 @@ public class FollowHibernateDAO implements FollowDAO {
 
 	@Override
 	public List<Follow> getAllByMbrId(Integer mbrId, int currentPage) {
-		int first = (currentPage - 1) * 10;
+		int first = (currentPage - 1) * 8;
 		return getSession().createQuery("from Follow where mbrId = :mbrId", Follow.class).setFirstResult(first)
-				.setMaxResults(10).setParameter("mbrId", mbrId).list();
+				.setMaxResults(8).setParameter("mbrId", mbrId).list();
 	}
 
 	@Override

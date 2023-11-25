@@ -1,6 +1,7 @@
 package com.twoclothing.chi.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -13,15 +14,23 @@ import javax.servlet.http.HttpSession;
 
 import com.twoclothing.chi.service.BlackListService;
 import com.twoclothing.chi.service.BlackListServiceImpl;
+import com.twoclothing.gordon.service.MembersService;
+import com.twoclothing.gordon.service.MembersServiceImpl;
 import com.twoclothing.model.blacklist.BlackList;
+import com.twoclothing.model.blacklist.BlackList.CompositeDetail;
+import com.twoclothing.model.members.Members;
 
 @WebServlet("/blacklist.check")
 public class BlackListServlet extends HttpServlet {
 	private BlackListService blackListService;
+	
+	private MembersService membersService;
 
 	@Override
 	public void init() throws ServletException {
 		blackListService = new BlackListServiceImpl();
+		
+		membersService = new MembersServiceImpl();
 	}
 
 	@Override
@@ -47,6 +56,9 @@ public class BlackListServlet extends HttpServlet {
 		case "delete":
 			deleteBlackList(req, res);
 			return;
+		case "deletefromlist":
+			url = deleteBlackListFromList(req, res);
+			break;
 		default:
 			url = "/front_end/blacklist/BlackList.jsp";
 		}
@@ -63,11 +75,23 @@ public class BlackListServlet extends HttpServlet {
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
 		List<BlackList> blackList = blackListService.getAllByMbrId(mbrId, currentPage);
+		
+		List<Members> blackingList = new ArrayList<>();
+		
+		for (BlackList b : blackList) {
+			CompositeDetail compositeDetail = b.getCompositeKey();
+			int blackId = compositeDetail.getBlackId();
+			Members members = membersService.getByPrimaryKey(blackId);
+			
+			if (members != null) {
+				blackingList.add(members);
+	        }
+		}
 
 		int blackListPageQty = blackListService.getPageTotal(mbrId);
 		req.getSession().setAttribute("blackListPageQty", blackListPageQty);
 
-		req.setAttribute("blackList", blackList);
+		req.setAttribute("blackingList", blackingList);
 		req.setAttribute("currentPage", currentPage);
 
 		return "/front_end/blacklist/blackList.jsp";
@@ -91,5 +115,16 @@ public class BlackListServlet extends HttpServlet {
 		BlackList blackList = blackListService.getByPrimaryKey(mbrId, blackId);
 
 		blackListService.deleteBlackList(blackList);
+	}
+	
+	private String deleteBlackListFromList(HttpServletRequest req, HttpServletResponse res) {
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer) session.getAttribute("mbrId"); // 要黑名單人的會員
+		int blackId = Integer.parseInt(req.getParameter("mbrId")); // 被黑名單的會員(賣家)
+		BlackList blackList = blackListService.getByPrimaryKey(mbrId, blackId);
+
+		blackListService.deleteBlackList(blackList);
+		
+		return "/blacklist.check?action=getAllByMbrId";
 	}
 }

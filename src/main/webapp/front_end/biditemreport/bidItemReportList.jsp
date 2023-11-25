@@ -161,7 +161,7 @@
 <body>
 	<div class="headerHTML"></div>
 	
-	<h5>我的檢舉</h5>
+	<h5>競標檢舉</h5>
 	
     <div class="search_status">
         <div class="search clickCondition">

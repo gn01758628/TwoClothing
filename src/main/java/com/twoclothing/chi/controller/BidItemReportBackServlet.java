@@ -226,7 +226,7 @@ public class BidItemReportBackServlet extends HttpServlet {
 		noticeBidItemDelete.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
 
 		if (result == 0) {
-			notice.setContent("商品檢舉審核為「處分」結果，請至「我的檢舉」查看。");
+			notice.setContent("商品檢舉審核為「處分」結果，請至「競標檢舉」查看。");
 			notice.setLink("/front/biditemreport?action=getAllByMbrId");
 			notice.setImageLink("/images/report0.png");
 			bidItemReportService.addNotice(notice, mbrId);
@@ -246,7 +246,7 @@ public class BidItemReportBackServlet extends HttpServlet {
 			members.setSellScore(sellScore - 2);
 			bidItemReportService.addNotice(noticeBidItemDelete, sellMbr);
 		} else if (result == 1) {
-			notice.setContent("商品檢舉審核為「不處分」結果，請至「我的檢舉」查看。");
+			notice.setContent("商品檢舉審核為「不處分」結果，請至「競標檢舉」查看。");
 			notice.setLink("/front/biditemreport?action=getAllByMbrId");
 			notice.setImageLink("/images/report1.png");
 			bidItemReportService.addNotice(notice, mbrId);

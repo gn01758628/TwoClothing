@@ -27,7 +27,7 @@ public class BlackListServiceImpl implements BlackListService {
 	@Override
 	public int getPageTotal(Integer mbrId) {
 		long total = dao.getTotal(mbrId);
-		int pageQty = (int) (total % 10 == 0 ? (total / 10) : (total / 10 + 1));
+		int pageQty = (int) (total % 8 == 0 ? (total / 8) : (total / 8 + 1));
 		return pageQty;
 	}
 
