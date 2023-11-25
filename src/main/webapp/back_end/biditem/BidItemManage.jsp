@@ -22,78 +22,29 @@
     <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
     <!--Sweet Alert-->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
-    <style>
-
-        .infoModal .product-info > div {
-            display: flex;
-            align-items: baseline; /* 確保內容在基線對齊 */
-        }
-
-        .infoModal .info-value {
-            flex-grow: 1; /* 允許元素增長填充可用空間 */
-            text-align: left; /* 文本向左對齊 */
-            margin-left: 10px; /* 與左側標籤的間距 */
-        }
-
-
-        .infoModal .smallIMG {
-            max-height: 150px; /* 縮略圖的最大高度 */
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* 平滑過渡效果 */
-            border-radius: 50px; /* 輕微的邊角圓滑化 */
-            border: 2px solid transparent; /* 初始時透明的框線 */
-        }
-
-        /* 滑鼠懸停在小圖上時的樣式 */
-        .infoModal .smallIMG:hover {
-            transform: scale(1.05); /* 輕微放大 */
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 增加陰影 */
-            border-color: #007bff; /* 改變框線顏色 */
-        }
-
-        /* 滑鼠點擊小圖時的樣式 */
-        .infoModal .smallIMG:active {
-            transform: scale(0.95); /* 輕微縮小 */
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* 增加陰影 */
-        }
-
-        /* 縮略圖容器的設定 */
-        .infoModal .thumbnails-container {
-            display: flex;
-            justify-content: center; /* 縮略圖在容器中央對齊 */
-            gap: 50px; /* 縮略圖之間的間隙 */
-        }
-
-        /* 縮略圖的對齊設定 */
-        .infoModal .thumbnail-left {
-            margin-right: auto; /* 左邊縮略圖向右邊界靠攏 */
-        }
-
-        .infoModal .thumbnail-right {
-            margin-left: auto; /* 右邊縮略圖向左邊界靠攏 */
-        }
-    </style>
-</head>
+    <!--此頁面的CSS-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/BidItemManage.css">
 <body>
 
 <!--商品詳情模態框-->
 <div class="modal fade" id="bidItemInfoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h2 class="modal-title bidName">商品名稱</h2>
             </div>
             <div class="modal-body infoModal mb-3">
                 <div class="container pt-5">
                     <div class="row">
                         <div class="col-md-5">
                             <!-- 圖片 -->
-                            <div class="thumbnails-container">
-                                <div class="thumbnail-right">
-                                    <img src="${pageContext.request.contextPath}/images/clothing/clothing-1.jpg"
+                            <div class="imgContainer">
+                                <div>
+                                    <img src="#"
                                          class="img-fluid smallIMG" alt="商品主圖">
                                 </div>
-                                <div class="thumbnail-left">
-                                    <img src="${pageContext.request.contextPath}/images/clothing/clothing-2.jpg"
+                                <div>
+                                    <img src="#"
                                          class="img-fluid smallIMG" alt="商品附圖">
                                 </div>
                             </div>
@@ -102,29 +53,43 @@
                         <div class="col-md-7">
                             <!-- 商品資訊 -->
                             <div class="product-info">
-                                <div class="row mb-3">
-                                    <div class="col-md-8 d-flex align-items-center">
-                                        <h2>商品名稱</h2>
-                                    </div>
-                                </div>
+                                <dl class="row">
+                                    <dt class="col-sm-3">會員編號</dt>
+                                    <dd class="col-sm-9" id="memberId"></dd>
 
+                                    <dt class="col-sm-3">會員帳號</dt>
+                                    <dd class="col-sm-9" id="memberEmail"></dd>
 
-                                <div class="mb-3 d-flex align-items-baseline">
-                                    <div class="fw-bold min-width">新舊程度：</div>
-                                    <div class="info-value">新舊程度</div>
-                                    <div class="fw-bold min-width">商品尺寸：</div>
-                                    <div class="info-value">商品尺寸</div>
-                                </div>
+                                    <dt class="col-sm-3">會員名稱</dt>
+                                    <dd class="col-sm-9" id="memberName"></dd>
 
-                                <div class="mb-3 d-flex align-items-baseline">
-                                    <div class="fw-bold min-width">商品詳述：</div>
-                                    <div class="info-value">
-                                        <pre>商品詳述</pre>
-                                    </div>
-                                </div>
+                                    <dt class="col-sm-3">新舊程度</dt>
+                                    <dd class="col-sm-9" id="gradeName"></dd>
 
+                                    <dt class="col-sm-3">商品尺寸</dt>
+                                    <dd class="col-sm-9" id="sizeName"></dd>
+
+                                    <dt class="col-sm-3">商品類別</dt>
+                                    <dd class="col-sm-9" id="tagName"></dd>
+
+                                    <dt class="col-sm-3">起標價</dt>
+                                    <dd class="col-sm-9 modalPrice" id="startPrice"></dd>
+
+                                    <dt class="col-sm-3">底標價</dt>
+                                    <dd class="col-sm-9 modalPrice" id="reservePrice"></dd>
+
+                                    <dt class="col-sm-3">直標價</dt>
+                                    <dd class="col-sm-9 modalPrice" id="directPrice"></dd>
+
+                                    <dt class="col-sm-3">開始時間</dt>
+                                    <dd class="col-sm-9" id="startTime"></dd>
+
+                                    <dt class="col-sm-3">結束時間</dt>
+                                    <dd class="col-sm-9" id="endTime"></dd>
+                                </dl>
                             </div>
                         </div>
+
 
                     </div>
                 </div>
@@ -206,7 +171,7 @@
         <div class="container mt-5 ">
             <div class="row">
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-hover">
                         <thead>
                         <tr>
                             <th class="text-center align-middle">狀態</th>
@@ -524,16 +489,66 @@
             $.get("${pageContext.request.contextPath}/back_end/servlet/biditem/findGiven", {
                 bidItemId: bidItemId,
             }, function (data) {
-                const bidItem = JSON.parse(data.bidItem);
-                let startTime = data.startTime;
-                let endTime = data.endTime;
-                let mbrName = data.mbrName;
-                let mbrEmail = data.mbrEmail;
-                let mbrId = data.mbrId;
                 let isDoubleIMG = data.isDoubleIMG;
+                // 模態框節點
+                $("#memberId").text(data.mbrId);
+                $("#memberEmail").text(data.mbrEmail)
+                $("#memberName").text(data.mbrName)
+                $("#gradeName").text(data.grade);
+                $("#sizeName").text(data.size);
+                $("#tagName").text(data.tag);
+                $("#startPrice").text(transformPrice(data.startPrice));
+                $("#reservePrice").text(transformPrice(data.reservePrice));
+                $("#directPrice").text(transformPrice(data.directPrice));
+                $("#startTime").text(transformTime(data.startTime));
+                $("#endTime").text(transformTime(data.endTime));
+                toggleImages(!isDoubleIMG,bidItemId,"${pageContext.request.contextPath}");
             })
         })
     })
+
+    function toggleImages(hasTwoImages, bidItemId, contextPath) {
+        const imgContainer = $('.imgContainer');
+
+        // 清除現有的圖片
+        imgContainer.empty();
+
+        // 構建第一個圖片的 URL
+        let imgSrc1 = contextPath + "/ReadItemIMG/biditem?id=" + bidItemId + "&position=1";
+
+        // 始終添加第一個圖片
+        imgContainer.append('<div><img src="' + imgSrc1 + '" class="img-fluid smallIMG" alt="商品主圖"></div>');
+
+        // 如果需要第二個圖片，則添加
+        if (hasTwoImages) {
+            // 構建第二個圖片的 URL
+            let imgSrc2 = contextPath + "/ReadItemIMG/biditem?id=" + bidItemId + "&position=2";
+
+            imgContainer.append('<div><img src="' + imgSrc2 + '" class="img-fluid smallIMG" alt="商品附圖"></div>');
+        }
+    }
+
+    function transformPrice(price) {
+        if (price === "0") {
+            return "無";
+        } else {
+            return "$" + parseInt(price).toLocaleString();
+        }
+    }
+
+    function transformTime(timeString) {
+        if (timeString === "0") {
+            return "無";
+        } else {
+            let date = new Date(parseInt(timeString));
+            let year = date.getFullYear();
+            let month = (date.getMonth() + 1).toString().padStart(2, '0');
+            let day = date.getDate().toString().padStart(2, '0');
+            let hours = date.getHours().toString().padStart(2, '0');
+            let minutes = date.getMinutes().toString().padStart(2, '0');
+            return year + "/" + month + "/" + day + " " + hours + ":" + minutes;
+        }
+    }
 </script>
 
 </body>

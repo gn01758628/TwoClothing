@@ -5,6 +5,7 @@ import com.twoclothing.chenghan.NumberMapping;
 import com.twoclothing.chenghan.service.BidItemService;
 import com.twoclothing.chenghan.service.BidItemServiceImpl;
 import com.twoclothing.model.abid.biditem.BidItem;
+import com.twoclothing.model.categorytags.CategoryTags;
 import com.twoclothing.model.employee.Employee;
 import com.twoclothing.model.members.Members;
 import com.twoclothing.redismodel.notice.Notice;
@@ -55,30 +56,32 @@ public class BidItemBackServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         Integer bidItemId = Integer.parseInt(request.getParameter("bidItemId"));
         BidItem bidItem = bidItemService.getBidItemByBidItemId(bidItemId);
+        CategoryTags tag = bidItemService.getCategoryTagsByTagId(bidItem.getTagId());
         Integer mbrId = bidItem.getMbrId();
         Members member = bidItemService.getMembersByMbrId(mbrId);
         boolean isDoubleIMG = bidItemService.isDoubleImaged(bidItemId);
-        Map<String,String> messages = new HashMap<>();
+        Map<String, String> messages = new HashMap<>();
 
 
         Timestamp startTime = bidItem.getStartTime();
-        String startTimeStr = "0";
-        if (startTime != null) {
-            startTimeStr = String.valueOf(startTime.getTime());
-        }
+        String startTimeStr = startTime != null ? String.valueOf(startTime.getTime()) : "0";
         Timestamp endTime = bidItem.getEndTime();
-        String endTimeStr = "0";
-        if (endTime != null) {
-            endTimeStr = String.valueOf(endTime.getTime());
-        }
+        String endTimeStr = endTime != null ? String.valueOf(endTime.getTime()) : "0";
+        messages.put("isDoubleIMG", String.valueOf(isDoubleIMG));
+        messages.put("mbrId", String.valueOf(mbrId));
+        messages.put("mbrEmail", member.getEmail());
+        messages.put("mbrName", member.getMbrName());
+        messages.put("grade", NumberMapping.gradeMap.get(bidItem.getGrade()));
+        messages.put("size", NumberMapping.sizeMap.get(bidItem.getSize()));
+        messages.put("tag",tag.getCategoryName());
+        messages.put("startPrice", String.valueOf(bidItem.getStartPrice()));
+        String reservePrice = bidItem.getReservePrice() == null ? "0" : String.valueOf(bidItem.getReservePrice());
+        String directPrice = bidItem.getDirectPrice() == null ? "0" : String.valueOf(bidItem.getDirectPrice());
+        messages.put("reservePrice", reservePrice);
+        messages.put("directPrice", directPrice);
+        messages.put("startTime", startTimeStr);
+        messages.put("endTime", endTimeStr);
 
-        messages.put("isDoubleIMG",String.valueOf(isDoubleIMG));
-        messages.put("bidItem",gson.toJson(bidItem));
-        messages.put("startTime",startTimeStr);
-        messages.put("endTime",endTimeStr);
-        messages.put("mbrName",member.getMbrName());
-        messages.put("mbrEmail",member.getEmail());
-        messages.put("mbrId",String.valueOf(mbrId));
         out.write(gson.toJson(messages));
     }
 
