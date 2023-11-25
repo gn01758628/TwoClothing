@@ -72,7 +72,7 @@ body {
 
 .card .itemName {
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* 限制在兩行內 */
+    -webkit-line-clamp: 1; /* 限制在兩行內 */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis; /* 文本溢出顯示省略號 */
