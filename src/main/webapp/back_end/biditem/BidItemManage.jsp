@@ -118,7 +118,8 @@
                                 </td>
                                 <td class="text-center align-middle td-empName">${employeeMap[bidItem.bidItemId].empName}</td>
                                 <td class="text-center align-middle">
-                                    <a href="#" class="btn btn-primary btn-sm mt-2 mb-2">商品詳情</a>
+                                    <a href="#" class="btn btn-primary btn-sm mt-2 mb-2 bidItemInfo"
+                                       data-bid-item-id="${bidItem.bidItemId}">商品詳情</a>
                                     <br>
                                     <c:if test="${bidItem.bidStatus == 0}">
                                         <input type="hidden" value="${bidItem.bidName}">
@@ -362,19 +363,19 @@
                 bidStatusValue === "" &&
                 empIdValue === ""
             ) {
-                Swal.fire("搜尋條件出現錯誤","至少填寫一項搜尋條件","error");
+                Swal.fire("搜尋條件出現錯誤", "至少填寫一項搜尋條件", "error");
                 event.preventDefault();
             }
 
             // 2. 如果有會員編號，則必須是有效數字
             if (mbrIdValue !== "" && !/^[1-9]\d*$/.test(mbrIdValue)) {
-                Swal.fire("搜尋條件出現錯誤","會員編號必須是有效數字","error");
+                Swal.fire("搜尋條件出現錯誤", "會員編號必須是有效數字", "error");
                 event.preventDefault();
             }
 
             // 3. 如果有競標商品編號，則必須是有效數字
             if (bidItemIdValue !== "" && !/^[1-9]\d*$/.test(bidItemIdValue)) {
-                Swal.fire("搜尋條件出現錯誤","商品編號必須是有效數字","error");
+                Swal.fire("搜尋條件出現錯誤", "商品編號必須是有效數字", "error");
                 event.preventDefault();
             }
         });
@@ -396,6 +397,22 @@
             $("#empId").val(formData.empIdValue);
         }
     });
+</script>
+<!--查看商品詳情-->
+<script>
+    $(document).ready(function () {
+        const bidItemInfo_BTN = $(".bidItemInfo");
+        bidItemInfo_BTN.click(function (e) {
+            e.preventDefault();
+            let bidItemId = $(this).data('bid-item-id');
+            // Ajax請求商品詳情
+            $.get("${pageContext.request.contextPath}/back_end/servlet/biditem/findGiven", {
+                bidItemId: bidItemId,
+            }, function (data) {
+                console.log(data);
+            })
+        })
+    })
 </script>
 
 </body>
