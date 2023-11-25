@@ -26,7 +26,8 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <!--你們自己的css-->
     <!--不是外部檔案也無所謂-->
-
+    
+    <!--側邊連結css-->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
 
     <!--導覽列css-->
@@ -63,8 +64,7 @@
 </div>
 </div>
 
-<div class="clear"></div>
-<div id="footer"></div>
+
 
 <br><br><br><br><br><br><br>
 <div class="footerHTML"></div>

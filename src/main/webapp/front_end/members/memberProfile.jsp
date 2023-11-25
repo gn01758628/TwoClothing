@@ -38,11 +38,46 @@
         left: 400px;
         
     }
-/* 	#shopImage02Container { */
-/* 	    position: relative; */
-/* 	    top: -150px; */
-/* 	    left: 400px; */
-/* 	} */
+
+/* 	#avatar-icon { 
+         position: absolute; 
+/        top: 280px;  
+         left: 730px; 
+        
+     } */
+	#avatar-icon {
+        position: relative;
+        top: -820px; 
+        left: 400px;
+        
+    }
+	#shopImage01-icon {
+        position: relative;
+        top: -370px; 
+        left: -60px;
+        
+    }
+	#shopImage02-icon {
+        position: relative;
+        top: -220px; 
+        left: -100px;
+        
+    }
+ 
+	#shopImage01Form {
+        position: relative;
+        top: -335px; 
+        left: 0px;
+        
+    }
+	#shopImage02Form {
+        position: relative;
+        top: -189px; 
+        left: 0px;
+        
+    }
+
+
 	
     #avataruploadFormContainer {
         margin-top: 0px; 
@@ -217,29 +252,14 @@
 	<label for="shopImage01Input">
 		<img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg01" width="150px" height="150px" >
 	</label>	
-	<div id="shopImage01uploadFormContainer" style="display: none;">	
-		<form METHOD="post" action="${pageContext.request.contextPath}/members/Members.do" id="shopImage01Form" enctype="multipart/form-data"  >
-			<input type="file" id="shopImage01Input" name="shopImage01" accept="image/*" style="display: none;">
-		    <input type="hidden" name="mbrId" value="${user.mbrId}">
-		    <input type="hidden" name="action" value="members_UpdateImage"  >
-		     <input id="shopImage01submitButton" type="submit" value="修改商場圖片01" >
-		</form>
-		   
-	</div>
+
 </div>
 <div id="shopImage02Container"style="width: 150px; display: inline-block;" > 		
 
 	<label for="shopImage02Input">
 		<img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg02" width="150px" height="150px" >
 	</label>	
-	<div id="shopImage02uploadFormContainer" style="display: none;">	
-		<form METHOD="post" action="${pageContext.request.contextPath}/members/Members.do" id="shopImage02Form" enctype="multipart/form-data"  > 
-		    <input type="file" id="shopImage02Input" name="shopImage02" accept="image/*" style="display: none;">
-		    <input type="hidden" name="mbrId" value="${user.mbrId}">
-			<input type="hidden" name="action" value="members_UpdateImage"  >
-		    <input id="shopImage02submitButton" type="submit" value="修改商場圖片02">
-		</form>
-	</div>
+	
 </div>
 <div id="avatarContainer" style="
     width: 150px;">
@@ -258,11 +278,26 @@
     </div>
      
 </div>
- 		
-<br></br><br></br>
-
-
-
+<img src="${pageContext.request.contextPath}/images/camera.png" id="avatar-icon" class="camera-icon rounded-circle" style="width: 40px; height: 40px; ">
+<img src="${pageContext.request.contextPath}/images/camera.png" id="shopImage01-icon" class="camera-icon rounded-circle" style="width: 40px; height: 40px; ">
+<img src="${pageContext.request.contextPath}/images/camera.png" id="shopImage02-icon" class="camera-icon rounded-circle" style="width: 40px; height: 40px; ">
+	<div id="shopImage01uploadFormContainer" style="display: none;">	
+		<form METHOD="post" action="${pageContext.request.contextPath}/members/Members.do" id="shopImage01Form" enctype="multipart/form-data"  >
+			<input type="file" id="shopImage01Input" name="shopImage01" accept="image/*" style="display: none;">
+		    <input type="hidden" name="mbrId" value="${user.mbrId}">
+		    <input type="hidden" name="action" value="members_UpdateImage"  >
+		     <input id="shopImage01submitButton" type="submit" value="修改商場圖片01" >
+		</form><!-- 修改商場圖片01 -->
+		   
+	</div>
+	<div id="shopImage02uploadFormContainer" style="display: none;">	
+		<form METHOD="post" action="${pageContext.request.contextPath}/members/Members.do" id="shopImage02Form" enctype="multipart/form-data"  > 
+		    <input type="file" id="shopImage02Input" name="shopImage02" accept="image/*" style="display: none;">
+		    <input type="hidden" name="mbrId" value="${user.mbrId}">
+			<input type="hidden" name="action" value="members_UpdateImage"  >
+		    <input id="shopImage02submitButton" type="submit" value="修改商場圖片02">
+		</form><!-- 修改商場圖片02 -->
+	</div>
 </div>
 </div>
 </div>
@@ -304,13 +339,20 @@ var contextPath = "${pageContext.request.contextPath}";
       // 在這裡添加將新值提交給後端的邏輯
     }
   }
-
+//
+   document.getElementById('avatar-icon').addEventListener('click', function() {
+        // 觸發檔案選擇
+        document.getElementById('avatarInput').click();
+    });
 	document.getElementById('avatarInput').addEventListener('change', function() {
 	    // 處理選擇檔案後的邏輯，例如顯示檔案名稱或預覽圖片
 	    var fileName = this.files[0].name;
 	    console.log('選擇的檔案：', fileName);
 
 	    // 顯示上傳表單
+	    document.getElementById('shopImage02-icon').style.display = 'none';
+	    document.getElementById('shopImage01-icon').style.display = 'none';
+	    document.getElementById('avatar-icon').style.display = 'none';
 	    document.getElementById('avataruploadFormContainer').style.display = 'block';
 	});
 
@@ -318,11 +360,18 @@ var contextPath = "${pageContext.request.contextPath}";
 	    // 觸發表單提交
 	    document.getElementById('avatarForm').submit();
 	});
-
+//
+	   document.getElementById('shopImage01-icon').addEventListener('click', function() {
+	        // 觸發檔案選擇
+	        document.getElementById('shopImage01Input').click();
+	    });
 	    document.getElementById('shopImage01Input').addEventListener('change', function() {
 	        var fileName = this.files[0].name;
 	        console.log('選擇的檔案：', fileName);
 
+	        document.getElementById('shopImage02-icon').style.display = 'none';
+		    document.getElementById('shopImage01-icon').style.display = 'none';
+		    document.getElementById('avatar-icon').style.display = 'none';
 	        document.getElementById('shopImage01uploadFormContainer').style.display = 'block';
 	    });
 
@@ -331,13 +380,20 @@ var contextPath = "${pageContext.request.contextPath}";
 	    });
 
 	
-	
+//	
+    document.getElementById('shopImage02-icon').addEventListener('click', function() {
+        // 觸發檔案選擇
+        document.getElementById('shopImage02Input').click();
+    });
 	document.getElementById('shopImage02Input').addEventListener('change', function() {
 	    // 處理選擇檔案後的邏輯，例如顯示檔案名稱或預覽圖片
 	    var fileName = this.files[0].name;
 	    console.log('選擇的檔案：', fileName);
 
 	    // 顯示上傳表單
+	    document.getElementById('shopImage02-icon').style.display = 'none';
+	    document.getElementById('shopImage01-icon').style.display = 'none';
+	    document.getElementById('avatar-icon').style.display = 'none';
 	    document.getElementById('shopImage02uploadFormContainer').style.display = 'block';
 	});
 
