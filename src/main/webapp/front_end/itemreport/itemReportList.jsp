@@ -106,8 +106,8 @@
 	    }
 	    
 	    .table thead th:nth-child(2), .table tbody td:nth-child(3) {
-	    	min-width: 100px;
-	        max-width: 100px;
+	    	min-width: 120px;
+	        max-width: 120px;
 	    }
 	
 	    .table thead th:nth-child(3), .table tbody td:nth-child(4),
