@@ -448,12 +448,42 @@ public class ItemCartServlet extends HttpServlet {
             	
         		
         	}
+        	
+        	//買家購買回饋5%(會員點數++)
+        	//折扣後金額*5%
+        	Integer totalPay = Integer.valueOf(req.getParameter("totalPay"));
+        	Integer mbrPointAdd =Integer.valueOf((int)(Math.round(totalPay*0.05)));
+        	System.out.println("mbrPointAdd"+mbrPointAdd);
+        	
+        	PointHistory pointHistory = new PointHistory();
+			
+			//取訂單編號
+//			if(!req.getParameter("orderId").trim().isEmpty() ) {
+//				int orderId =Integer.parseInt(req.getParameter("orderId"));
+//			}
+			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+			
+			pointHistory.setMbrId(mbrId);
+			pointHistory.setOrderId(1);//從訂單取
+			//異動時間1/訂單完成(+) 2/訂單確認(-)
+			pointHistory.setChangeDate(currentTime);			
+			pointHistory.setChangeValue(mbrPointAdd);
+			
+			int pointHistoryPK = PHSvc.addPH(pointHistory);
+			
+			//會員表格點數同步加點
+        	Members mem=memSvc.getByPrimaryKey(mbrId);
 
+    		Integer newPoint = mem.getMbrPoint()+mbrPointAdd;
+    		System.out.println("newPoint"+newPoint);
+    		mem.setMbrPoint(newPoint);
+    		memSvc.updateMembers(mem);
+        	
+        	
+        	
         	//買家若用虛擬錢包，扣錢包與新增異動//如果==2代表選擇虛擬錢包付款
             Integer payment = Integer.valueOf(req.getParameter("payment"));//付款方式
-            Integer totalPay = Integer.valueOf(req.getParameter("totalPay"));//要付總額
             if(payment == 2) {
-            	Members mem=memSvc.getByPrimaryKey(mbrId);
             	Integer newBalance = mem.getBalance()-totalPay;
             	mem.setBalance(newBalance);
             	memSvc.updateMembers(mem);
@@ -465,13 +495,13 @@ public class ItemCartServlet extends HttpServlet {
 //    			if(!req.getParameter("orderId").trim().isEmpty() ) {
 //    				int orderId =Integer.parseInt(req.getParameter("orderId"));
 //    			}
-    			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+    			Timestamp currentTime2 = new Timestamp(System.currentTimeMillis());
     			
     			balanceHistory.setMbrId(mbrId);
     			balanceHistory.setOrderId(1);//從訂單取
     			balanceHistory.setWrId(null);
     			//異動時間1/訂單完成(+) 2/訂單確認(-)
-    			balanceHistory.setChangeDate(currentTime);			
+    			balanceHistory.setChangeDate(currentTime2);			
     			balanceHistory.setChangeValue(totalPay*-1);
     			
     			int balanceHistoryPK = BHSvc.addBH(balanceHistory);            	
@@ -492,9 +522,9 @@ public class ItemCartServlet extends HttpServlet {
 			
 			MembersCoupon membersCoupon = (MembersCoupon)couponDAO.getByPrimaryKey(memcoupon);
 			if(membersCoupon!=null) {
-				Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+				Timestamp currentTime3 = new Timestamp(System.currentTimeMillis());
 				membersCoupon.setCouponStatus(1);
-				membersCoupon.setUseDate(currentTime);
+				membersCoupon.setUseDate(currentTime3);
 				boolean boo = couponDAO.update(membersCoupon);
 				
 			}
