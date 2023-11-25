@@ -214,42 +214,7 @@ public class BidOrderServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			Integer bidOrderId = Integer.valueOf(req.getParameter("bidOrderId"));
-//////////////////////////////TEST
-//				Integer bidItemId = null;
-//				String bidItemIdStr = req.getParameter("bidItemId");
-//				if (bidItemIdStr != null && !bidItemIdStr.isEmpty()) {
-//				    bidItemId = Integer.parseInt(bidItemIdStr);
-//				}
-//				Integer buyMbrId = null;
-//				String buyMbrIdStr = req.getParameter("buyMbrId");
-//				if (buyMbrIdStr != null && !buyMbrIdStr.isEmpty()) {
-//					buyMbrId = Integer.parseInt(buyMbrIdStr);
-//				}
-//				Integer sellMbrId = null;
-//				String sellMbrIdStr = req.getParameter("sellMbrId");
-//				if (sellMbrIdStr != null && !sellMbrIdStr.isEmpty()) {
-//					sellMbrId = Integer.parseInt(sellMbrIdStr);
-//				}
-//				Integer amount = null;
-//				String amountStr = req.getParameter("amount");
-//				if (amountStr != null && !amountStr.isEmpty()) {
-//					amount = Integer.parseInt(amountStr);
-//				}
-//				Timestamp orderDate = null;
-//				
-//				
-//				String dateStr = req.getParameter("orderDate");
-//
-//				if (dateStr != null && !dateStr.isEmpty()) {
-//				    try {
-//				        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//				        LocalDateTime localDateTime = LocalDateTime.parse(dateStr, formatter);
-//				         orderDate = Timestamp.valueOf(localDateTime);
-//				    } catch (DateTimeParseException e) {
-//				        e.printStackTrace();
-//				    }
-//				}
-////////////////////////////TEST
+
 
 			Integer buyStar = null;
 			try {
@@ -341,15 +306,7 @@ public class BidOrderServlet extends HttpServlet {
 			}
 
 			BidOrder bidOrder1 = new BidOrder();
-//////////////////////////////TEST		
-//		bidOrder1.setBidItemId(bidItemId);
-//		bidOrder1.setBuyMbrId(buyMbrId);
-//		bidOrder1.setSellMbrId(sellMbrId);
-//		bidOrder1.setAmount(amount);
-//		bidOrder1.setOrderDate(orderDate);
-//		
-//		
-//////////////////////////////TEST		
+
 
 			bidOrder1.setBidOrderId(bidOrderId);
 			bidOrder1.setBuyStar(buyStar);
@@ -390,18 +347,7 @@ public class BidOrderServlet extends HttpServlet {
 			bidOrderServiceImpl.deleteBidOrder(bidOrderId);
 
 			/*************************** 3.刪除完成,準備轉交(Send the Success view) ***********/
-			// 原來的 String url = "/MemberCentre.jsp";
-			// ok String url =
-			// "/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId="+mbrId;
-			// ok RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交
-			// listOneEmp.jsp
-			// ok successView.forward(req, res);
 
-//			    String url1 = "/bidorder/BidOrder.do?action=getAll_For_MbrId&bidOrderId="+bidOrderId;
-
-//			    String url1 = "/back_end/bidorder/listAllBidOrder.jsp";
-//
-//				res.sendRedirect(url1);
 
 			String url = "/back_end/bidorder/listAllBidOrder.jsp";
 
@@ -445,31 +391,17 @@ public class BidOrderServlet extends HttpServlet {
 			 Members members = null;
 			if (userObject instanceof Members) {
 			     members = (Members) userObject;
-			    System.out.println("aaaaaaaaaaaaaa");
 			    
 			} else {
 			    System.out.println("Session 中的 'user' 對象不是 Members 類型。");
 			}
 			Integer buyMbrId =members.getMbrId();
-//			Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
 			Integer OrderStatus = 0;
 			/*************************** 2.開始查詢資料 ****************************************/
 			List<BidOrder> bidOrder = bidOrderServiceImpl.getAllOrderStatusAndBuyer(OrderStatus, buyMbrId);
 			
 
-//			Map<Integer, String> bidOrderMap = new HashMap<>();
-//
-//		    for (BidOrder bidOrder1 : bidOrder) {
-//		        Integer bidItemId = bidOrder1.getBidItemId();
-//		        Integer bidOrderId = bidOrder1.getBidOrderId();
-//		        BidItem bidItem = bidItemServiceImpl.getBidItemByBidItemId(bidItemId);
-//		        String bidName = bidItem.getBidName();
-//		        
-//		        bidOrderMap.put(bidOrderId, bidName);
-//		    }
-//		    req.setAttribute("BidOrderMap", bidOrderMap);
 
-			
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
 		    req.setAttribute("BidOrder", bidOrder);
@@ -478,11 +410,11 @@ public class BidOrderServlet extends HttpServlet {
 			successView.forward(req, res);
 
 		}
-		/*********************** 買家競標付款的查詢**************************/
-		/*********************** 買家競標付款的查詢**************************/
-		/*********************** 買家競標付款的查詢**************************/
-		/*********************** 買家競標付款的查詢**************************/
-		/*********************** 買家競標付款的查詢**************************/
+		/*********************** 買家競標付款的查詢前往結帳**************************/
+		/*********************** 買家競標付款的查詢前往結帳**************************/
+		/*********************** 買家競標付款的查詢前往結帳**************************/
+		/*********************** 買家競標付款的查詢前往結帳**************************/
+		/*********************** 買家競標付款的查詢前往結帳**************************/
 	
 		if ("pay_And_Address".equals(action)) {
 			/*************************** 1.接收請求參數 ***************************************/
@@ -547,7 +479,6 @@ public class BidOrderServlet extends HttpServlet {
 			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
-System.out.println("aaaa");
 
 			Integer amount = Integer.valueOf(req.getParameter("amount"));
 			Integer bidOrderId = Integer.valueOf(req.getParameter("bidOrderId"));
@@ -735,14 +666,7 @@ System.out.println("aaaa");
 		if ("buyer_auction_receipt".equals(action)) {
 			/*************************** 1.接收請求參數 ***************************************/
 
-//			String data = req.getParameter("data");
-//			String[] values = data.split(",");
-//			
-//			    Integer amount = Integer.valueOf(values[0]);
-//			    Integer sellMbrId = Integer.valueOf(values[1]);
-//			    Integer buyMbrId = Integer.valueOf(values[2]);
-//			    Integer bidOrderId = Integer.valueOf(values[3]);
-//			
+		
 			Integer amount = Integer.valueOf(req.getParameter("amount"));
 			Integer sellMbrId = Integer.valueOf(req.getParameter("sellMbrId"));
 			Integer buyMbrId = Integer.valueOf(req.getParameter("buyMbrId"));
@@ -756,7 +680,7 @@ System.out.println("aaaa");
 			bidOrderServiceImpl.updateAll(bidOrder);
 			
 			
-	///////////賣家////////////////////////////////////////////
+	///////////賣家加錢////////////////////////////////////////////
 			
 					Members members = membersServiceImpl.getByPrimaryKey(sellMbrId);
 					Integer balance = members.getBalance();
@@ -1044,7 +968,6 @@ System.out.println("aaaa");
 			 Members members = null;
 			if (userObject instanceof Members) {
 			     members = (Members) userObject;
-			    System.out.println("aaaaaaaaaaaaaa");
 			    
 			} else {
 			    System.out.println("Session 中的 'user' 對象不是 Members 類型。");

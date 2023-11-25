@@ -98,7 +98,6 @@
 									<input type="submit" value="訂單詳情"> 
 									<input type="hidden" name="bidOrderId"value="${BidOrder.bidOrderId}"> 
 									<input type="hidden" name="bidItemId" value="${BidOrder.bidItemId}">
-									<input type="hidden" name="buyMbrId" value="${user.mbrId}">
 									<input type="hidden" name="action" value="bidOrderBidItem">
 								</FORM>
 							</td>
