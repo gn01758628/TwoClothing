@@ -28,6 +28,36 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <!--此頁面的css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/BidItemDetail.css">
+    <!--檢舉膜態框css-->
+    <style>
+    	.report {
+        	width: 100%;
+        }
+        
+        .report-body {
+  			display: flex;
+        	align-items: center;
+        	justify-content: center;
+        }
+        
+        .title-description {
+        	margin-top: 10px;
+        }
+        
+        td.bidItemId {
+        	padding-left: 19px;
+        }
+        
+        .inputDescription {
+        	margin-top: 10px;
+        	margin-left: 16px;
+        }
+        
+        .modal-footer button:hover, button:focus, button:active, button:visited {
+        	outline: none;
+	    	box-shadow: none !important;
+        }
+    </style>
     <!--導覽列css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
     <!--頁尾css-->
@@ -303,26 +333,26 @@
 </div>
 
 <!-- 檢舉模態框 -->
-<div class="modal fade" id="biditemReportModal" tabindex="-1" aria-labelledby="biditemReportModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
+<div class="modal fade" id="bidItemReportModal" tabindex="-1" aria-labelledby="bidItemReportModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg report">
 		<div class="modal-content">
 	      	<div class="modal-header">
-	      		<h5 class="modal-title" id="biditemReportModalLabel">商品檢舉</h5>
+	      		<h5 class="modal-title" id="bidItemReportModalLabel">商品檢舉</h5>
 	      	</div>
 	      		
-	      	<div class="modal-body">
+	      	<div class="modal-body report-body">
 			    <div class="card" style="width: 45rem;">
 				    <div class="card-body">
 					    <table>
 							<tr>
 								<td>商品編號</td>
-								<td id="biditemId" class="biditemId"></td>
+								<td id="bidItemId" class="bidItemId"></td>
 							</tr>
 							<tr>
 								<td>
 									<div class="title-description">檢舉原因</div></td>
 								<td>
-									<input type="text" id="inputDescription" class="inputDescription" name="inputDescription" size="72"/>
+									<input type="text" id="inputDescription" class="inputDescription" name="inputDescription" size="63"/>
 								</td>
 							</tr>
 						</table>
@@ -387,9 +417,9 @@
         	window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
     	</c:if>
     	
-	    $('#biditemId').text(biditemId);
-	    let html = `<li class="list-group-item" id="report">An biditemreport</li>`;
-	    $('#biditemReportModal').modal('show');
+	    $('#bidItemId').text(bidItemId);
+	    let html = `<li class="list-group-item" id="report">An bidItemreport</li>`;
+	    $('#bidItemReportModal').modal('show');
 	}
 	
 	function insertReport() {
@@ -398,13 +428,13 @@
 			return;
 		}
 		
-		var url = "${pageContext.request.contextPath}/front/biditemreport?action=insert&itemId=${item.itemId}&description=" + $('#inputDescription').val();
+		var url = "${pageContext.request.contextPath}/front/biditemreport?action=insert&bidItemId=${bidItem.bidItemId}&description=" + $('#inputDescription').val();
 					
 		$.ajax({
 			type: "POST",
 			url: url,
 			success: function (data) {
-				$('#biditemReportModal').modal('hide');
+				$('#bidItemReportModal').modal('hide');
 				
 				Swal.fire({
 					backdrop: false,

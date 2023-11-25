@@ -6,7 +6,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>ItemReport</title>
+	<title>BidItemReport</title>
 	<!-- 頁籤icon -->
 	<link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
 	<!-- bootstrap5 css -->
@@ -176,26 +176,20 @@
     </div>
 
 	<div class="container mt-3 main">
-		<c:if test="${not empty errorMsgs}">
-			<font style="color: red">請重新確認</font>
-			<ul>
-				<c:forEach var="message" items="${errorMsgs}">
-					<li style="color: red">${message}</li>
-				</c:forEach>
-			</ul>
-		</c:if>
-	
-	<!-- 	<div class="page"> -->
-	<%-- 		<c:if test="${itemReportPageQty > 0}"> --%>
-	<%-- 			<b><font color=red>第${currentPage}/${itemReportPageQty}頁</font></b> --%>
-	<%-- 		</c:if> --%>
-	<!-- 	</div> -->
+<%-- 		<c:if test="${not empty errorMsgs}"> --%>
+<!-- 			<font style="color: red">請重新確認</font> -->
+<!-- 			<ul> -->
+<%-- 				<c:forEach var="message" items="${errorMsgs}"> --%>
+<%-- 					<li style="color: red">${message}</li> --%>
+<%-- 				</c:forEach> --%>
+<!-- 			</ul> -->
+<%-- 		</c:if> --%>
 	
 		<table class="table table-hover">
 			<thead class="thead-primary">
 				<tr>
 					<th>編號</th>
-					<th>商品</th>
+					<th>競標</th>
 					<th>檢舉日期</th>
 					<th>檢舉原因</th>
 					<th>審核狀態</th>
@@ -205,46 +199,46 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="itemReport" items="${itemReportList}" varStatus="loop">
+				<c:forEach var="bidItemReport" items="${bidItemReportList}" varStatus="loop">
 					<tr>
 						<td class="statusloop">${loop.index+1}</td>
-						<td>${itemReport.reportId}</td>
+						<td>${bidItemReport.reportId}</td>
 						<td>
 							<p>
 								<c:choose>
-									<c:when test="${fn:length(itemNameMap[itemReport.itemId]) > 10}">
-										<a href="${pageContext.request.contextPath}/Itemfront/itemlist?goto=${itemReport.itemId}">${fn:substring(itemNameMap[itemReport.itemId], 0, 10)}...</a>
+									<c:when test="${fn:length(bidItemNameMap[bidItemReport.bidItemId]) > 10}">
+										<a href="${pageContext.request.contextPath}/front/biditem/anyone/detail?bidItemId=${bidItemReport.bidItemId}">${fn:substring(bidItemNameMap[bidItemReport.bidItemId], 0, 10)}...</a>
 									</c:when>
 									<c:otherwise>
-										<a href="${pageContext.request.contextPath}/Itemfront/itemlist?goto=${itemReport.itemId}">${itemNameMap[itemReport.itemId]}</a>
+										<a href="${pageContext.request.contextPath}/front/biditem/anyone/detail?bidItemId=${bidItemReport.bidItemId}">${bidItemNameMap[bidItemReport.bidItemId]}</a>
 									</c:otherwise>
 								</c:choose>
 							</p>
 						</td>
-						<td>${itemReport.reportDate}</td>
+						<td>${bidItemReport.reportDate}</td>
 						<td>
 							<p>
 								<c:choose>
-									<c:when test="${fn:length(itemReport.description) > 10}">
-										${fn:substring(itemReport.description, 0, 10)}...
+									<c:when test="${fn:length(bidItemReport.bidDescription) > 10}">
+										${fn:substring(bidItemReport.bidDescription, 0, 10)}...
 									</c:when>
 									<c:otherwise>
-										${itemReport.description}
+										${bidItemReport.bidDescription}
 									</c:otherwise>
 								</c:choose>
 							</p>
 						</td>
-						<td class="status">${rStatusMap[itemReport.rStatus]}</td>
-						<td>${itemReport.auditDate}</td>
-						<td>${resultMap[itemReport.result]}</td>
+						<td class="status">${bidStatusMap[bidItemReport.bidStatus]}</td>
+						<td>${bidItemReport.auditDate}</td>
+						<td>${resultMap[bidItemReport.result]}</td>
 						<td>
 							<p>
 								<c:choose>
-									<c:when test="${fn:length(itemReport.note) > 11}">
-										${fn:substring(itemReport.note, 0, 11)}...
+									<c:when test="${fn:length(bidItemReport.note) > 11}">
+										${fn:substring(bidItemReport.note, 0, 11)}...
 									</c:when>
 									<c:otherwise>
-										${itemReport.note}
+										${bidItemReport.note}
 									</c:otherwise>
 								</c:choose>
 							</p>
@@ -253,25 +247,6 @@
 				</c:forEach>
 			</tbody>
 		</table>
-		
-<!-- 		<div class="page-container"> -->
-<%-- 			<c:if test="${not empty itemReportList}"> --%>
-<%-- 			    <a class="btn page" href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId&page=1">&lt;&lt;</a> --%>
-	
-<%-- 			    <c:forEach var="i" begin="1" end="${itemReportPageQty}"> --%>
-<%-- 			        <c:choose> --%>
-<%-- 			            <c:when test="${currentPage eq i}"> --%>
-<%-- 			                <a class="btn page" href="#">${i}</a> --%>
-<%-- 			            </c:when> --%>
-<%-- 			            <c:otherwise> --%>
-<%-- 			                <a class="btn page" href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId&page=${i}">${i}</a> --%>
-<%-- 			            </c:otherwise> --%>
-<%-- 			        </c:choose> --%>
-<%-- 			    </c:forEach> --%>
-			    
-<%-- 			    <a class="btn page" href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId&page=${itemReportPageQty}">&gt;&gt;</a> --%>
-<%-- 			</c:if> --%>
-<!-- 		</div> -->
 	</div>
 	
 	<div class="footerHTML"></div>

@@ -15,6 +15,9 @@
         ul.bidOrder-menu {
             display: none;
         }
+        ul.order-menu {
+            display: none;
+        }
 
 
     </style>
@@ -31,8 +34,8 @@
 <ul  class="account-menu">
     <li class="lf_li1"><a href="${pageContext.request.contextPath}/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>
     <li class="lf_li1"><a href="${pageContext.request.contextPath}/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">物流設定</a></li>
-    <li class="lf_li1"><a href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId">我的收藏</a></li>
-    <li class="lf_li1"><a href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId">我的檢舉</a></li>
+    <li class="lf_li1"><a href="${pageContext.request.contextPath}/MemberCouponServlet.check?action=get_Member_Coupon">我的優惠券</a></li>
+    <li class="lf_li1"><a href="${pageContext.request.contextPath}/blacklist?action=getAllByMbrId">黑名單</a></li>
     <li class="lf_li1"><a href="${pageContext.request.contextPath}/WithdrawRequest/withdraw.check?choice=add">虛擬錢包提款申請</a></li>
     <li class="lf_li1"><a href="${pageContext.request.contextPath}/WithdrawRequest/withdraw.check?choice=search">虛擬錢包申請查詢</a></li>
     <li class="lf_li1"><a href="${pageContext.request.contextPath}/BalanceHistory/balance.check?choice=searchMbrId">虛擬錢包異動查詢</a></li>
@@ -48,9 +51,19 @@
 <li class="lf_li1"><a href="${pageContext.request.contextPath}/front_end/biditem/BidItemParticipate.html">參與中的競標</a></li>
 <li class="lf_li1"><a href="${pageContext.request.contextPath}/front_end/biditem/BidItemViewHistory.html">競標商品瀏覽紀錄</a></li>
 <li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0">買家訂單</a></li>
-<%-- <li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">買家訂單</a></li> --%>
 <li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0">賣家訂單</a></li>
-<%-- <li class="lf_li1"><a href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=sellBidOrder0&sellMbrId=${user.mbrId}">賣家訂單</a></li> --%>
+<li class="lf_li1"><a href="<%=request.getContextPath()%>/front/biditemreport?action=getAllByMbrId">競標檢舉</a></li>
+</ul>
+
+
+<h2 id="orderHeading">一般商品相關</h2>
+<ul class="order-menu">
+<li class="lf_li1"><a href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId">我的收藏</a></li>
+<li class="lf_li1"><a href="${pageContext.request.contextPath}/follow?action=getAllByMbrId">我的追蹤商品</a></li>
+<li class="lf_li1"><a href="${pageContext.request.contextPath}/itembrowsing.redis?action=getAllByMbrId">我的瀏覽紀錄</a></li>
+<li class="lf_li1"><a href="${pageContext.request.contextPath}/itemorder/itemorder.check?action=buyer">買家訂單</a></li>
+<li class="lf_li1"><a href="${pageContext.request.contextPath}/itemorder/itemorder.check?action=seller">賣家訂單</a></li>
+<li class="lf_li1"><a href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId">我的檢舉</a></li>
 </ul>
 
 <script>
@@ -102,6 +115,39 @@ bidOrderMenu.addEventListener("mouseout", function (event) {
     // 檢查鼠標是否真的離開了<ul>
     if (!bidOrderMenu.contains(event.relatedTarget)) {
     	bidOrderMenu.style.display = "none";
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+var orderMenu = document.querySelector("ul.order-menu");
+
+// 當鼠標移到"帳戶管理"時，保持<ul>可見
+document.getElementById("orderHeading").addEventListener("mouseover", function () {
+	orderMenu.style.display = "block";
+});
+
+// 當鼠標離開"帳戶管理"時，隱藏<ul>
+document.getElementById("orderHeading").addEventListener("mouseout", function (event) {
+    // 檢查鼠標是否真的離開了"帳戶管理"，而不是進入<ul>
+    if (!orderMenu.contains(event.relatedTarget)) {
+    	orderMenu.style.display = "none";
+    }
+});
+
+// 當鼠標離開<ul>時，隱藏<ul>
+orderMenu.addEventListener("mouseout", function (event) {
+    // 檢查鼠標是否真的離開了<ul>
+    if (!orderMenu.contains(event.relatedTarget)) {
+    	orderMenu.style.display = "none";
     }
 });
 </script>

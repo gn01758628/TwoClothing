@@ -27,6 +27,10 @@
     <!-- css -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/chi/list.css">
 	<style>
+		h5 {
+			margin: 30px auto 0 35px;
+		}
+	
 		.empty-list-container {
 			color: #7A7A7A;
 			font-size: 30px;
@@ -113,6 +117,8 @@
 </head>
 <body>
 	<div class="headerHTML"></div>
+	
+	<h5>我的收藏</h5>
 	
 	<main class="main">
 		<ul class="list">

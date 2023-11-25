@@ -10,6 +10,8 @@ public interface BidItemReportService {
 	void addBidItemReport(BidItemReport bidItemReport);
 
 	List<BidItemReport> getAllByMbrId(Integer mbrId, int currentPage);
+	
+	List<BidItemReport> getAllByMbrId(Integer mbrId);
 
 	int getPageTotal(Integer mbrId);
 
