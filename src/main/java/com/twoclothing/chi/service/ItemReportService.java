@@ -17,6 +17,8 @@ public interface ItemReportService {
 
 	ItemReport getByPrimaryKey(Integer reportId);
 
+	List<ItemReport> getAll();
+	
 	List<ItemReport> getAll(int currentPage);
 
 	List<ItemReport> getByCompositeQuery(Map<String, String[]> map, int currentPage);

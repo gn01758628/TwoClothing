@@ -231,6 +231,18 @@ public class BidItemReportBackServlet extends HttpServlet {
 			notice.setImageLink("/images/report0.png");
 			bidItemReportService.addNotice(notice, mbrId);
 			bidItem.setBidStatus(6);
+			
+			List<BidItemReport> bidItemReportAll = bidItemReportService.getAll();
+			for (BidItemReport bidItemReportBoth : bidItemReportAll) {
+			    if (bidItemReportBoth.getBidItemId() == bidItemId) {
+			        bidItemReportBoth.setResult(0);
+			        bidItemReportBoth.setEmpId(empId);
+			        bidItemReportBoth.setBidStatus(1);
+			        bidItemReportBoth.setAuditDate(auditdate);
+			        bidItemReportBoth.setNote(note);
+			    }
+			}
+			
 			members.setSellScore(sellScore - 2);
 			bidItemReportService.addNotice(noticeBidItemDelete, sellMbr);
 		} else if (result == 1) {
