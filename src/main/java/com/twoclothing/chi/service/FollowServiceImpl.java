@@ -18,6 +18,11 @@ public class FollowServiceImpl implements FollowService {
 	public void addFollow(Follow follow) {
 		dao.insert(follow);
 	}
+	
+	@Override
+	public List<Follow> getAllByFollowId(Integer followId) {
+		return dao.getAllByFollowId(followId);
+	}
 
 	@Override
 	public List<Follow> getAllByMbrId(Integer mbrId, int currentPage) {
@@ -27,7 +32,7 @@ public class FollowServiceImpl implements FollowService {
 	@Override
 	public int getPageTotal(Integer mbrId) {
 		long total = dao.getTotal(mbrId);
-		int pageQty = (int) (total % 10 == 0 ? (total / 10) : (total / 10 + 1));
+		int pageQty = (int) (total % 8 == 0 ? (total / 8) : (total / 8 + 1));
 		return pageQty;
 	}
 

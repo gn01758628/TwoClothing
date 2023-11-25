@@ -7,6 +7,8 @@ public interface ItemReportDAO {
 	void insert(ItemReport itemReport);
 
 	ItemReport getByPrimaryKey(Integer reportId);
+	
+	List<ItemReport> getAll();
 
 	List<ItemReport> getAll(int currentPage);
 

@@ -22,6 +22,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.google.gson.Gson;
+import com.twoclothing.chi.service.FollowService;
+import com.twoclothing.chi.service.FollowServiceImpl;
 import com.twoclothing.huiwen.service.ItemImageService;
 import com.twoclothing.huiwen.service.ItemImageServiceImpl;
 import com.twoclothing.huiwen.service.ItemService;
@@ -29,6 +31,8 @@ import com.twoclothing.huiwen.service.ItemServiceImpl;
 import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.aproduct.itemimage.ItemImage;
 import com.twoclothing.model.categorytags.CategoryTags;
+import com.twoclothing.model.follow.Follow;
+import com.twoclothing.redismodel.notice.Notice;
 
 import redis.clients.jedis.JedisPool;
 
@@ -39,10 +43,12 @@ public class ItemServlet extends HttpServlet {
 	private ItemService itemService;
 	private JedisPool jedisPool;
 	private ItemImageService itemImageService;
+	private FollowService followService;
 
 	public void init() throws ServletException {
 		itemService = new ItemServiceImpl();
 		itemImageService= new ItemImageServiceImpl();
+		followService = new FollowServiceImpl();
 	}
 
 	@Override
@@ -259,6 +265,23 @@ public class ItemServlet extends HttpServlet {
 			}
 
 			int itemPK = itemService.addItem(item);
+			
+			List<Follow> followList = followService.getAllByFollowId(mbrId);
+			
+			for (Follow follow : followList) {
+				Follow.CompositeDetail compositeDetail = follow.getCompositeKey();
+				Integer followMbrId = compositeDetail.getMbrId();
+				Integer followId = compositeDetail.getFollowId();
+				if (mbrId == followId) {
+					Notice notice = new Notice();
+					notice.setType("關注中的賣家有新商品上架囉！");
+					notice.setHead("新品上架");
+					notice.setContent("商品「" + itemName + "」已上架，手刀搶購。");
+					notice.setLink("/SellerHome/home?mbrId=" + mbrId);
+					notice.setImageLink("/images/iteminsert2.png");
+					itemService.addNotice(notice, followMbrId);
+				}
+			}
 
 			ItemImage itemImage01 = new ItemImage();
 			itemImage01.setItemId(itemPK);

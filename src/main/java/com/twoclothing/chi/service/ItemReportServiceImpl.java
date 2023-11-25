@@ -48,6 +48,11 @@ public class ItemReportServiceImpl implements ItemReportService {
 	public ItemReport getByPrimaryKey(Integer reportId) {
 		return dao.getByPrimaryKey(reportId);
 	}
+	
+	@Override
+	public List<ItemReport> getAll() {
+		return dao.getAll();
+	}
 
 	@Override
 	public List<ItemReport> getAll(int currentPage) {

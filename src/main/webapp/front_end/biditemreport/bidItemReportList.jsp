@@ -106,8 +106,8 @@
 	    }
 	    
 	    .table thead th:nth-child(2), .table tbody td:nth-child(3) {
-	    	min-width: 100px;
-	        max-width: 100px;
+	    	min-width: 120px;
+	        max-width: 120px;
 	    }
 	
 	    .table thead th:nth-child(3), .table tbody td:nth-child(4),
@@ -161,7 +161,7 @@
 <body>
 	<div class="headerHTML"></div>
 	
-	<h5>我的檢舉</h5>
+	<h5>競標檢舉</h5>
 	
     <div class="search_status">
         <div class="search clickCondition">
@@ -176,14 +176,14 @@
     </div>
 
 	<div class="container mt-3 main">
-		<c:if test="${not empty errorMsgs}">
-			<font style="color: red">請重新確認</font>
-			<ul>
-				<c:forEach var="message" items="${errorMsgs}">
-					<li style="color: red">${message}</li>
-				</c:forEach>
-			</ul>
-		</c:if>
+<%-- 		<c:if test="${not empty errorMsgs}"> --%>
+<!-- 			<font style="color: red">請重新確認</font> -->
+<!-- 			<ul> -->
+<%-- 				<c:forEach var="message" items="${errorMsgs}"> --%>
+<%-- 					<li style="color: red">${message}</li> --%>
+<%-- 				</c:forEach> --%>
+<!-- 			</ul> -->
+<%-- 		</c:if> --%>
 	
 		<table class="table table-hover">
 			<thead class="thead-primary">
@@ -219,16 +219,16 @@
 						<td>
 							<p>
 								<c:choose>
-									<c:when test="${fn:length(bidItemReport.description) > 10}">
-										${fn:substring(bidItemReport.description, 0, 10)}...
+									<c:when test="${fn:length(bidItemReport.bidDescription) > 10}">
+										${fn:substring(bidItemReport.bidDescription, 0, 10)}...
 									</c:when>
 									<c:otherwise>
-										${bidItemReport.description}
+										${bidItemReport.bidDescription}
 									</c:otherwise>
 								</c:choose>
 							</p>
 						</td>
-						<td class="status">${statusMap[bidItemReport.status]}</td>
+						<td class="status">${bidStatusMap[bidItemReport.bidStatus]}</td>
 						<td>${bidItemReport.auditDate}</td>
 						<td>${resultMap[bidItemReport.result]}</td>
 						<td>

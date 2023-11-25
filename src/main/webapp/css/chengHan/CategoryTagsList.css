@@ -5,6 +5,11 @@
     box-sizing: border-box;
 }
 
+
+body {
+    background-color: #f7f7f7; /* 提供一個淺色背景 */
+}
+
 .container {
     margin-top: 20px;
     margin-bottom: 20px;

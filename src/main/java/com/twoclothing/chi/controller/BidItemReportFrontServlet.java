@@ -79,16 +79,16 @@ public class BidItemReportFrontServlet extends HttpServlet {
 	    }
 		req.setAttribute("bidItemNameMap", bidItemNameMap);
 
-		Map<Integer, String> statusMap = new HashMap<>();
-		statusMap.put(0, "待審核");
-		statusMap.put(1, "已審核");
+		Map<Integer, String> bidStatusMap = new HashMap<>();
+		bidStatusMap.put(0, "待審核");
+		bidStatusMap.put(1, "已審核");
 
 		Map<Integer, String> resultMap = new HashMap<>();
 		resultMap.put(0, "處分");
 		resultMap.put(1, "不處分");
 
 		req.setAttribute("bidItemReportList", bidItemReportList);
-		req.setAttribute("statusMap", statusMap);
+		req.setAttribute("bidStatusMap", bidStatusMap);
 		req.setAttribute("resultMap", resultMap);
 
 		return "/front_end/biditemreport/bidItemReportList.jsp";
@@ -96,12 +96,13 @@ public class BidItemReportFrontServlet extends HttpServlet {
 
 	private void addBidItemReport(HttpServletRequest req, HttpServletResponse res) {
 		String bidItemId = req.getParameter("bidItemId");
-		String mbrId = req.getParameter("mbrId");
-		String description = req.getParameter("description");
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer) session.getAttribute("mbrId");
+		String bidDescription = req.getParameter("bidDescription");
 
 		List<String> errorMsgs = new LinkedList<String>();
 
-		if (description == null || description.trim().isEmpty()) {
+		if (bidDescription == null || bidDescription.trim().isEmpty()) {
 			errorMsgs.add("請填寫檢舉原因");
 		}
 
@@ -111,10 +112,10 @@ public class BidItemReportFrontServlet extends HttpServlet {
 
 		BidItemReport bidItemReport = new BidItemReport();
 		bidItemReport.setBidItemId(Integer.parseInt(bidItemId));
-		bidItemReport.setMbrId(Integer.parseInt(mbrId));
+		bidItemReport.setMbrId(mbrId);
 		Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 		bidItemReport.setReportDate(currentTime);
-		bidItemReport.setBidDescription(description);
+		bidItemReport.setBidDescription(bidDescription);
 		bidItemReport.setBidStatus(0);
 
 		bidItemReportService.addBidItemReport(bidItemReport);

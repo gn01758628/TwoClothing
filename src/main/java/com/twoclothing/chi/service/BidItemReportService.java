@@ -16,6 +16,8 @@ public interface BidItemReportService {
 	int getPageTotal(Integer mbrId);
 
 	BidItemReport getByPrimaryKey(Integer reportId);
+	
+	List<BidItemReport> getAll();
 
 	List<BidItemReport> getAll(int currentPage);
 

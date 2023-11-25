@@ -38,6 +38,11 @@ public class BidItemReportHibernateDAO implements BidItemReportDAO {
 	}
 
 	@Override
+	public List<BidItemReport> getAll() {
+		return getSession().createQuery("from BidItemReport", BidItemReport.class).list();
+	}
+
+	@Override
 	public List<BidItemReport> getAll(int currentPage) {
 		int first = (currentPage - 1) * 10;
 		return getSession().createQuery("from BidItemReport", BidItemReport.class).setFirstResult(first)

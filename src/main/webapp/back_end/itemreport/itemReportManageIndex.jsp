@@ -182,6 +182,19 @@
         align-items: center;
         justify-content: center;
     }
+    
+    .title-description {
+        margin-top: 10px;
+    }
+        
+    .card-body td:nth-child(2) {
+    	padding: 3px 0 3px 25px;
+    }
+    
+    .card-description {
+    	min-width: 500px;
+	    max-width: 500px;
+    }
 	</style>
 </head>
 <body>
@@ -350,7 +363,7 @@
 								</tr>
 								<tr>
 									<td>檢舉原因</td>
-									<td id="description"></td>
+									<td class="card-description" id="description"></td>
 								</tr>
 								<tr>
 									<td>審核狀態</td>

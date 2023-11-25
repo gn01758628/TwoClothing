@@ -1,0 +1,116 @@
+.infoModal .imgContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.infoModal .smallIMG {
+    max-height: 150px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border-radius: 50px;
+    border: 2px solid transparent;
+    margin-bottom: 50px;
+}
+
+.infoModal .smallIMG:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    border-color: #007bff;
+}
+
+.infoModal .smallIMG:active {
+    transform: scale(0.95);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    display: block;
+}
+
+.modal-title {
+    text-align: center;
+    width: 100%;
+}
+
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    border-collapse: separate;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    background-color: #f8f9fa;
+    color: #495057;
+    padding: .75rem;
+    text-align: center;
+    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.table tbody tr {
+    transition: background-color .15s ease-in-out;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+
+.table td {
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+
+.table td .btn {
+    margin: 0 2px;
+}
+
+
+.table td .btn:hover {
+    opacity: 0.85;
+}
+
+
+.td-bidStatus {
+    font-weight: 500;
+}
+
+
+.td-empName {
+    color: #007bff;
+    font-weight: 500;
+}
+
+
+.table-responsive {
+    position: relative;
+    overflow-y: auto;
+    max-height: 75vh;
+}
+
+.table-responsive thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #e9ecef;
+    box-shadow: 0 2px 2px -1px rgba(0,0,0,0.4);
+}
+
+
+body {
+    background-color: #f7f7f7;
+}
+

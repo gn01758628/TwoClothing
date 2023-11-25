@@ -29,9 +29,9 @@ public class BlackListHibernateDAO implements BlackListDAO {
 
 	@Override
 	public List<BlackList> getAllByMbrId(Integer mbrId, int currentPage) {
-		int first = (currentPage - 1) * 10;
+		int first = (currentPage - 1) * 8;
 		return getSession().createQuery("from BlackList where mbrId = :mbrId", BlackList.class).setFirstResult(first)
-				.setMaxResults(10).setParameter("mbrId", mbrId).list();
+				.setMaxResults(8).setParameter("mbrId", mbrId).list();
 	}
 
 	@Override

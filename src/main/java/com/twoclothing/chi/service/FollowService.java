@@ -6,6 +6,8 @@ import com.twoclothing.model.follow.Follow;
 
 public interface FollowService {
 	void addFollow(Follow follow);
+	
+	List<Follow> getAllByFollowId(Integer followId);
 
 	List<Follow> getAllByMbrId(Integer mbrId, int currentPage);
 	

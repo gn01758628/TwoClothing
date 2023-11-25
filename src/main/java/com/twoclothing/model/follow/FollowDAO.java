@@ -15,7 +15,7 @@ public interface FollowDAO {
     
     long getTotal(Integer mbrId);
 
-//    List<Follow> getAllByFollowId(Integer followId);
+    List<Follow> getAllByFollowId(Integer followId);
 
 //    void delete(Integer mbrId, Integer followId);
     
