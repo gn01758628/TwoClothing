@@ -67,6 +67,7 @@ public class BidItemBackServlet extends HttpServlet {
         String startTimeStr = startTime != null ? String.valueOf(startTime.getTime()) : "0";
         Timestamp endTime = bidItem.getEndTime();
         String endTimeStr = endTime != null ? String.valueOf(endTime.getTime()) : "0";
+        messages.put("bidName",bidItem.getBidName());
         messages.put("isDoubleIMG", String.valueOf(isDoubleIMG));
         messages.put("mbrId", String.valueOf(mbrId));
         messages.put("mbrEmail", member.getEmail());

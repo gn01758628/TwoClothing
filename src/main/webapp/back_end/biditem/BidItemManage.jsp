@@ -31,7 +31,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title bidName">商品名稱</h2>
+                <h2 class="modal-title bidNameModal"></h2>
             </div>
             <div class="modal-body infoModal mb-3">
                 <div class="container pt-5">
@@ -491,6 +491,7 @@
             }, function (data) {
                 let isDoubleIMG = data.isDoubleIMG;
                 // 模態框節點
+                $(".bidNameModal").text(data.bidName);
                 $("#memberId").text(data.mbrId);
                 $("#memberEmail").text(data.mbrEmail)
                 $("#memberName").text(data.mbrName)
