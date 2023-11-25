@@ -7,31 +7,43 @@
 <%@ page import="java.text.ParseException" %>
 
 <c:set var="now" value="<%= new SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss.S\").format(new Date()) %>" />
-
-
-
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="zh-hant" xmlns="http://www.w3.org/1999/html">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>領取優惠券</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>領取優惠券</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <!--bootstrap5 css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+    <style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!--Sweet Alert-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!--你們自己的css-->
+    <!--不是外部檔案也無所謂-->
+	<script src="https://cdn.tailwindcss.com"></script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>                               
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>  
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@latest"></script><!-- 引入 SweetAlert2 -->
-
-
-<style type="text/css">
-body {
-	margin: 2rem ;
-}
-</style>
-
+    <!--導覽列css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!--頁尾css-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
+	
 </head>
 <body>
+<!--放在最前面-->
+<div class="headerHTML"></div>
+
 <%
     String servletPath = request.getContextPath() + "/MemberCouponServlet.check";
 %>
@@ -76,6 +88,11 @@ body {
 					</span>
 				  
 					<c:choose>
+					    <c:when test="${allotedCoupon.status eq 9}">
+							<button class="status${allotedCoupon.status} z-10 -mb-5 px-4 py-2 text-gray-50 bg-neutral-400 pointer-events-none" >
+								已領過
+						  	</button>
+					    </c:when>
 						<c:when test="${allotedCoupon.status eq 0}">
 						  	<button class="status${allotedCoupon.status} z-10 -mb-5 px-4 py-2 text-gray-50 bg-neutral-400 pointer-events-none" >
 								<p class="countdown" class="mb-0">距離發放還有：</p>
@@ -94,15 +111,12 @@ body {
 					    </c:when>
 					</c:choose>
 				  
-				  
-				  
-	<!-- 			已經領取 或 無法領取(發完了) 的狀態 移除bg-sky-400 hover:bg-sky-300 添加 bg-neutral-400 pointer-events-none -->
-				  
 					<p class="text-lg mt-1">剩餘${allotedCoupon.remainingQuantity}/${allotedCoupon.totalQuantity}</p>
 					<p class="mb-1 text-sm text-sky-400">
 						使用期限：<fmt:formatDate value="${createDate}" pattern="yyyy-MM-dd HH:mm:ss" />~<br>&emsp;&emsp;&emsp;&emsp;&emsp;<fmt:formatDate value="${expireDate}" pattern="yyyy-MM-dd HH:mm:ss" />
 					</p>
 					<input class="allotDate" type="hidden" value="${allotedCoupon.allotDate}">
+					<input class="expireDate" type="hidden" value="${allotedCoupon.expireDate}">
 					<input class="cpnId" type="hidden" value="${allotedCoupon.cpnId}">
 					<input class="index" type="hidden" value="${allotedCoupon.index}">
 	
@@ -118,57 +132,84 @@ body {
 
 
 
+
+
+<!--放在最後面-->
+<div class="footerHTML"></div>
+
+<!--bootstrap5 js-->
+<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
+<!--jQuery-->
+<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<!--JS loader-->
+<script>
+    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+        // 保證headerHTML加載完才載入header.js
+        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+    });
+
+    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+</script>
 <script>
 	$(function(){
 		let servletPath = '<%= servletPath %>';
 		
-	    $('.status1').click(async function(){
-	    	let allotedCoupon = $(this).closest('.allotedCoupon');
+		$('.allotedCoupon').on('click', '.status1', async function() {
+			let allotedCoupon = $(this).closest('.allotedCoupon');
 			
-	        let cpnId = allotedCoupon.find('.cpnId').val();
+			let cpnId = allotedCoupon.find('.cpnId').val();
 	        let index = allotedCoupon.find('.index').val(); 
-	        console.log(cpnId);
-	        console.log(index);
 	       
+	        let response = await fetch(servletPath, {
+				method: 'POST',
+	    	    headers: {
+	    	        'Content-Type': 'application/x-www-form-urlencoded'
+	    	    },
+	    	    body:'cpnId=' + encodeURIComponent(cpnId) + '&index=' + encodeURIComponent(index) +'&action=receive_Coupon' ,
+	    	});
 	    	
+	    	if (!response.ok) {
+	    		let errorText = await response.text();
+	    		if (errorText === "2000" || errorText === "5000") {
+	    			let waitTime = parseInt(errorText, 10);
+	                let msg = waitTime === 2000 ? "點擊過快!" : "請勿在不同裝置搶票";
+	                let timerInterval;
+	                Swal.fire({
+	                  title: msg,
+	                  html: "將在<b></b>秒內關閉",
+	                  timer: waitTime,
+	                  timerProgressBar: true,
+	                  didOpen: () => {
+	                    Swal.showLoading();
+	                    const timer = Swal.getPopup().querySelector("b");
+	                    timerInterval = setInterval(() => {
+	                      timer.textContent = Swal.getTimerLeft()/1000;
+	                    }, 100);
+	                  },
+	                  willClose: () => {
+	                    clearInterval(timerInterval);
+	                  },allowOutsideClick: () => !Swal.isLoading()
+	                });
+	            } 
+	    		return false;
+	    	}
 	    	Swal.fire({
-		        inputAttributes:{
-		            autocapitalize: "off"
-		        },
-		        showCancelButton: true,
-		        confirmButtonText: "確認",
-		        cancelButtonText: "取消",
-		        allowOutsideClick: false,
-		        showLoaderOnConfirm: true,
-    		    preConfirm: async () => {
-	
-    		    	let response = await fetch(servletPath, {
-    		    	    method: 'POST',
-    		    	    headers: {
-    		    	        'Content-Type': 'application/x-www-form-urlencoded'
-    		    	    },
-    		    	    body:'cpnId=' + encodeURIComponent(cpnId) + '&index=' + encodeURIComponent(index) +'&action=receive_Coupon' ,
-    		    	});
-
-    		    	if (!response.ok) {
-    		    	    const errorText = await response.text();
-    		    	    Swal.showValidationMessage(errorText);
-    		    	    return false;
-    		    	}
-    		    }
-    	    }).then((result) => {
-    	    	if (result.isConfirmed) {
-    	        	// 成功後顯示成功訊息
-    	            Swal.fire({
-    	                title:'成功',
-    	                text: '優惠券領取成功',
-    	                icon: 'success'
-    	            });
-        		}
-    	    });
-    	    
-	    });
-	    
+                title: '成功',
+                text: '領取成功',
+                icon: 'success'
+            }).then((result) => {
+            	  /* Read more about isConfirmed, isDenied below */
+            	  if (result.isConfirmed) {
+            		  location.reload();
+            	  }else{
+            		  location.reload();
+            	  }
+            	});
+		}); 
+	        
 		// 倒數計時
         updateCountdowns();
         setInterval(updateCountdowns, 1000);
@@ -193,14 +234,33 @@ body {
 	            countdown.text(countdownText); // 將倒數文字設置到 .countdown 元素中
 	        } else {
 	        	// 移除class
-	            $(this).removeClass('status0');
+	            $(this).removeClass('status0 bg-neutral-400 pointer-events-none');
 	            // 添加class
-	            $(this).addClass('status1');
+	            $(this).addClass('status1 bg-sky-400 hover:bg-sky-300');
 	            $(this).empty();
 	            $(this).append('可領取');
 	        }
 	    });
+	    
+	    $('.status1').each(function () {
+	    	let allotedCoupon = $(this).closest('.allotedCoupon');
+	        let expireDate = allotedCoupon.find('.expireDate').val(); // 找到 allotedCoupon 內的 .allotDate 的值
+	        let countdown = allotedCoupon.find('.countdown'); // 找到 allotedCoupon 內的 .countdown 元素
+	        let now = new Date();
+	        let timeLeft = new Date(parseInt(expireDate)) - now;
+	
+	        if (timeLeft < 0) {
+	        	// 移除class
+	            $(this).removeClass('status1 bg-sky-400 hover:bg-sky-300 ');
+	            // 添加class
+	            $(this).addClass('status-1 bg-neutral-400 pointer-events-none');
+	            $(this).empty();
+	            $(this).append('已過期');
+	        }
+	    });
 	}
 </script>
+<!--你們自己的js-->
+<!--不是外部檔案也無所謂-->
 </body>
 </html>

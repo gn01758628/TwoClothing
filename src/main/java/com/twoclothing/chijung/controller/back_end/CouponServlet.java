@@ -48,6 +48,7 @@ public class CouponServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
+		res.setContentType("text/html; charset=UTF-8");
 		String action = req.getParameter("action");
 		String forwardPath = "";
 		
@@ -96,14 +97,15 @@ public class CouponServlet extends HttpServlet {
 	
 	private String insertCoupon(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+		req.setAttribute("couponDisTypeMap", Mapping.couponDisTypeMap);
 		req.setAttribute("errorMsgs", errorMsgs);
 		
 		String cpnname = req.getParameter("cpnName");
 		String cpnNameReg = "^[（\\u4e00-\\u9fa5a-zA-Z0-9_）]{1,20}$";
 		if (cpnname == null || cpnname.trim().length() == 0) {
-			errorMsgs.put("cpnname","優惠券名稱: 請勿空白");
+			errorMsgs.put("cpnName","優惠券名稱: 請勿空白");
 		} else if(!cpnname.trim().matches(cpnNameReg)) { //以下練習正則(規)表示式(regular-expression)
-			errorMsgs.put("cpnname","優惠券名稱: 只能是中、英文字母、數字和_ , 且長度必需在20字以內");
+			errorMsgs.put("cpnName","優惠券名稱: 只能是中、英文字母、數字和_ , 且長度必需在20字以內");
         }
 		
 		Date currentDate = new Date();
@@ -150,38 +152,37 @@ public class CouponServlet extends HttpServlet {
     	// 結束時間比對發布時間
     	if (createDateString != null && expireDateString != null && !createDateString.isEmpty() && !expireDateString.isEmpty()) {
     	    // 檢查 endDate 是否大於 startDate
-    	    if (!expireDate.after(currentDate)) {
+    	    if (!expireDate.after(createDate)) {
     	    	errorMsgs.put("expireDate", "結束時間不得小於或等於使用時間");
     	    } 
     	}
         
-        int distype = Integer.parseInt(req.getParameter("distype"));
-        int disvalue = Integer.parseInt(req.getParameter("disvalue"));
+        int disType = Integer.parseInt(req.getParameter("disType"));
+        int disValue = Integer.parseInt(req.getParameter("disValue"));
         
         
-        if (disvalue < 0) {
-        	errorMsgs.put("disvalue", "折扣額度不能為負數");
+        if (disValue < 0) {
+        	errorMsgs.put("disValue", "折扣額度不能為負數");
         } else {
-            if (distype == 1 && (disvalue > 100) ) {
-            	errorMsgs.put("disvalue", "折扣類型為折%數時，折扣額度必須在0到100之間");
+            if (disType == 1 && (disValue > 100) ) {
+            	errorMsgs.put("disValue", "折扣類型為折%數時，折扣額度必須在0到100之間");
             }
         }
         
-        int minamount = Integer.parseInt(req.getParameter("minamount"));
+        int minAmount = Integer.parseInt(req.getParameter("minAmount"));
         
         
-        if (minamount < 0) {
-        	errorMsgs.put("minamount", "最低金額條件不能為負數");
+        if (minAmount < 0) {
+        	errorMsgs.put("minAmount", "最低金額條件不能為負數");
         }
 		
         if (!errorMsgs.isEmpty()) {
 			req.setAttribute("cpnName",cpnname);
 	        req.setAttribute("createDate",createDateString);
 	        req.setAttribute("expireDate",expireDateString);
-	        req.setAttribute("distype",distype);
-        	req.setAttribute("disvalue",disvalue);
-        	req.setAttribute("minamount",minamount);
-			req.setAttribute("couponDisTypeMap", Mapping.couponDisTypeMap);
+	        req.setAttribute("disType",disType);
+        	req.setAttribute("disValue",disValue);
+        	req.setAttribute("minAmount",minAmount);
 			RequestDispatcher failureView = req
 					.getRequestDispatcher("/back_end/coupon/addCoupon.jsp");
 			failureView.forward(req, res);
@@ -192,9 +193,9 @@ public class CouponServlet extends HttpServlet {
     	coupon.setCpnName(cpnname);
     	coupon.setCreateDate(new Timestamp(createDate.getTime()));
     	coupon.setExpireDate(new Timestamp(expireDate.getTime()));
-    	coupon.setDisType(distype);
-    	coupon.setDisValue(disvalue);
-    	coupon.setMinAmount(minamount);
+    	coupon.setDisType(disType);
+    	coupon.setDisValue(disValue);
+    	coupon.setMinAmount(minAmount);
     	coupon.setEmpId((Integer)req.getSession().getAttribute("empId"));
     	gs.insert(coupon);
     	req.setAttribute("success","新增成功");

@@ -11,7 +11,7 @@ public interface AllotedCouponDAO {
 
 	public List<AllotedCoupon> getAll();
 
-	void receiveCoupon(AllotedCoupon allotedCoupon);
+	int receiveCoupon(AllotedCoupon allotedCoupon);
 
 	int stopIssuingCoupon(AllotedCoupon allotedCoupon);
 	

@@ -27,10 +27,10 @@ public class EmployeeAuthenticationFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
+        String requestedWithHeader = request.getHeader("X-Requested-With");
 
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        
         
         HttpSession session = request.getSession();
         Object empId = session.getAttribute("empId");
@@ -49,12 +49,15 @@ public class EmployeeAuthenticationFilter implements Filter {
         
         if("".equals(ErrorMsg)) {
         	chain.doFilter(request, response);
-        }else {
+        }else{
+        	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        	out.write(ErrorMsg);
             String alertScript = "<script>"
                     + "var userConfirmed = confirm('"+ErrorMsg+"');"
                     + "window.location.href = '" + request.getContextPath() + "/empLogin.html';"
                     + "</script>";
             out.println(alertScript);
+            out.flush();
         }
     	
         
