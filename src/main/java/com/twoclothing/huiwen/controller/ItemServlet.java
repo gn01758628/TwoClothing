@@ -93,6 +93,13 @@ public class ItemServlet extends HttpServlet {
 		String addRoad = req.getParameter("addRoad");
 		// 新增資料
 		if ("add".equals(addRoad)) {
+			
+			//如果賣家分數為0不可新增商品
+			HttpSession session = req.getSession();
+			Integer mbrId = (Integer) session.getAttribute("mbrId");
+			
+			Integer sellerPoint = itemService.getSellScoreByMbrId(mbrId);
+			
 
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -240,9 +247,6 @@ public class ItemServlet extends HttpServlet {
 			item.setItemStatus(0);
 			item.setSize(size);
 			
-			HttpSession session = req.getSession();
-			Integer mbrId = (Integer) session.getAttribute("mbrId");
-
 			item.setMbrId(mbrId);
 			
 			// 如果錯誤訊系不為空則轉發回新增頁面
@@ -269,7 +273,7 @@ public class ItemServlet extends HttpServlet {
 			}
 			
 			req.setAttribute("item", item);
-
+			req.setAttribute("item", item);
 			String url = "/front_end/item/itemSellerUpdateOne.jsp";
 			RequestDispatcher dispatcher1 = req.getRequestDispatcher(url);
 			dispatcher1.forward(req, res);
