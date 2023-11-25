@@ -74,13 +74,13 @@
 		<div id="creditCardInfo" style="display: none;">
 		<h2>信用卡資料：</h2>
 			<label for="cardNumber">信用卡號碼</label>
-		    <input type="text" id="cardNumber" name="cardNumber" placeholder="請輸入信用卡號碼" required>
+		    <input type="text" id="cardNumber" name="cardNumber" placeholder="請輸入信用卡號碼" >
 		<br>
 		    <label for="expirationDate">有效期限</label>
-		    <input type="text" id="expirationDate" name="expirationDate" placeholder="MM / YY" required>
+		    <input type="text" id="expirationDate" name="expirationDate" placeholder="MM / YY" >
 		<br>
 		    <label for="cvv">CVV</label>
-		    <input type="text" id="cvv" name="cvv" placeholder="請輸入 CVV" required>
+		    <input type="text" id="cvv" name="cvv" placeholder="請輸入 CVV" >
 		</div>
 
 		<div id="bankAccountInfo" style="display: none;">
@@ -345,31 +345,7 @@ let twzipcode = new TWzipcode({
 	}
 });
 //信用卡驗證
-function validateCardNumber(cardNumber) {
-  // 使用正則表達式檢查信用卡號碼
-  const cardNumberRegex = /^\d{16}$/; // 16位數字
-  return cardNumberRegex.test(cardNumber);
-}
 
-
-function validateCVV(cvv) {
-	  // 使用正則表達式檢查 CVV
-	  const cvvRegex = /^\d{3}$/; // 三位數字
-	  return cvvRegex.test(cvv);
-	}
-document.getElementById('from').addEventListener('submit', function (event) {
-	  const cardNumber = document.getElementById('cardNumber').value;
-	  const cvv = document.getElementById('cvv').value;
-
-	  // 進行整體驗證
-	  if (!validateCardNumber(cardNumber)) {
-	    alert('請輸入有效的信用卡號碼！');
-	    event.preventDefault();
-	  } else if (!validateCVV(cvv)) {
-	    alert('請輸入有效的 CVV！');
-	    event.preventDefault();
-	  }
-	});
 
 
 // // 使用 EL 語法獲取後端的值
