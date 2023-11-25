@@ -19,7 +19,7 @@
 		}
 		main.main{
 
-			height: 100vh;
+			height: 100%;
 			width: 100%;
 			display: flex;
 			align-items: center;
@@ -39,6 +39,7 @@
 			width: 100%;
 			padding: 10px;
 			border-collapse: collapse;
+			position: relative;
 
 
 		}
@@ -46,7 +47,6 @@
 		form.form_update{
 			width:90%;
 			height:90%;
-			position: relative;
 		}
 		table thead.head tr{
 			border: 1px solid black;
@@ -75,12 +75,13 @@
 			width: 100px;
 			height: 30px;
 			margin: 10px;
+			margin-bottom: 20px;
 			background-color: rgb(255, 234, 208);
 			font-size: 16px;
 			border: 2px solid gray;
 			position: absolute;
-    		right: 10px;
-    		bottom: 10px;
+    		right: 35px;
+/*     		bottom: 10px; */
 		}
 		button:hover{
 			box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.2);
@@ -122,7 +123,7 @@
 								<td>${withdrawRequest.mbrId}</td>
 								<td>${withdrawRequest.amount}</td>
 								<td>${withdrawRequest.mbrAccount}</td>
-								<td>${withdrawRequest.reqDate}</td>
+								<td class="dateTime">${withdrawRequest.reqDate}</td>
 								<td class="status">${withdrawRequest.reqStatus}</td>
 								<td>${withdrawRequest.note}</td>
 								<td>
@@ -229,6 +230,12 @@
 				break;
 				}
 			})
+			
+		//日期時間顯示格式
+    	$(".dateTime").each(function(){
+    		let time = $(this).text().replace(/\.0$/, '');
+    		$(this).text(time);
+    	})
 	});
 	
 	</script>
