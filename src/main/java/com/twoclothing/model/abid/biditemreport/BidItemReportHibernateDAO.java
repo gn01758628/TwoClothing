@@ -52,6 +52,12 @@ public class BidItemReportHibernateDAO implements BidItemReportDAO {
 	}
 
 	@Override
+	public List<BidItemReport> getAllByMbrId(Integer mbrId) {
+		return getSession().createQuery("from BidItemReport where mbrId = :mbrId", BidItemReport.class)
+				.setParameter("mbrId", mbrId).list();
+	}
+
+	@Override
 	public long getTotal(Integer mbrId) {
 		if (mbrId != -1) {
 			return getSession().createQuery("select count(*) from BidItemReport where mbrId = :mbrId", Long.class)

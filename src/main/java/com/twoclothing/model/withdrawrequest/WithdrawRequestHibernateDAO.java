@@ -28,7 +28,6 @@ public class WithdrawRequestHibernateDAO implements WithdrawRequestDAO {
 
 	@Override
 	public WithdrawRequest getByPrimaryKey(Integer wrId) {
-		System.out.println(">"+getSession().get(WithdrawRequest.class, wrId));
 		return getSession().get(WithdrawRequest.class, wrId);
 	}
 

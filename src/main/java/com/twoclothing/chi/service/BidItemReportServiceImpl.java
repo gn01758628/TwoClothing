@@ -31,6 +31,11 @@ public class BidItemReportServiceImpl implements BidItemReportService {
 	public List<BidItemReport> getAllByMbrId(Integer mbrId, int currentPage) {
 		return dao.getAllByMbrId(mbrId, currentPage);
 	}
+	
+	@Override
+	public List<BidItemReport> getAllByMbrId(Integer mbrId) {
+		return dao.getAllByMbrId(mbrId);
+	}
 
 	@Override
 	public int getPageTotal(Integer mbrId) {

@@ -87,9 +87,34 @@
             border-radius: 50%;
         }
         
+        div.body_container div.mbrAction{
+        	width: 100%;
+		    display: flex;
+		    justify-content: center;
+		    align-items: center;
+		    margin-top: 30px;
+        }
+        
+        div.body_container div.mbrAction button{
+        	text-transform: none;
+		    margin: 0 30px;
+		    width: 180px;
+		    height: 50px;
+		    background-color: #f9edf2;
+		    color: #561729;
+		    border-radius: 7px;
+		    border: 1px solid;
+		    font-size: 20px;
+        }
+        div.body_container div.mbrAction button:hover{
+        	background-color:indianred;
+        	color:white;
+/*         darksalmon khaki */
+        }
+        
         div.cate_container{
-/*             border:1px solid blue; */
-            width: 100%;
+			border-bottom: 1px solid gray;
+            width: 97%;
             height: 200px;
             display:flex;
             justify-content: center;
@@ -99,7 +124,7 @@
         }
 
         div.cate_container > div{
-            border:1px solid black; 
+/*             border:1px solid black;  */
             width: 25%;
             height: 100%;
             display: flex;
@@ -137,7 +162,7 @@
             z-index: 1;
             
         }
-        div.bidItem a{
+/*       div.bidItem a{
             color:beige;
             width: 100%;
             height: 100%;
@@ -148,7 +173,7 @@
             padding: 0px;
             justify-content: center;
 
-        }
+        }*/
         div.itemarea{
             display: flex;
             justify-content: flex-start;
@@ -182,7 +207,7 @@
             text-decoration: none;
             width: 90%;
             height: 100%;
-            padding:25px;
+            padding:27px;
         }
         div.itemarea ul.itemList li:nth-child(4n){
             margin-left: 0;
@@ -213,8 +238,8 @@
             font-size: 0;
             text-align: center;
             position:relative;
-            width: 100%;
-            height: 90%;
+/*             width: 100%; */
+            height: 100%;
         }
 
         
@@ -262,6 +287,12 @@
                 <img src="${pageContext.request.contextPath}/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg01" alt="image2">
             </div>
         </div>
+        
+        <div class="mbrAction">
+        	<button>關注</button>
+        	<button>檢舉</button>
+        </div>
+                
         <div class="cate_container">
             <div class="blouse">
                 <div class="cateImgContainer" id="blouse">
@@ -306,8 +337,6 @@
 	                    </div>
 	                   </a> 
 	                </li>
-<%-- 	              </c:if> --%>
-<%--     			</c:forEach> --%>
             </c:forEach>
             </ul>
         </div>
