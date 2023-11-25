@@ -272,7 +272,6 @@ public class WithdrawRequestBackServlet extends HttpServlet {
 	    			balanceHistory.setChangeValue(changeValue);
 	    			
 	    			int balanceHistoryPK = balanceSvc.addBH(balanceHistory);
-	    			System.out.println(balanceHistory);
 	            	
 	            }
 	            //更新申請狀態
