@@ -349,7 +349,7 @@ public class ItemCartServlet extends HttpServlet {
             notice.setLink("#");
             notice.setImageLink("/images/cart/placeOrder.png");
             itemService.addNotice(notice, mbrId);
-        	
+        	System.out.println("發送通知");
         	//購物車清空
         	//處理商品id存成陣列
             String itemIdStr = req.getParameter("itemId");
@@ -382,9 +382,11 @@ public class ItemCartServlet extends HttpServlet {
 				Integer mbrIdBalanceAdd = itemService.getMbrIdByItemId(Id);
 				Integer itemPrice = itemService.getItemPriceByItemId(Id);
             	Members mem = memSvc.getByPrimaryKey(mbrIdBalanceAdd);
-            	Integer newBalance = mem.getBalance()+itemPrice;
-            	mem.setBalance(newBalance);
-            	memSvc.updateMembers(mem);
+
+        		Integer newBalance = mem.getBalance()+itemPrice;
+        		mem.setBalance(newBalance);
+        		memSvc.updateMembers(mem);           		
+        	
             	
             	//賣家錢包異動紀錄++
             	BalanceHistory balanceHistory = new BalanceHistory();
@@ -439,9 +441,11 @@ public class ItemCartServlet extends HttpServlet {
     			
     			//會員表格點數同步扣點
             	Members mem=memSvc.getByPrimaryKey(mbrId);
-            	Integer newPoint = mem.getMbrPoint()-mbrPoint;
-            	mem.setMbrPoint(newPoint);
-            	memSvc.updateMembers(mem);
+
+        		Integer newPoint = mem.getMbrPoint()-mbrPoint;
+        		mem.setMbrPoint(newPoint);
+        		memSvc.updateMembers(mem);
+            	
         		
         	}
 
@@ -480,15 +484,20 @@ public class ItemCartServlet extends HttpServlet {
             	cpnId = Integer.valueOf(cpnIdStr);
             }
 			MembersCouponCompositeDetail memcoupon = new MembersCouponCompositeDetail();
-			memcoupon.setCouponId(cpnId);
-			memcoupon.setMemberId(mbrId);
+			if(memcoupon!=null) {
+				memcoupon.setCouponId(cpnId);
+				memcoupon.setMemberId(mbrId);
+				
+			}
 			
 			MembersCoupon membersCoupon = (MembersCoupon)couponDAO.getByPrimaryKey(memcoupon);
-			
-			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-			membersCoupon.setCouponStatus(1);
-			membersCoupon.setUseDate(currentTime);
-			boolean boo = couponDAO.update(membersCoupon);
+			if(membersCoupon!=null) {
+				Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+				membersCoupon.setCouponStatus(1);
+				membersCoupon.setUseDate(currentTime);
+				boolean boo = couponDAO.update(membersCoupon);
+				
+			}
             
         	
         	//測試結束=============================================================

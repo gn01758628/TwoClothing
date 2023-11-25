@@ -198,6 +198,8 @@ public class ItemReportBackServlet extends HttpServlet {
 		
 		if (result == 0 && (note == null || note.trim().isEmpty())) {
 	        note = "檢舉成功，商品已被移除";
+	    } else if (result == 1 && (note == null || note.trim().isEmpty())) {
+	    	note = "";
 	    }
 
 //		List<String> errorMsgs = new LinkedList<String>();
@@ -230,19 +232,16 @@ public class ItemReportBackServlet extends HttpServlet {
 			notice.setContent("商品檢舉審核為「處分」結果，請至「我的檢舉」查看。");
 			notice.setLink("/front/itemreport?action=getAllByMbrId");
 			notice.setImageLink("/images/report0.png");
-			itemService.addNotice(notice, mbrId);
+			itemReportService.addNotice(notice, mbrId);
 			item.setItemStatus(2);
 			int sellMbr = item.getMbrId();
-			itemService.addNotice(noticeItemDelete, sellMbr);
+			itemReportService.addNotice(noticeItemDelete, sellMbr);
 		} else if (result == 1) {
 			notice.setContent("商品檢舉審核為「不處分」結果，請至「我的檢舉」查看。");
 			notice.setLink("/front/itemreport?action=getAllByMbrId");
 			notice.setImageLink("/images/report1.png");
-			itemService.addNotice(notice, mbrId);
+			itemReportService.addNotice(notice, mbrId);
 		}
-
-		notice.setLink("/front/itemreport?action=getAllByMbrId&mbrId=${mbrId}"); // 到時加上連結至(會員前台)我的檢舉
-		itemReportService.addNotice(notice, itemReport.getMbrId());
 //		}
 
 //		if (!errorMsgs.isEmpty()) {

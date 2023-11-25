@@ -43,19 +43,17 @@
 		    
 		}
 		form.form_add{
-			width: 82%;
+			width: 90%;
 			display: flex;
 		    flex-direction: column;
 		    justify-content: center;
 		    align-items: center;
 		    height: 600px;
-		    margin:30px;
 		}
 		
 		form.form_add div.main_container  {
 		    margin: 0 auto;
 		    width: 100%;
-		    padding: 20px;
 		    display: flex;
 			flex-direction:row;
 			justify-content: space-evenly;
@@ -78,9 +76,10 @@
 		    flex-direction:column;
 			justify-content: center;
 		    align-items: center;
-/* 		    border: 1px solid; */
 		    width: 50%;
-
+/* 			border-radius: 20px; */
+/* 			border: 1px solid #561729; */
+			padding: 10px;
 		}
 
 		form.form_add div.main_container div.main_right div.rightimg{
@@ -89,9 +88,9 @@
 		    flex-direction:row;
 			justify-content: space-around;
 		    align-items: flex-start;
-/* 			border: 1px solid green; */
+/*  			border: 1px solid #561729;  */
 		    width: 100%;
-
+			border-radius: 20px;
 
 		}
 
@@ -100,7 +99,7 @@
 			width: 50%;
 			display:flex;
 		    flex-direction:column;
-			justify-content: flex-start;
+			justify-content: space-between;
 		    align-items: center;
 /* 		    border: 1px solid yellow; */
 		}
@@ -132,6 +131,7 @@
 		    padding: 10px;
 		    border-radius: 20px;
 		    background-color: white;
+		    margin:0px 20px;
 
 		}
 		form.form_add div.main_container div.main_left div.inner_sel{
@@ -193,8 +193,13 @@
 		
 		/* 標題樣式 */
 		div.main h1 {
-		    font-size: 24px;
-		    margin:20px;
+			font-size: 24px;
+		    margin: 15px;
+		    border: 1px solid;
+		    padding: 10px;
+		    border-radius: 20px;
+		    background-color: #561729;
+		    color: white;
 		}
 		
 		.form-control {
