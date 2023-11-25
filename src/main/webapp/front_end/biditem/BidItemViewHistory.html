@@ -91,7 +91,6 @@
     $(document).ready(function () {
         $.get("/TwoClothing/bidItemViewHistory.check", function (data) {
             createBidItem(JSON.parse(data[0]));
-            console.log(JSON.parse(data[0]))
             $(".memberCenter2").attr("href", "/TwoClothing/members/Members.do?action=memberProfile&mbrId=" + data[1]);
         }).fail(function (xhr) {
             if (xhr.status === 403) {

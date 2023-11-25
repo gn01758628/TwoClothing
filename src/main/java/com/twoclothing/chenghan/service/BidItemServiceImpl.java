@@ -46,7 +46,7 @@ public class BidItemServiceImpl implements BidItemService {
     private final EmployeeDAO employeeDAO = new EmployeeHibernateDAO(sessionFactory);
 
     private final MembersDAO membersDAO = new MembersHibernateDAO(sessionFactory);
-    
+
     private final BidOrderDAO bidOrderDAO = new BidOrderHIbernateDAO(sessionFactory);
 
     private final NoticeDAO noticeDAO = new NoticeJedisDAO();
@@ -189,5 +189,11 @@ public class BidItemServiceImpl implements BidItemService {
     @Override
     public boolean updateBidItem(BidItem bidItem) {
         return bidItemDAO.update(bidItem);
+    }
+
+    @Override
+    public boolean isDoubleImaged(Integer bidItemId) {
+        BidItemImage img = bidItemImageDAO.getPositionImageByBidItemId(bidItemId, 2);
+        return img != null;
     }
 }
