@@ -79,7 +79,6 @@ public class PointHistoryServlet extends HttpServlet {
 			Integer mbrId = (Integer) session.getAttribute("mbrId");
 			PointHistory pointHistory = PHSvc.getPHById(mbrId);
 			req.setAttribute("pointHistory", pointHistory);
-			System.out.println("pointHistory:"+pointHistory);
 			
 			String url = "/back_end/pointHistory/listAllPoint.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);

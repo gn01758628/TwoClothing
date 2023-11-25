@@ -32,23 +32,20 @@
      } 
     main.body_container{
         /* border: 1px solid black; */
-        background-color:  rgba(230, 192, 192, 0.726);
+/*         background-color:  rgba(230, 192, 192, 0.726); */
         display: flex;
-        /* justify-content: center; */
+        justify-content: flex-start; 
         align-items: center;
         flex-direction: column;
-/*         height: calc(100vh - 252px); */
         width: 100%;
-/*         margin-top: 150px; */
         padding: 20px;
-/*         margin-top:95px; */
     }
     
     form.form_add h3 span{
-    	background-color: lightgray;
+/*     	background-color: lightgray; */
     	color:rgb(232, 138, 107);
     	border-radius: 10px;
-    	border:3px solid white;
+/*     	border:3px solid white; */
     	padding:3px;
 /*     	margin-top:50px; */
     }
@@ -56,19 +53,25 @@
     form.form_add{
         /* border: 1px solid salmon; */
         height: 90%;
-        width: 70%;
+        width: 80%;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
     }
     form.form_add h3{
-    	margin-bottom: 35px;
+		margin-bottom: 20px;
+	    border: 1px solid #561729;
+	    padding: 7px;
+	    border-radius: 10px;
+	    background-color: #f9edf2;
+	    color: #561729;
+	    font-size: 22px;
     }
 
     
     form.form_add div.overage{
-        border: 3px solid rgb(232, 138, 107);
+        border: 2px solid rgb(232, 138, 107);
         width: 200px;
         border-radius: 10px;
         background-color: white;
@@ -77,7 +80,7 @@
         font-size: 20px;
         font-weight: bold;
 		margin: 40px 0;
-        padding: 10px 0;
+        padding: 3px 0;
         height: 50%;
         margin: 20px 0;
         display: flex;
@@ -86,13 +89,19 @@
     }
     form.form_add div.div_main{
     	display: flex;
-    	align-items: center;
-    	flex-direction: column;
+    	align-items: flex-end;
+    	flex-direction: row;
+    	flex-wrap: wrap;
+    	justify-content: space-between;
+/*     	border: 1px solid #561729; */
+	    padding: 5px 20px;
+	    border-radius: 20px;
+	    background-color: #f9edf2;
     }
     form.form_add div.div_main div{
         /* border: 1px solid blue; */
         height: 50%;
-        width: 200px;
+        width: 45%;
         margin: 10px 0;
         display: flex;
         flex-direction: column;
@@ -152,7 +161,7 @@
         background-color: rgb(243, 144, 144);
         border-radius: 10px;
         border-color: lightgray;
-        margin: 70px 0;
+        margin: 10px 0;
         font-size:18px;
     }
     button#submit_form:hover{
@@ -161,6 +170,8 @@
     }
 
 </style>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
+
     <!--導覽列css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
     <!--頁尾css-->
@@ -169,10 +180,19 @@
 <body>
 <!--放在最前面-->
 <div class="headerHTML"></div>
+
+<div id="hy_con">
+<div id="con_lf">
+<!--=============================================插入連結的地方-->
+
+</div>
+<div id="con_rh">
+<div class="con_rh_con"><br></br>
+
     <main class="body_container">
-    <div class="err">
-    <span></span>
-    </div>
+<!--     <div class="err"> -->
+<!--     <span></span> -->
+<!--     </div> -->
         
         <form class="form_add">
         	<h3>虛擬錢包<span>提款申請</span></h3>
@@ -205,15 +225,24 @@
 	                </span>             
 	                <input type="text" placeholder="備註" name="note">
 	            </div>
-            </div>
-
-<!--             <input type="hidden"  name="choice" value="AddOne"> -->
             <input type="hidden"  name="choice" value="AddOne">
             <button type="button" id="submit_form" onclick="form_add_submit()">確認送出</button>
+            </div>
+
 
         </form>
 
     </main>
+    
+    </div>
+	</div>
+	</div>
+	
+	<div class="clear"></div>
+	<div id="footer"></div>
+	
+	<br><br><br><br><br><br><br>
+    
     <!--放在最後面-->
 	<div class="footerHTML"></div>
 
@@ -234,6 +263,21 @@
 	    });
 	
 	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	    
+	    $(document).ready(function () {
+	        // 使用 AJAX 請求加載其他內容
+	        $.ajax({
+	            url: "${pageContext.request.contextPath}/front_end/members/sideMembers.jsp",
+	            method: "GET",
+	            success: function (data) {
+	                $("#con_lf").html(data);
+	            },
+	            error: function (xhr, status, error) {
+	                console.error("Error loading content:", error);
+	            }
+	        });
+	    });
+	    
 	</script>
 
     <script>
