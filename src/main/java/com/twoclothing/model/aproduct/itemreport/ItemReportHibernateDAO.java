@@ -36,6 +36,11 @@ public class ItemReportHibernateDAO implements ItemReportDAO {
 	}
 
 	@Override
+	public List<ItemReport> getAll() {
+		return getSession().createQuery("from ItemReport", ItemReport.class).list();
+	}
+
+	@Override
 	public List<ItemReport> getAll(int currentPage) {
 		int first = (currentPage - 1) * 10;
 		return getSession().createQuery("from ItemReport", ItemReport.class).setFirstResult(first).setMaxResults(10)

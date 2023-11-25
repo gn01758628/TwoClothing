@@ -18,6 +18,11 @@ public class FollowServiceImpl implements FollowService {
 	public void addFollow(Follow follow) {
 		dao.insert(follow);
 	}
+	
+	@Override
+	public List<Follow> getAllByFollowId(Integer followId) {
+		return dao.getAllByFollowId(followId);
+	}
 
 	@Override
 	public List<Follow> getAllByMbrId(Integer mbrId, int currentPage) {

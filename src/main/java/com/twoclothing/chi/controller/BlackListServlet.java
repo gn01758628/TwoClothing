@@ -11,17 +11,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.twoclothing.chi.service.FollowService;
-import com.twoclothing.chi.service.FollowServiceImpl;
-import com.twoclothing.model.follow.Follow;
+import com.twoclothing.chi.service.BlackListService;
+import com.twoclothing.chi.service.BlackListServiceImpl;
+import com.twoclothing.model.blacklist.BlackList;
 
-@WebServlet("/follow.check")
-public class FollowServlet extends HttpServlet {
-	private FollowService followService;
+@WebServlet("/blacklist.check")
+public class BlackListServlet extends HttpServlet {
+	private BlackListService blackListService;
 
 	@Override
 	public void init() throws ServletException {
-		followService = new FollowServiceImpl();
+		blackListService = new BlackListServiceImpl();
 	}
 
 	@Override
@@ -42,17 +42,13 @@ public class FollowServlet extends HttpServlet {
 			url = getAllByMbrId(req, res);
 			break;
 		case "insert":
-//			url = addFollow(req, res);
-//			break;
-			addFollow(req, res);
+			addBlackList(req, res);
 			return;
 		case "delete":
-//			url = deleteFollow(req, res);
-//			break;
-			deleteFollow(req, res);
+			deleteBlackList(req, res);
 			return;
 		default:
-			url = "/front_end/follow/followList.jsp";
+			url = "/front_end/blacklist/BlackList.jsp";
 		}
 
 		res.setContentType("text/html; charset=UTF-8");
@@ -66,38 +62,34 @@ public class FollowServlet extends HttpServlet {
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
-		List<Follow> followList = followService.getAllByMbrId(mbrId, currentPage);
+		List<BlackList> blackList = blackListService.getAllByMbrId(mbrId, currentPage);
 
-		int followPageQty = followService.getPageTotal(mbrId);
-		req.getSession().setAttribute("followPageQty", followPageQty);
+		int blackListPageQty = blackListService.getPageTotal(mbrId);
+		req.getSession().setAttribute("blackListPageQty", blackListPageQty);
 
-		req.setAttribute("followList", followList);
+		req.setAttribute("blackList", blackList);
 		req.setAttribute("currentPage", currentPage);
 
-		return "/front_end/follow/followList.jsp";
+		return "/front_end/blacklist/blackList.jsp";
 	}
 
-	private void addFollow(HttpServletRequest req, HttpServletResponse res) {
+	private void addBlackList(HttpServletRequest req, HttpServletResponse res) {
 		HttpSession session = req.getSession();
-		Integer mbrId = (Integer) session.getAttribute("mbrId"); // 要關注人的會員
-		int followId = Integer.parseInt(req.getParameter("mbrId")); // 被關注的會員(賣家)
+		Integer mbrId = (Integer) session.getAttribute("mbrId"); // 要黑名單人的會員
+		int blackId = Integer.parseInt(req.getParameter("mbrId")); // 被黑名單的會員(賣家)
 
-		Follow follow = new Follow();
-		follow.setCompositeKey(new Follow.CompositeDetail(mbrId, followId));
+		BlackList blackList = new BlackList();
+		blackList.setCompositeKey(new BlackList.CompositeDetail(mbrId, blackId));
 
-		followService.addFollow(follow);
-
-//		return "/follow?action=getAllByMbrId";
+		blackListService.addBlackList(blackList);
 	}
 
-	private void deleteFollow(HttpServletRequest req, HttpServletResponse res) {
+	private void deleteBlackList(HttpServletRequest req, HttpServletResponse res) {
 		HttpSession session = req.getSession();
-		Integer mbrId = (Integer) session.getAttribute("mbrId"); // 要關注人的會員
-		int followId = Integer.parseInt(req.getParameter("mbrId")); // 被關注的會員(賣家)
-		Follow follow = followService.getByPrimaryKey(mbrId, followId);
+		Integer mbrId = (Integer) session.getAttribute("mbrId"); // 要黑名單人的會員
+		int blackId = Integer.parseInt(req.getParameter("mbrId")); // 被黑名單的會員(賣家)
+		BlackList blackList = blackListService.getByPrimaryKey(mbrId, blackId);
 
-		followService.deleteFollow(follow);
-
-//		return "/follow?action=getAllByMbrId";
+		blackListService.deleteBlackList(blackList);
 	}
 }

@@ -28,6 +28,12 @@ public class FollowHibernateDAO implements FollowDAO {
 	}
 
 	@Override
+	public List<Follow> getAllByFollowId(Integer followId) {
+		return getSession().createQuery("from Follow where followId = :followId", Follow.class)
+				.setParameter("followId", followId).list();
+	}
+
+	@Override
 	public List<Follow> getAllByMbrId(Integer mbrId, int currentPage) {
 		int first = (currentPage - 1) * 10;
 		return getSession().createQuery("from Follow where mbrId = :mbrId", Follow.class).setFirstResult(first)

@@ -15,10 +15,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.twoclothing.chi.service.BlackListService;
+import com.twoclothing.chi.service.BlackListServiceImpl;
+import com.twoclothing.chi.service.FollowService;
+import com.twoclothing.chi.service.FollowServiceImpl;
 import com.twoclothing.huiwen.service.ItemService;
 import com.twoclothing.huiwen.service.ItemServiceImpl;
 import com.twoclothing.model.aproduct.item.Item;
+import com.twoclothing.model.blacklist.BlackList;
 import com.twoclothing.model.categorytags.CategoryTags;
+import com.twoclothing.model.follow.Follow;
 import com.twoclothing.model.members.Members;
 
 @WebServlet("/SellerHome/*")
@@ -27,9 +33,17 @@ public class SellerHomeServlet extends HttpServlet{
 	
 	private ItemService itemService;
 	
+	private FollowService followService;
+	
+	private BlackListService blackListService;
+	
 	public void init() throws ServletException {
 		
 		itemService = new ItemServiceImpl();
+		
+		followService = new FollowServiceImpl();
+		
+		blackListService = new BlackListServiceImpl();
 	}
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -69,10 +83,23 @@ public class SellerHomeServlet extends HttpServlet{
 		}
 		System.out.println(itemListWithCategory);
 		
+		HttpSession session = req.getSession();
+		Integer sessionMbrId = (Integer) session.getAttribute("mbrId");
+		Follow follow = new Follow();
+		follow = followService.getByPrimaryKey(sessionMbrId, mbrId);
+		boolean isFollow = (follow != null);
+		
+		BlackList blackList = new BlackList();
+		blackList = blackListService.getByPrimaryKey(sessionMbrId, mbrId);
+		boolean isBlackList = (blackList != null);
+		
+		session.setAttribute("homembrId", mbrId);
 		
 		req.setAttribute("itemList", itemList);
 		req.setAttribute("Members", mem);
 		req.setAttribute("itemListWithCategory", itemListWithCategory);
+		req.setAttribute("isFollow", isFollow);
+		req.setAttribute("isBlackList", isBlackList);
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/front_end/item/sellerHome.jsp");
 		dispatcher.forward(req, res);						
 	}	
