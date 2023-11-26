@@ -117,6 +117,22 @@
     		color: rgb(168, 7, 7);
     		text-decoration: underline;
 		}
+		
+		.circle-container {
+			width: 65px;
+			height: 65px;
+			position: fixed;
+		    top: 115px;
+		    right: 23px;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		}
+		  
+		.circle {
+			width: 65px;
+			height: 65px;
+		}
 	</style>
 	<!-- 導覽列css -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
@@ -179,6 +195,12 @@
 			</c:if>
 		</div>
 	</main>
+	
+	<div class="circle-container" style="background-color: #f9edf2; border-radius: 50%; padding: 16px;">
+	    <a href="${pageContext.request.contextPath}/members/Members.do?action=memberProfile&mbrId=${mbrId}">
+	        <button class="btn circle">會員<br>中心</button>
+	    </a>
+	</div>
 
 	<div class="footerHTML"></div>
 	
