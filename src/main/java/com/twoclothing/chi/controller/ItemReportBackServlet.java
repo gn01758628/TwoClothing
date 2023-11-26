@@ -225,7 +225,7 @@ public class ItemReportBackServlet extends HttpServlet {
 		itemReportService.updateItemReport(itemReport);
 
 		Notice notice = new Notice();
-		notice.setType("檢舉審核結果");
+		notice.setType("檢舉編號：" + reportId + " 審核結果");
 		notice.setHead("請確認商品檢舉審核結果");
 		
 		Item item = itemService.getItemByItemId(itemId);
@@ -241,7 +241,7 @@ public class ItemReportBackServlet extends HttpServlet {
 		noticeItemDelete.setImageLink("/ReadItemIMG/item?id=" + itemId + "&position=1");
 
 		if (result == 0) {
-			notice.setContent("商品檢舉審核為「處分」結果，請至「我的檢舉」查看。");
+			notice.setContent("審核為「處分」結果，請至「我的檢舉」查看。");
 			notice.setLink("/front/itemreport?action=getAllByMbrId");
 			notice.setImageLink("/images/report0.png");
 			itemReportService.addNotice(notice, mbrId);
@@ -249,7 +249,7 @@ public class ItemReportBackServlet extends HttpServlet {
 			
 			List<ItemReport> itemReportAll = itemReportService.getAll();
 			for (ItemReport itemReportBoth : itemReportAll) {
-			    if (itemReportBoth.getItemId() == itemId) {
+			    if (itemReportBoth.getItemId() == itemId && itemReportBoth.getrStatus() == 0) {
 			        itemReportBoth.setResult(0);
 			        itemReportBoth.setEmpId(empId);
 			        itemReportBoth.setrStatus(1);
@@ -257,12 +257,13 @@ public class ItemReportBackServlet extends HttpServlet {
 			        itemReportBoth.setNote(note);
 			        
 			        int bothMbrId = itemReportBoth.getMbrId();
+			        int reportBothId = itemReportBoth.getReportId();
 			        
 			        if (bothMbrId != mbrId) {
 			        	Notice noticeBothDelete = new Notice();
-			        	noticeBothDelete.setType("檢舉審核結果");
+			        	noticeBothDelete.setType("檢舉編號：" + reportBothId + " 審核結果");
 			        	noticeBothDelete.setHead("請確認商品檢舉審核結果");
-			        	noticeBothDelete.setContent("商品檢舉審核為「處分」結果，請至「我的檢舉」查看。");
+			        	noticeBothDelete.setContent("審核為「處分」結果，請至「我的檢舉」查看。");
 			        	noticeBothDelete.setLink("/front/itemreport?action=getAllByMbrId");
 			        	noticeBothDelete.setImageLink("/images/report0.png");
 			        	itemReportService.addNotice(noticeBothDelete, bothMbrId);
@@ -273,7 +274,7 @@ public class ItemReportBackServlet extends HttpServlet {
 			members.setSellScore(sellScore - 2);
 			itemReportService.addNotice(noticeItemDelete, sellMbr);
 		} else if (result == 1) {
-			notice.setContent("商品檢舉審核為「不處分」結果，請至「我的檢舉」查看。");
+			notice.setContent("審核為「不處分」結果，請至「我的檢舉」查看。");
 			notice.setLink("/front/itemreport?action=getAllByMbrId");
 			notice.setImageLink("/images/report1.png");
 			itemReportService.addNotice(notice, mbrId);
