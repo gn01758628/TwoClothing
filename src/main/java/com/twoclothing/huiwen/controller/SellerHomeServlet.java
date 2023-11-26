@@ -66,7 +66,6 @@ public class SellerHomeServlet extends HttpServlet{
 		
 		//取會員頭貼與圖片
 		Members mem = itemService.getMembersByPK(mbrId);
-		System.out.println(mem);
 		
 		//取類別標籤的父標籤，查詢商品類別用
 		List<CategoryTags> categoryTagsList = new ArrayList<>();
@@ -81,7 +80,6 @@ public class SellerHomeServlet extends HttpServlet{
 
 		    itemListWithCategory.add(itemWithCategory);
 		}
-		System.out.println(itemListWithCategory);
 		
 		HttpSession session = req.getSession();
 		Integer sessionMbrId = (Integer) session.getAttribute("mbrId");

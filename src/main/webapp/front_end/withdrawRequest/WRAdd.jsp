@@ -287,7 +287,6 @@
 	        //目前餘額(要扣掉申請中的總額)
 	        var reqing = 0;
 	        reqing=${reqing};
-	        console.log(reqing);
 	        newBalance = balance - reqing;
 	        $(".overage span#canWR span#inner_canWR").text(newBalance);
 		
