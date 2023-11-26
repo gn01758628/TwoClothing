@@ -81,7 +81,7 @@
 	</tr>
 	<tr>
 		<td>折扣額度:</td>
-		<td><input type="number" name="disValue"  min="0" value="${disValue}"   size="45" required/></td> <td>${errorMsgs.disValue}</td>
+		<td><input type="number" name="disValue"  min="1" value="${disValue}"   size="45" required/></td> <td>${errorMsgs.disValue}</td>
 	</tr>
 	<tr>
 		<td>最低金額條件:</td>
@@ -99,24 +99,38 @@
 		
 		
 	$(document).ready(function() {
-		// 取得現在的日期和時間
-	    const now = new Date();
-
-	    // 格式化現在的日期和時間為 YYYY-MM-DDTHH:mm（符合datetime-local輸入的格式）
-	    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Taipei' };
-	    const formattedNow = now.toLocaleString('zh-TW', options)
-	        .replace(/\//g, '-')
-	        .replace(',','');
-	    
-
-	    // 設定開始日期和時間的最小值為現在的日期和時間
-	    document.getElementById("startDate").min = formattedNow;
-
-	    // 設定結束日期和時間的最小值為現在的日期和時間
-	    document.getElementById("endDate").min = formattedNow;
-
+		document.getElementById("submit-button").addEventListener("click", function(event) {
+				setMinMaxDates();
+		});
 	});
 	
+		function setMinMaxDates() {
+
+	        let now = new Date();
+	        let startDate = new Date();
+	        startDate.setMinutes(startDate.getMinutes() + 1);
+	        let endDate = new Date();
+	        endDate.setMinutes(endDate.getMinutes() + 2);
+
+	        function formatDate(date) {
+	            return (
+	                date.getFullYear() + '-' +
+	                ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+	                ('0' + date.getDate()).slice(-2) + 'T' +
+	                ('0' + date.getHours()).slice(-2) + ':' +
+	                ('0' + date.getMinutes()).slice(-2)
+	            );
+	        }
+
+	        let formattedStartDate = formatDate(startDate);
+
+	        let formattedEndDate = formatDate(endDate);
+
+	        document.getElementById("startDate").min = formattedStartDate;
+
+	        document.getElementById("endDate").min = formattedEndDate;
+	    }
+
         
 </script>
 </html>

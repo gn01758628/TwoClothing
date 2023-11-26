@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.twoclothing.tonyhsieh.service.*"%>
@@ -16,7 +16,9 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>­û¤u¸ê®Æ­×§ï - update_emp_input.jsp</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-twzipcode@1.7.14/jquery.twzipcode.min.js"></script>
+<title>å“¡å·¥è³‡æ–™ä¿®æ”¹ - update_emp_input.jsp</title>
 
 <style>
   table#table-1 {
@@ -73,11 +75,11 @@
 
 </head>
 <body bgcolor='white'>
-<h3>¸ê®Æ­×§ï:</h3>
+<h3>è³‡æ–™ä¿®æ”¹:</h3>
 
-<%-- ¿ù»~ªí¦C --%>
+<%-- éŒ¯èª¤è¡¨åˆ— --%>
 <%-- <c:if test="${not empty errorMsgs}"> --%>
-<!-- 	<font style="color:red">½Ğ­×¥¿¥H¤U¿ù»~:</font> -->
+<!-- 	<font style="color:red">è«‹ä¿®æ­£ä»¥ä¸‹éŒ¯èª¤:</font> -->
 <!-- 	<ul> -->
 <%-- 		<c:forEach var="message" items="${errorMsgs}"> --%>
 <%-- 			<li style="color:red">${message.value}</li> --%>
@@ -88,13 +90,13 @@
 <FORM METHOD="post" ACTION="Employee.do" name="form1" enctype="multipart/form-data">
 <table>
     <tr>
-		<td>­û¤u½s¸¹:<font color=red><b>*</b></font></td>
+		<td>å“¡å·¥ç·¨è™Ÿ:<font color=red><b>*</b></font></td>
 		<td>${param.formatEmpId}</td>
 	</tr>
 
 	<jsp:useBean id="DepartmentServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.service.DepartmentServiceImpl" />
 	<tr>
-		<td>³¡ªù:<font color=red><b>*</b></font></td>
+		<td>éƒ¨é–€:<font color=red><b>*</b></font></td>
 		<td><select size="1" name="deptid">
 			<c:forEach var="department" items="${DepartmentServiceImpl.allDepartment}">
 				<option value="${department.deptId}"${(param.deptId==employee.deptId)? 'selected':'' } >${department.deptName}
@@ -105,23 +107,32 @@
 	
 
 	<tr>
-		<td>­û¤u©m¦W:</td>
+		<td>å“¡å·¥å§“å:</td>
 		<td><input type="TEXT" name="empname" value="${param.empName}" size="45"/></td> <td>${errorMsgs.empname}</td>
 	</tr>
 	<tr>
-		<td>¹q¸Ü:</td>
+		<td>é›»è©±:</td>
 		<td><input type="text" name="phone" value="${param.phone}"  size="45"/></td> <td>${errorMsgs.phone}</td>
 	</tr>	
 	<tr>
-		<td>­û¤u¦a§}:</td>
-		<td><input type="TEXT" name="address" value="${param.address}" size="45"/></td> <td>${errorMsgs.address}</td>
+		<td>åœ°å€:</td>
+		<td>
+			<div id="twzipcode">
+			</div>
+		</td>
+		
+	</tr>
+	<tr>
+		<td></td>
+		<td><input type="TEXT" name="address"   value="${param.address}"   size="45"/></td> <td>${errorMsgs.address}</td>
 	</tr>
 	<tr>
 		<td>EMAIL:</td>
 		<td><input type="TEXT" name="email"   value="${param.email}"   size="45"/></td> <td>${errorMsgs.email}</td>
 	</tr>
 	<tr>
-		<td>¹Ï¤ù:</td>
+		<td>åœ–ç‰‡:</td>
+		<td><img id="employeeAvatar" src="${pageContext.request.contextPath}/CJImageReader/Employee?id=${param.empId}" width="100" height="100" ></td>
 		<td><input class="form-control" type="file" id="avatar" name="avatar"  size="45"/>
 	   
 		</td>
@@ -132,17 +143,58 @@
 <br>
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="empid" value="${param.empId}">
-<input type="submit" value="°e¥X­×§ï"></FORM>
+<input type="submit" value="é€å‡ºä¿®æ”¹"></FORM>
 </body>
 
 
+<script>
+	
+$(function(){
+	$("#twzipcode").twzipcode({
+    });
+	// å®šç¾©ä¸€å€‹å‡½æ•¸ä¾†æ›´æ–° <input> å…ƒç´ çš„å€¼
+	function updateAddressInput() {
+	    // ç²å–countyã€districtå’Œzipcodeçš„å€¼
+	    // æŠ“å– select å…ƒç´ çš„å€¼
+		let county = $("select[name='county']");
+		let district = $("select[name='district']");
+		
+		let zipcode = $("input[name='zipcode']");
+		
+		let address = $("input[name='address']");
 
-<!-- =========================================¥H¤U¬° datetimepicker ¤§¬ÛÃö³]©w========================================== -->
+	    // å°‡é€™äº›å€¼å‹•æ…‹æ·»åŠ åˆ°<input>å…ƒç´ ä¸­
+	    address.val(zipcode.val() + county.val() + district.val());
+	}
 
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
-<script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
+	$("select[name='county'], select[name='district'], input[name='zipcode']").change(function() {
+	    updateAddressInput();
+	});
+	
+	// å‡è¨­æœ‰ä¸€å€‹input fileå…ƒç´ 
+	var fileInput = document.getElementById('avatar');
 
+	// ç•¶é¸æ“‡äº†æª”æ¡ˆæ™‚è§¸ç™¼äº‹ä»¶
+	fileInput.addEventListener('change', function () {
+	    // ç²å–æ‰€é¸æ“‡çš„æª”æ¡ˆ
+	    var file = fileInput.files[0];
+
+	    if (file) {
+	        // å°‡åœ–ç‰‡å…ƒç´ çš„srcè¨­å®šç‚ºé¸æ“‡çš„æª”æ¡ˆçš„URL
+	        var employeeImage = document.getElementById('employeeAvatar');
+	        employeeImage.src = URL.createObjectURL(file);
+	    }
+	});
+
+});
+</script>
+
+<!-- =========================================ä»¥ä¸‹ç‚º datetimepicker ä¹‹ç›¸é—œè¨­å®š========================================== -->
+
+<%-- <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" /> --%>
+<%-- <script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script> --%>
+<%-- <script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script> --%>
+<!--
 <style>
   .xdsoft_datetimepicker .xdsoft_datepicker {
            width:  300px;   /* width:  300px; */
@@ -150,27 +202,30 @@
   .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
            height: 151px;   /* height:  151px; */
   }
-</style>
-
+ </style> 
+-->
 <script>
+
+
+
 //         $.datetimepicker.setLocale('zh');
 //         $('#f_date1').datetimepicker({
 //            theme: '',              //theme: 'dark',
 //  	       timepicker:false,       //timepicker:true,
-//  	       step: 1,                //step: 60 (³o¬Otimepickerªº¹w³]¶¡¹j60¤ÀÄÁ)
+//  	       step: 1,                //step: 60 (é€™æ˜¯timepickerçš„é è¨­é–“éš”60åˆ†é˜)
 //  	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
 //  		   value: '${param.hiredate}', // value:   new Date(),
-//            //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // ¥h°£¯S©w¤£§t
-//            //startDate:	            '2017/07/10',  // °_©l¤é
-//            //minDate:               '-1970-01-01', // ¥h°£¤µ¤é(¤£§t)¤§«e
-//            //maxDate:               '+1970-01-01'  // ¥h°£¤µ¤é(¤£§t)¤§«á
+//            //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // å»é™¤ç‰¹å®šä¸å«
+//            //startDate:	            '2017/07/10',  // èµ·å§‹æ—¥
+//            //minDate:               '-1970-01-01', // å»é™¤ä»Šæ—¥(ä¸å«)ä¹‹å‰
+//            //maxDate:               '+1970-01-01'  // å»é™¤ä»Šæ—¥(ä¸å«)ä¹‹å¾Œ
 //         });
         
         
    
-        // ----------------------------------------------------------¥H¤U¥Î¨Ó±Æ©wµLªk¿ï¾Üªº¤é´Á-----------------------------------------------------------
+        // ----------------------------------------------------------ä»¥ä¸‹ç”¨ä¾†æ’å®šç„¡æ³•é¸æ“‡çš„æ—¥æœŸ-----------------------------------------------------------
 
-        //      1.¥H¤U¬°¬Y¤@¤Ñ¤§«eªº¤é´ÁµLªk¿ï¾Ü
+        //      1.ä»¥ä¸‹ç‚ºæŸä¸€å¤©ä¹‹å‰çš„æ—¥æœŸç„¡æ³•é¸æ“‡
         //      var somedate1 = new Date('2017-06-15');
         //      $('#f_date1').datetimepicker({
         //          beforeShowDay: function(date) {
@@ -184,7 +239,7 @@
         //      }});
 
         
-        //      2.¥H¤U¬°¬Y¤@¤Ñ¤§«áªº¤é´ÁµLªk¿ï¾Ü
+        //      2.ä»¥ä¸‹ç‚ºæŸä¸€å¤©ä¹‹å¾Œçš„æ—¥æœŸç„¡æ³•é¸æ“‡
         //      var somedate2 = new Date('2017-06-15');
         //      $('#f_date1').datetimepicker({
         //          beforeShowDay: function(date) {
@@ -198,7 +253,7 @@
         //      }});
 
 
-        //      3.¥H¤U¬°¨â­Ó¤é´Á¤§¥~ªº¤é´ÁµLªk¿ï¾Ü (¤]¥i«ö»İ­n´«¦¨¨ä¥L¤é´Á)
+        //      3.ä»¥ä¸‹ç‚ºå…©å€‹æ—¥æœŸä¹‹å¤–çš„æ—¥æœŸç„¡æ³•é¸æ“‡ (ä¹Ÿå¯æŒ‰éœ€è¦æ›æˆå…¶ä»–æ—¥æœŸ)
         //      var somedate1 = new Date('2017-06-15');
         //      var somedate2 = new Date('2017-06-25');
         //      $('#f_date1').datetimepicker({

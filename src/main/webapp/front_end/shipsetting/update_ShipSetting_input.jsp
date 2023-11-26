@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>聊天室</title>
+    <title>更新物流方式</title>
     <!--頁籤icon-->
     <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
     <!--bootstrap5 css-->
@@ -184,9 +184,8 @@ let twzipcode = new TWzipcode({
     // 剩下的部分視為具體地址
     var addressPart = addressString.substring(regionIndex + 1);
 
-    
+    //放到表單
    	twzipcode.nth(1).set(numberAsInt);
-
     $('input[name="address"]').val(addressPart);
 
     

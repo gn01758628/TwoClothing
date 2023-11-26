@@ -95,27 +95,7 @@ public class MemberCouponServlet extends HttpServlet{
 				forwardPath = getAllCoupon(req,res,mdrId);
 				break;
 			case "get_Member_Coupon":
-				
-				Date currentDate = new Date();
-				List<MembersCouponDTO> membersCouponDTOList = mcs.getAllMembersCouponDTOByMemberId(mdrId);
-				
-				
-				MembersCoupon mc;
-		        for (MembersCouponDTO membersCouponDTO : membersCouponDTOList) {
-		            if (membersCouponDTO.getExpireDate() != null) {
-		                if (currentDate.after(membersCouponDTO.getExpireDate()) && membersCouponDTO.getCouponStatus() == 0) {
-		                	MembersCouponCompositeDetail mcd = new MembersCouponCompositeDetail(mdrId,membersCouponDTO.getCouponId());
-		                	mc = gs.getByPrimaryKey(MembersCoupon.class, mcd);
-		                    mc.setCouponStatus(2);
-		                    gs.update(mc);
-		                    membersCouponDTO.setCouponStatus(2);
-		                }
-		            }
-		        }
-				
-				req.setAttribute("membersCouponDTOList", membersCouponDTOList);
-				req.setAttribute("couponDisTypeMap", Mapping.couponDisTypeMap);
-				forwardPath = "/front_end/coupon/memberCoupon.jsp";
+				forwardPath = getMemberCoupon(req,res,mdrId);
 				break;
 			case "receive_Coupon":
 				receiveCoupon(req,res,session,mdrId);
@@ -167,7 +147,7 @@ public class MemberCouponServlet extends HttpServlet{
         	            int status = ((AllotedCoupon) coupon).getStatus();
         	            return status == 1 ? -1 : status;
         	        })
-        	        .thenComparing(Comparator.comparingInt(coupon -> ((AllotedCoupon) coupon).getCpnId()))
+        	        .thenComparingLong(coupon -> ((AllotedCoupon) coupon).getAllotDate().longValue())
         	    )
         	    .collect(Collectors.toList());
 
@@ -178,19 +158,33 @@ public class MemberCouponServlet extends HttpServlet{
 		return "/front_end/coupon/receiveCoupon.jsp";
 	}
 	
-	private void getMemberCoupon(HttpServletRequest req, HttpServletResponse res,Integer mdrId) throws ServletException, IOException {
+	private String getMemberCoupon(HttpServletRequest req, HttpServletResponse res,Integer mdrId) throws ServletException, IOException {
+		
+		Date currentDate = new Date();
+		List<MembersCouponDTO> membersCouponDTOList = mcs.getAllMembersCouponDTOByMemberId(mdrId);
 		
 		
+		MembersCoupon mc;
+        for (MembersCouponDTO membersCouponDTO : membersCouponDTOList) {
+            if (membersCouponDTO.getExpireDate() != null) {
+                if (currentDate.after(membersCouponDTO.getExpireDate()) && membersCouponDTO.getCouponStatus() == 0) {
+                	MembersCouponCompositeDetail mcd = new MembersCouponCompositeDetail(mdrId,membersCouponDTO.getCouponId());
+                	mc = gs.getByPrimaryKey(MembersCoupon.class, mcd);
+                    mc.setCouponStatus(2);
+                    gs.update(mc);
+                    membersCouponDTO.setCouponStatus(2);
+                }
+            }
+        }
 		
+		req.setAttribute("membersCouponDTOList", membersCouponDTOList);
+		req.setAttribute("couponDisTypeMap", Mapping.couponDisTypeMap);
 		
-		
-		
-		return;
+		return "/front_end/coupon/memberCoupon.jsp";
 	}
 	
 	private void receiveCoupon(HttpServletRequest req, HttpServletResponse res,HttpSession session,Integer mdrId) throws ServletException, IOException {
 		Integer recordResult = recordExecution(mdrId,session);
-		System.out.println(recordResult);
 		if( recordResult != null ) {
 			res.getWriter().write(String.valueOf(recordResult));
 			res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -212,7 +206,6 @@ public class MemberCouponServlet extends HttpServlet{
     	allotedCoupon.setIndex(index);
 		int result = allotedCouponDao.receiveCoupon(allotedCoupon);
 		
-		
 		if( result >= 0 ) {
 			MembersCouponCompositeDetail mcd = new MembersCouponCompositeDetail(mdrId,cpnId);
 			MembersCoupon mc = new MembersCoupon(mcd,null,0);
@@ -228,7 +221,7 @@ public class MemberCouponServlet extends HttpServlet{
 	}
 	
 	
-	// 1 同一瀏覽器1秒內  2不同瀏覽器5秒內
+	// 1 同一瀏覽器0.5秒內  2不同瀏覽器5秒內
 	public static Integer recordExecution(Integer mbrId, HttpSession currentSession) {
 	    // 獲取現在的時間
 	    long currentTime = System.currentTimeMillis();
@@ -242,7 +235,7 @@ public class MemberCouponServlet extends HttpServlet{
 
 	        // 檢查當前 Session 是否和儲存的 Session 為同一個
 	        if (currentSession.equals(storedSession)) {
-	        	if (currentTime - lastExecutionTime < 1000) {
+	        	if (currentTime - lastExecutionTime < 500) {
 	        		sessionData.setLastExecutionTime(currentTime);
 	    	        sessionDataMap.put(mbrId, sessionData);
 	                return 2000;
