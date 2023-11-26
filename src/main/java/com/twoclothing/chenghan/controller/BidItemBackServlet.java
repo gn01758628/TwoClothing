@@ -62,7 +62,6 @@ public class BidItemBackServlet extends HttpServlet {
         boolean isDoubleIMG = bidItemService.isDoubleImaged(bidItemId);
         Map<String, String> messages = new HashMap<>();
 
-
         Timestamp startTime = bidItem.getStartTime();
         String startTimeStr = startTime != null ? String.valueOf(startTime.getTime()) : "0";
         Timestamp endTime = bidItem.getEndTime();
