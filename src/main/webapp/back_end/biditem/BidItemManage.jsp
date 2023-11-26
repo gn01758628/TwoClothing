@@ -101,7 +101,15 @@
     </div>
 </div>
 
-<div class="container mt-5 ">
+<!--開關按鈕-->
+
+<button class="pushable me-4" id="toggleButton">
+    <span class="shadow"></span>
+    <span class="edge"></span>
+    <span class="front">隱藏搜尋</span>
+</button>
+
+<div class="container mt-5 searchInputDIV">
     <div class="text-center mb-4">
         <p>根據你已知的資訊來幫助搜索，請提供你所掌握的資訊：</p>
     </div>
@@ -550,6 +558,21 @@
             return year + "/" + month + "/" + day + " " + hours + ":" + minutes;
         }
     }
+</script>
+<!--隱藏顯示搜尋框-->
+<script>
+    $(document).ready(function() {
+        const searchInputDIV = $(".searchInputDIV");
+        $('#toggleButton').click(function() {
+            if (searchInputDIV.is(':visible')) {
+                searchInputDIV.slideUp();
+                $('.front').text('顯示搜尋');
+            } else {
+                searchInputDIV.slideDown();
+                $('.front').text('隱藏搜尋');
+            }
+        });
+    });
 </script>
 
 </body>
