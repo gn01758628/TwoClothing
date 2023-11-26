@@ -101,7 +101,15 @@
     </div>
 </div>
 
-<div class="container mt-5 ">
+<!--開關按鈕-->
+
+<button class="pushable me-4" id="toggleButton">
+    <span class="shadow"></span>
+    <span class="edge"></span>
+    <span class="front">隱藏搜尋</span>
+</button>
+
+<div class="container mt-5 searchInputDIV">
     <div class="text-center mb-4">
         <p>根據你已知的資訊來幫助搜索，請提供你所掌握的資訊：</p>
     </div>
@@ -489,7 +497,7 @@
             $.get("${pageContext.request.contextPath}/back_end/servlet/biditem/findGiven", {
                 bidItemId: bidItemId,
             }, function (data) {
-                let isDoubleIMG = data.isDoubleIMG;
+                let isDoubleIMG = (data.isDoubleIMG === "true");
                 // 模態框節點
                 $(".bidNameModal").text(data.bidName);
                 $("#memberId").text(data.mbrId);
@@ -503,7 +511,7 @@
                 $("#directPrice").text(transformPrice(data.directPrice));
                 $("#startTime").text(transformTime(data.startTime));
                 $("#endTime").text(transformTime(data.endTime));
-                toggleImages(!isDoubleIMG,bidItemId,"${pageContext.request.contextPath}");
+                toggleImages(isDoubleIMG,bidItemId,"${pageContext.request.contextPath}");
             })
         })
     })
@@ -550,6 +558,21 @@
             return year + "/" + month + "/" + day + " " + hours + ":" + minutes;
         }
     }
+</script>
+<!--隱藏顯示搜尋框-->
+<script>
+    $(document).ready(function() {
+        const searchInputDIV = $(".searchInputDIV");
+        $('#toggleButton').click(function() {
+            if (searchInputDIV.is(':visible')) {
+                searchInputDIV.slideUp();
+                $('.front').text('顯示搜尋');
+            } else {
+                searchInputDIV.slideDown();
+                $('.front').text('隱藏搜尋');
+            }
+        });
+    });
 </script>
 
 </body>

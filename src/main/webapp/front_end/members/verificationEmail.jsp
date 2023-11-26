@@ -109,7 +109,7 @@ input {
 				<button type="submit">登出</button>
 			</form>
 	<div class="system_name">
-		<h2>TwoClothing歡迎您</h2>
+		<h2>TwoClothing</h2>
 	</div>
 	<div id="forgotPasswordModal" class="modal">
 		<div class="modal-content">

@@ -5,15 +5,15 @@
 ">
 <head>
     <meta charset="UTF-8">
+        <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
     <style>
         <!--
         样式部分保持不变
 
         -->
     </style>
-    <title>登入</title>
-        <!--頁籤icon-->
-    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+    <title>登入TwoClothing</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!--====圖片驗證點擊刷新===================				 -->
@@ -28,44 +28,42 @@
     <!-- 	圖片驗證	===================				 -->
 
     <style>
-		body {
-		  height: 100vh;
-		  margin: 0;
-		  background: radial-gradient(
-		    circle at top left,
-		    #3498db,
-		    transparent 70%
-		  ) top left,
-		  radial-gradient(
-		    circle at top right,
-		    #e74c3c,
-		    transparent 70%
-		  ) top right,
-		  radial-gradient(
-		    circle at bottom left,
-		    #2ecc71,
-		    transparent 70%
-		  ) bottom left,
-		  radial-gradient(
-		    circle at bottom right,
-		    #f39c12,
-		    transparent 70%
-		  ) bottom right;
-		  background-size: 50% 50%;
-		  background-repeat: no-repeat;
-		}
-		
-		
-		.system_name h2 {
-		    color: gold; /* 金色文字 */
-		    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8); /* 金光發光效果 */
-		}
-
-
-
+/*body {
+  height: 100vh;
+  margin: 0;
+  background: radial-gradient(
+    circle at top left,
+    #3498db,
+    transparent 70%
+  ) top left,
+  radial-gradient(
+    circle at top right,
+    #e74c3c,
+    transparent 70%
+  ) top right,
+  radial-gradient(
+    circle at bottom left,
+    #2ecc71,
+    transparent 70%
+  ) bottom left,
+  radial-gradient(
+    circle at bottom right,
+    #f39c12,
+    transparent 70%
+  ) bottom right;
+  background-size: 50% 50%;
+  background-repeat: no-repeat;
+}
+*/
+body{background-image: url('${pageContext.request.contextPath}/images/tokkk.jpg');
+    background-size: cover; /* 保持圖片覆蓋整個背景 */
+    background-repeat: no-repeat; /* 防止圖片重複 */
+    background-position: center center; /* 將圖片置於中心 */
+}
         * {
             font-family: 微軟正黑體;
         }
+
 
         body {
             background-color: white;
@@ -145,7 +143,7 @@
         #container2 {
             visibility: hidden; /*剛開始消失*/
 /*             height: 450px; */
-             display: none;
+		display: none;
         }
 
         #forgotPasswordModal {
@@ -158,7 +156,6 @@
             color: #c47aa8;
             margin: -200px 0px 0px 0px;
             font-size: 14px;
-             margin-top: 200px;
         }
 
         input {
@@ -215,6 +212,10 @@
 	cursor: pointer;
 }
 /*////////////////////////////////*/
+.system_name h2 {
+    color: gold; /* 金色文字 */
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8); /* 金光發光效果 */
+}
 
   
     </style>
@@ -223,20 +224,20 @@
 <body>
 
 
+<div class="login_page" style="position: relative; top: 250px;">
 <div class="system_name">
     <h2>TwoClothing</h2>
     
 </div>
-<div class="login_page">
     <div id="container1">
         <div class="login">
             <h3>登入 Login</h3>
             <!-- ============================登入================================================ -->
             <form action="${pageContext.request.contextPath}/members/Members.do" class="login-form">
-                <input type="text" id="email2" name="email2" placeholder="email"
-                       required><span id="loginEemailError" style="color: red;"></span>
+                <input type="text" id="email2" name="email2" placeholder="email" required >
+                <span id="loginEemailError" style="color: red;"></span>
                 <div class="tab"></div>
-                <input type="password" id="pswdHash2" name="pswdHash2" value="hash" placeholder="密碼" required><span id="loginPpswdHashError" style="color: red;"></span>
+                <input type="password" id="pswdHash2" name="pswdHash2" placeholder="密碼" value="hash" required><span id="loginPpswdHashError" style="color: red;"></span>
                 <span id="togglePassword1" onclick="togglePasswordVisibility()">🔒</span>
                 <div class="tab"></div>
                 <label for="rememberMe">記住我</label>
@@ -255,7 +256,7 @@
 </div>
 <!-- login_page end -->
 
-<div class="signup_page"  >
+<div class="signup_page" style="position: relative; top: 250px;">
     <div id="container2">
         <div class="signup">
             <h3>註冊 Sign Up</h3>
@@ -301,9 +302,7 @@
 </div>
 <!-- signup_page end -->
 <!--忘記密碼==================================================================-->
-<!--忘記密碼==================================================================-->
-<!--忘記密碼==================================================================-->
-<div id="forgotPasswordModal" class="modal" style="display: none;">
+<div id="forgotPasswordModal" class="modal" style="display: none; position: relative; top: 450px;">
     <div class="modal-content">
         <h3>忘記密碼</h3>
         <form action="${pageContext.request.contextPath}/members/SendEmailServlet"
@@ -316,15 +315,6 @@
         </form>
     </div>
 </div>
-
-<!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
-
-
-<div id="copyright">
-    <h4>Copyright © 2018 RoseWang All rights reserved</h4>
-    <!--因為js，會跑版-->
-</div>
-
 
 <script>
     var contextPath = "${pageContext.request.contextPath}";
