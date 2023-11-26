@@ -32,6 +32,7 @@ import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.aproduct.itemimage.ItemImage;
 import com.twoclothing.model.categorytags.CategoryTags;
 import com.twoclothing.model.follow.Follow;
+import com.twoclothing.model.follow.Follow.CompositeDetail;
 import com.twoclothing.redismodel.notice.Notice;
 
 import redis.clients.jedis.JedisPool;
@@ -269,7 +270,7 @@ public class ItemServlet extends HttpServlet {
 			List<Follow> followList = followService.getAllByFollowId(mbrId);
 			
 			for (Follow follow : followList) {
-				Follow.CompositeDetail compositeDetail = follow.getCompositeKey();
+				CompositeDetail compositeDetail = follow.getCompositeKey();
 				Integer followMbrId = compositeDetail.getMbrId();
 				Integer followId = compositeDetail.getFollowId();
 				if (mbrId == followId) {

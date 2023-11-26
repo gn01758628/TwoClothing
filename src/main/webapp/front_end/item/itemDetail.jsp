@@ -692,7 +692,13 @@
 			$(".heart-container .checkbox").prop("checked", true);
     	}
 
+		<% Integer mbrId = (Integer) session.getAttribute("mbrId"); %>
 		$("#Give-It-An-Id").on("click", function () {
+			if (${mbrId == null}) {
+		        window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
+		        $(this).prop("checked", false);
+		    }
+			
 			if (!isTracked) {
 				insertItem();
             } else {
@@ -711,11 +717,7 @@
 		        	isTracked = true;
 		        },
 		        error: function (xhr) {
-		            if (xhr.status === 403) {
-		                window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
-		            } else {
-		                console.log(xhr);
-		            }
+		            console.log(xhr);
 		        }
 		    });
 		}
@@ -743,8 +745,7 @@
 		        }
 		    });
 		}
-		
-		<% Integer mbrId = (Integer) session.getAttribute("mbrId"); %>
+
 		function showDetail(itemId) {
 		    event.preventDefault();
 		    
@@ -752,10 +753,11 @@
 	        	window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
 	    	</c:if>
 	    	
-		    $('#itemId').text(itemId);
-		    let html = `<li class="list-group-item" id="report">An itemreport</li>`;
-		    
-		    $('#itemReportModal').modal('show');
+	    	<c:if test="${mbrId != null}">
+		        $('#itemId').text(itemId);
+		        let html = `<li class="list-group-item" id="report">An itemreport</li>`;
+		        $('#itemReportModal').modal('show');
+		    </c:if>
 		}
 		
 		function insertReport() {

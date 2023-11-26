@@ -170,7 +170,24 @@
 	        background-color: white;
 	        color: #561729;
 	    }
+	    
+	    button.btn-success{
+	    	margin:0px 10px;
+	    }
 	
+	
+		button.btn-danger{
+			margin:0px 10px;
+			background-color:gray;
+			border-color: gray;
+			
+		}
+		button.btn-danger:hover{
+			background-color:gray;
+			border-color: gray;
+		}
+		
+		
 	
 	</style>
     <!--導覽列css-->
@@ -360,7 +377,6 @@
 				   			  icon: "error",
 				   			  title: "Oops...",
 				   			  text: "錢包餘額不足！請選擇其他付款方式",
-// 				   			  footer: '<a href="">去查看餘額</a>'
 				   			});
 				   							   			
 				   		}		
@@ -403,21 +419,43 @@
 	   				eachCount : output,
 	   				mbrPoint : "${mbrPoint}",
 	   				cpnId : "${cpnId}",
-	   				totalPay : ($(".add_price input").val()) - ($(".count input").val())
+	   				totalPay : ($(".add_price input").val()) - ($(".count input").val()),
+	   				action : "addOrder"
 	   		};
-// 	   		console.log(cartData);
    			
 	   		let formDataUrlEncoded = new URLSearchParams(cartData);
 	   		
-            fetch("${pageContext.request.contextPath}/ItemCart/toOrder", {
+            fetch("${pageContext.request.contextPath}/front_end/itemorder/itemorder.check", {
                 method: "post",
                 body: formDataUrlEncoded
             })
             .then(function (response) {
-            	console.log(response);
+            	return response.text();
             })
             .then(function (data) {
-            	console.log(data);
+            	const swalWithBootstrapButtons = Swal.mixin({
+            		  customClass: {
+            		    confirmButton: "btn btn-success",
+            		    cancelButton: "btn btn-danger"
+            		  },
+            		  buttonsStyling: false
+            		});
+            		swalWithBootstrapButtons.fire({
+            		  title: data,
+            		  icon: "success",
+            		  showCancelButton: true,
+            		  confirmButtonText: "看訂單",
+            		  cancelButtonText: "返回",
+            		  reverseButtons: true,
+            		  customClass: {
+            		      confirmButton: 'btn btn-success', 
+            		      cancelButton: 'btn btn-danger'   
+            		  },
+            		}).then((result) => {
+             		  if (result.isConfirmed) {
+            		    window.location.href = "YOUR_ORDER_PAGE_URL";
+             		    }
+            		});
             });
    		});
    		

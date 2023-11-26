@@ -210,8 +210,8 @@ public class BidItemReportBackServlet extends HttpServlet {
 		bidItemReportService.updateBidItemReport(bidItemReport);
 
 		Notice notice = new Notice();
-		notice.setType("檢舉審核結果");
-		notice.setHead("請確認商品檢舉審核結果");
+		notice.setType("檢舉編號：" + reportId + " 審核結果");
+		notice.setHead("請確認競標檢舉審核結果");
 
 		BidItem bidItem = bidItemService.getBidItemByBidItemId(bidItemId);
 		int sellMbr = bidItem.getMbrId();
@@ -220,21 +220,23 @@ public class BidItemReportBackServlet extends HttpServlet {
 
 		Notice noticeBidItemDelete = new Notice();
 		noticeBidItemDelete.setType("檢舉審核結果");
-		noticeBidItemDelete.setHead("請確認商品檢舉審核結果");
-		noticeBidItemDelete.setContent("商品「" + bidItem.getBidName() + "」，檢舉審核為「處分」結果，已強制移除。");
+		noticeBidItemDelete.setHead("請確認競標檢舉審核結果");
+		noticeBidItemDelete.setContent("競標商品「" + bidItem.getBidName() + "」，檢舉審核為「處分」結果，已強制移除。");
 		noticeBidItemDelete.setLink("#");
 		noticeBidItemDelete.setImageLink("/ReadItemIMG/biditem?id=" + bidItemId + "&position=1");
 
 		if (result == 0) {
-			notice.setContent("商品檢舉審核為「處分」結果，請至「競標檢舉」查看。");
+			notice.setContent("審核為「處分」結果，請至「競標檢舉」查看。");
 			notice.setLink("/front/biditemreport?action=getAllByMbrId");
 			notice.setImageLink("/images/report0.png");
 			bidItemReportService.addNotice(notice, mbrId);
 			bidItem.setBidStatus(6);
+			bidItem.setEndTime(updateauditdate);
+			bidItem.setEmpId(empId);
 			
 			List<BidItemReport> bidItemReportAll = bidItemReportService.getAll();
 			for (BidItemReport bidItemReportBoth : bidItemReportAll) {
-			    if (bidItemReportBoth.getBidItemId() == bidItemId) {
+			    if (bidItemReportBoth.getBidItemId() == bidItemId && bidItemReportBoth.getBidStatus() == 0) {
 			        bidItemReportBoth.setResult(0);
 			        bidItemReportBoth.setEmpId(empId);
 			        bidItemReportBoth.setBidStatus(1);
@@ -242,12 +244,13 @@ public class BidItemReportBackServlet extends HttpServlet {
 			        bidItemReportBoth.setNote(note);
 			        
 			        int bothMbrId = bidItemReportBoth.getMbrId();
+			        int reportBothId = bidItemReportBoth.getReportId();
 			        
 			        if (bothMbrId != mbrId) {
 			        	Notice noticeBothDelete = new Notice();
-			        	noticeBothDelete.setType("檢舉審核結果");
-			        	noticeBothDelete.setHead("請確認商品檢舉審核結果");
-			        	noticeBothDelete.setContent("商品檢舉審核為「處分」結果，請至「競標檢舉」查看。");
+			        	noticeBothDelete.setType("檢舉編號：" + reportBothId + " 審核結果");
+			        	noticeBothDelete.setHead("請確認競標檢舉審核結果");
+			        	noticeBothDelete.setContent("審核為「處分」結果，請至「競標檢舉」查看。");
 			        	noticeBothDelete.setLink("/front/biditemreport?action=getAllByMbrId");
 			        	noticeBothDelete.setImageLink("/images/report0.png");
 			        	bidItemReportService.addNotice(noticeBothDelete, bothMbrId);
@@ -258,7 +261,7 @@ public class BidItemReportBackServlet extends HttpServlet {
 			members.setSellScore(sellScore - 2);
 			bidItemReportService.addNotice(noticeBidItemDelete, sellMbr);
 		} else if (result == 1) {
-			notice.setContent("商品檢舉審核為「不處分」結果，請至「競標檢舉」查看。");
+			notice.setContent("審核為「不處分」結果，請至「競標檢舉」查看。");
 			notice.setLink("/front/biditemreport?action=getAllByMbrId");
 			notice.setImageLink("/images/report1.png");
 			bidItemReportService.addNotice(notice, mbrId);
