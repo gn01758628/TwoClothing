@@ -301,7 +301,6 @@
 			});
 			
 			$("td.grade").each(function () {
-				console.log($("td[name='grade']"));
 				let status = $(this).text();
 				switch(status){
 					case "0":

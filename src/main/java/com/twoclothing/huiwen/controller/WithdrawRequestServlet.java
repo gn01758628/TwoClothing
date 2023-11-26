@@ -57,7 +57,6 @@ public class WithdrawRequestServlet extends HttpServlet {
 				reqing += wr.getAmount();
 			}
 //			reqing = WithdrawRequestList.getAmount();
-			System.out.println("reqing"+reqing);
 			req.setAttribute("balance", balance);
 			req.setAttribute("reqing", reqing);
 			String url = "/front_end/withdrawRequest/WRAdd.jsp";

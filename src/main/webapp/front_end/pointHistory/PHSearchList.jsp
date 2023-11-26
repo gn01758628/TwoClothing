@@ -312,7 +312,6 @@
     $(document).ready(function() {
     	//計算點數總額
     	$(".value").each(function(){
-    		console.log("2");
     		let minus = parseInt($(this).text())
     		total+=minus;
     		$(".number").text("$"+total);

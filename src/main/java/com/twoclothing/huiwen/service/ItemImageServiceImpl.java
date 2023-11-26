@@ -30,7 +30,6 @@ public class ItemImageServiceImpl implements ItemImageService {
 
 	@Override
 	public List<ItemImage> getByItemId(Integer itemId) {
-		System.out.println(itemImageDAO.getAllByItemId(itemId));
 		return itemImageDAO.getAllByItemId(itemId);
 	}
 	

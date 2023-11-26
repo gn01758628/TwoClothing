@@ -177,7 +177,7 @@ body {
 		    		    	    let errorText = await response.text();
 		    		    	    tr.find('td:eq(8)').text(allotedCouponStatusMap[errorText]);
 		    		    	    tr.find('td:eq(9)').empty();
-		    		    	    Swal.showValidationMessage(errorText);
+		    		    	    Swal.showValidationMessage('該優惠券狀態:'+allotedCouponStatusMap[errorText]);
 		    		    	    return false;
 		    		    	}
 		    		    	tr.find('td:eq(8)').text(allotedCouponStatusMap[await response.text()]);

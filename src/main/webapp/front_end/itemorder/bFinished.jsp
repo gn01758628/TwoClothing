@@ -33,19 +33,19 @@
 <div class="b-example-divider"></div>
 
   <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
-    <a href="itemorder.do?action= " class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+    <a href="itemorder.check?action= " class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
       <svg class="bi me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
       <span class="fs-5 fw-semibold">返回購物頁面</span>
     </a>
     
         <div class="collapse show" id="home-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="itemorder.do?action=buyer&buyer=${buyer}" class="link-dark rounded">所有訂單</a></li>
-            <li><a href="itemorder.do?action=buyer0&buyer=${buyer}" class="link-dark rounded">待付款</a></li>
-            <li><a href="itemorder.do?action=buyer1&buyer=${buyer}" class="link-dark rounded">已付款</a></li>
-            <li><a href="itemorder.do?action=buyer2&buyer=${buyer}" class="link-dark rounded">待收貨</a></li>
-            <li><a href="itemorder.do?action=buyer3&buyer=${buyer}" class="link-dark rounded">已完成</a></li>
-            <li><a href="itemorder.do?action=buyer4&buyer=${buyer}" class="link-dark rounded">已取消訂單</a></li>
+            <li><a href="itemorder.check?action=buyer&buyer=${buyer}" class="link-dark rounded">所有訂單</a></li>
+            <li><a href="itemorder.check?action=buyer0&buyer=${buyer}" class="link-dark rounded">待付款</a></li>
+            <li><a href="itemorder.check?action=buyer1&buyer=${buyer}" class="link-dark rounded">已付款</a></li>
+            <li><a href="itemorder.check?action=buyer2&buyer=${buyer}" class="link-dark rounded">待收貨</a></li>
+            <li><a href="itemorder.check?action=buyer3&buyer=${buyer}" class="link-dark rounded">已完成</a></li>
+            <li><a href="itemorder.check?action=buyer4&buyer=${buyer}" class="link-dark rounded">已取消訂單</a></li>
           </ul>
         </div>
     

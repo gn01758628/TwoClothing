@@ -145,11 +145,11 @@ body {
 	    		    	    body:'cpnId=' + encodeURIComponent(cpnId) + '&allotDate=' + encodeURIComponent(allotDate) + '&totalQuantity=' + encodeURIComponent(totalQuantity)+ '&expireDate=' + encodeURIComponent(expireDate) +'&action=allot_Coupon',
 	    		    	});
 	
-	    		    	if (!response.ok) {
-	    		    	    const errorText = await response.text();
-	    		    	    Swal.showValidationMessage(errorText);
-	    		    	    return false;
-	    		    	}
+	    		    	if (!response.ok || response.status === 400) {
+	    		            let errorText = await response.text();
+	    		            Swal.showValidationMessage(errorText);
+	    		            return false;
+	    		        }
 	    		    }
 	    	    }).then((result) => {
 	    	    	if (result.isConfirmed) {

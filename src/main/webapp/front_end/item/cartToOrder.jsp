@@ -347,7 +347,6 @@
 	   			}
 	   			output[0] = Math.floor(output[0]);
 	   		}
-	   		console.log("output"+output);
 	   			
 	   		//取得付款方式
 		   	$('input[type="radio"]').change(function() {

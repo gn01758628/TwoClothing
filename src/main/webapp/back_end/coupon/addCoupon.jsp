@@ -63,7 +63,7 @@
 	<tr>
 		<td>使用日期:</td>
 		
-		<td><input type="datetime-local" id="startDate" name="createDate"  value="${createDate}" size="45" required/></td> <td>${errorMsgs.createdate}</td>
+		<td><input type="datetime-local" id="startDate" name="createDate"  value="${createDate}" size="45" required/></td> <td>${errorMsgs.createDate}</td>
 	</tr>
 	<tr>
 		<td>失效日期:</td>
@@ -72,20 +72,20 @@
 	<tr>
 		<td>折扣類型:<font color=red><b>*</b></font></td>
 		<td>
-			<select size="1" name="distype">
+			<select size="1" name="disType">
 				<c:forEach var="entry" items="${couponDisTypeMap.entrySet()}">
-				    <option value="${entry.key}"${(entry.key==distype)? 'selected':'' } >${entry.value}
+				    <option value="${entry.key}"${(entry.key==disType)? 'selected':'' } >${entry.value}
 				</c:forEach>
 			</select>
 		</td>
 	</tr>
 	<tr>
 		<td>折扣額度:</td>
-		<td><input type="number" name="disvalue"  min="0" value="${disvalue}"   size="45" required/></td> <td>${errorMsgs.disvalue}</td>
+		<td><input type="number" name="disValue"  min="0" value="${disValue}"   size="45" required/></td> <td>${errorMsgs.disValue}</td>
 	</tr>
 	<tr>
 		<td>最低金額條件:</td>
-		<td><input type="number" name="minamount" min="0"  value="${not empty minamount ? minamount : 0}"   size="45" required/></td> <td>${errorMsgs.minamount}</td>
+		<td><input type="number" name="minAmount" min="0"  value="${not empty minAmount ? minAmount : 0}"   size="45" required/></td> <td>${errorMsgs.minAmount}</td>
 	</tr>
 	
 </table>
