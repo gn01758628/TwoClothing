@@ -289,14 +289,9 @@ public class ItemOrderServlet extends HttpServlet{
         	
         }
         
-        Map<String, List<OrderDetails>> groupedByItemId = orderDetailsList.stream()
-                .collect(Collectors.groupingBy(OrderDetails::getItemId()));
+        OrderDetails orderDetails;
 
-        // 打印分组结果
-        groupedByItemId.forEach((itemId, detailsList) -> {
-            System.out.println("ItemId: " + itemId);
-            detailsList.forEach(details -> System.out.println("  Quantity: " + details.getQuantity() + ", EachCount: " + details.getEachCount()));
-        });
+        
         
         
         

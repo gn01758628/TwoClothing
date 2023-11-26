@@ -99,34 +99,38 @@
 		
 		
 	$(document).ready(function() {
-		// 取得現在的日期和時間
-	    let now = new Date();
-	    let startDate =  new Date();
-	    startDate.setMinutes(startDate.getMinutes() + 1);
-	    let endDate =  new Date();
-	    endDate.setMinutes(endDate.getMinutes() + 2);
-
-	  	// 格式化开始日期为 YYYY-MM-DDTHH:mm（包括分钟和秒数部分）
-		let formattedStartDate = startDate.getFullYear() + '-' +
-		    ('0' + (startDate.getMonth() + 1)).slice(-2) + '-' +
-		    ('0' + startDate.getDate()).slice(-2) + 'T' +
-		    ('0' + startDate.getHours()).slice(-2) + ':' +
-		    ('0' + startDate.getMinutes()).slice(-2);
-
-		// 格式化结束日期为 YYYY-MM-DDTHH:mm（包括分钟和秒数部分）
-		let formattedEndDate = endDate.getFullYear() + '-' +
-		    ('0' + (endDate.getMonth() + 1)).slice(-2) + '-' +
-		    ('0' + endDate.getDate()).slice(-2) + 'T' +
-		    ('0' + endDate.getHours()).slice(-2) + ':' +
-		    ('0' + endDate.getMinutes()).slice(-2);
-	    // 設定開始日期和時間的最小值為現在的日期和時間
-	    document.getElementById("startDate").min = formattedStartDate;
-
-	    // 設定結束日期和時間的最小值為現在的日期和時間
-	    document.getElementById("endDate").min = formattedEndDate;
-
+		document.getElementById("submit-button").addEventListener("click", function(event) {
+				setMinMaxDates();
+		});
 	});
 	
+		function setMinMaxDates() {
+
+	        let now = new Date();
+	        let startDate = new Date();
+	        startDate.setMinutes(startDate.getMinutes() + 1);
+	        let endDate = new Date();
+	        endDate.setMinutes(endDate.getMinutes() + 2);
+
+	        function formatDate(date) {
+	            return (
+	                date.getFullYear() + '-' +
+	                ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+	                ('0' + date.getDate()).slice(-2) + 'T' +
+	                ('0' + date.getHours()).slice(-2) + ':' +
+	                ('0' + date.getMinutes()).slice(-2)
+	            );
+	        }
+
+	        let formattedStartDate = formatDate(startDate);
+
+	        let formattedEndDate = formatDate(endDate);
+
+	        document.getElementById("startDate").min = formattedStartDate;
+
+	        document.getElementById("endDate").min = formattedEndDate;
+	    }
+
         
 </script>
 </html>

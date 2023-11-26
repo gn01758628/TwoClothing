@@ -143,7 +143,9 @@
         </li>
         
       </ul>
-      
+      <a class="navbar-brand" style="position: fixed;  bottom: 0px;" href="/TwoClothing/welcome.html">
+                    <img src="/TwoClothing/images/Mainicon.png" style="height: 50px" alt="Icon">
+                </a>
     </nav>
   </aside>
 	<iframe id="content"></iframe>
@@ -183,7 +185,10 @@ $(document).ready(function() {
 // 			});
         
 	        // 獲取被點擊的 a 標籤的 href 屬性的值
-	        var hrefValue = $(this).attr('href');
+	        let hrefValue = $(this).attr('href');
+	        if(hrefValue =="/TwoClothing/welcome.html"){
+	        	window.location.href = "/TwoClothing/welcome.html";
+	        }
 	        $('#content').attr('src', hrefValue);
         
     	});
