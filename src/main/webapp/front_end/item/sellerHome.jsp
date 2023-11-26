@@ -378,7 +378,6 @@
 	    $("#blouse").click(function(){
 	    	$(".li_area").each(function(){
 	            var supertagId = $(this).data("supertagid");
-				console.log(supertagId);
 	            if(supertagId === 2){ 
 	                $(this).show(); 
 	            } else {
@@ -389,7 +388,6 @@
 	    $("#bottoms").click(function(){
 	    	$(".li_area").each(function(){
 	    		var supertagId = $(this).data("supertagid");
-				console.log(supertagId);
 	            if(supertagId === 3){ 
 	                $(this).show(); 
 	            } else {
@@ -400,7 +398,6 @@
 	    $("#shoes").click(function(){
 	    	$(".li_area").each(function(){
 	    		var supertagId = $(this).data("supertagid");
-				console.log(supertagId);
 	            if(supertagId === 4){ 
 	                $(this).show(); 
 	            } else {

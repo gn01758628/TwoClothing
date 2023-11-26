@@ -127,6 +127,7 @@
         form.form_detail div.body_container div.product-info ul li h1 {
             font-size: 24px;
             margin: 0;
+            text-align: center;
         }
 
         form.form_detail div.body_container div.product-info ul li p {
@@ -640,7 +641,6 @@
 		$(".buy-button").on("click",function(){
 			quantities = $("#input_num").val();
 			let url="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&quantity="+quantities+"&gotoCart=gotoCart";
-			console.log(url);
 			fetch(url)
             .then(function(response){
             	return response.text();
@@ -660,7 +660,6 @@
 			
 			//購物車icon顯示數量
 			let url2="${pageContext.request.contextPath}/ItemCart/cart?itemId=${item.itemId}&addCartNum=addCartNum";
-			console.log(url2);
 			fetch(url2)
             .then(function(response){
             	return response.text();

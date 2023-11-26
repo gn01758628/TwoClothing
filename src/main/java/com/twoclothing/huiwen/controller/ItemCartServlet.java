@@ -349,7 +349,6 @@ public class ItemCartServlet extends HttpServlet {
             notice.setLink("#");
             notice.setImageLink("/images/cart/placeOrder.png");
             itemService.addNotice(notice, mbrId);
-        	System.out.println("發送通知");
         	//購物車清空
         	//處理商品id存成陣列
             String itemIdStr = req.getParameter("itemId");
@@ -453,7 +452,6 @@ public class ItemCartServlet extends HttpServlet {
         	//折扣後金額*5%
         	Integer totalPay = Integer.valueOf(req.getParameter("totalPay"));
         	Integer mbrPointAdd =Integer.valueOf((int)(Math.round(totalPay*0.05)));
-        	System.out.println("mbrPointAdd"+mbrPointAdd);
         	
         	PointHistory pointHistory = new PointHistory();
 			
@@ -475,7 +473,6 @@ public class ItemCartServlet extends HttpServlet {
         	Members mem=memSvc.getByPrimaryKey(mbrId);
 
     		Integer newPoint = mem.getMbrPoint()+mbrPointAdd;
-    		System.out.println("newPoint"+newPoint);
     		mem.setMbrPoint(newPoint);
     		memSvc.updateMembers(mem);
         	
