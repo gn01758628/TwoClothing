@@ -192,7 +192,7 @@ public class CouponServlet extends HttpServlet {
         Coupon coupon = new Coupon();
     	coupon.setCpnName(cpnname);
     	coupon.setCreateDate(new Timestamp(createDate.getTime()));
-    	coupon.setExpireDate(new Timestamp(expireDate.getTime()));
+    	coupon.setExpireDate(expireDate == null ? null : new Timestamp(expireDate.getTime()));
     	coupon.setDisType(disType);
     	coupon.setDisValue(disValue);
     	coupon.setMinAmount(minAmount);

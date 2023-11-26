@@ -28,13 +28,13 @@ public class ItemOrder implements Serializable {
 	@Column(name="buystar")
 	private Integer buyStar;
 	
-	@Column(name="buyerratingdesc")
+	@Column(name="buyerratingdesc" , columnDefinition = "mediumtext")
 	private String buyerRatingDesc;
 	
 	@Column(name="sellstar")
 	private Integer sellStar;
 	
-	@Column(name="sellerratingdesc")
+	@Column(name="sellerratingdesc" , columnDefinition = "mediumtext")
 	private String sellerRatingDesc;
 	
 	@Column(name="orderdate",updatable = false )
@@ -51,9 +51,6 @@ public class ItemOrder implements Serializable {
 	
 	@Column(name="discount")
 	private Integer discount;
-
-	@Column(name="pointdiscount")
-	private Integer pointDiscount;
 	
 	@Column(name="finalamount")
 	private Integer finalAmount;
@@ -82,7 +79,7 @@ public class ItemOrder implements Serializable {
 
 	public ItemOrder(Integer orderId, Integer buyMbrId, Integer sellMbrId, Integer buyStar, String buyerRatingDesc,
 			Integer sellStar, String sellerRatingDesc, Timestamp orderDate, Integer payType, String payInfo,
-			Integer amount, Integer discount, Integer pointDiscount, Integer finalAmount, Integer orderStatus,
+			Integer amount, Integer discount, Integer finalAmount, Integer orderStatus,
 			String receiveAddress, String receiveName, String receivePhone, String remarks) {
 		super();
 		this.orderId = orderId;
@@ -97,7 +94,6 @@ public class ItemOrder implements Serializable {
 		this.payInfo = payInfo;
 		this.amount = amount;
 		this.discount = discount;
-		this.pointDiscount = pointDiscount;
 		this.finalAmount = finalAmount;
 		this.orderStatus = orderStatus;
 		this.receiveAddress = receiveAddress;
@@ -252,18 +248,6 @@ public class ItemOrder implements Serializable {
 
 
 
-	public Integer getPointDiscount() {
-		return pointDiscount;
-	}
-
-
-
-	public void setPointDiscount(Integer pointDiscount) {
-		this.pointDiscount = pointDiscount;
-	}
-
-
-
 	public Integer getFinalAmount() {
 		return finalAmount;
 	}
@@ -339,7 +323,7 @@ public class ItemOrder implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(amount, buyMbrId, buyStar, buyerRatingDesc, discount, finalAmount, orderDate, orderId,
-				orderStatus, payInfo, payType, pointDiscount, receiveAddress, receiveName, receivePhone, remarks,
+				orderStatus, payInfo, payType, receiveAddress, receiveName, receivePhone, remarks,
 				sellMbrId, sellStar, sellerRatingDesc);
 	}
 
@@ -359,7 +343,7 @@ public class ItemOrder implements Serializable {
 				&& Objects.equals(discount, other.discount) && Objects.equals(finalAmount, other.finalAmount)
 				&& Objects.equals(orderDate, other.orderDate) && Objects.equals(orderId, other.orderId)
 				&& Objects.equals(orderStatus, other.orderStatus) && Objects.equals(payInfo, other.payInfo)
-				&& Objects.equals(payType, other.payType) && Objects.equals(pointDiscount, other.pointDiscount)
+				&& Objects.equals(payType, other.payType)
 				&& Objects.equals(receiveAddress, other.receiveAddress)
 				&& Objects.equals(receiveName, other.receiveName) && Objects.equals(receivePhone, other.receivePhone)
 				&& Objects.equals(remarks, other.remarks) && Objects.equals(sellMbrId, other.sellMbrId)
@@ -373,8 +357,7 @@ public class ItemOrder implements Serializable {
 		return "ItemOrder [orderId=" + orderId + ", buyMbrId=" + buyMbrId + ", sellMbrId=" + sellMbrId + ", buyStar="
 				+ buyStar + ", buyerRatingDesc=" + buyerRatingDesc + ", sellStar=" + sellStar + ", sellerRatingDesc="
 				+ sellerRatingDesc + ", orderDate=" + orderDate + ", payType=" + payType + ", payInfo=" + payInfo
-				+ ", amount=" + amount + ", discount=" + discount + ", pointDiscount=" + pointDiscount
-				+ ", finalAmount=" + finalAmount + ", orderStatus=" + orderStatus + ", receiveAddress=" + receiveAddress
+				+ ", amount=" + amount + ", discount=" + discount +", finalAmount=" + finalAmount + ", orderStatus=" + orderStatus + ", receiveAddress=" + receiveAddress
 				+ ", receiveName=" + receiveName + ", receivePhone=" + receivePhone + ", remarks=" + remarks + "]";
 	}
 	

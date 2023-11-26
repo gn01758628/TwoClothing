@@ -221,7 +221,7 @@ public class MemberCouponServlet extends HttpServlet{
 	}
 	
 	
-	// 1 同一瀏覽器0.5秒內  2不同瀏覽器5秒內
+	// 1 同一瀏覽器1秒內  2不同瀏覽器5秒內
 	public static Integer recordExecution(Integer mbrId, HttpSession currentSession) {
 	    // 獲取現在的時間
 	    long currentTime = System.currentTimeMillis();
@@ -235,7 +235,7 @@ public class MemberCouponServlet extends HttpServlet{
 
 	        // 檢查當前 Session 是否和儲存的 Session 為同一個
 	        if (currentSession.equals(storedSession)) {
-	        	if (currentTime - lastExecutionTime < 500) {
+	        	if (currentTime - lastExecutionTime < 1000) {
 	        		sessionData.setLastExecutionTime(currentTime);
 	    	        sessionDataMap.put(mbrId, sessionData);
 	                return 2000;

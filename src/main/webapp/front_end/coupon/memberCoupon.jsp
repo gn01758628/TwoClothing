@@ -101,14 +101,14 @@
 			</td>
 			<td>
 				<c:choose>
-			        <c:when test="${coupon.couponStatus eq 0}">
-			        	可使用
-			        </c:when>
 			        <c:when test="${not empty coupon.expireDate and coupon.expireDate lt now}">
 						已失效
 					</c:when>
+			        <c:when test="${coupon.couponStatus eq 0}">
+			        	未使用
+			        </c:when>
 			        <c:otherwise>
-			        	生效中
+			        	已使用
 			        </c:otherwise>
 			    </c:choose>
 			

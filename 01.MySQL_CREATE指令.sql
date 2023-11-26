@@ -730,15 +730,14 @@ CREATE TABLE itemorder
     buymbrid         INT      NOT NULL,
     sellmbrid        INT      NOT NULL,
     buystar          INT,
-    buyerratingdesc  VARCHAR(200),
+    buyerratingdesc  MEDIUMTEXT,
     sellstar         INT,
-    sellerratingdesc VARCHAR(200),
+    sellerratingdesc MEDIUMTEXT,
     orderdate        DATETIME NOT NULL,
     paytype          TINYINT,
     payinfo          VARCHAR(50),
     amount           INT      NOT NULL,
     discount		 INT,
-    pointdiscount    INT,
     finalamount      INT      NOT NULL,
     orderstatus      TINYINT  NOT NULL,
     receiveaddress          VARCHAR(100),
@@ -750,7 +749,7 @@ CREATE TABLE itemorder
 
 -- 表格：一般商品訂單 插入假資料
 INSERT INTO itemorder (buymbrid, sellmbrid, buystar, buyerratingdesc, sellstar, sellerratingdesc, orderdate, paytype,
-                       payinfo, amount, pointdiscount, finalamount, orderstatus, receiveaddress, receivename, receivephone, remarks)
+                       payinfo, amount, discount, finalamount, orderstatus, receiveaddress, receivename, receivephone, remarks)
 VALUES (1, 10, 4, 'Good seller', 5, 'Excellent buyer', '2023-10-01 09:00:00', 0, 'Credit Card', 150, 0, 150, 3,
         '123 Main St, City', 'John Doe', '1234567890', 'N/A'),
        (2, 9, 5, 'Great transaction', 4, 'Responsive buyer', '2023-09-28 15:30:00', 1, 'Bank Transfer', 200, 0, 200, 3,

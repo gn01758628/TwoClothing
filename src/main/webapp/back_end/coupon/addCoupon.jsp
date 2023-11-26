@@ -7,6 +7,7 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@latest"></script><!-- 引入 SweetAlert2 -->
 <title>新增優惠券</title>
 
 <style>
@@ -67,7 +68,7 @@
 	</tr>
 	<tr>
 		<td>失效日期:</td>
-		<td><input type="datetime-local" id="endDate" name="expireDate"  value="${expireDate}" size="45" required/></td> <td>${errorMsgs.expireDate}</td>
+		<td><input type="datetime-local" id="endDate" name="expireDate"  value="${expireDate}" size="45" /></td> <td>${errorMsgs.expireDate}</td>
 	</tr>
 	<tr>
 		<td>折扣類型:<font color=red><b>*</b></font></td>
@@ -91,14 +92,22 @@
 </table>
 <br>
 <input type="hidden" name="action" value="insert_Coupon">
-<input type="submit" id="submit-button" value="送出新增"></FORM>${success}
+<input type="submit" id="submit-button" value="送出新增"></FORM>
 
 </body>
 
 <script>
 		
-		
 	$(document).ready(function() {
+		if(${not empty success}){
+			Swal.fire({
+                title: '成功',
+                text: '優惠券新增成功',
+                icon: 'success'
+            });
+		}
+		
+		
 		document.getElementById("submit-button").addEventListener("click", function(event) {
 				setMinMaxDates();
 		});
@@ -127,6 +136,8 @@
 	        let formattedEndDate = formatDate(endDate);
 
 	        document.getElementById("startDate").min = formattedStartDate;
+	        
+	        
 
 	        document.getElementById("endDate").min = formattedEndDate;
 	    }

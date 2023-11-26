@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -232,37 +233,42 @@ public class ItemOrderServlet extends HttpServlet{
 	    res.setContentType("application/json");
 	    res.setCharacterEncoding("UTF-8");
 	    
+	    HttpSession session = req.getSession();
+	    Integer buyerId = (Integer)session.getAttribute("mbrId");
 	    
 	    String itemIdStr = req.getParameter("itemId");
         String quantityStr = req.getParameter("quantity");
-        String payment = req.getParameter("payment");
+        
+        Integer payment = Integer.parseInt(req.getParameter("payment"));
         String receiveName = req.getParameter("receiveName");
         String receivePhone = req.getParameter("receivePhone");
         String receiveAddress = req.getParameter("receiveAddress");
-        String mytotal = req.getParameter("mytotal");
-        String count = req.getParameter("count");
+        Integer mytotal = Integer.parseInt(req.getParameter("mytotal"));
+        Integer count = Integer.parseInt(req.getParameter("count"));
+        
         String eachCountStr = req.getParameter("eachCount");
-        String mbrPoint = req.getParameter("mbrPoint");
-        String cpnId = req.getParameter("cpnId");
-        String totalPay = req.getParameter("totalPay");
+        
+        Integer mbrPoint = Integer.parseInt(req.getParameter("mbrPoint"));
+        Integer cpnId = Integer.parseInt(req.getParameter("cpnId"));
+        Integer totalPay = Integer.parseInt(req.getParameter("totalPay"));
+        
+        System.out.println("Buyer ID: " + buyerId);
+        System.out.println("Item ID String: " + itemIdStr);
+        System.out.println("Quantity String: " + quantityStr);
+        System.out.println("Payment: " + payment);
+        System.out.println("Receive Name: " + receiveName);
+        System.out.println("Receive Phone: " + receivePhone);
+        System.out.println("Receive Address: " + receiveAddress);
+        System.out.println("My Total: " + mytotal);
+        System.out.println("Count: " + count);
+        System.out.println("Each Count String: " + eachCountStr);
+        System.out.println("Member Point: " + mbrPoint);
+        System.out.println("Coupon ID: " + cpnId);
+        System.out.println("Total Pay: " + totalPay);
 
-        // 在控制台打印接收到的数据（仅用于调试，实际应用中请根据需求处理数据）
-        System.out.println("itemIds: " + String.join(",", itemIdStr));
-        System.out.println("quantities: " + String.join(",", quantityStr));
-        System.out.println("payment: " + payment);
-        System.out.println("receiveName: " + receiveName);
-        System.out.println("receivePhone: " + receivePhone);
-        System.out.println("receiveAddress: " + receiveAddress);
-        System.out.println("mytotal: " + mytotal);
-        System.out.println("count: " + count);
-        System.out.println("eachCount: " + String.join(",", eachCountStr));
-        System.out.println("mbrPoint: " + mbrPoint);
-        System.out.println("cpnId: " + cpnId);
-        System.out.println("totalPay: " + totalPay);
-//        List<Item> itemList = new ArrayList<>();
+
         List<OrderDetails> orderDetailsList = new ArrayList<>();
-        
-        
+        List<ItemOrder> itemOrderList = new ArrayList<>();
         
         
         String[] itemParts = itemIdStr.split(",");
@@ -282,19 +288,54 @@ public class ItemOrderServlet extends HttpServlet{
         	orderDetails.setCompositeKey(orderDetailsCompositeDetail);
         	// 訂單明細 明細金額 商品數量 折扣金額 明細總金額
         	Item item = gs.getByPrimaryKey(Item.class, itemId);
-        	orderDetails.setPrice(item.getPrice()*quantity);
+        	System.out.println(item);
+        	orderDetails.setPrice(item.getPrice());
         	orderDetails.setQuantity(quantity);
         	orderDetails.setDiscountPrice(eachCount);
-        	orderDetails.setBuyingPrice(orderDetails.getPrice()-orderDetails.getDiscountPrice());
+        	orderDetails.setBuyingPrice((orderDetails.getPrice()*orderDetails.getQuantity())-orderDetails.getDiscountPrice());
+        	orderDetailsList.add(orderDetails);
         	
         }
+        System.out.println("=====================================");
+        Map<Integer, List<OrderDetails>> groupedByMbrId = orderDetailsList.stream()
+                .collect(Collectors.groupingBy(orderDetail -> {
+                    Item item = gs.getByPrimaryKey(Item.class,orderDetail.getCompositeKey().getItemId());
+                    return item.getMbrId();
+                }));
         
-        OrderDetails orderDetails;
+        groupedByMbrId.forEach((mbrId, detailsList) -> {
+        	ItemOrder itemOrder = new ItemOrder();
+        	itemOrder.setBuyMbrId(buyerId);
+        	itemOrder.setSellMbrId(mbrId);
+        	itemOrder.setOrderDate(new Timestamp(System.currentTimeMillis()));
+        	itemOrder.setPayType(payment);
+        	itemOrder.setReceiveAddress(receiveAddress);
+        	itemOrder.setReceiveName(receiveName);
+        	itemOrder.setReceivePhone(receivePhone);
+        	if( payment.equals(2) ) {
+        		itemOrder.setOrderStatus(1);
+        	}else {
+        		itemOrder.setOrderStatus(0);
+        	}
+        	
+        	Integer totalPrice = detailsList.stream().mapToInt(orderDetail -> orderDetail.getPrice()*orderDetail.getQuantity()).sum();
+        	Integer totalDiscountPrice = detailsList.stream().mapToInt(orderDetail -> orderDetail.getDiscountPrice()).sum();
 
-        
-        
-        
-        
+            itemOrder.setAmount(totalPrice);
+            itemOrder.setDiscount(totalDiscountPrice);
+            itemOrder.setFinalAmount(totalPrice-totalDiscountPrice);
+            
+            Integer itemOrderId = (Integer) gs.insert(itemOrder);
+            detailsList.forEach(orderDetail ->{
+            	orderDetail.getCompositeKey().setOrderId(itemOrderId);
+            	gs.insert(orderDetail);
+            });
+            detailsList.forEach(System.out::println);
+            System.out.println(itemOrder);
+            
+            System.out.println("+++++++++++++++++++++++++++++++++++++");
+            
+        });
         
         
         
