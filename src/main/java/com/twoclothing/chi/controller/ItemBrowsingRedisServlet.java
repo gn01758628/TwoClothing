@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.twoclothing.chi.service.ItemBrowsingRedisService;
 import com.twoclothing.chi.service.ItemBrowsingRedisServiceImpl;
@@ -38,8 +39,10 @@ public class ItemBrowsingRedisServlet extends HttpServlet {
 
 		switch (action) {
 		case "insert":
-			url = addItemBrowsing(req, res);
-			break;
+//			url = addItemBrowsing(req, res);
+//			break;
+			addItemBrowsing(req, res);
+			return;
 		case "getAllByMbrId":
 			req.setAttribute("mbrId", mbrId);
 			url = getAllByMbrId(req, res);
@@ -53,19 +56,20 @@ public class ItemBrowsingRedisServlet extends HttpServlet {
 		successView.forward(req, res);
 	}
 
-	private String addItemBrowsing(HttpServletRequest req, HttpServletResponse res) {
-		int mbrId = Integer.parseInt(req.getParameter("mbrId"));
+	private void addItemBrowsing(HttpServletRequest req, HttpServletResponse res) {
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer) session.getAttribute("mbrId");
 		int itemId = Integer.parseInt(req.getParameter("itemId"));
 
 		ItemBrowsing itemBrowsing = new ItemBrowsing(mbrId, itemId, System.currentTimeMillis());
 		itemBrowsingRedisService.addItemBrowsingRedis(itemBrowsing);
 
-		return "/itembrowsing.redis?action=getAllByMbrId";
+//		return "/itembrowsing.redis?action=getAllByMbrId";
 	}
 
 	private String getAllByMbrId(HttpServletRequest req, HttpServletResponse res) {
-//		int mbrId = Integer.parseInt(req.getParameter("mbrId"));
-		Integer mbrId = 1; // 測試用
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer) session.getAttribute("mbrId");
 
 		List<Item> itemBrowsingList = itemBrowsingRedisService.getAllByMbrId(mbrId);
 

@@ -77,7 +77,7 @@ public class ItemReportServiceImpl implements ItemReportService {
 			}
 			query.put(key, value);
 		}
-		System.out.println(query);
+//		System.out.println(query);
 
 		return dao.getByCompositeQuery(query, currentPage);
 	}
@@ -100,7 +100,7 @@ public class ItemReportServiceImpl implements ItemReportService {
 			}
 			query.put(key, value);
 		}
-		System.out.println(query);
+//		System.out.println(query);
 
 		return dao.getMapTotal(query);
 	}

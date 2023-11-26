@@ -66,7 +66,6 @@ public class PointHistoryServlet extends HttpServlet {
 			Integer pointId=Integer.parseInt(req.getParameter("pointId"));
 			PointHistory pointHistory = PHSvc.getPHById(pointId);
 			req.setAttribute("pointHistory", pointHistory);
-			System.out.println("pointHistory:"+pointHistory);
 			
 			String url = "/back_end/pointHistory/listAllPoint.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
@@ -91,7 +90,6 @@ public class PointHistoryServlet extends HttpServlet {
 
 			List<PointHistory> PHList = PHSvc.getAllPH();
 			req.setAttribute("PHList", PHList);
-			System.out.println("PHList:" + PHList);
 			
 			String url = "/back_end/pointHistory/listAllPoint.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
@@ -116,7 +114,6 @@ public class PointHistoryServlet extends HttpServlet {
 			pointHistory.setChangeValue(changeValue);
 			
 			int pointHistoryPK = PHSvc.addPH(pointHistory);
-			System.out.println(pointHistory);
 			
 			req.setAttribute("pointHistory", pointHistory);
 			String url = "/back_end/pointHistory/listAllPoint.jsp";

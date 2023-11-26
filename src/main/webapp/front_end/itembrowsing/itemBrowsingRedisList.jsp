@@ -1,61 +1,145 @@
-<%@ page import="com.twoclothing.redismodel.itembrowsing.*"%>
-<%@ page import="com.twoclothing.chi.controller.*"%>
-<%@ page import="com.twoclothing.chi.service.*"%>
-<%@ page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="">
-<title>ItemBrowsing Redis</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>ItemBrowsing</title>
+	<!-- bootstrap5 css -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap5/bootstrap.min.css">
+	<!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+	<style>
+        *:not([class^="fa-"]) {
+            font-family: 'Noto Sans TC', sans-serif !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/716afdf889.js" crossorigin="anonymous"></script>
+    <!-- Sweet Alert -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!-- css -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/chi/list.css">
+	<style>
+		h5 {
+			margin: 30px auto 0 35px;
+		}
+		
+		.empty-list-container {
+			color: #7A7A7A;
+			font-size: 30px;
+			margin-top: 45px;
+			margin-left: 70px;
+		}
+	
+		.not-found-container {
+		    position: absolute;
+		    height: 200px;
+		    width: 200px;
+		    left: 50%;
+		    top: 50%;
+		    transform: translate(-50%, -50%);
+		    border-radius: 50%;
+		    background-color: rgba(192, 192, 192, 0.3);
+		    display: flex;
+    		justify-content: center;
+    		align-items: center;
+		}
+		
+		.not-found {
+			color: white;
+			font-size: 30px;
+			margin: 0px;
+		}
+		
+		.name {
+			min-width: 150px;
+			max-width: 150px;
+		}
+		
+		.circle-container {
+			width: 65px;
+			height: 65px;
+			position: fixed;
+		    top: 101px;
+		    right: 15px;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		}
+		  
+		.circle {
+			width: 65px;
+			height: 65px;
+		}
+	</style>
+	<!-- 導覽列css -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
+    <!-- 頁尾css -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
 </head>
 <body>
-	<h1>商品瀏覽紀錄</h1>
-	<a href="${pageContext.request.contextPath}/itembrowsing.redis?action=getAllByMbrId&mbrId=${mbrId}">查詢所有商品瀏覽</a>
+	<div class="headerHTML"></div>
 
-	<form method="post" action="${pageContext.request.contextPath}/itembrowsing.redis">
-		<h3>商品瀏覽新增</h3>
-		<h4>到時應刪除，變同移除作法 > 帶商品及會員編號，轉回商品頁，放一顆愛心按鈕放在商品頁，已追蹤成紅色，反之無色</h4>
-		<label>商品編號</label>
-		<input type="text" name="itemId" maxlength=20>
-		<br>
-		<label>會員編號</label>
-		<input type="text" name="mbrId">
-		<br>
-		<input type="hidden" name="action" value="insert">
-		<input type="submit" value="新增">
-	</form>
-	<hr>
-
-	<table style="width: 80%; text-align: center;">
-		<tr>
-			<th>商品圖片</th>
-			<th>商品編號</th>
-			<th>商品名稱</th>
-			<th>商品價格</th>
-		</tr>
-		<c:forEach var="item" items="${itemBrowsingList}">
-			<tr>
-				<td>
+	<h5>一般商品瀏覽紀錄</h5>
+	
+	<main class="main">
+		<ul class="list">
+			<c:if test="${empty itemBrowsingList}">
+				<div class="empty-list-container">
+			        <p>暫無瀏覽紀錄</p>
+			    </div>
+			</c:if>
+			
+			<c:forEach var="item" items="${itemBrowsingList}">
+				<li>
 					<a href="${pageContext.request.contextPath}/Itemfront/itemlist?goto=${item.itemId}">
-						<img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" class="img">
+						<div class="image-container">
+					    	<img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" class="img">
+				    	</div>
+				    	
+	    				<div class="product-info">
+	    					<c:if test="${item.itemStatus eq 1}">
+	    						<div class="not-found-container">
+               						<p class="not-found">商品未上架</p>
+               					</div>
+            				</c:if>
+						    <span class="name">${item.itemName}</span>
+						    <span class="price">NT$ ${item.price}</span>
+						</div>
 					</a>
-				</td>
-				<td>${item.itemId}</td>
-				<td>${item.itemName}</td>
-				<td>${item.price}</td>
-			</tr>
-		</c:forEach>
-	</table>
+				</li>
+			</c:forEach>
+		</ul>
+	</main>
+	
+	<div class="circle-container" style="background-color: #f9edf2; border-radius: 50%; padding: 16px;">
+	    <a href="${pageContext.request.contextPath}/members/Members.do?action=memberProfile&mbrId=${mbrId}">
+	        <button class="btn circle">會員<br>中心</button>
+	    </a>
+	</div>
 
-	<a href="${pageContext.request.contextPath}">回首頁</a>
-
+	<div class="footerHTML"></div>
+	
+	<!-- bootstrap5 js -->
 	<script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+    <!-- jQuery -->
+    <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+    <!-- Sweet Alert -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+	<!-- JS loader -->
+	<script>
+	    $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {
+	        // 保證headerHTML加載完才載入header.js
+	        $.getScript("${pageContext.request.contextPath}/js/chengHan/header.js");
+	    });
+	
+	    $(".footerHTML").load("${pageContext.request.contextPath}/footerHTML.html");
+	</script>
 </body>
 </html>

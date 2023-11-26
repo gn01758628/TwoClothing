@@ -206,7 +206,7 @@
 
 			<input type="text" name="empId" id="empIdInput" placeholder="員工編號" value="${convertedMap.empId}">
 			
-			<select name="status" id="statusSelect">
+			<select name="bidStatus" id="bidStatusSelect">
 				<option value="">審核狀態</option>
 				<option value="0">待審核</option>
 				<option value="1">已審核</option>
@@ -264,16 +264,16 @@
 	                        <td>
 	                        	<p>
 									<c:choose>
-										<c:when test="${fn:length(bidItemReport.description) > 6}">
-											${fn:substring(bidItemReport.description, 0, 6)}...
+										<c:when test="${fn:length(bidItemReport.bidDescription) > 6}">
+											${fn:substring(bidItemReport.bidDescription, 0, 6)}...
 										</c:when>
 										<c:otherwise>
-											${bidItemReport.description}
+											${bidItemReport.bidDescription}
 										</c:otherwise>
 									</c:choose>
 								</p>
 	                        </td>
-	                        <td>${statusMap[bidItemReport.status]}</td>
+	                        <td>${statusMap[bidItemReport.bidStatus]}</td>
 	                        <td>${bidItemReport.auditDate}</td>
 	                        <td>${resultMap[bidItemReport.result]}</td>
 	                        <td>
@@ -290,7 +290,7 @@
 	                        </td>
 	                        <td class="no-border">
 	                        	<c:choose>
-	                        		<c:when test="${bidItemReport.status == 1}">
+	                        		<c:when test="${bidItemReport.bidStatus == 1}">
 	                                    <button class="btn check btn-secondary" onclick="showDetail(${bidItemReport.reportId})" type="button">查看</button>
 	                                </c:when>
 	                                <c:otherwise>
@@ -311,7 +311,7 @@
 	
 	        <div class="page-container">
 				<c:if test="${not empty bidItemReportList}">
-					<a class="btn page" href="${pageContext.request.contextPath}/back/biditemreport?action=${convertedMap.action}&page=1&reportId=${convertedMap.reportId}&mbrId=${convertedMap.mbrId}&empId=${convertedMap.empId}&status=${convertedMap.status}&result=${convertedMap.result}">&lt;&lt;</a>
+					<a class="btn page" href="${pageContext.request.contextPath}/back/biditemreport?action=${convertedMap.action}&page=1&reportId=${convertedMap.reportId}&mbrId=${convertedMap.mbrId}&empId=${convertedMap.empId}&bidStatus=${convertedMap.bidStatus}&result=${convertedMap.result}">&lt;&lt;</a>
 				    
 				    <c:forEach var="i" begin="1" end="${bidItemReportPageQty}">
 				        <c:choose>
@@ -319,12 +319,12 @@
 				                <a class="btn page active" href="#">${i}</a>
 				            </c:when>
 				            <c:otherwise>
-				                <a class="btn page" href="${pageContext.request.contextPath}/back/biditemreport?action=${convertedMap.action}&page=${i}&reportId=${convertedMap.reportId}&mbrId=${convertedMap.mbrId}&empId=${convertedMap.empId}&status=${convertedMap.status}&result=${convertedMap.result}">${i}</a>
+				                <a class="btn page" href="${pageContext.request.contextPath}/back/biditemreport?action=${convertedMap.action}&page=${i}&reportId=${convertedMap.reportId}&mbrId=${convertedMap.mbrId}&empId=${convertedMap.empId}&bidStatus=${convertedMap.bidStatus}&result=${convertedMap.result}">${i}</a>
 				            </c:otherwise>
 				        </c:choose>
 				    </c:forEach>
 				    
-				    <a class="btn page" href="${pageContext.request.contextPath}/back/biditemreport?action=${convertedMap.action}&page=${itemReportPageQty}&reportId=${convertedMap.reportId}&mbrId=${convertedMap.mbrId}&empId=${convertedMap.empId}&status=${convertedMap.status}&result=${convertedMap.result}">&gt;&gt;</a>
+				    <a class="btn page" href="${pageContext.request.contextPath}/back/biditemreport?action=${convertedMap.action}&page=${bidItemReportPageQty}&reportId=${convertedMap.reportId}&mbrId=${convertedMap.mbrId}&empId=${convertedMap.empId}&bidStatus=${convertedMap.bidStatus}&result=${convertedMap.result}">&gt;&gt;</a>
 				</c:if>
 			</div>
 	    </div>
@@ -363,11 +363,11 @@
 								</tr>
 								<tr>
 									<td>檢舉原因</td>
-									<td class="card-description" id="description"></td>
+									<td class="card-description" id="bidDescription"></td>
 								</tr>
 								<tr>
 									<td>審核狀態</td>
-									<td id="status"></td>
+									<td id="bidStatus"></td>
 								</tr>
 								<tr>
 									<td>審核日期</td>
@@ -409,14 +409,14 @@
 	        }
 	    }
     
-    	document.getElementById('statusSelect').value = "${convertedMap.status}";
+    	document.getElementById('bidStatusSelect').value = "${convertedMap.bidStatus}";
     	document.getElementById('resultSelect').value = "${convertedMap.result}";
     	
     	function clearSearch() {
     		document.getElementById('reportIdInput').value = '';
     		document.getElementById('mbrIdInput').value = '';
             document.getElementById('empIdInput').value = '';
-            document.getElementById('statusSelect').value = '';
+            document.getElementById('bidStatusSelect').value = '';
             document.getElementById('resultSelect').value = '';
             
             document.querySelector('form').submit();
@@ -431,11 +431,11 @@
 	                return response.json();
 	            })
 	            .then(function (data) {
-	                let status = "";
-	                if (data.status == 0) {
-	                    status = "待審核";
-	                } else if (data.status == 1) {
-	                    status = "已審核";
+	                let bidStatus = "";
+	                if (data.bidStatus == 0) {
+	                	bidStatus = "待審核";
+	                } else if (data.bidStatus == 1) {
+	                	bidStatus = "已審核";
 	                }
 
 	                let result = "";
@@ -446,12 +446,12 @@
 	                }
 	                
 	                $('#reportId').text(data.reportId);
-	     	    	$('#itemId').text(data.itemId);
+	     	    	$('#bidItemId').text(data.bidItemId);
 	     	    	$('#mbrId').text(data.mbrId);
 	     	    	$('#empId').text(data.empId);
 	     	    	$('#reportDate').text(data.reportDate);
-	     	    	$('#description').text(data.description);
-	     	    	$('#status').text(status);
+	     	    	$('#bidDescription').text(data.bidDescription);
+	     	    	$('#bidStatus').text(bidStatus);
 	     	    	$('#auditDate').text(data.auditDate);
 	     	    	
 	     	    	if (result == "") {
@@ -492,7 +492,7 @@
 
 	    	let data = new FormData();
 	    	data.append("reportId", $('#reportId').text());
-	    	data.append("itemId", $('#itemId').text());
+	    	data.append("bidItemId", $('#bidItemId').text());
 	    	data.append("mbrId", $('#mbrId').text());
 	    	data.append("result", $('#selectResult').val());
 	    	data.append("note", $('#inputNote').val());

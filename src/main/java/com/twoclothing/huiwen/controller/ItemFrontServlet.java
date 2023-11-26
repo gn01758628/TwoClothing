@@ -11,12 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.twoclothing.chi.service.ItemBrowsingRedisService;
+import com.twoclothing.chi.service.ItemBrowsingRedisServiceImpl;
 import com.twoclothing.chi.service.ItemTrackingService;
 import com.twoclothing.chi.service.ItemTrackingServiceImpl;
 import com.twoclothing.huiwen.service.ItemService;
 import com.twoclothing.huiwen.service.ItemServiceImpl;
 import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.aproduct.itemtracking.ItemTracking;
+import com.twoclothing.redismodel.itembrowsing.ItemBrowsing;
 
 @WebServlet("/Itemfront/itemlist")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 2 * 1024 * 1024, maxRequestSize = 2 * 2 * 1024 * 1024)
@@ -26,10 +29,14 @@ public class ItemFrontServlet extends HttpServlet{
 	
 	private ItemTrackingService itemTrackingService;
 	
+	private ItemBrowsingRedisService itemBrowsingRedisService;
+	
 	public void init() throws ServletException {
 		itemService = new ItemServiceImpl();
 		
 		itemTrackingService = new ItemTrackingServiceImpl();
+		
+		itemBrowsingRedisService = new ItemBrowsingRedisServiceImpl();
 	}
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -53,6 +60,9 @@ public class ItemFrontServlet extends HttpServlet{
 		ItemTracking itemTracking = new ItemTracking();
 		itemTracking = itemTrackingService.getByPrimaryKey(itemId, mbrId);
 		boolean isItemTracked = (itemTracking != null);
+		
+		ItemBrowsing itemBrowsing = new ItemBrowsing(mbrId, itemId, System.currentTimeMillis());
+		itemBrowsingRedisService.addItemBrowsingRedis(itemBrowsing);
 		
 		req.setAttribute("item", item);
 		req.setAttribute("isItemTracked", isItemTracked);

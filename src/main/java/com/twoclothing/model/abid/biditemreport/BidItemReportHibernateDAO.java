@@ -87,8 +87,8 @@ public class BidItemReportHibernateDAO implements BidItemReportDAO {
 		List<Predicate> predicates = new ArrayList<>();
 
 		for (Map.Entry<String, String> row : map.entrySet()) {
-			if ("bidItemId".equals(row.getKey())) {
-				predicates.add(builder.equal(root.get("bidItemId"), new BigDecimal(row.getValue())));
+			if ("reportId".equals(row.getKey())) {
+				predicates.add(builder.equal(root.get("reportId"), new BigDecimal(row.getValue())));
 			}
 			if ("mbrId".equals(row.getKey())) {
 				predicates.add(builder.equal(root.get("mbrId"), new BigDecimal(row.getValue())));
@@ -97,8 +97,8 @@ public class BidItemReportHibernateDAO implements BidItemReportDAO {
 				predicates.add(builder.equal(root.get("empId"), new BigDecimal(row.getValue())));
 			}
 
-			if ("BidStatus".equals(row.getKey())) {
-				predicates.add(builder.equal(root.get("BidStatus"), new BigDecimal(row.getValue())));
+			if ("bidStatus".equals(row.getKey())) {
+				predicates.add(builder.equal(root.get("bidStatus"), new BigDecimal(row.getValue())));
 			}
 			if ("result".equals(row.getKey())) {
 				predicates.add(builder.equal(root.get("result"), new BigDecimal(row.getValue())));
@@ -121,8 +121,8 @@ public class BidItemReportHibernateDAO implements BidItemReportDAO {
 		List<Predicate> predicates = new ArrayList<>();
 
 		for (Map.Entry<String, String> row : map.entrySet()) {
-			if ("BidItemId".equals(row.getKey())) {
-				predicates.add(builder.equal(root.get("BidItemId"), new BigDecimal(row.getValue())));
+			if ("reportId".equals(row.getKey())) {
+				predicates.add(builder.equal(root.get("reportId"), new BigDecimal(row.getValue())));
 			}
 			if ("mbrId".equals(row.getKey())) {
 				predicates.add(builder.equal(root.get("mbrId"), new BigDecimal(row.getValue())));
@@ -131,8 +131,8 @@ public class BidItemReportHibernateDAO implements BidItemReportDAO {
 				predicates.add(builder.equal(root.get("empId"), new BigDecimal(row.getValue())));
 			}
 
-			if ("BidStatus".equals(row.getKey())) {
-				predicates.add(builder.equal(root.get("BidStatus"), new BigDecimal(row.getValue())));
+			if ("bidStatus".equals(row.getKey())) {
+				predicates.add(builder.equal(root.get("bidStatus"), new BigDecimal(row.getValue())));
 			}
 			if ("result".equals(row.getKey())) {
 				predicates.add(builder.equal(root.get("result"), new BigDecimal(row.getValue())));
