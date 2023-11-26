@@ -88,8 +88,8 @@ h1 {
 		<th>收件人姓名</th>
 		<th>收件人手機</th>
 		<th>備註</th>
-		<th>修改</th>
-		<th>刪除</th>
+<!-- 		<th>修改</th> 
+ 		<th>刪除</th> -->
 	  </tr>
 	 </thead>
 <c:choose>
@@ -114,7 +114,7 @@ h1 {
 		<td>${BidOrder.receiveName}</td>
 		<td>${BidOrder.receivePhone}</td>
 		<td>${BidOrder.remarks}</td>
-		<td>
+<!--  		<td>
 		  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/bidorder/BidOrder.do" style="margin-bottom: 0px;">
 		     <input type="submit" value="修改">
 		     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}">
@@ -125,7 +125,7 @@ h1 {
 		     <input type="submit" value="刪除">
 		     <input type="hidden" name="bidOrderId"  value="${BidOrder.bidOrderId}">
 		     <input type="hidden" name="action" value="delete"></FORM>
-		</td>	
+		</td>-->	
 					
 		</tr>
 		 
