@@ -414,10 +414,16 @@
                 body: formDataUrlEncoded
             })
             .then(function (response) {
-            	console.log(response);
+            	return response.text();
             })
             .then(function (data) {
-            	console.log(data);
+            	Swal.fire({
+          		  backdrop: false,
+          		  title: data,
+          		  confirmButtonText: "確認",
+          		  icon: "success",
+          		  iconColor: '#b0c4de',
+          		});
             });
    		});
    		

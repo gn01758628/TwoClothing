@@ -525,6 +525,12 @@ public class ItemCartServlet extends HttpServlet {
 				boolean boo = couponDAO.update(membersCoupon);
 				
 			}
+			
+		    String responseData = "訂單成立！"; // 這裡是要回傳的訊息
+
+		    PrintWriter out = res.getWriter();
+		    out.print(responseData);
+		    out.flush();
             
         	
         	//測試結束=============================================================
