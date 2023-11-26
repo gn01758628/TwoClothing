@@ -147,6 +147,15 @@
 #pswdHashForm input[type="submit"]:hover {
     background-color: #45a049;
 }
+#shopImage01Container img,
+#avatarContainer img,
+#shopImage02Container img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover; /* 或者使用 object-fit: contain;，取決於你的需求 */
+}
+
+
 .
 </style>
     <!--導覽列css-->
@@ -250,7 +259,7 @@
 <div id="shopImage01Container"> 		
 <p class="rh_title">商場照片</p>
 	<label for="shopImage01Input">
-		<img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg01" width="150px" height="150px" >
+		<img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg01" width="150px" height="150px"  >
 	</label>	
 
 </div>

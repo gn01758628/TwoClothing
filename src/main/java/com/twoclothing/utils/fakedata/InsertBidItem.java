@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -28,8 +28,6 @@ public class InsertBidItem extends HttpServlet {
         BidItemDAO bidItemDAO = new BidItemHibernateDAO(sessionFactory);
         CategoryTagsDAO categoryTagsDAO = new CategoryTagsHibernateDAO(sessionFactory);
         List<Integer> tagIdList = categoryTagsDAO.getTagIdsWithoutChildren();
-        Timestamp timestamp = Timestamp.valueOf("2023-11-26 12:05:00");
-        Calendar cal = Calendar.getInstance();
         Random random = new Random();
         for (int i = 1; i <= 50; i++) {
             BidItem bidItem = new BidItem();
@@ -59,21 +57,13 @@ public class InsertBidItem extends HttpServlet {
             if (!randomExists2) directPrice = null;
             bidItem.setDirectPrice(directPrice);
             // 隨機開始時間(全部未審核)
-//            bidItem.setBidStatus(0);
-//            boolean randomExists3 = random.nextBoolean();
-//            int randomDay = random.nextInt(2, 11);
-//            LocalDateTime now = LocalDateTime.now();
-//            LocalDateTime randomDateTime = now.plusDays(randomDay).withHour(12).withMinute(0).withSecond(0).withNano(0);
-//            Timestamp timestamp = randomExists3 ? Timestamp.valueOf(randomDateTime) : null;
-//            bidItem.setStartTime(timestamp);
-            // 指定開始時間與結束時間(測試用)
-            bidItem.setBidStatus(4);
-
-            cal.setTimeInMillis(timestamp.getTime());
-            cal.add(Calendar.DATE, 1);
-            timestamp = new Timestamp(cal.getTimeInMillis());
-            bidItem.setStartTime(Timestamp.valueOf("2023-11-19 12:00:00"));
-            bidItem.setEndTime(timestamp);
+            bidItem.setBidStatus(0);
+            boolean randomExists3 = random.nextBoolean();
+            int randomDay = random.nextInt(-5, 1);
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime randomDateTime = now.plusDays(randomDay).withHour(12).withMinute(0).withSecond(0).withNano(0);
+            Timestamp timestamp = randomExists3 ? Timestamp.valueOf(randomDateTime) : null;
+            bidItem.setStartTime(timestamp);
             bidItemDAO.insert(bidItem);
         }
     }

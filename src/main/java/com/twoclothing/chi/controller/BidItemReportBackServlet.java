@@ -85,12 +85,12 @@ public class BidItemReportBackServlet extends HttpServlet {
 
 	private String getAll(HttpServletRequest req, HttpServletResponse res) {
 		HttpSession session = req.getSession();
-		Integer mbrId = (Integer) session.getAttribute("mbrId");
+		Integer empId = (Integer) session.getAttribute("empId");
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 		List<BidItemReport> bidItemReportList = bidItemReportService.getAll(currentPage);
 
-		int bidItemReportPageQty = bidItemReportService.getPageTotal(mbrId);
+		int bidItemReportPageQty = bidItemReportService.getPageTotal(empId);
 		req.getSession().setAttribute("bidItemReportPageQty", bidItemReportPageQty);
 
 		Map<Integer, String> bidItemNameMap = new HashMap<>();
@@ -102,9 +102,9 @@ public class BidItemReportBackServlet extends HttpServlet {
 		}
 		req.setAttribute("bidItemNameMap", bidItemNameMap);
 
-		Map<Integer, String> statusMap = new HashMap<>();
-		statusMap.put(0, "待審核");
-		statusMap.put(1, "已審核");
+		Map<Integer, String> bidStatusMap = new HashMap<>();
+		bidStatusMap.put(0, "待審核");
+		bidStatusMap.put(1, "已審核");
 
 		Map<Integer, String> resultMap = new HashMap<>();
 		resultMap.put(0, "處分");
@@ -112,7 +112,7 @@ public class BidItemReportBackServlet extends HttpServlet {
 
 		req.setAttribute("bidItemReportList", bidItemReportList);
 		req.setAttribute("currentPage", currentPage);
-		req.setAttribute("statusMap", statusMap);
+		req.setAttribute("bidStatusMap", bidStatusMap);
 		req.setAttribute("resultMap", resultMap);
 
 		return "/back_end/biditemreport/bidItemReportManageIndex.jsp";
@@ -151,9 +151,9 @@ public class BidItemReportBackServlet extends HttpServlet {
 			int bidItemReportPageQty = bidItemReportService.getCompositeQueryPageTotal(map);
 			req.getSession().setAttribute("bidItemReportPageQty", bidItemReportPageQty);
 
-			Map<Integer, String> statusMap = new HashMap<>();
-			statusMap.put(0, "待審核");
-			statusMap.put(1, "已審核");
+			Map<Integer, String> bidStatusMap = new HashMap<>();
+			bidStatusMap.put(0, "待審核");
+			bidStatusMap.put(1, "已審核");
 
 			Map<Integer, String> resultMap = new HashMap<>();
 			resultMap.put(0, "處分");
@@ -170,7 +170,7 @@ public class BidItemReportBackServlet extends HttpServlet {
 
 			req.setAttribute("bidItemReportList", bidItemReportList);
 			req.setAttribute("currentPage", currentPage);
-			req.setAttribute("statusMap", statusMap);
+			req.setAttribute("statusMap", bidStatusMap);
 			req.setAttribute("resultMap", resultMap);
 		}
 
@@ -202,8 +202,8 @@ public class BidItemReportBackServlet extends HttpServlet {
 
 		bidItemReport.setEmpId(empId);
 		bidItemReport.setBidStatus(1);
-		Timestamp auditdate = new Timestamp(System.currentTimeMillis());
-		bidItemReport.setAuditDate(auditdate);
+		Timestamp updateauditdate = new Timestamp(System.currentTimeMillis());
+		bidItemReport.setAuditDate(updateauditdate);
 		bidItemReport.setResult(result);
 		bidItemReport.setNote(note);
 
@@ -238,8 +238,20 @@ public class BidItemReportBackServlet extends HttpServlet {
 			        bidItemReportBoth.setResult(0);
 			        bidItemReportBoth.setEmpId(empId);
 			        bidItemReportBoth.setBidStatus(1);
-			        bidItemReportBoth.setAuditDate(auditdate);
+			        bidItemReportBoth.setAuditDate(updateauditdate);
 			        bidItemReportBoth.setNote(note);
+			        
+			        int bothMbrId = bidItemReportBoth.getMbrId();
+			        
+			        if (bothMbrId != mbrId) {
+			        	Notice noticeBothDelete = new Notice();
+			        	noticeBothDelete.setType("檢舉審核結果");
+			        	noticeBothDelete.setHead("請確認商品檢舉審核結果");
+			        	noticeBothDelete.setContent("商品檢舉審核為「處分」結果，請至「競標檢舉」查看。");
+			        	noticeBothDelete.setLink("/front/biditemreport?action=getAllByMbrId");
+			        	noticeBothDelete.setImageLink("/images/report0.png");
+			        	bidItemReportService.addNotice(noticeBothDelete, bothMbrId);
+			        }
 			    }
 			}
 			

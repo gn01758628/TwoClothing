@@ -58,6 +58,13 @@ h1 {
 .dataTables_length label {
     font-weight: normal;
 }
+#shopImage01Container img,
+#avatarContainer img,
+#shopImage02Container img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover; /* 或者使用 object-fit: contain;，取決於你的需求 */
+}
 </style>
 
 </head>
@@ -97,9 +104,9 @@ h1 {
 		<td>${Members.email}</td>
 		<td>******</td>
 		<td>${Members.mbrStatus}</td>
-		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=avatar" width=100px height=100px  ></td>
-		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg01" width=100px height=100px ></td>
-		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg02" width=100px height=100px ></td>
+		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=avatar" width=100px height=100px id="avatarContainer" ></td>
+		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg01" width=100px height=100px id="shopImage01Container" ></td>
+		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg02" width=100px height=100px id="shopImage02Container" ></td>
 		<td>${Members.mbrPoint}</td>
 		<td>${Members.balance}</td>
 		<td>${Members.buyStar}</td>

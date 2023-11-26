@@ -3,21 +3,41 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<style>
-</style>
-<title>forgotPassword</title>
+    <!--頁籤icon-->
+    <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
+
+<title>忘記密碼</title>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
 <style>
- body {
-    background-image: url('https://bpic.51yuansu.com/pic3/cover/02/51/35/59e6f3938ca55_610.jpg?x-oss-process=image/sharpen,100');
-    background-size: cover; /* 保持圖片覆蓋整個背景 */
-    background-repeat: no-repeat; /* 防止圖片重複 */
-    background-position: center center; /* 將圖片置於中心 */
-    /* 其他你可能需要的背景相關屬性 */
-	}
+body {
+  height: 100vh;
+  margin: 0;
+  background: radial-gradient(
+    circle at top left,
+    #3498db,
+    transparent 70%
+  ) top left,
+  radial-gradient(
+    circle at top right,
+    #e74c3c,
+    transparent 70%
+  ) top right,
+  radial-gradient(
+    circle at bottom left,
+    #2ecc71,
+    transparent 70%
+  ) bottom left,
+  radial-gradient(
+    circle at bottom right,
+    #f39c12,
+    transparent 70%
+  ) bottom right;
+  background-size: 50% 50%;
+  background-repeat: no-repeat;
+}
 * {
 	font-family: 微軟正黑體;
 }
@@ -31,12 +51,12 @@ body {
 	width: 200px;
 	height: 20px;
 	margin: 10px;
-	color: #df5334;
+	color: #c47aa8;
 }
 
 h5 {
 	margin: 20px;
-	color: #a3a2a3;
+	color: #c47aa8;
 }
 
 h5:hover {
@@ -50,7 +70,7 @@ h5:hover {
 	height: 250px;
 	background-color: white;
 	border-radius: 5px;
-	border-top: 10px solid #df5334;
+	border-top: 10px solid #c47aa8;
 	box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1);
 	/*定位對齊*/
 	position: relative;
@@ -69,7 +89,7 @@ h5:hover {
 
 .submit {
 	color: white;
-	background: #df5334;
+	background: #c47aa8;
 	width: 200px;
 	height: 30px;
 	margin: 10px;
@@ -79,12 +99,12 @@ h5:hover {
 }
 
 .submit:hover {
-	background: #db6937;
+	background: #edca4c;
 }
 
 #copyright {
 	text-align: center;
-	color: #a3a2a3;
+	color: #c47aa8;
 	margin: -200px 0px 0px 0px;
 	font-size: 14px;
 }

@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>${bidItem.bidName}</title>
+    <title>商品詳細頁面${bidItem.bidName}</title>
         <!--頁籤icon-->
     <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
     <!--bootstrap5 css-->
@@ -49,6 +49,11 @@
         .table-no-border th {
             border: none;
         }
+        #bidOrderImage img,{
+		  width: 150px;
+		  height: 150px;
+		  object-fit: cover; /* 或者使用 object-fit: contain;，取決於你的需求 */
+		}
     </style>
         <!--導覽列css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">

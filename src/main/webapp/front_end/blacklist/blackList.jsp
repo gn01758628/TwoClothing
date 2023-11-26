@@ -5,7 +5,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>ItemTracking</title>
+	<title>BlackList</title>
 	<!-- 頁籤icon -->
 	<link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
 	<!-- bootstrap5 css -->
@@ -36,28 +36,37 @@
 			margin-top: 45px;
 			margin-left: 70px;
 		}
-	
-		.not-found-container {
-		    position: absolute;
-		    height: 200px;
-		    width: 200px;
-		    left: 50%;
-		    top: 50%;
-		    transform: translate(-50%, -50%);
-		    border-radius: 50%;
-		    background-color: rgba(192, 192, 192, 0.3);
-		    display: flex;
-    		justify-content: center;
-    		align-items: center;
+		
+		main.main ul.list > li {
+			border: none;
 		}
 		
-		.not-found {
-			color: white;
-			font-size: 30px;
-			margin: 0px;
+		main.main ul.list > li a div.image-container {
+		    height: calc(85% - 30px);
+		    min-height: 200px;
+	    }
+		
+		main.main ul.list > li a div.image-container img {
+			border-radius: 50%;
+    		overflow: hidden;
+			max-width: 85%;
+			max-height: 85%;
 		}
-	
-    	.delete {
+		
+		main.main ul.list > li .product-info {
+		    display: flex;
+		    flex-direction: column;
+		    align-items: center;
+		    justify-content: center;
+		    text-align: center;
+		}
+		
+		main.main ul.list > li a div.product-info form {
+    		padding-right: 10px;
+    		padding-bottom: 20px;
+		}
+		
+		.delete {
     		background-color: transparent;
 		  	border: none;
 		  	transform: translateY(-3.5px) !important;
@@ -113,8 +122,8 @@
 			width: 65px;
 			height: 65px;
 			position: fixed;
-		    top: 101px;
-		    right: 15px;
+		    top: 115px;
+		    right: 23px;
 		    display: flex;
 		    align-items: center;
 		    justify-content: center;
@@ -133,38 +142,32 @@
 <body>
 	<div class="headerHTML"></div>
 	
-	<h5>我的收藏</h5>
+	<h5>黑名單清單</h5>
 	
 	<main class="main">
-		<ul class="list">
-			<c:if test="${empty itemTrackingList}">
+		<ul class="list">	
+			<c:if test="${empty blackingList}">
 				<div class="empty-list-container">
-			        <p>暫無收藏</p>
+			        <p>暫無黑名單用戶</p>
 			    </div>
 			</c:if>
-			<c:forEach var="item" items="${itemTrackingList}">
+			
+			<c:forEach var="members" items="${blackingList}">
 				<li>
-					<a href="${pageContext.request.contextPath}/Itemfront/itemlist?goto=${item.itemId}">
+					<a href="${pageContext.request.contextPath}/SellerHome/home?mbrId=${members.mbrId}">
 						<div class="image-container">
-					    	<img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${item.itemId}&position=1" class="img">
+					    	<img src="${pageContext.request.contextPath}/DBGifReader5?mbrid=${members.mbrId}&imgType=avatar" alt="avatar" class="img">
 				    	</div>
 				    	
 	    				<div class="product-info">
-	    					<c:if test="${item.itemStatus eq 1}">
-	    						<div class="not-found-container">
-               						<p class="not-found">商品未上架</p>
-               					</div>
-            				</c:if>
-						    <span class="name">${item.itemName}</span>
-						    <span class="price">NT$ ${item.price}</span>
-						    <form method="post" action="${pageContext.request.contextPath}/itemtrackinglist.check">
+						    <form method="post" action="${pageContext.request.contextPath}/blacklist.check">
 						        <button class="delete" type="submit">
 						        	<svg viewBox="0 0 15 17.5" height="16" width="14" xmlns="http://www.w3.org/2000/svg" class="icon">
 						        		<path transform="translate(-2.5 -1.25)" d="M15,18.75H5A1.251,1.251,0,0,1,3.75,17.5V5H2.5V3.75h15V5H16.25V17.5A1.251,1.251,0,0,1,15,18.75ZM5,5V17.5H15V5Zm7.5,10H11.25V7.5H12.5V15ZM8.75,15H7.5V7.5H8.75V15ZM12.5,2.5h-5V1.25h5V2.5Z" id="Fill"></path>
 						        	</svg>
 						        </button>
-						        <input type="hidden" name="itemId" value="${item.itemId}">
 						        <input type="hidden" name="mbrId" value="${sessionScope.mbrId}">
+								<input type="hidden" name="blackId" value="${members.mbrId}">
 						        <input type="hidden" name="action" value="deletefromlist">
 						    </form>
 						</div>
@@ -172,23 +175,23 @@
 				</li>
 			</c:forEach>
 		</ul>
-		
+
 		<div class="page-container">
-			<c:if test="${not empty itemTrackingList}">
-				<a class="btn page" href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=1">&lt;&lt;</a>
+			<c:if test="${not empty blackingList}">
+				<a class="btn page" href="${pageContext.request.contextPath}/blacklist.check?action=getAllByMbrId&page=1">&lt;&lt;</a>
 				    
-				<c:forEach var="i" begin="1" end="${itemTrackingPageQty}">
+				<c:forEach var="i" begin="1" end="${blackListPageQty}">
 				    <c:choose>
 				        <c:when test="${currentPage eq i}">
 				            <a class="btn page active" href="#">${i}</a>
 				        </c:when>
 				        <c:otherwise>
-				            <a class="btn page" href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=${i}">${i}</a>
+				            <a class="btn page" href="${pageContext.request.contextPath}/blacklist.check?action=getAllByMbrId&page=${i}">${i}</a>
 				        </c:otherwise>
 				    </c:choose>
 				</c:forEach>
 				    
-				<a class="btn page" href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId&page=${itemTrackingPageQty}">&gt;&gt;</a>
+				<a class="btn page" href="${pageContext.request.contextPath}/blacklist.check?action=getAllByMbrId&page=${blackListPageQty}">&gt;&gt;</a>
 			</c:if>
 		</div>
 	</main>
@@ -198,7 +201,7 @@
 	        <button class="btn circle">會員<br>中心</button>
 	    </a>
 	</div>
-	
+
 	<div class="footerHTML"></div>
 	
 	<!-- bootstrap5 js -->

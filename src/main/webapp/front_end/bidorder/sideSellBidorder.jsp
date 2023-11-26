@@ -24,17 +24,7 @@
 <br><br>
 <h2><a href="${pageContext.request.contextPath}/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">會員中心</a></h2>
 
-<h2 id="accountHeading">帳戶管理</h2>
-<ul  class="account-menu">
-    <li class="lf_li1"><a href="${pageContext.request.contextPath}/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>
-    <li class="lf_li1"><a href="${pageContext.request.contextPath}/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">物流設定</a></li>
-    <li class="lf_li1"><a href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId">我的收藏</a></li>
-    <li class="lf_li1"><a href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId">我的檢舉</a></li>
-    <li class="lf_li1"><a href="${pageContext.request.contextPath}/WithdrawRequest/withdraw.check?choice=add">虛擬錢包提款申請</a></li>
-    <li class="lf_li1"><a href="${pageContext.request.contextPath}/WithdrawRequest/withdraw.check?choice=search">虛擬錢包申請查詢</a></li>
-    <li class="lf_li1"><a href="${pageContext.request.contextPath}/BalanceHistory/balance.check?choice=searchMbrId">虛擬錢包異動查詢</a></li>
-    <li class="lf_li1"><a href="${pageContext.request.contextPath}/PointHistory/point.check?choice=search">點數異動查詢</a></li>
-</ul>
+
 
 			<h2>賣家競標商品訂單</h2>
 			<ul>
