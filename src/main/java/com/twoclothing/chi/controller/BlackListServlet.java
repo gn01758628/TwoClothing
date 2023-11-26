@@ -120,7 +120,7 @@ public class BlackListServlet extends HttpServlet {
 	private String deleteBlackListFromList(HttpServletRequest req, HttpServletResponse res) {
 		HttpSession session = req.getSession();
 		Integer mbrId = (Integer) session.getAttribute("mbrId"); // 要黑名單人的會員
-		int blackId = Integer.parseInt(req.getParameter("mbrId")); // 被黑名單的會員(賣家)
+		int blackId = Integer.parseInt(req.getParameter("blackId")); // 被黑名單的會員(賣家)
 		BlackList blackList = blackListService.getByPrimaryKey(mbrId, blackId);
 
 		blackListService.deleteBlackList(blackList);

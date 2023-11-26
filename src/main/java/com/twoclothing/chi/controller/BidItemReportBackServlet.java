@@ -240,6 +240,18 @@ public class BidItemReportBackServlet extends HttpServlet {
 			        bidItemReportBoth.setBidStatus(1);
 			        bidItemReportBoth.setAuditDate(auditdate);
 			        bidItemReportBoth.setNote(note);
+			        
+			        int bothMbrId = bidItemReportBoth.getMbrId();
+			        
+			        if (bothMbrId != mbrId) {
+			        	Notice noticeBothDelete = new Notice();
+			        	noticeBothDelete.setType("檢舉審核結果");
+			        	noticeBothDelete.setHead("請確認商品檢舉審核結果");
+			        	noticeBothDelete.setContent("商品檢舉審核為「處分」結果，請至「競標檢舉」查看。");
+			        	noticeBothDelete.setLink("/front/itemreport?action=getAllByMbrId");
+			        	noticeBothDelete.setImageLink("/images/report0.png");
+			        	bidItemReportService.addNotice(noticeBothDelete, bothMbrId);
+			        }
 			    }
 			}
 			

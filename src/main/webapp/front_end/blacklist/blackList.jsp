@@ -5,7 +5,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Follow</title>
+	<title>BlackList</title>
 	<!-- 頁籤icon -->
 	<link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
 	<!-- bootstrap5 css -->
@@ -126,17 +126,17 @@
 <body>
 	<div class="headerHTML"></div>
 	
-	<h5>關注清單</h5>
+	<h5>黑名單清單</h5>
 	
 	<main class="main">
 		<ul class="list">	
-			<c:if test="${empty followingList}">
+			<c:if test="${empty blackingList}">
 				<div class="empty-list-container">
-			        <p>暫無關注中的用戶</p>
+			        <p>暫無黑名單用戶</p>
 			    </div>
 			</c:if>
 			
-			<c:forEach var="members" items="${followingList}">
+			<c:forEach var="members" items="${blackingList}">
 				<li>
 					<a href="${pageContext.request.contextPath}/SellerHome/home?mbrId=${members.mbrId}">
 						<div class="image-container">
@@ -144,14 +144,14 @@
 				    	</div>
 				    	
 	    				<div class="product-info">
-						    <form method="post" action="${pageContext.request.contextPath}/follow.check">
+						    <form method="post" action="${pageContext.request.contextPath}/blacklist.check">
 						        <button class="delete" type="submit">
 						        	<svg viewBox="0 0 15 17.5" height="16" width="14" xmlns="http://www.w3.org/2000/svg" class="icon">
 						        		<path transform="translate(-2.5 -1.25)" d="M15,18.75H5A1.251,1.251,0,0,1,3.75,17.5V5H2.5V3.75h15V5H16.25V17.5A1.251,1.251,0,0,1,15,18.75ZM5,5V17.5H15V5Zm7.5,10H11.25V7.5H12.5V15ZM8.75,15H7.5V7.5H8.75V15ZM12.5,2.5h-5V1.25h5V2.5Z" id="Fill"></path>
 						        	</svg>
 						        </button>
 						        <input type="hidden" name="mbrId" value="${sessionScope.mbrId}">
-								<input type="hidden" name="followId" value="${members.mbrId}">
+								<input type="hidden" name="blackId" value="${members.mbrId}">
 						        <input type="hidden" name="action" value="deletefromlist">
 						    </form>
 						</div>
@@ -161,21 +161,21 @@
 		</ul>
 
 		<div class="page-container">
-			<c:if test="${not empty followingList}">
-				<a class="btn page" href="${pageContext.request.contextPath}/follow.check?action=getAllByMbrId&page=1">&lt;&lt;</a>
+			<c:if test="${not empty blackingList}">
+				<a class="btn page" href="${pageContext.request.contextPath}/blacklist.check?action=getAllByMbrId&page=1">&lt;&lt;</a>
 				    
-				<c:forEach var="i" begin="1" end="${followPageQty}">
+				<c:forEach var="i" begin="1" end="${blackListPageQty}">
 				    <c:choose>
 				        <c:when test="${currentPage eq i}">
 				            <a class="btn page active" href="#">${i}</a>
 				        </c:when>
 				        <c:otherwise>
-				            <a class="btn page" href="${pageContext.request.contextPath}/follow.check?action=getAllByMbrId&page=${i}">${i}</a>
+				            <a class="btn page" href="${pageContext.request.contextPath}/blacklist.check?action=getAllByMbrId&page=${i}">${i}</a>
 				        </c:otherwise>
 				    </c:choose>
 				</c:forEach>
 				    
-				<a class="btn page" href="${pageContext.request.contextPath}/follow.check?action=getAllByMbrId&page=${followPageQty}">&gt;&gt;</a>
+				<a class="btn page" href="${pageContext.request.contextPath}/blacklist.check?action=getAllByMbrId&page=${blackListPageQty}">&gt;&gt;</a>
 			</c:if>
 		</div>
 	</main>
