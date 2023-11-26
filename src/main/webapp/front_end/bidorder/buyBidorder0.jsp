@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>聊天室</title>
+    <title>待付款</title>
     <!--頁籤icon-->
     <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
     <!--bootstrap5 css-->
@@ -31,9 +31,13 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
     <!--頁尾css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
-
+	<style type="text/css">
+	body {
+	  height: 1500px; /* 或者使用 height: 200%; 或其他你想要的值 */
+	  margin: 0;
+	}</style>
 </head>
-<body>
+<body >
 <!--放在最前面-->
 <div class="headerHTML"></div>
 	

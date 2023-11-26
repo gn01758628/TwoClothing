@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>聊天室</title>
+    <title>交易完成</title>
     <!--頁籤icon-->
     <link rel="icon" href="${pageContext.request.contextPath}/images/Mainicon.png" type="image/png">
     <!--bootstrap5 css-->

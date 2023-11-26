@@ -74,20 +74,10 @@
 		src="<%=request.getContextPath()%>/js/bootstrap5/bootstrap.bundle.min.js"></script>
 	<div id="hy_con">
 		<div id="con_lf">
-		<br><br>
-			<h2>買家競標商品訂單</h2>
-			<ul>
-				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">待付款</a></li>
-				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder1&buyMbrId=${user.mbrId}">未出貨</a></li>
-				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder2&buyMbrId=${user.mbrId}">待收貨</a></li>
-				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder3&buyMbrId=${user.mbrId}">訂單完成</a></li>
-				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder4&buyMbrId=${user.mbrId}">訂單不成立</a></li>
-			</ul>
+<!--=============================================插入連結的地方-->
+<!--=============================================插入連結的地方-->
+<!--=============================================插入連結的地方-->
+<!--=============================================插入連結的地方-->
 		</div>
 		<div id="con_rh">
 			<div class="con_rh_con">
