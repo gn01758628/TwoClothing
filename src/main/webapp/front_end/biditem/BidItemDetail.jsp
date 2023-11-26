@@ -417,20 +417,22 @@
         	window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
     	</c:if>
     	
-    	<c:if test="${bidItem.bidStatus == 6}">
-	        Swal.fire ({
-	        	backdrop: false,
-	            title: "此商品並非上架狀態",
-	            text: "非上架狀態的商品無法操作",
-	            icon: "error",
-	            confirmButtonText: "OK"
-	        });
-	        return;
-	    </c:if>
+    	<c:if test="${mbrId != null}">
+	    	<c:if test="${bidItem.bidStatus == 6}">
+		        Swal.fire ({
+		        	backdrop: false,
+		            title: "此商品並非上架狀態",
+		            text: "非上架狀態的商品無法操作",
+		            icon: "error",
+		            confirmButtonText: "OK"
+		        });
+		        return;
+		    </c:if>
     	
-	    $('#bidItemId').text(bidItemId);
-	    let html = `<li class="list-group-item" id="report">An bidItemreport</li>`;
-	    $('#bidItemReportModal').modal('show');
+		    $('#bidItemId').text(bidItemId);
+		    let html = `<li class="list-group-item" id="report">An bidItemreport</li>`;
+		    $('#bidItemReportModal').modal('show');
+	    </c:if>
 	}
 	
 	function insertReport() {

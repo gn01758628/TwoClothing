@@ -266,21 +266,18 @@
                   class="register-form">
 
 
-                <!-- 电子邮件输入字段 -->
                 <input type="email" id="email" name="email" placeholder="email"
-                       required> <span id="registerEmailError" style="color: red;"></span>
+                       required> <span id="registerEmailError" style="color: red; "></span>
 
-                <!-- 密码输入字段 -->
                 <input type="password" id="pswdHash" name="pswdHash"
                        placeholder="密碼" required> <span id="registerPpswdHashError"
                                                           style="color: red;"></span>
-			    <span id="togglePassword1" onclick="togglePasswordVisibility()">🔒</span>
+<!-- 			    <span id="togglePassword1" onclick="togglePasswordVisibility()">🔒</span> -->
 			
-                <!-- 确认密码输入字段 -->
                 <input type="password" id="comfirm_password"
                        name="comfirm_password" placeholder="確認密碼" required> <span
                     id="comfirm_passwordError" style="color: red;"></span>
-                <span id="togglePassword2" onclick="togglecomfirm_passwordInputVisibility()">🔒</span> 
+<!--                 <span id="togglePassword2" onclick="togglecomfirm_passwordInputVisibility()">🔒</span>  -->
                     
                 <!-- 	圖片驗證	===================				 -->
                 <input id="VerificationCode" type="text" name="VerificationCode" size=10 placeholder=驗證碼>
@@ -340,70 +337,42 @@
     form.addEventListener('submit', function (event) {
         let isValid = true;
 
-        // 电子邮件字段验证
         const emailPattern = /^[a-zA-Z0-9_!#$%&'\\*+/=?{|}~^.-]+@[a-zA-Z0-9.-]+$/;
         if (!emailPattern.test(emailInput.value)) {
-            emailError.textContent = '电子邮件地址格式不正确';
+            emailError.textContent = '電子郵件格式不正確';
             isValid = false;
         } else {
-            emailError.textContent = ''; // 清空错误消息
+            emailError.textContent = ''; 
         }
 
-        // 密码字段验证（包括密码复杂度）
         const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
         if (!passwordPattern.test(pswdHashInput.value)) {
-            pswdHashError.textContent = '密码必须包含至少一个小写字母、一个大写字母和一个数字';
+            pswdHashError.textContent = "密碼必須包含至少一個小寫字母、一個大寫字母和一個數字";
             isValid = false;
         } else {
-            pswdHashError.textContent = ''; // 清空错误消息
+            pswdHashError.textContent = ''; 
         }
 
         if (pswdHashInput.value !== comfirm_passwordInput.value) {
-            comfirm_passwordError.textContent = '两次输入的密码不匹配';
+            comfirm_passwordError.textContent = '兩次輸入的密碼不符。';
             isValid = false;
         } else {
-            comfirm_passwordError.textContent = ''; // 清空错误消息
+            comfirm_passwordError.textContent = '';
         }
 
-        // 获取验证码的值并验证
         verificationCode = document.getElementById("VerificationCode").value;
         if (!verificationCode) {
-            // 用户没有输入验证码
-            document.getElementById("VerificationCodeError").textContent = "请输入验证码";
+            document.getElementById("VerificationCodeError").textContent = "驗證碼錯誤";
             isValid = false;
         }
 
-        // 如果 isValid 为 false，则阻止表单提交
         if (!isValid) {
             event.preventDefault();
         }
     });
 
 
-    //===============================================登入註冊切換===============================================
-
-    // 		function show_hide() {
-    // 			var login = document.getElementById("container1");
-    // 			var signup = document.getElementById("container2");
-    // 			var copyright = document.getElementById("copyright");
-    // 			var location = null;
-    // 			if (login.style.display === "none") {
-    // 				login.style.display = "block"; //lonin出現
-    // 				document.getElementById("email").value = "";
-    // 				document.getElementById("pswdHash").value = "";
-    // 				signup.style.display = "none"; //signup消失
-    // 				copyright.style.margin = "200px 0px 0px 0px";
-    // 			} else {
-    // 				login.style.display = "none"; //login消失
-    // 				signup.style.display = "block"; //signup出現
-    // 				signup.style.visibility = "visible";
-    // 				copyright.style.margin = "200px 0px 0px 0px";
-
-    // 				document.getElementById("email").value = "";
-    // 				document.getElementById("pswdHash").value = "";
-    // 				document.getElementById("comfirm_password").value = "";
-    // 			}
-    // 		}
+ 
 
     function show_hide() {
         var login = document.getElementById("container1");
@@ -412,17 +381,17 @@
         var copyright = document.getElementById("copyright");
 
         if (login.style.display === "none") {
-            login.style.display = "block"; // 登入出現
+            login.style.display = "block"; 
             document.getElementById("email").value = "";
             document.getElementById("pswdHash").value = "";
-            signup.style.display = "none"; // 註冊消失
-            forgotPasswordModal.style.display = "none"; // 忘記密碼消失
+            signup.style.display = "none"; 
+            forgotPasswordModal.style.display = "none"; 
             copyright.style.margin = "200px 0px 0px 0px";
         } else {
-            login.style.display = "none"; // 登入消失
-            signup.style.display = "block"; // 註冊出現
+            login.style.display = "none"; 
+            signup.style.display = "block"; 
             signup.style.visibility = "visible";
-            forgotPasswordModal.style.display = "none"; // 忘記密碼消失
+            forgotPasswordModal.style.display = "none"; 
             copyright.style.margin = "200px 0px 0px 0px";
 
             document.getElementById("email").value = "";
@@ -453,8 +422,7 @@
             success: function (response) {
 
                 if (response.success) {
-                    // 登入成功跳轉到首頁
-                    // TODO 目前是測試用首頁
+                	
                     window.location.href = contextPath + "/welcome.html";
                 } else {
                     if (response.mbrStatus === 0) {
@@ -505,7 +473,7 @@
                         handleErrors(response.errors);
                     }
                 } catch (error) {
-                    alert("AJAX 响应解析错误：" + error);
+                    alert("AJAX 回應解析錯誤：" + error);
                 }
             },
 
@@ -524,7 +492,6 @@
             if (errors.sessionCode) {
                 $("#VerificationCodeError").text(errors.sessionCode);
             }
-            // 如果有其他錯誤字段，可以類似處理
         }
     }
 
