@@ -150,12 +150,18 @@ public class AllotedCouponRedisDAO implements AllotedCouponDAO{
             "for i, jsonData in ipairs(redis.call('LRANGE', key, 0, -1)) do\n" +
             "    local item = cjson.decode(jsonData)\n" +
             "    if item.index == index then\n" +
+			"        if item.status == 0 then\n" +
+			"            local luaAllotDate = item.allotDate / 1000\n" +
+			"            if luaAllotDate and currentTimestamp > luaAllotDate then\n" +
+			"                item.status = 1\n" +
+			"                redis.call('LSET', key, i - 1, cjson.encode(item))\n" +
+			"            end\n" +
+			"        end\n" +
             "        if item.expireDate ~= nil then\n" +
             "            local luaExpireDate = item.expireDate / 1000\n" +
             "            if item.status == 1 and luaExpireDate and currentTimestamp > luaExpireDate then\n" +
             "                item.status = -1\n" +
             "                redis.call('LSET', key, i - 1, cjson.encode(item))\n" +
-            "                redis.log(redis.LOG_NOTICE, 'Status set to -1')\n" +
             "                return -1\n" +
             "            end\n" +
             "        end\n" +
@@ -170,6 +176,7 @@ public class AllotedCouponRedisDAO implements AllotedCouponDAO{
             "            redis.call('LSET', key, i - 1, cjson.encode(item))\n" +
             "            return item.remainingQuantity\n" +
             "        end\n" +
+            "        return -1\n" +
             "    end\n" +
             "end\n" +
             "return -99";

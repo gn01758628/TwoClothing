@@ -44,8 +44,6 @@ public class ItemSearchServlet extends HttpServlet{
 			case "getCategoryTags":
 				List<CategoryTags> categoryTagsSortedList = new ArrayList<>((List<CategoryTags>) servletContext.getAttribute("categoryTagsSortedList"));
 				
-				System.out.println(categoryTagsSortedList);
-				
 				// 使用Gson轉換List為JSON格式
 	            Gson gson = new GsonBuilder().create();
 	            String jsonString = gson.toJson(categoryTagsSortedList);
