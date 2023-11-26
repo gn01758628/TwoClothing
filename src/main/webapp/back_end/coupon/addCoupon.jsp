@@ -81,7 +81,7 @@
 	</tr>
 	<tr>
 		<td>折扣額度:</td>
-		<td><input type="number" name="disValue"  min="0" value="${disValue}"   size="45" required/></td> <td>${errorMsgs.disValue}</td>
+		<td><input type="number" name="disValue"  min="1" value="${disValue}"   size="45" required/></td> <td>${errorMsgs.disValue}</td>
 	</tr>
 	<tr>
 		<td>最低金額條件:</td>
@@ -100,20 +100,30 @@
 		
 	$(document).ready(function() {
 		// 取得現在的日期和時間
-	    const now = new Date();
+	    let now = new Date();
+	    let startDate =  new Date();
+	    startDate.setMinutes(startDate.getMinutes() + 1);
+	    let endDate =  new Date();
+	    endDate.setMinutes(endDate.getMinutes() + 2);
 
-	    // 格式化現在的日期和時間為 YYYY-MM-DDTHH:mm（符合datetime-local輸入的格式）
-	    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Taipei' };
-	    const formattedNow = now.toLocaleString('zh-TW', options)
-	        .replace(/\//g, '-')
-	        .replace(',','');
-	    
+	  	// 格式化开始日期为 YYYY-MM-DDTHH:mm（包括分钟和秒数部分）
+		let formattedStartDate = startDate.getFullYear() + '-' +
+		    ('0' + (startDate.getMonth() + 1)).slice(-2) + '-' +
+		    ('0' + startDate.getDate()).slice(-2) + 'T' +
+		    ('0' + startDate.getHours()).slice(-2) + ':' +
+		    ('0' + startDate.getMinutes()).slice(-2);
 
+		// 格式化结束日期为 YYYY-MM-DDTHH:mm（包括分钟和秒数部分）
+		let formattedEndDate = endDate.getFullYear() + '-' +
+		    ('0' + (endDate.getMonth() + 1)).slice(-2) + '-' +
+		    ('0' + endDate.getDate()).slice(-2) + 'T' +
+		    ('0' + endDate.getHours()).slice(-2) + ':' +
+		    ('0' + endDate.getMinutes()).slice(-2);
 	    // 設定開始日期和時間的最小值為現在的日期和時間
-	    document.getElementById("startDate").min = formattedNow;
+	    document.getElementById("startDate").min = formattedStartDate;
 
 	    // 設定結束日期和時間的最小值為現在的日期和時間
-	    document.getElementById("endDate").min = formattedNow;
+	    document.getElementById("endDate").min = formattedEndDate;
 
 	});
 	

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -232,94 +233,218 @@ public class ItemOrderServlet extends HttpServlet{
 	    res.setCharacterEncoding("UTF-8");
 	    
 	    
+	    String itemIdStr = req.getParameter("itemId");
+        String quantityStr = req.getParameter("quantity");
+        String payment = req.getParameter("payment");
+        String receiveName = req.getParameter("receiveName");
+        String receivePhone = req.getParameter("receivePhone");
+        String receiveAddress = req.getParameter("receiveAddress");
+        String mytotal = req.getParameter("mytotal");
+        String count = req.getParameter("count");
+        String eachCountStr = req.getParameter("eachCount");
+        String mbrPoint = req.getParameter("mbrPoint");
+        String cpnId = req.getParameter("cpnId");
+        String totalPay = req.getParameter("totalPay");
 
-	    // 獲取POST過來的JSON數據
-	    BufferedReader reader = req.getReader();
-	    StringBuilder jsonRequest = new StringBuilder();
-	    String line;
-	    while ((line = reader.readLine()) != null) {
-	        jsonRequest.append(line);
-	    }
+        // 在控制台打印接收到的数据（仅用于调试，实际应用中请根据需求处理数据）
+        System.out.println("itemIds: " + String.join(",", itemIdStr));
+        System.out.println("quantities: " + String.join(",", quantityStr));
+        System.out.println("payment: " + payment);
+        System.out.println("receiveName: " + receiveName);
+        System.out.println("receivePhone: " + receivePhone);
+        System.out.println("receiveAddress: " + receiveAddress);
+        System.out.println("mytotal: " + mytotal);
+        System.out.println("count: " + count);
+        System.out.println("eachCount: " + String.join(",", eachCountStr));
+        System.out.println("mbrPoint: " + mbrPoint);
+        System.out.println("cpnId: " + cpnId);
+        System.out.println("totalPay: " + totalPay);
+//        List<Item> itemList = new ArrayList<>();
+        List<OrderDetails> orderDetailsList = new ArrayList<>();
+        
+        
+        
+        
+        String[] itemParts = itemIdStr.split(",");
+        String[] quantityParts = quantityStr.split(",");
+        String[] eachCountParts = eachCountStr.split(",");
+        
+        for (int i = 0; i < itemParts.length; i++) {
+        	// 商品編號 數量 折扣金額
+        	Integer itemId = Integer.parseInt(itemParts[i].trim());
+        	Integer quantity = Integer.parseInt(quantityParts[i].trim());
+        	Integer eachCount = Integer.parseInt(eachCountParts[i].trim());
+        	
+        	// 訂單明細 複合之商品編號 
+        	OrderDetails orderDetails = new OrderDetails();
+        	OrderDetailsCompositeDetail orderDetailsCompositeDetail = new OrderDetailsCompositeDetail();
+        	orderDetailsCompositeDetail.setItemId(itemId);
+        	orderDetails.setCompositeKey(orderDetailsCompositeDetail);
+        	// 訂單明細 明細金額 商品數量 折扣金額 明細總金額
+        	Item item = gs.getByPrimaryKey(Item.class, itemId);
+        	orderDetails.setPrice(item.getPrice()*quantity);
+        	orderDetails.setQuantity(quantity);
+        	orderDetails.setDiscountPrice(eachCount);
+        	orderDetails.setBuyingPrice(orderDetails.getPrice()-orderDetails.getDiscountPrice());
+        	
+        }
+        
+        Map<String, List<OrderDetails>> groupedByItemId = orderDetailsList.stream()
+                .collect(Collectors.groupingBy(OrderDetails::getItemId()));
 
-	    // 將JSON數據轉換為Java對象
-	    Gson gson = new Gson();
-	    JsonObject jsonObject = gson.fromJson(jsonRequest.toString(), JsonObject.class);
-		
-	    Map<Integer,List<OrderDetails>> orderdetails = new HashMap<>();
+        // 打印分组结果
+        groupedByItemId.forEach((itemId, detailsList) -> {
+            System.out.println("ItemId: " + itemId);
+            detailsList.forEach(details -> System.out.println("  Quantity: " + details.getQuantity() + ", EachCount: " + details.getEachCount()));
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+//        for (String item : parts) {
+//        	Integer itemId = Integer.parseInt(item);
+//        	OrderDetails orderDetails = new OrderDetails();
+//        	OrderDetailsCompositeDetail orderDetailsCompositeDetail = new OrderDetailsCompositeDetail();
+//        	orderDetailsCompositeDetail.setItemId(itemId);
+//        	orderDetails.setCompositeKey(orderDetailsCompositeDetail);
+//        	Item tmp = gs.getByPrimaryKey(Item.class, Integer.parseInt(item));
+//        	//暫存 數量到了取出來更新
+//        	orderDetails.setPrice(tmp.getPrice());
+//        	itemList.add(tmp);
+//            System.out.println(tmp);
+//        }
+//        for (String item : parts) {
+//        	Integer tmp = Integer.parseInt(item);
+//        	quantityList.add(tmp);
+//            System.out.println(tmp);
+//        }
+//        for (String item : parts) {
+//        	Integer tmp = Integer.parseInt(item);
+//        	eachCountList.add(tmp);
+//            System.out.println(tmp);
+//        }
 	    
-	    OrderDetails od;
-	    OrderDetailsCompositeDetail odc;
 	    
-	    // 印出JsonObject中的數據
-//	    System.out.println("Received JSON Data: " + jsonObject.toString());
-
-	    // 獲取JsonObject中的特定屬性
-	    Integer buyerId = jsonObject.get("buyerId").getAsInt(); // 將"propertyName"替換為你想要獲取的屬性名稱
-//	    System.out.println("Value of specific property: " + buyerId);
-	    JsonArray cartData = jsonObject.getAsJsonArray("cartData");
-//	    System.out.println("Value of specific property: " + cartData);
-	    //這段之後由購物車處理  到時購物車會直接傳使用完優惠券以及點數折扣的商品明細相關資料過來   屆時我接收處理完的訂單明細 生成對應訂單及明細即可
-	    //以下為測試資料生成
-	    for (JsonElement detail : cartData) {
-	    	List<OrderDetails> detailList = new ArrayList<>();
-	        JsonObject cartItem = detail.getAsJsonObject();
-	        Integer sellerId = cartItem.get("sellerId").getAsInt();
-	        Integer itemId = cartItem.get("itemId").getAsInt();
-	        Integer amount = cartItem.get("amount").getAsInt();
-	        
-	        //訂單明細設定
-	        od = new OrderDetails();
-	        odc = new OrderDetailsCompositeDetail();
-	        od.setCompositeKey(odc);
-	        od.getCompositeKey().setItemId(itemId);
-	        Item it = gs.getByPrimaryKey(Item.class, itemId);
-	        Integer itprice = it.getPrice();
-	        od.setPrice(itprice);
-	        od.setQuantity(amount);
-	        od.setDiscountPrice(0);
-	        od.setBuyingPrice(od.getPrice()*od.getQuantity()-od.getDiscountPrice());
-	        
-	        if(orderdetails.containsKey(sellerId)) {
-	        	detailList = orderdetails.get(sellerId);
-	        }
-	        
-	        detailList.add(od);
-	        orderdetails.put(sellerId, detailList);
-	        
-	       
-
-	    }
-	    //之後補上 +商品小計  +運費價 -點數折抵 -優惠券折抵
-	    for (Map.Entry<Integer, List<OrderDetails>> entry : orderdetails.entrySet()) {
-	        Integer sellerId = entry.getKey();
-	        List<OrderDetails> orderDetailList = entry.getValue();
-	        ItemOrder itOrder = new ItemOrder();
-//	        System.out.println("Seller ID: " + sellerId);
-	        Integer oriPrice =  0;
-	        Integer orderPrice =  0;
-	        
-	        for (OrderDetails orderDetail : orderDetailList) {
-	        	oriPrice += (orderDetail.getPrice()*orderDetail.getQuantity());
-	        	orderPrice += orderDetail.getBuyingPrice();
-	        }
-	        itOrder.setBuyMbrId(buyerId);
-	        itOrder.setSellMbrId(sellerId);
-	        itOrder.setAmount(oriPrice);
-	        itOrder.setFinalAmount(orderPrice);
-	        itOrder.setOrderStatus(0);
-	        itOrder.setOrderDate(new Timestamp(System.currentTimeMillis()));
-	        Integer PK = (Integer) gs.insert(itOrder);
-	        for (OrderDetails orderDetail : orderDetailList) {
-	        	orderDetail.getCompositeKey().setOrderId(PK);
-	        	gs.insert(orderDetail);
-	        }
-	    }
 	    
-	    // 建立一個JSON物件，表示成功的回應
-        JsonObject jsonResponse = new JsonObject();
-        jsonResponse.addProperty("status", "success");
-        jsonResponse.addProperty("message", "訂單新增成功");
-        res.getWriter().write(jsonResponse.toString());
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+
+//	    // 獲取POST過來的JSON數據
+//	    BufferedReader reader = req.getReader();
+//	    StringBuilder jsonRequest = new StringBuilder();
+//	    String line;
+//	    while ((line = reader.readLine()) != null) {
+//	        jsonRequest.append(line);
+//	    }
+//
+//	    // 將JSON數據轉換為Java對象
+//	    Gson gson = new Gson();
+//	    JsonObject jsonObject = gson.fromJson(jsonRequest.toString(), JsonObject.class);
+//		
+//	    Map<Integer,List<OrderDetails>> orderdetails = new HashMap<>();
+//	    
+//	    OrderDetails od;
+//	    OrderDetailsCompositeDetail odc;
+//	    
+//	    // 印出JsonObject中的數據
+////	    System.out.println("Received JSON Data: " + jsonObject.toString());
+//
+//	    // 獲取JsonObject中的特定屬性
+//	    Integer buyerId = jsonObject.get("buyerId").getAsInt(); // 將"propertyName"替換為你想要獲取的屬性名稱
+////	    System.out.println("Value of specific property: " + buyerId);
+//	    JsonArray cartData = jsonObject.getAsJsonArray("cartData");
+////	    System.out.println("Value of specific property: " + cartData);
+//	    //這段之後由購物車處理  到時購物車會直接傳使用完優惠券以及點數折扣的商品明細相關資料過來   屆時我接收處理完的訂單明細 生成對應訂單及明細即可
+//	    //以下為測試資料生成
+//	    for (JsonElement detail : cartData) {
+//	    	List<OrderDetails> detailList = new ArrayList<>();
+//	        JsonObject cartItem = detail.getAsJsonObject();
+//	        Integer sellerId = cartItem.get("sellerId").getAsInt();
+//	        Integer itemId = cartItem.get("itemId").getAsInt();
+//	        Integer amount = cartItem.get("amount").getAsInt();
+//	        
+//	        //訂單明細設定
+//	        od = new OrderDetails();
+//	        odc = new OrderDetailsCompositeDetail();
+//	        od.setCompositeKey(odc);
+//	        od.getCompositeKey().setItemId(itemId);
+//	        Item it = gs.getByPrimaryKey(Item.class, itemId);
+//	        Integer itprice = it.getPrice();
+//	        od.setPrice(itprice);
+//	        od.setQuantity(amount);
+//	        od.setDiscountPrice(0);
+//	        od.setBuyingPrice(od.getPrice()*od.getQuantity()-od.getDiscountPrice());
+//	        
+//	        if(orderdetails.containsKey(sellerId)) {
+//	        	detailList = orderdetails.get(sellerId);
+//	        }
+//	        
+//	        detailList.add(od);
+//	        orderdetails.put(sellerId, detailList);
+//	        
+//	       
+//
+//	    }
+//	    //之後補上 +商品小計  +運費價 -點數折抵 -優惠券折抵
+//	    for (Map.Entry<Integer, List<OrderDetails>> entry : orderdetails.entrySet()) {
+//	        Integer sellerId = entry.getKey();
+//	        List<OrderDetails> orderDetailList = entry.getValue();
+//	        ItemOrder itOrder = new ItemOrder();
+////	        System.out.println("Seller ID: " + sellerId);
+//	        Integer oriPrice =  0;
+//	        Integer orderPrice =  0;
+//	        
+//	        for (OrderDetails orderDetail : orderDetailList) {
+//	        	oriPrice += (orderDetail.getPrice()*orderDetail.getQuantity());
+//	        	orderPrice += orderDetail.getBuyingPrice();
+//	        }
+//	        itOrder.setBuyMbrId(buyerId);
+//	        itOrder.setSellMbrId(sellerId);
+//	        itOrder.setAmount(oriPrice);
+//	        itOrder.setFinalAmount(orderPrice);
+//	        itOrder.setOrderStatus(0);
+//	        itOrder.setOrderDate(new Timestamp(System.currentTimeMillis()));
+//	        Integer PK = (Integer) gs.insert(itOrder);
+//	        for (OrderDetails orderDetail : orderDetailList) {
+//	        	orderDetail.getCompositeKey().setOrderId(PK);
+//	        	gs.insert(orderDetail);
+//	        }
+//	    }
+//	    
+//	    // 建立一個JSON物件，表示成功的回應
+//        JsonObject jsonResponse = new JsonObject();
+//        jsonResponse.addProperty("status", "success");
+//        jsonResponse.addProperty("message", "訂單新增成功");
+//        res.getWriter().write(jsonResponse.toString());
 	}
 	
 	

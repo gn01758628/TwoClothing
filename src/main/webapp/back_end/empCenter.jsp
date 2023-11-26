@@ -24,7 +24,7 @@
 <body>
   <aside class="sidebar">
 	<header>
-         <img src="${pageContext.request.contextPath}/CJImageReader/Employee?id=${employee.empId}" id="profile-image" class="profile-image" >
+         <img src="${pageContext.request.contextPath}/CJImageReader/Employee?id=${emp.empId}" id="profile-image" class="profile-image" >
          
          <div class="personal">
 		    <p>員工編號:<span id="formatEmpId">${emp.formatEmpId}</span></p>

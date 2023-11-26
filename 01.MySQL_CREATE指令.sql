@@ -737,6 +737,7 @@ CREATE TABLE itemorder
     paytype          TINYINT,
     payinfo          VARCHAR(50),
     amount           INT      NOT NULL,
+    discount		 INT,
     pointdiscount    INT,
     finalamount      INT      NOT NULL,
     orderstatus      TINYINT  NOT NULL,

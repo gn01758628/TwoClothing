@@ -403,13 +403,14 @@
 	   				eachCount : output,
 	   				mbrPoint : "${mbrPoint}",
 	   				cpnId : "${cpnId}",
-	   				totalPay : ($(".add_price input").val()) - ($(".count input").val())
+	   				totalPay : ($(".add_price input").val()) - ($(".count input").val()),
+	   				action : "addOrder"
 	   		};
 // 	   		console.log(cartData);
    			
 	   		let formDataUrlEncoded = new URLSearchParams(cartData);
 	   		
-            fetch("${pageContext.request.contextPath}/ItemCart/toOrder", {
+            fetch("${pageContext.request.contextPath}/front_end/itemorder/itemorder.check", {
                 method: "post",
                 body: formDataUrlEncoded
             })

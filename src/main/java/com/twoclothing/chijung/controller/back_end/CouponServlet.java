@@ -244,14 +244,12 @@ public class CouponServlet extends HttpServlet {
     	    } catch (java.text.ParseException e) {
     	    }
     	}
-//    	System.out.println(allotDateString);
-//    	System.out.println(expireDate);
     	
     	// 結束時間比對發布時間
     	if (allotDateString != null && expireDateString != null && !allotDateString.isEmpty() && !expireDateString.isEmpty()) {
     	    // 檢查 allotDate 是否大於 expireDate
-    	    if (allotDate.after(expireDate)) {
-    	    	res.getWriter().write("發放日期已超過使用期限");
+    	    if (allotDate.equals(expireDate) || allotDate.after(expireDate)) {
+    	    	res.getWriter().write("發放日期大於等於使用期限");
 				res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				return;
     	    } 
