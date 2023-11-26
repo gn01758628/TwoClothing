@@ -420,39 +420,44 @@
 	    <% Integer mbrId = (Integer) session.getAttribute("mbrId");
 	    Integer homembrId = (Integer) session.getAttribute("homembrId"); %>
 		
-		if (${mbrId} == ${homembrId}) {
-		    $("#followButton").hide();
-		    $("#followingButton").hide();
-		    $("#blacklistButton").hide();
-		    $("#blackingButton").hide();
-		} else {
-			let isFollow = ${isFollow};
-		    let isBlackList = ${isBlackList};
-			if (isFollow) {
-				$("#followButton").hide();
-				$("#followingButton").show();
-		        $("#blacklistButton").hide();
-		        $("#blackingButton").hide();
-			} else if (isBlackList) {
-				$("#followButton").hide();
-				$("#followingButton").hide();
-		        $("#blacklistButton").hide();
-		        $("#blackingButton").show();
-		        Swal.fire ({
-		    		backdrop: false,
-		    		title: "注意",
-		    		text: "此賣家為您的黑名單用戶",
-		    		icon: "warning",
-		    		timer: 3000,
-		    		showConfirmButton: false,
-		    	});
+		<% if (mbrId == null) { %>
+	    	$("#followingButton").hide();
+	    	$("#blackingButton").hide();
+	    <% } else { %>
+	    	if (${mbrId} == ${homembrId}) {
+			    $("#followButton").hide();
+			    $("#followingButton").hide();
+			    $("#blacklistButton").hide();
+			    $("#blackingButton").hide();
 			} else {
-				$("#followButton").show();
-				$("#followingButton").hide();
-		        $("#blacklistButton").show();
-		        $("#blackingButton").hide();
+				let isFollow = ${isFollow};
+			    let isBlackList = ${isBlackList};
+				if (isFollow) {
+					$("#followButton").hide();
+					$("#followingButton").show();
+			        $("#blacklistButton").hide();
+			        $("#blackingButton").hide();
+				} else if (isBlackList) {
+					$("#followButton").hide();
+					$("#followingButton").hide();
+			        $("#blacklistButton").hide();
+			        $("#blackingButton").show();
+			        Swal.fire ({
+			    		backdrop: false,
+			    		title: "注意",
+			    		text: "此賣家為您的黑名單用戶",
+			    		icon: "warning",
+			    		timer: 3000,
+			    		showConfirmButton: false,
+			    	});
+				} else {
+					$("#followButton").show();
+					$("#followingButton").hide();
+			        $("#blacklistButton").show();
+			        $("#blackingButton").hide();
+				}
 			}
-		}
+	 <% } %>
     });
     
     function insertFollow(mbrId) {
