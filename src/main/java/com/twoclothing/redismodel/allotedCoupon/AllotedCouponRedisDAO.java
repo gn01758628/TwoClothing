@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.twoclothing.utils.JedisPoolUtil;
 
@@ -43,33 +45,32 @@ public class AllotedCouponRedisDAO implements AllotedCouponDAO{
 		try (Jedis jedis = jedisPool.getResource()) {
 		    jedis.select(REDIS_NUMBER);
 		    Set<String> keys = jedis.keys(COUPON_PREFIX);
-
-	        String jsonList = (String)jedis.eval(GETALL_LUA_SCRIPT, 1, COUPON_PREFIX);
-
-	        allotedCouponList = new Gson().fromJson(jsonList, new TypeToken<List<AllotedCoupon>>() {}.getType());
+		    
+		    
+		    String jsonString = (String)jedis.eval(GETALL_LUA_SCRIPT, 1, COUPON_PREFIX);
+		    
+		    if (!isEmptyJsonObject(jsonString)) {
+		    	allotedCouponList = new Gson().fromJson(jsonString, new TypeToken<List<AllotedCoupon>>() {}.getType());	     	        	
+	        }
 		}
 		return allotedCouponList;
     }
 
 	@Override
-	public void receiveCoupon(AllotedCoupon allotedCoupon) {
+	public int receiveCoupon(AllotedCoupon allotedCoupon) {
+		 int result = -99;
 		 try (Jedis jedis = jedisPool.getResource()) {
 
 	            jedis.select(REDIS_NUMBER);
 
 	            // 設定KEYS和ARGV
-	            String key = String.valueOf(allotedCoupon.getCpnId());
+	            String key = String.valueOf(COUPON_PREFIX+allotedCoupon.getCpnId());
 	            String index = String.valueOf(allotedCoupon.getIndex());
 	            
 	            // 執行Lua腳本
-	            Long result = (Long) jedis.eval(RECEIVE_LUA_SCRIPT, 1, key, index);
-
-	            // 將Long轉換為int
-	            int intValue = result.intValue();
-
-	            // 輸出結果
-	            System.out.println("Remaining Quantity: " + intValue);
+	            result = ((Long) jedis.eval(RECEIVE_LUA_SCRIPT, 1, key, index)).intValue();
 	    }
+		return result;
 	}
 
 	@Override
@@ -139,37 +140,39 @@ public class AllotedCouponRedisDAO implements AllotedCouponDAO{
 	
 	
 	//如果 發放完畢 後台終止發放 或是 優惠券使用期限結束 回傳-1 其餘回傳剩餘數量
-    private static final String  RECEIVE_LUA_SCRIPT = 
-    		"redis.replicate_commands()" +
-    		"local key = KEYS[1]\n" +
-            "local index = ARGV[1]\n" +
-            "local currentTime = redis.call('TIME') " +
-            "local currentTimestamp = tonumber(currentTime[1]) " +	
+    private static final String  RECEIVE_LUA_SCRIPT =
+    		"redis.replicate_commands()\n" +
+            "local key = KEYS[1]\n" +
+            "local index = tonumber(ARGV[1])\n" +
+            "local currentTime = redis.call('TIME')\n" +
+            "local currentTimestamp = tonumber(currentTime[1])\n" +
+            
             "for i, jsonData in ipairs(redis.call('LRANGE', key, 0, -1)) do\n" +
             "    local item = cjson.decode(jsonData)\n" +
             "    if item.index == index then\n" +
-			"        if item.expireDate ~= nil then\r\n" +
-			"       	 local luaExpireDate = item.expireDate / 1000 " +
-            "        	 if item.status == 1 and luaExpireDate and currentTimestamp > luaExpireDate then\n" +
-            "            	 item.status = -1\n" +
-            "            	 redis.call('LSET', key, i - 1, cjson.encode(item))\n" +
-            "            	 return -1\n" +
-            "        	 end\n" +
+            "        if item.expireDate ~= nil then\n" +
+            "            local luaExpireDate = item.expireDate / 1000\n" +
+            "            if item.status == 1 and luaExpireDate and currentTimestamp > luaExpireDate then\n" +
+            "                item.status = -1\n" +
+            "                redis.call('LSET', key, i - 1, cjson.encode(item))\n" +
+            "                redis.log(redis.LOG_NOTICE, 'Status set to -1')\n" +
+            "                return -1\n" +
+            "            end\n" +
             "        end\n" +
             "        if item.status ~= 1 then\n" +
-            "            return item.status\n" +
+            "            return -1\n" +
             "        end\n" +
             "        if item.remainingQuantity > 0 then\n" +
             "            item.remainingQuantity = item.remainingQuantity - 1\n" +
             "            if item.remainingQuantity == 0 then\n" +
-            "                item.status = 3" +       
-            "        	 end\n" +
+            "                item.status = 3\n" +
+            "            end\n" +
             "            redis.call('LSET', key, i - 1, cjson.encode(item))\n" +
             "            return item.remainingQuantity\n" +
             "        end\n" +
             "    end\n" +
             "end\n" +
-            "return -2";
+            "return -99";
 	
     private static final String STOP_ISSUING_COUPON_LUA_SCRIPT = 
     		"redis.replicate_commands()\n" +
@@ -204,4 +207,15 @@ public class AllotedCouponRedisDAO implements AllotedCouponDAO{
             "end\n" +
             "\n" +
             "return nil";
+    
+    // 檢查 JSON 字串是否為空物件
+    private static boolean isEmptyJsonObject(String jsonString) {
+        try {
+            JsonObject jsonObject = new Gson().fromJson(jsonString, JsonObject.class);
+            return jsonObject.entrySet().isEmpty();
+        } catch (JsonSyntaxException e) {
+            // 處理 JSON 解析錯誤
+            return false;
+        }
+    }
 }

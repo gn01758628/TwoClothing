@@ -38,6 +38,7 @@
             align-items: center;
             flex-direction: column;
         }
+        
         div.body_container div.imgContainer{           
             width:98%;
             height: 600px;
@@ -106,6 +107,7 @@
 		    border: 1px solid;
 		    font-size: 20px;
         }
+        
         div.body_container div.mbrAction button:hover{
         	background-color:indianred;
         	color:white;
@@ -143,6 +145,7 @@
             align-items: center;
             flex-direction: column;
         }
+        
         div.cateImgContainer:hover{
             cursor: pointer;
         }
@@ -162,6 +165,7 @@
             z-index: 1;
             
         }
+        
 /*       div.bidItem a{
             color:beige;
             width: 100%;
@@ -174,6 +178,7 @@
             justify-content: center;
 
         }*/
+        
         div.itemarea{
             display: flex;
             justify-content: flex-start;
@@ -183,6 +188,7 @@
             
 
         }
+        
         div.itemarea ul.itemList{
             width:100%;
             list-style: none;
@@ -192,6 +198,7 @@
             margin: 0px;
 
         }
+        
         div.itemarea ul.itemList > li{
 /*             border: 1px solid cornflowerblue; */
             flex-grow: 1;
@@ -201,6 +208,7 @@
             flex-direction: column;
             align-items: center;
         }
+        
         div.itemarea ul.itemList >li a{
             display: block;
             border: 1px solid black;
@@ -209,10 +217,12 @@
             height: 100%;
             padding:27px;
         }
+        
         div.itemarea ul.itemList li:nth-child(4n){
             margin-left: 0;
 
         }
+        
         div.itemarea ul.itemList li div.iteminner{
             display: flex;
             flex-direction: row;
@@ -225,6 +235,7 @@
             font-size: 14px;
     		margin-top: 2px;
         }
+        
         div.itemarea ul.itemList li div.iteminner span.price{
             position:absolute;
             right: 0px;
@@ -241,7 +252,6 @@
 /*             width: 100%; */
             height: 100%;
         }
-
         
         div.itemarea ul.itemList >li a div.imgBlock img {
             max-width: 100%;
@@ -263,7 +273,6 @@
             text-align: center;
             color: black;
         }
-
     </style>
     <!--導覽列css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
@@ -289,8 +298,10 @@
         </div>
         
         <div class="mbrAction">
-        	<button>關注</button>
-        	<button>檢舉</button>
+        	<button id="followButton" onclick="insertFollow(${Members.mbrId})">關注</button>
+        	<button id="followingButton" onclick="deleteFollow(${Members.mbrId})">關注中</button>
+        	<button id="blacklistButton" onclick="insertBlackList(${Members.mbrId})">黑名單</button>
+        	<button id="blackingButton" onclick="deleteBlackList(${Members.mbrId})">移除黑名單</button>
         </div>
                 
         <div class="cate_container">
@@ -408,11 +419,142 @@
 	            }
 	    	});
 	    });
-    	
-    	
+	    
+	    <% Integer mbrId = (Integer) session.getAttribute("mbrId");
+	    Integer homembrId = (Integer) session.getAttribute("homembrId"); %>
+	    <c:if test="${mbrId eq homembrId}">
+	    	$("#followButton").hide();
+	    	$("#blacklistButton").hide();
+		</c:if>
+		
+		let isFollow = ${isFollow};
+	    let isBlackList = ${isBlackList};
+		if (isFollow) {
+			$("#followButton").hide();
+			$("#followingButton").show();
+	        $("#blacklistButton").hide();
+	        $("#blackingButton").hide();
+		} else if (isBlackList) {
+			$("#followButton").hide();
+			$("#followingButton").hide();
+	        $("#blacklistButton").hide();
+	        $("#blackingButton").show();
+	        Swal.fire ({
+	    		backdrop: false,
+	    		title: "注意",
+	    		text: "此賣家為您的黑名單用戶",
+	    		icon: "warning",
+	    		timer: 3000,
+	    		showConfirmButton: false,
+	    	});
+		} else {
+			$("#followButton").show();
+			$("#followingButton").hide();
+	        $("#blacklistButton").show();
+	        $("#blackingButton").hide();
+		}
     });
-    </script>	
     
-
+    function insertFollow(mbrId) {
+    	event.preventDefault();
+    	
+    	var url = "${pageContext.request.contextPath}/follow.check?action=insert&mbrId=${Members.mbrId}";
+    	
+    	$.ajax({
+	        type: "POST",
+	        url: url,
+	        success: function (data) {
+	        	$("#followButton").hide();
+	        	$("#followingButton").show();
+                $("#blacklistButton").hide();
+                $("#blackingButton").hide();
+ 	        	isFollow = true;
+	        },
+	        error: function (xhr) {
+	            if (xhr.status === 403) {
+	                window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
+	            } else {
+	                console.log(xhr);
+	            }
+	        }
+	    });
+    }
+    
+    function deleteFollow(mbrId) {
+    	event.preventDefault();
+    	
+    	var url = "${pageContext.request.contextPath}/follow.check?action=delete&mbrId=${Members.mbrId}";
+    	
+    	$.ajax({
+	        type: "POST",
+	        url: url,
+	        success: function (data) {
+	        	$("#followButton").show();
+	        	$("#followingButton").hide();
+	            $("#blacklistButton").show();
+	            $("#blackingButton").hide();
+ 	        	isFollow = false;
+	        },
+	        error: function (xhr) {
+	            if (xhr.status === 403) {
+	                window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
+	            } else {
+	                console.log(xhr);
+	            }
+	        }
+	    });
+    }
+    
+    function insertBlackList(mbrId) {
+    	event.preventDefault();
+    	
+    	var url = "${pageContext.request.contextPath}/blacklist.check?action=insert&mbrId=${Members.mbrId}";
+    	
+    	$.ajax({
+	        type: "POST",
+	        url: url,
+	        success: function (data) {
+	        	$("#followButton").hide();
+	        	$("#followingButton").hide();
+                $("#blacklistButton").hide();
+                $("#blackingButton").show();
+ 	        	isBlackList = true;
+	        },
+	        error: function (xhr) {
+	            if (xhr.status === 403) {
+	                window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
+	            } else {
+	                console.log(xhr);
+	            }
+	        }
+	    });
+    }
+    
+    function deleteBlackList(mbrId) {
+    	event.preventDefault();
+    	
+    	var url = "${pageContext.request.contextPath}/blacklist.check?action=delete&mbrId=${Members.mbrId}";
+    	
+    	$.ajax({
+	        type: "POST",
+	        url: url,
+	        success: function (data) {
+	        	$("#followButton").show();
+	        	$("#followingButton").hide();
+	            $("#blacklistButton").show();
+	            $("#blackingButton").hide();
+ 	        	isBlackList = false;
+	        },
+	        error: function (xhr) {
+	            if (xhr.status === 403) {
+	                window.location.href = "${pageContext.request.contextPath}/front_end/members/registerLogin.jsp";
+	            } else {
+	                console.log(xhr);
+	            }
+	        }
+	    });
+    }
+    </script>
+    
 </body>
 </html>

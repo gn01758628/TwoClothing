@@ -7,6 +7,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
 
 	<!-- 引入 jQuery -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -43,42 +46,26 @@
           <ul class="nav-flyout">
           
             <li>
-              <a href="${pageContext.request.contextPath}/back_end/employee/addEmp.jsp"><i class="ion-ios-color-filter-outline"></i>新增員工資料</a>
+              <a href="${pageContext.request.contextPath}/back_end/employee/addEmp.jsp">新增員工資料</a>
             </li>
             
             <li>
-              <a href="${pageContext.request.contextPath}/back_end/employee/Employee.do?action=get_On_Duty"><i class="ion-ios-color-filter-outline"></i>查看在職員工資料</a>
+              <a href="${pageContext.request.contextPath}/back_end/employee/Employee.do?action=get_On_Duty">查看在職員工資料</a>
             </li>
             
             <li>
-              <a href="${pageContext.request.contextPath}/back_end/empmissions/EmpMissions.do"><i class="ion-ios-clock-outline"></i>在職員工權限修改</a>
+              <a href="${pageContext.request.contextPath}/back_end/empmissions/EmpMissions.do">在職員工權限修改</a>
             </li>
             
             <li>
-              <a href="${pageContext.request.contextPath}/back_end/employee/Employee.do?action=get_Not_On_Duty"><i class=""></i>查看離職員工資料</a>
+              <a href="${pageContext.request.contextPath}/back_end/employee/Employee.do?action=get_Not_On_Duty">查看離職員工資料</a>
             </li>
             
           </ul>
         </li>
         
         <li>
-          <a href="${pageContext.request.contextPath}/members/Members.do?action=getAll" class="drop-down-menu"><i class="ion-ios-settings"></i> <span class="">會員管理</span></a>
-<%--           <a href='${pageContext.request.contextPath}/members/Members.do?action=getAll'>後台會員列表()</a>  --%>
-<!--           <ul class="nav-flyout"> -->
-<!--             <li> -->
-<!--               <a href=""><i class="ion-ios-alarm-outline"></i>查看會員資料</a> -->
-<!--             </li> -->
-<!--             <li> -->
-<!--               <a href=""><i class="ion-ios-camera-outline"></i></a> -->
-<!--             </li> -->
-<!--             <li> -->
-<!--               <a href=""><i class="ion-ios-chatboxes-outline"></i></a> -->
-<!--             </li> -->
-<!--             <li> -->
-<!--               <a href=""><i class="ion-ios-cog-outline"></i></a> -->
-<!--             </li> -->
-            
-<!--           </ul> -->
+          <a href="${pageContext.request.contextPath}/members/Members.do?action=getAll" ><i class="ion-ios-settings"></i> <span class="">會員管理</span></a>
         </li>
         
         <li>
@@ -105,26 +92,8 @@
         </li>
         
         <li>
-          <a href="${pageContext.request.contextPath}/back_end/servlet/biditem/search" class="drop-down-menu"><i class="ion-ios-analytics-outline"></i> <span class="">競標管理</span></a>
-          
-<!--           <ul class="nav-flyout"> -->
-<!--             <li> -->
-<!--               <a href=""><i class="ion-ios-timer-outline"></i></a> -->
-<!--             </li> -->
-<!--             <li> -->
-<!--               <a href=""><i class="ion-arrow-graph-down-left"></i></a> -->
-<!--             </li> -->
-<!--             <li> -->
-<!--               <a href=""><i class="ion-ios-partlysunny-outline"></i></a> -->
-<!--             </li> -->
-<!--             <li> -->
-<!--               <a href=""><i class="ion-ios-timer-outline"></i></a> -->
-<!--             </li> -->
-<!--             <li> -->
-<!--               <a href=""><i class="ion-ios-game-controller-a-outline"></i></a> -->
-<!--             </li> -->
-<!--           </ul> -->
-          
+          <a href="${pageContext.request.contextPath}/back_end/servlet/biditem/search"><i class="ion-ios-lightbulb-outline"></i><span class="">競標管理</span></a>
+        
         </li>
         
         <li>
@@ -132,16 +101,16 @@
           
           <ul class="nav-flyout">
             <li>
-              <a href="${pageContext.request.contextPath}/back_end/servlet/categoryTags/list"><i class="ion-ios-filing-outline"></i>商品類別標籤管理</a>
+              <a href="${pageContext.request.contextPath}/back_end/servlet/categoryTags/list">商品類別標籤管理</a>
             </li>
             <li>
-              <a href="${pageContext.request.contextPath}/back_end/coupon/CouponServlet.do?action=turn_To_Add_Coupon"><i class="ion-ios-paperplane-outline"></i>新增優惠券</a>
+              <a href="${pageContext.request.contextPath}/back_end/coupon/CouponServlet.do?action=turn_To_Add_Coupon">新增優惠券</a>
             </li>
             <li>
-              <a href="${pageContext.request.contextPath}/back_end/coupon/CouponServlet.do?action=get_All_Coupon"><i class="ion-ios-information-outline"></i>優惠券管理</a>
+              <a href="${pageContext.request.contextPath}/back_end/coupon/CouponServlet.do?action=get_All_Coupon">優惠券管理</a>
             </li>
             <li>
-              <a href="${pageContext.request.contextPath}/back_end/coupon/CouponServlet.do?action=get_All_Allot_Coupon"><i class="ion-android-star-outline"></i>優惠券發放管理</a>
+              <a href="${pageContext.request.contextPath}/back_end/coupon/CouponServlet.do?action=get_All_Allot_Coupon">優惠券發放管理</a>
             </li>
           </ul>
           
@@ -152,19 +121,10 @@
           
           <ul class="nav-flyout">
             <li>
-              <a href="${pageContext.request.contextPath}/back/itemreport?action=compositeQuery"><i class="ion-ios-flame-outline"></i>一般商品檢舉管理</a>
+              <a href="${pageContext.request.contextPath}/back/itemreport?action=compositeQuery">一般商品檢舉管理</a>
             </li>
             <li>
-              <a href=""><i class="ion-ios-lightbulb-outline"></i></a>
-            </li>
-            <li>
-              <a href=""><i class="ion-ios-location-outline"></i></a>
-            </li>
-            <li>
-              <a href=""><i class="ion-ios-locked-outline"></i></a>
-            </li>
-             <li>
-              <a href=""><i class="ion-ios-navigate-outline"></i></a>
+              <a href="${pageContext.request.contextPath}back/biditemreport?action=compositeQuery">競標商品檢舉管理</a>
             </li>
           </ul>
           
@@ -175,15 +135,11 @@
         </li>
         
         <li>
-          <a href="${pageContext.request.contextPath}/bidorder/BidOrder.do?action=getAll" class="drop-down-menu"><i class="ion-ios-medical-outline"></i> <span class="">競標商品訂單管理</span></a>
+          <a href="${pageContext.request.contextPath}/bidorder/BidOrder.do?action=getAll"><i class="ion-ios-medical-outline"></i> <span class="">競標商品訂單管理</span></a>
         </li>
         
         <li>
-          <a href="" class="drop-down-menu"><i class="ion-ios-medical-outline"></i> <span class="">客服中心</span></a>
-        </li>
-        
-        <li>
-          <a href="${pageContext.request.contextPath}/back_end/BackWithdrawRequest/withdraw?choice=getAll" class="drop-down-menu"><i class="ion-ios-medical-outline"></i> <span class="">虛擬錢包提款審核</span></a>
+          <a href="${pageContext.request.contextPath}/back_end/BackWithdrawRequest/withdraw?choice=getAll"><i class="ion-ios-medical-outline"></i> <span class="">虛擬錢包提款審核</span></a>
         </li>
         
       </ul>

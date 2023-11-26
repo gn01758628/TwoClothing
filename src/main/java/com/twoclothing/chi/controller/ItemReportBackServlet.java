@@ -246,6 +246,18 @@ public class ItemReportBackServlet extends HttpServlet {
 			notice.setImageLink("/images/report0.png");
 			itemReportService.addNotice(notice, mbrId);
 			item.setItemStatus(2);
+			
+			List<ItemReport> itemReportAll = itemReportService.getAll();
+			for (ItemReport itemReportBoth : itemReportAll) {
+			    if (itemReportBoth.getItemId() == itemId) {
+			        itemReportBoth.setResult(0);
+			        itemReportBoth.setEmpId(empId);
+			        itemReportBoth.setrStatus(1);
+			        itemReportBoth.setAuditDate(auditdate);
+			        itemReportBoth.setNote(note);
+			    }
+			}
+			
 			members.setSellScore(sellScore - 2);
 			itemReportService.addNotice(noticeItemDelete, sellMbr);
 		} else if (result == 1) {

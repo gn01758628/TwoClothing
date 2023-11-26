@@ -29,9 +29,11 @@ import com.twoclothing.model.members.Members;
 import com.twoclothing.utils.generic.GenericService;
 import com.twoclothing.utils.generic.QueryCondition;
 
-@WebServlet("/front_end/itemorder/itemorder.do")
+@WebServlet("/front_end/itemorder/itemorder.check")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class ItemOrderServlet extends HttpServlet{
+	
+	
 	
 	private GenericService gs;
 
@@ -129,18 +131,18 @@ public class ItemOrderServlet extends HttpServlet{
 	
 	
 	private void buyerAll(HttpServletRequest req, HttpServletResponse res) throws IOException{
-		String buyerParam = req.getParameter("buyer");
-		Integer buyerId = Integer.parseInt(buyerParam);
-		
-		Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
-		
-		List<ItemOrder> itemOrderList = gs.getBy(ItemOrder.class, "buyMbrId", buyerId);				
-		for( ItemOrder io : itemOrderList) {
-			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", io.getOrderId());
-			itemOrderMap.put(io, orderDetailsList);
-		}
-		req.setAttribute("buyer",buyerId);
-		req.setAttribute("itemOrderMap", itemOrderMap);
+//		String buyerParam = req.getParameter("buyer");
+//		Integer buyerId = Integer.parseInt(buyerParam);
+//		
+//		Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
+//		
+//		List<ItemOrder> itemOrderList = gs.getBy(ItemOrder.class, "buyMbrId", buyerId);				
+//		for( ItemOrder io : itemOrderList) {
+//			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", io.getOrderId());
+//			itemOrderMap.put(io, orderDetailsList);
+//		}
+//		req.setAttribute("buyer",buyerId);
+//		req.setAttribute("itemOrderMap", itemOrderMap);
 	}
 	
 	private void buyerStatus(HttpServletRequest req, HttpServletResponse res,Integer status) throws IOException{
@@ -166,18 +168,18 @@ public class ItemOrderServlet extends HttpServlet{
 	
 	
 	private void sellerAll(HttpServletRequest req, HttpServletResponse res) throws IOException{
-		String sellerParam = req.getParameter("seller");
-		Integer sellerId = Integer.parseInt(sellerParam);
-		
-		Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
-		
-		List<ItemOrder> itemOrderList = gs.getBy(ItemOrder.class, "sellMbrId", sellerId);				
-		for( ItemOrder io : itemOrderList) {
-			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", io.getOrderId());
-			itemOrderMap.put(io, orderDetailsList);
-		}
-		req.setAttribute("seller",sellerId);
-		req.setAttribute("itemOrderMap", itemOrderMap);
+//		String sellerParam = req.getParameter("seller");
+//		Integer sellerId = Integer.parseInt(sellerParam);
+//		
+//		Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
+//		
+//		List<ItemOrder> itemOrderList = gs.getBy(ItemOrder.class, "sellMbrId", sellerId);				
+//		for( ItemOrder io : itemOrderList) {
+//			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", io.getOrderId());
+//			itemOrderMap.put(io, orderDetailsList);
+//		}
+//		req.setAttribute("seller",sellerId);
+//		req.setAttribute("itemOrderMap", itemOrderMap);
 	}
 	
 	

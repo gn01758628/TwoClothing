@@ -48,6 +48,11 @@ public class BidItemReportServiceImpl implements BidItemReportService {
 	public BidItemReport getByPrimaryKey(Integer reportId) {
 		return dao.getByPrimaryKey(reportId);
 	}
+	
+	@Override
+	public List<BidItemReport> getAll() {
+		return dao.getAll();
+	}
 
 	@Override
 	public List<BidItemReport> getAll(int currentPage) {
