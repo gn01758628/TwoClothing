@@ -35,7 +35,8 @@
     <li class="lf_li1"><a href="${pageContext.request.contextPath}/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">個人資訊</a></li>
     <li class="lf_li1"><a href="${pageContext.request.contextPath}/shipsetting/Shipsetting.do?action=getAll_For_MbrId&mbrId=${user.mbrId}">物流設定</a></li>
     <li class="lf_li1"><a href="${pageContext.request.contextPath}/MemberCouponServlet.check?action=get_Member_Coupon">我的優惠券</a></li>
-    <li class="lf_li1"><a href="${pageContext.request.contextPath}/blacklist?action=getAllByMbrId">黑名單</a></li>
+	<li class="lf_li1"><a href="${pageContext.request.contextPath}/follow.check?action=getAllByMbrId">關注清單</a></li>
+    <li class="lf_li1"><a href="${pageContext.request.contextPath}/blacklist.check?action=getAllByMbrId">黑名單</a></li>
     <li class="lf_li1"><a href="${pageContext.request.contextPath}/WithdrawRequest/withdraw.check?choice=add">虛擬錢包提款申請</a></li>
     <li class="lf_li1"><a href="${pageContext.request.contextPath}/WithdrawRequest/withdraw.check?choice=search">虛擬錢包申請查詢</a></li>
     <li class="lf_li1"><a href="${pageContext.request.contextPath}/BalanceHistory/balance.check?choice=searchMbrId">虛擬錢包異動查詢</a></li>
@@ -59,10 +60,9 @@
 <h2 id="orderHeading">一般商品相關</h2>
 <ul class="order-menu">
 <li class="lf_li1"><a href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId">我的收藏</a></li>
-<li class="lf_li1"><a href="${pageContext.request.contextPath}/follow?action=getAllByMbrId">我的追蹤商品</a></li>
-<li class="lf_li1"><a href="${pageContext.request.contextPath}/itembrowsing.redis?action=getAllByMbrId">我的瀏覽紀錄</a></li>
-<li class="lf_li1"><a href="${pageContext.request.contextPath}/itemorder/itemorder.check?action=buyer">買家訂單</a></li>
-<li class="lf_li1"><a href="${pageContext.request.contextPath}/itemorder/itemorder.check?action=seller">賣家訂單</a></li>
+<li class="lf_li1"><a href="${pageContext.request.contextPath}/itembrowsing.redis?action=getAllByMbrId">瀏覽紀錄</a></li>
+<li class="lf_li1"><a href="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check?action=buyer">買家訂單</a></li>
+<li class="lf_li1"><a href="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check?action=seller">賣家訂單</a></li>
 <li class="lf_li1"><a href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId">我的檢舉</a></li>
 </ul>
 

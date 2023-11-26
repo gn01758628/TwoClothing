@@ -329,8 +329,7 @@
 		        var itemId = filteredData[i].itemId;
 		        var itemName = filteredData[i].itemName;
 		        var itemPrice = filteredData[i].price;
-		        console.log("itemId"+itemId);
-		        
+        
 
 		        var newItemHTML = '<li>' +
 		            '<a href="' + contextPath + '/Itemfront/itemlist?goto=' + itemId + '">' +
@@ -346,7 +345,6 @@
 		        // 將新的列表項目添加到列表容器中
 		        $('.itemList').append(newItemHTML);
 		    }
-		    console.log($('.itemList').html());
 		    
 		    
 		    $('.itemList').find('li').slice(startIndex, endIndex).show();

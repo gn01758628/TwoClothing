@@ -255,6 +255,18 @@ public class ItemReportBackServlet extends HttpServlet {
 			        itemReportBoth.setrStatus(1);
 			        itemReportBoth.setAuditDate(auditdate);
 			        itemReportBoth.setNote(note);
+			        
+			        int bothMbrId = itemReportBoth.getMbrId();
+			        
+			        if (bothMbrId != mbrId) {
+			        	Notice noticeBothDelete = new Notice();
+			        	noticeBothDelete.setType("檢舉審核結果");
+			        	noticeBothDelete.setHead("請確認商品檢舉審核結果");
+			        	noticeBothDelete.setContent("商品檢舉審核為「處分」結果，請至「我的檢舉」查看。");
+			        	noticeBothDelete.setLink("/front/itemreport?action=getAllByMbrId");
+			        	noticeBothDelete.setImageLink("/images/report0.png");
+			        	itemReportService.addNotice(noticeBothDelete, bothMbrId);
+			        }
 			    }
 			}
 			

@@ -31,21 +31,17 @@
     <!--Sweet Alert-->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <!--你們自己的css-->
+
     <!--不是外部檔案也無所謂-->
     
     <!--側邊連結css-->
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
+
 
     <!--導覽列css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/header.css">
     <!--頁尾css-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chengHan/footer.css">
 
-
-
-		
-	
-	
 
 </head>
 <body>
@@ -135,13 +131,12 @@
 <script src="${pageContext.request.contextPath}/js/bootstrap5/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap5/bootstrap.min.js"></script>
 <!--jQuery-->
-<script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jQuery/jquery-3.7.1.min.js"></script>
 	<script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              <!-- ●●js  for jquery datatables 用 -->
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" /> <!-- ●●css for jquery datatables 用 -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 	
 <!--Sweet Alert-->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/gordon/memberArea.css">
 <!--JS loader-->
 <script>
     $(".headerHTML").load("${pageContext.request.contextPath}/headerHTML.html", function () {

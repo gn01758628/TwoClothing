@@ -124,7 +124,7 @@
               <a href="${pageContext.request.contextPath}/back/itemreport?action=compositeQuery">一般商品檢舉管理</a>
             </li>
             <li>
-              <a href="${pageContext.request.contextPath}back/biditemreport?action=compositeQuery">競標商品檢舉管理</a>
+              <a href="${pageContext.request.contextPath}/back/biditemreport?action=compositeQuery">競標商品檢舉管理</a>
             </li>
           </ul>
           

@@ -282,7 +282,6 @@
 	        $(".status").each(function(){
 	           var statusObject = $(this).text();
 	           if (searchCondition === "全部" || statusObject === searchCondition || (searchCondition === "審核中" && statusObject === "審核中") || (searchCondition === "已通過" && statusObject === "已通過") || (searchCondition === "未通過" && statusObject === "未通過")) {
-	        	   console.log(111);
 	        	   clickCount++;
 	        	   $(this).closest("tr").show();
 	        	   $(this).closest("tr").find("td:first").text(clickCount);

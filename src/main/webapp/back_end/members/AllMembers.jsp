@@ -83,7 +83,6 @@ h1 {
 		<th>會員編號</th>
 		<th>會員姓名</th>
 		<th>會員信箱(帳號)</th>
-		<th>會員密碼哈希值</th>
 		<th>帳號狀態</th>
 		<th>會員大頭貼</th>
 		<th>會員賣家商場圖片01</th>
@@ -108,7 +107,6 @@ h1 {
 		<td>${Members.mbrId}</td>
 		<td>${Members.mbrName}</td>
 		<td>${Members.email}</td>
-		<td>******</td>
 		<td>${Members.mbrStatus}</td>
 		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=avatar" width=100px height=100px  ></td>
 		<td><img src="<%=request.getContextPath() %>/DBGifReader5?mbrid=${Members.mbrId}&imgType=shopimg01" width=100px height=100px ></td>
