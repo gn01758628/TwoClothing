@@ -497,7 +497,7 @@
             $.get("${pageContext.request.contextPath}/back_end/servlet/biditem/findGiven", {
                 bidItemId: bidItemId,
             }, function (data) {
-                let isDoubleIMG = data.isDoubleIMG;
+                let isDoubleIMG = (data.isDoubleIMG === "true");
                 // 模態框節點
                 $(".bidNameModal").text(data.bidName);
                 $("#memberId").text(data.mbrId);
@@ -511,7 +511,7 @@
                 $("#directPrice").text(transformPrice(data.directPrice));
                 $("#startTime").text(transformTime(data.startTime));
                 $("#endTime").text(transformTime(data.endTime));
-                toggleImages(!isDoubleIMG,bidItemId,"${pageContext.request.contextPath}");
+                toggleImages(isDoubleIMG,bidItemId,"${pageContext.request.contextPath}");
             })
         })
     })
