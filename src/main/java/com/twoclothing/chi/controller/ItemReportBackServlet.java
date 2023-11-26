@@ -85,12 +85,12 @@ public class ItemReportBackServlet extends HttpServlet {
 
 	private String getAll(HttpServletRequest req, HttpServletResponse res) {
 		HttpSession session = req.getSession();
-		Integer mbrId = (Integer) session.getAttribute("mbrId");
+		Integer empId = (Integer) session.getAttribute("empId");
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 		List<ItemReport> itemReportList = itemReportService.getAll(currentPage);
 
-		int itemReportPageQty = itemReportService.getPageTotal(mbrId);
+		int itemReportPageQty = itemReportService.getPageTotal(empId);
 		req.getSession().setAttribute("itemReportPageQty", itemReportPageQty);
 		
 		Map<Integer, String> itemNameMap = new HashMap<>();
