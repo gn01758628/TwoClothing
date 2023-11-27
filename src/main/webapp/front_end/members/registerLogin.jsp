@@ -236,7 +236,7 @@
                 <input type="text" id="email2" name="email2" placeholder="email"
                        required><span id="loginEemailError" style="color: red;"></span>
                 <div class="tab"></div>
-                <input type="password" id="pswdHash2" name="pswdHash2" value="hash" placeholder="密碼" required><span id="loginPpswdHashError" style="color: red;"></span>
+                <input type="password" id="pswdHash2" name="pswdHash2"  placeholder="密碼" required><span id="loginPpswdHashError" style="color: red;"></span>
                 <span id="togglePassword1" onclick="togglePasswordVisibility()">🔒</span>
                 <div class="tab"></div>
                 <label for="rememberMe">記住我</label>
