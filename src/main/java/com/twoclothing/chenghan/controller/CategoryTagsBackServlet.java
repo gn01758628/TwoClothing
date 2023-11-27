@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,9 +93,15 @@ public class CategoryTagsBackServlet extends HttpServlet {
 
     private void doModify(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String tagId = request.getParameter("tagId");
-        CategoryTags currentTag = categoryTagsDAO.getByPrimaryKey(Integer.parseInt(tagId));
+        Integer tagId = Integer.parseInt(request.getParameter("tagId"));
+        CategoryTags currentTag = categoryTagsDAO.getByPrimaryKey(tagId);
+        List<CategoryTags> contextList = (List<CategoryTags>)getServletContext().getAttribute("categoryTags");
+        List<CategoryTags> allSubByPrimaryKey = categoryTagsDAO.getAllSubByPrimaryKey(tagId);
+        List<CategoryTags> resultList = new ArrayList<>(contextList);
+        resultList.removeIf(allSubByPrimaryKey::contains);
+        request.setAttribute("resultList",resultList);
         request.setAttribute("currentTag", currentTag);
+        request.setAttribute("currentSuperTagId",currentTag.getSuperTagId());
         request.getRequestDispatcher("/back_end/categorytags/CategoryTagsModify.jsp").forward(request, response);
     }
 

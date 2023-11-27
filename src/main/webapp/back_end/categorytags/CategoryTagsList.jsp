@@ -30,7 +30,7 @@
     <table class="table">
         <thead>
         <tr>
-            <th class="text-center align-middle sort-header">標籤編號 </th>
+            <th class="text-center align-middle sort-header">標籤編號</th>
             <th class="text-center align-middle">
                 父類別標籤
                 <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -42,7 +42,7 @@
                 </div>
             </th>
             <th class="text-center align-middle">類別名稱</th>
-            <th class="text-center align-middle sort-header">員工編號 </th>
+            <th class="text-center align-middle sort-header">員工編號</th>
             <th class="text-center align-middle">操作</th>
         </tr>
         </thead>
@@ -56,11 +56,8 @@
                 <td class="text-center align-middle">
                     <a href="${pageContext.request.contextPath}/back_end/servlet/categoryTags/modify?tagId=${tags.tagId}"
                        class="btn btn-success btn-sm mt-2 mb-2">修改</a>
-                    <button type="button" class="btn btn-info btn-sm mt-2 mb-2">詳情</button>
+                    <button type="button" class="btn btn-info btn-sm mt-2 mb-2 detail-button">詳情</button>
                 </td>
-            </tr>
-            <tr class="tags_path" style="display: none">
-                <td class="text-center align-middle" colspan="5"></td>
             </tr>
         </c:forEach>
         </tbody>
@@ -101,29 +98,40 @@
 
     $(document).ready(function () {
 
-        $(".tags_data button").click(function () {
+        $('.detail-button').click(function () {
             let tagId = Number($(this).closest("tr").find('td:first').text());
-            const tags_path = $(this).closest("tr").next("tr")
-            tags_path.find("td").text(getFullCategoryName(tagId, categoryData));
-            tags_path.toggle();
-        })
+            let detailRow = '<tr class="tags_path">' +
+                '<td class="text-center align-middle" colspan="5">' +
+                getFullCategoryName(tagId, categoryData) +
+                '</td>' +
+                '</tr>';
+
+            if ($(this).closest('tr').next('.tags_path').length === 0) {
+                $(this).closest('tr').after(detailRow);
+
+            } else {
+                $(this).closest('tr').next('.tags_path').toggle();
+            }
+        });
 
 
         // 排序功能
-        const tagsInfo = $(".tags_path");
         // 添加排序圖標
         $('.sort-header').append('<i class="fa-solid fa-sort" aria-hidden="true"></i>')
 
         // 綁定點擊事件
         $('.sort-header').on('click', function () {
-            tagsInfo.hide();
+            const tagsInfo = $(".tags_path");
+            tagsInfo.remove();
+            let index = $(this).index();
             let icon = $(this).find('i');
             let table = $(this).parents('table').eq(0);
             let rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()));
 
             this.asc = !this.asc;
-            rows = rows.reverse();
-            console.log(rows);
+            if (this.asc) {
+                rows = rows.reverse();
+            }
 
             if (!this.asc) {
                 icon.removeClass('fa-solid fa-sort');
@@ -141,14 +149,14 @@
         function comparer(index) {
             return function (a, b) {
                 let valA = getCellValue(a, index), valB = getCellValue(b, index);
-
-                // 標籤編號和員工編號的特殊處理
-                if (index === 0 || index === 3) { // 假設標籤編號是第0列，員工編號是第3列
+                if (index === 0) {
                     valA = parseInt(valA);
                     valB = parseInt(valB);
+                } else if (index === 3) {
+                    valA = parseInt(valA.split(":")[0].trim());
+                    valB = parseInt(valB.split(":")[0].trim());
                 }
 
-                // 進行比較
                 return (valA < valB) ? -1 : (valA > valB) ? 1 : 0;
             };
         }
@@ -157,17 +165,18 @@
             return $(row).children('td').eq(index).text();
         }
 
-        // 绑定点击事件到“全部显示”链接
-        $('#showAll').click(function(e) {
+        $('#showAll').click(function (e) {
             e.preventDefault();
-            tagsInfo.hide();
+            const tagsInfo = $(".tags_path");
+            tagsInfo.remove();
             $('.tags_data').show();
         });
 
         // 點擊選項進行過濾
         $('.category-dropdown .dropdown-item').click(function (e) {
             e.preventDefault();
-            tagsInfo.hide();
+            const tagsInfo = $(".tags_path");
+            tagsInfo.remove();
             let selectedCategory = $(this).text();
             $('tr.tags_data').each(function () {
                 if ($(this).find('td:eq(1)').text() === selectedCategory || selectedCategory === '全部') {

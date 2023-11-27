@@ -197,7 +197,7 @@ public class BidItemFrontPersonalServlet extends HttpServlet {
 
         // 如果錯誤訊息不為空則轉發回新增頁面
         if (!errorMessages.isEmpty()) {
-            request.getRequestDispatcher("/front/biditem/add").forward(request, response);
+            request.getRequestDispatcher("/front/biditem/personal/add.check").forward(request, response);
             return;
         }
 
