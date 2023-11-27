@@ -147,6 +147,9 @@ $(document).ready(function () {
         if (e.keyCode == 13) $("#bidBtn").click();
     });
 
+    // 倒數計時
+    let endTime = parseDateTime(endTimeStr);
+
     // 倒計時
     intervalId = setInterval(function () {
         updateCountdown(endTime);
@@ -165,10 +168,6 @@ $(document).ready(function () {
     $('.thumbnail-right img').first().click();
 
 });
-
-// 倒數計時
-let endTime = parseDateTime(endTimeStr);
-
 
 // 提取時間字串中的數字部分
 function parseDateTime(str) {

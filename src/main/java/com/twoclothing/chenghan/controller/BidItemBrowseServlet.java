@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -97,7 +98,12 @@ public class BidItemBrowseServlet extends HttpServlet {
                 BidItemDTO dto = new BidItemDTO();
                 Integer bidItemId = bidItem.getBidItemId();
                 dto.setBidItemId(bidItemId);
-                dto.setEndTime(bidItem.getEndTime().getTime());
+                Timestamp endTime = bidItem.getEndTime();
+                if (endTime == null) {
+                    dto.setEndTime(System.currentTimeMillis());
+                } else {
+                    dto.setEndTime(endTime.getTime());
+                }
                 dto.setBidName(bidItem.getBidName());
 
                 BidRecord record = bidRecordDAO.getIndexRecordByKey(bidItemId, 0);
