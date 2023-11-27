@@ -24,7 +24,7 @@ public interface BidItemDAO {
     List<BidItem> getAllSubByTagId(Integer tagId);
 
     /**
-     * @return 狀態是0,1,2,4的商品
+     * @return 狀態是0,1,4的商品
      */
     List<BidItem> getAllLegalByMbrId(Integer mbrId);
 

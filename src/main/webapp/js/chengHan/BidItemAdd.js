@@ -257,7 +257,7 @@ $(document).ready(function () {
                 } else {
                     Swal.fire({
                         title: "提交成功",
-                        text: "競標案審核將會在兩天內完成審核",
+                        text: "如資料沒有錯誤，競標案審核將會在兩天內完成審核",
                         icon: "success"
                     }).then(() => {
                         this.submit();

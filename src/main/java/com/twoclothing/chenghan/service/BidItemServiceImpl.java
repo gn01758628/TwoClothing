@@ -194,6 +194,9 @@ public class BidItemServiceImpl implements BidItemService {
     @Override
     public boolean isDoubleImaged(Integer bidItemId) {
         BidItemImage img = bidItemImageDAO.getPositionImageByBidItemId(bidItemId, 2);
+        if (img == null) {
+            return false;
+        }
         return img.getImage() != null;
     }
 }

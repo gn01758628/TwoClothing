@@ -172,6 +172,9 @@ $(document).ready(function () {
 // 提取時間字串中的數字部分
 function parseDateTime(str) {
     let parts = str.match(/\d+/g);
+    if (!parts || parts.length < 6) {
+        return new Date(); // 返回當前時間的 Date 對象
+    }
     return new Date(parts[0], parts[1] - 1, parts[2], parts[3], parts[4], parts[5]);
 }
 

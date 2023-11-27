@@ -89,7 +89,7 @@ public class BidItemHibernateDAO implements BidItemDAO {
     @Override
     public List<BidItem> getAllLegalByMbrId(Integer mbrId) {
         return getSession().createQuery("from BidItem where bidStatus in (:statuses) and mbrId = :mbrId order by bidItemId", BidItem.class)
-                .setParameterList("statuses", Arrays.asList(0, 1, 2, 4))
+                .setParameterList("statuses", Arrays.asList(0, 1, 4))
                 .setParameter("mbrId", mbrId)
                 .list();
     }
