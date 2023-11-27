@@ -139,7 +139,8 @@ public class BidItemServiceImpl implements BidItemService {
         }
         // 處理mbrName模糊查詢
         if (processedQuery.containsKey("mbrName")) {
-            List<Members> members = membersDAO.getAllByMbrName(processedQuery.get("mbrName")[0]);
+            String mbrName = processedQuery.get("mbrName")[0].trim();
+            List<Members> members = membersDAO.getAllByMbrName(mbrName);
             processedQuery.remove("mbrName");
             // 收集會員Id
             for (Members member : members) {

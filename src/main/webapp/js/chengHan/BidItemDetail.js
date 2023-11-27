@@ -35,12 +35,6 @@ $(document).ready(function () {
             Swal.fire("此商品並非上架狀態", "非上架狀態的商品無法操作", "error");
             return;
         }
-        // 判斷輸入的金額
-        if (bidAmountInp.val() < minRequestAmount) {
-            wrongMsg.text("出價不能小於最低出價" + formatToMoney(minRequestAmount));
-            wrongMsg.slideDown(300);
-            return;
-        }
         // 有直購價
         if (Number(directPrice) !== 0) {
             if (Number(bidAmountInp.val()) >= Number(directPrice)) {
@@ -50,6 +44,12 @@ $(document).ready(function () {
                 fakeBtn.click();
                 return;
             }
+        }
+        // 判斷輸入的金額
+        if (bidAmountInp.val() < minRequestAmount) {
+            wrongMsg.text("出價不能小於最低出價" + formatToMoney(minRequestAmount));
+            wrongMsg.slideDown(300);
+            return;
         }
         // 無直購價
         bidType.text("直接出價");

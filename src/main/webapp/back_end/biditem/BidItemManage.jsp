@@ -418,13 +418,13 @@
     $(document).ready(function () {
         $("#searchForm").submit(function (event) {
             // 獲取表單的每一個輸入值
-            const bidNameValue = $("#bidName").val();
-            const mbrNameValue = $("#mbrName").val();
-            const emailValue = $("#email").val();
-            const mbrIdValue = $("#mbrId").val();
-            const bidItemIdValue = $("#bidItemId").val();
-            const bidStatusValue = $("#bidStatus").val();
-            const empIdValue = $("#empId").val();
+            const bidNameValue = $("#bidName").val().trim();
+            const mbrNameValue = $("#mbrName").val().trim();
+            const emailValue = $("#email").val().trim();
+            const mbrIdValue = $("#mbrId").val().trim();
+            const bidItemIdValue = $("#bidItemId").val().trim();
+            const bidStatusValue = $("#bidStatus").val().trim();
+            const empIdValue = $("#empId").val().trim();
 
             // 利用物件儲存表單輸入值
             const formData = {
