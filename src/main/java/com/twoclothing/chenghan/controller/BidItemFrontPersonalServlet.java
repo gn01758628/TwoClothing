@@ -309,6 +309,7 @@ public class BidItemFrontPersonalServlet extends HttpServlet {
         }
         if ("結標".equals(action)) {
             bidItem.setBidStatus(2);
+            bidItem.setEndTime(new Timestamp(System.currentTimeMillis()));
             bidItemService.updateBidItem(bidItem);
             BidRecord highestBidRecord = bidRecordList.get(0);
             // 結標新增訂單

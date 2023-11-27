@@ -336,21 +336,12 @@
     })
 
     function endEarlyAjax(type, bidItemId) {
-        if (type === "流標") {
+        if (type === "流標" || type === "結標") {
             // jQuery Ajax Post request
             $.post('${pageContext.request.contextPath}/front/biditem/personal/endEarly', {
                 bidItemId: bidItemId,
                 action: type
             });
-            return;
-        }
-        if (type === "結標") {
-            // jQuery Ajax Post request
-            $.post('${pageContext.request.contextPath}/front/biditem/personal/endEarly', {
-                bidItemId: bidItemId,
-                action: type
-            });
-            return;
         }
     }
 </script>

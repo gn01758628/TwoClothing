@@ -31,6 +31,7 @@ public class NoticeJedisDAO implements NoticeDAO {
     public void insert(Notice notice, Integer mbrId) {
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.select(REDIS_NUMBER);
+
             // List儲存 (Key:會員ID,value:通知自增主鍵)
             String value = NOTICE_PREFIX + jedis.incr("noticeId");
             jedis.lpush(MBR_PREFIX + mbrId + MBR_SUFFIX, value);

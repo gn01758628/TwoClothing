@@ -321,22 +321,42 @@
         })
         // 刪除通知
         $("#delete").click(function () {
-            const idList = getCheckedNoticeIds();
-            $.post('/TwoClothing/noticeHelper/delete', {idList: JSON.stringify(idList)});
-            let count = 0;
-            idList.forEach(function (id) {
-                let currentId = "#" + id.replace(":", "");
-                $(currentId).slideUp(300, function () {
-                    $(this).remove();
-                });
-                count++;
-            })
-            if (currentRead) return;
-            // 即時更新header的數字
-            const noticeNum_Span = $(".noticeNum");
-            let currentNum = noticeNum_Span.text();
-            noticeNum_Span.text(currentNum - count);
-            if (noticeNum_Span.text() == 0) noticeNum_Span.hide();
+            Swal.fire({
+                title: "確定要刪除通知嗎?",
+                text: "一旦執行此操作，將無法撤回!",
+                icon: "warning",
+                showCancelButton: true,
+                allowOutsideClick: false,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "確定刪除",
+                cancelButtonText: "取消"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "操作成功!",
+                        text: "勾選的通知已刪除",
+                        icon: "success"
+                    }).then(() => {
+                        const idList = getCheckedNoticeIds();
+                        $.post('/TwoClothing/noticeHelper/delete', {idList: JSON.stringify(idList)});
+                        let count = 0;
+                        idList.forEach(function (id) {
+                            let currentId = "#" + id.replace(":", "");
+                            $(currentId).slideUp(300, function () {
+                                $(this).remove();
+                            });
+                            count++;
+                        })
+                        if (currentRead) return;
+                        // 即時更新header的數字
+                        const noticeNum_Span = $(".noticeNum");
+                        let currentNum = noticeNum_Span.text();
+                        noticeNum_Span.text(currentNum - count);
+                        if (noticeNum_Span.text() == 0) noticeNum_Span.hide();
+                    })
+                }
+            });
         })
     })
 
