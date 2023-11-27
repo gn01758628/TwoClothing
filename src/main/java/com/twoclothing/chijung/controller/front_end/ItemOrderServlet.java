@@ -2,6 +2,7 @@ package com.twoclothing.chijung.controller.front_end;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,25 +24,60 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.twoclothing.gordon.service.MembersService;
+import com.twoclothing.gordon.service.MembersServiceImpl;
+import com.twoclothing.huiwen.service.BalanceHistoryService;
+import com.twoclothing.huiwen.service.BalanceHistoryServiceImpl;
+import com.twoclothing.huiwen.service.ItemService;
+import com.twoclothing.huiwen.service.ItemServiceImpl;
+import com.twoclothing.huiwen.service.PointHistoryService;
+import com.twoclothing.huiwen.service.PointHistoryServiceImpl;
 import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.aproduct.itemorder.ItemOrder;
 import com.twoclothing.model.aproduct.orderdetails.OrderDetails;
 import com.twoclothing.model.aproduct.orderdetails.OrderDetails.OrderDetailsCompositeDetail;
+import com.twoclothing.model.balancehistory.BalanceHistory;
 import com.twoclothing.model.members.Members;
+import com.twoclothing.model.memberscoupon.MembersCoupon;
+import com.twoclothing.model.memberscoupon.MembersCoupon.MembersCouponCompositeDetail;
+import com.twoclothing.model.pointhistory.PointHistory;
+import com.twoclothing.redismodel.notice.Notice;
+import com.twoclothing.utils.JedisPoolUtil;
+import com.twoclothing.utils.generic.DAOSelector;
+import com.twoclothing.utils.generic.GenericDAO;
 import com.twoclothing.utils.generic.GenericService;
 import com.twoclothing.utils.generic.QueryCondition;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @WebServlet("/front_end/itemorder/itemorder.check")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class ItemOrderServlet extends HttpServlet{
 	
-	
-	
 	private GenericService gs;
-
+	//==================================
+	private ItemService itemService;
+	
+	private PointHistoryService PHSvc;
+	
+	private BalanceHistoryService BHSvc;
+	
+	private MembersService memSvc;
+	
+	private GenericDAO couponDAO;
+	
+	
+	
 //	@Override
 	public void init() throws ServletException {
 		this.gs = gs.getInstance();
+		//==================================
+		itemService = new ItemServiceImpl();
+		PHSvc = new PointHistoryServiceImpl();
+		memSvc = new MembersServiceImpl();
+		BHSvc = new BalanceHistoryServiceImpl();
+		couponDAO = DAOSelector.getDAO(MembersCoupon.class);
 	}
 	
 	@Override
@@ -50,17 +86,10 @@ public class ItemOrderServlet extends HttpServlet{
 		String action = req.getParameter("action");
 		String forwardPath = "";
 		
+		
 		switch (action) {
-			case "getMembersItems":
-				List<Members> memberList = gs.getAll(Members.class);
-				List<Item> itemList = gs.getAll(Item.class);
-				
-				req.setAttribute("memberList", memberList);
-				req.setAttribute("itemList", itemList);
-				forwardPath = "/front_end/itemorder/index.jsp";
-				break;
 			case "buyer":	
-				buyerAll(req, res);
+				getBuyerOrderList(req, res);
 				forwardPath ="bAll.jsp";
 				break;
 			case "buyer0":	
@@ -132,19 +161,20 @@ public class ItemOrderServlet extends HttpServlet{
 	}
 	
 	
-	private void buyerAll(HttpServletRequest req, HttpServletResponse res) throws IOException{
-//		String buyerParam = req.getParameter("buyer");
-//		Integer buyerId = Integer.parseInt(buyerParam);
-//		
-//		Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
-//		
-//		List<ItemOrder> itemOrderList = gs.getBy(ItemOrder.class, "buyMbrId", buyerId);				
-//		for( ItemOrder io : itemOrderList) {
-//			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", io.getOrderId());
-//			itemOrderMap.put(io, orderDetailsList);
-//		}
-//		req.setAttribute("buyer",buyerId);
-//		req.setAttribute("itemOrderMap", itemOrderMap);
+	private void getBuyerOrderList(HttpServletRequest req, HttpServletResponse res) throws IOException{
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer)session.getAttribute("mbrId");
+		
+//		Integer status = Integer.parseInt(req.getParameter("status"));
+		
+		Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
+		
+		List<ItemOrder> itemOrderList = gs.getBy(ItemOrder.class, "buyMbrId", mbrId);				
+		for( ItemOrder itemOrder : itemOrderList) {
+			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
+			itemOrderMap.put(itemOrder, orderDetailsList);
+		}
+		req.setAttribute("itemOrderMap", itemOrderMap);
 	}
 	
 	private void buyerStatus(HttpServletRequest req, HttpServletResponse res,Integer status) throws IOException{
@@ -158,9 +188,9 @@ public class ItemOrderServlet extends HttpServlet{
 		qc.toMap("and", "orderStatus", "=", status);				
 		List<ItemOrder> itemOrderList = gs.getByQueryConditions(ItemOrder.class, qc.getConditionList());
 		
-		for( ItemOrder io : itemOrderList) {
-			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", io.getOrderId());
-			itemOrderMap.put(io, orderDetailsList);
+		for( ItemOrder itemOrder : itemOrderList) {
+			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
+			itemOrderMap.put(itemOrder, orderDetailsList);
 		}
 		
 		req.setAttribute("buyer",buyerId);
@@ -176,9 +206,9 @@ public class ItemOrderServlet extends HttpServlet{
 //		Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
 //		
 //		List<ItemOrder> itemOrderList = gs.getBy(ItemOrder.class, "sellMbrId", sellerId);				
-//		for( ItemOrder io : itemOrderList) {
-//			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", io.getOrderId());
-//			itemOrderMap.put(io, orderDetailsList);
+//		for( ItemOrder itemOrder : itemOrderList) {
+//			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
+//			itemOrderMap.put(itemOrder, orderDetailsList);
 //		}
 //		req.setAttribute("seller",sellerId);
 //		req.setAttribute("itemOrderMap", itemOrderMap);
@@ -186,8 +216,8 @@ public class ItemOrderServlet extends HttpServlet{
 	
 	
 	private void sellerStatus(HttpServletRequest req, HttpServletResponse res,Integer status) throws IOException{
-		String sellerParam = req.getParameter("seller");
-		Integer sellerId = Integer.parseInt(sellerParam);
+		String seller = req.getParameter("seller");
+		Integer sellerId = Integer.parseInt(seller);
 		
 		Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
 		
@@ -196,9 +226,9 @@ public class ItemOrderServlet extends HttpServlet{
 		qc.toMap("and", "orderStatus", "=", status);				
 		List<ItemOrder> itemOrderList = gs.getByQueryConditions(ItemOrder.class, qc.getConditionList());
 		
-		for( ItemOrder io : itemOrderList) {
-			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", io.getOrderId());
-			itemOrderMap.put(io, orderDetailsList);
+		for( ItemOrder itemOrder : itemOrderList) {
+			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
+			itemOrderMap.put(itemOrder, orderDetailsList);
 		}
 		
 		req.setAttribute("seller",sellerId);
@@ -208,18 +238,18 @@ public class ItemOrderServlet extends HttpServlet{
 	
 	private void updateOrder(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		Integer orderId = Integer.parseInt(req.getParameter("orderId"));
-		ItemOrder io = gs.getByPrimaryKey(ItemOrder.class,orderId );
-		if(io.getOrderStatus() < 3 ) {
-			io.setOrderStatus(io.getOrderStatus()+1);
+		ItemOrder itemOrder = gs.getByPrimaryKey(ItemOrder.class,orderId );
+		if(itemOrder.getOrderStatus() < 3 ) {
+			itemOrder.setOrderStatus(itemOrder.getOrderStatus()+1);
 		}
-		gs.update(io);
+		gs.update(itemOrder);
 	}
 	
 	private void cancelOrder(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		Integer orderId = Integer.parseInt(req.getParameter("orderId"));
-		ItemOrder io = gs.getByPrimaryKey(ItemOrder.class,orderId );
-		io.setOrderStatus(4);
-		gs.update(io);
+		ItemOrder itemorder = gs.getByPrimaryKey(ItemOrder.class,orderId );
+		itemorder.setOrderStatus(4);
+		gs.update(itemorder);
 	}
 	
 	
@@ -230,43 +260,26 @@ public class ItemOrderServlet extends HttpServlet{
 	
 	private void addOrder(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		// 設置響應的內容類型
-	    res.setContentType("application/json");
 	    res.setCharacterEncoding("UTF-8");
+	    res.setContentType("text; charset=UTF-8");
 	    
 	    HttpSession session = req.getSession();
 	    Integer buyerId = (Integer)session.getAttribute("mbrId");
 	    
 	    String itemIdStr = req.getParameter("itemId");
-        String quantityStr = req.getParameter("quantity");
-        
+	    String quantityStr = req.getParameter("quantity");
+	    String eachCountStr = req.getParameter("eachCount");
+	            
         Integer payment = Integer.parseInt(req.getParameter("payment"));
         String receiveName = req.getParameter("receiveName");
         String receivePhone = req.getParameter("receivePhone");
         String receiveAddress = req.getParameter("receiveAddress");
         Integer mytotal = Integer.parseInt(req.getParameter("mytotal"));
         Integer count = Integer.parseInt(req.getParameter("count"));
-        
-        String eachCountStr = req.getParameter("eachCount");
-        
         Integer mbrPoint = Integer.parseInt(req.getParameter("mbrPoint"));
         Integer cpnId = Integer.parseInt(req.getParameter("cpnId"));
         Integer totalPay = Integer.parseInt(req.getParameter("totalPay"));
         
-        System.out.println("Buyer ID: " + buyerId);
-        System.out.println("Item ID String: " + itemIdStr);
-        System.out.println("Quantity String: " + quantityStr);
-        System.out.println("Payment: " + payment);
-        System.out.println("Receive Name: " + receiveName);
-        System.out.println("Receive Phone: " + receivePhone);
-        System.out.println("Receive Address: " + receiveAddress);
-        System.out.println("My Total: " + mytotal);
-        System.out.println("Count: " + count);
-        System.out.println("Each Count String: " + eachCountStr);
-        System.out.println("Member Point: " + mbrPoint);
-        System.out.println("Coupon ID: " + cpnId);
-        System.out.println("Total Pay: " + totalPay);
-
-
         List<OrderDetails> orderDetailsList = new ArrayList<>();
         List<ItemOrder> itemOrderList = new ArrayList<>();
         
@@ -288,7 +301,6 @@ public class ItemOrderServlet extends HttpServlet{
         	orderDetails.setCompositeKey(orderDetailsCompositeDetail);
         	// 訂單明細 明細金額 商品數量 折扣金額 明細總金額
         	Item item = gs.getByPrimaryKey(Item.class, itemId);
-        	System.out.println(item);
         	orderDetails.setPrice(item.getPrice());
         	orderDetails.setQuantity(quantity);
         	orderDetails.setDiscountPrice(eachCount);
@@ -296,7 +308,7 @@ public class ItemOrderServlet extends HttpServlet{
         	orderDetailsList.add(orderDetails);
         	
         }
-        System.out.println("=====================================");
+        
         Map<Integer, List<OrderDetails>> groupedByMbrId = orderDetailsList.stream()
                 .collect(Collectors.groupingBy(orderDetail -> {
                     Item item = gs.getByPrimaryKey(Item.class,orderDetail.getCompositeKey().getItemId());
@@ -330,157 +342,158 @@ public class ItemOrderServlet extends HttpServlet{
             	orderDetail.getCompositeKey().setOrderId(itemOrderId);
             	gs.insert(orderDetail);
             });
-            detailsList.forEach(System.out::println);
-            System.out.println(itemOrder);
-            
-            System.out.println("+++++++++++++++++++++++++++++++++++++");
             
         });
         
         
         
         
+        //===================== 以下代碼 由第四小組成員 卉溫 提供 =====================
         
-        
-        
+        session = req.getSession();			//HttpSession 宣告拿掉 避免重複宣告 by jung
+		String mbrIdStr = String.valueOf(session.getAttribute("mbrId"));
+		Integer mbrId = 0;
+		if(mbrIdStr!=null) {
+			mbrId = Integer.valueOf(mbrIdStr);
+		}
+		// 發送通知
+        Notice notice = new Notice();
+        notice.setType("訂單通知");
+        notice.setHead("訂單成立通知");
+        notice.setContent("感謝您的購買，付款後即通知賣家出貨");
+    	//連到訂單頁面的link
+        notice.setLink("#");
+        notice.setImageLink("/images/cart/placeOrder.png");
+        itemService.addNotice(notice, buyerId);	//mbrId -> buyerId by jung
+    	//購物車清空
+    	//處理商品id存成陣列
+        itemIdStr = req.getParameter("itemId"); //String 宣告拿掉 避免重複宣告 by jung
+        String[] parts = itemIdStr.split(",");
+      
+        //準備陣列存商品id
+        List<Integer> itemIdArr = new ArrayList<>();
+        for (String part:parts) {
+        	Integer itemId = Integer.parseInt(part);
+            itemIdArr.add(itemId);              
+        }  
+        JedisPool jedisPool = JedisPoolUtil.getJedisPool();
+        Jedis jedis = jedisPool.getResource();
+        jedis.select(13);
+                 
+		for (Integer Id : itemIdArr) {
+			//該商品扣庫存 
+			quantityStr = jedis.hget(mbrIdStr, String.valueOf(Id)); //String 宣告拿掉 避免重複宣告 by jung
+			
+			Item item = itemService.getItemByItemId(Id);
+			Integer newInventory = (item.getQuantity())-(Integer.valueOf(quantityStr));
+			item.setQuantity(newInventory);
+			//如果扣完後庫存為0即自動下架
+			if(newInventory == 0) {
+				item.setItemStatus(1);
+			}
+			Integer success =itemService.updateItem(item);
+		}
+		
+		//清購物車
+		try {
+			for(Integer itemId:itemIdArr) {
+				jedis.hdel(String.valueOf(mbrId), String.valueOf(itemId));					
+			}				
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			jedis.close();
+		}
+	
+    	//買家若有使用會員點數即扣點與新增異動
+		String mbrPointStr = req.getParameter("mbrPoint");
+		mbrPoint = 0;				//Integer 宣告拿掉 避免重複宣告 by jung
+    	if(!(mbrPointStr.trim().equals("0") && mbrPointStr!=null)) {
+			mbrPoint = Integer.valueOf(mbrPointStr);
+			//新增異動
+			PointHistory pointHistory = new PointHistory();
+			
+			//取訂單編號
+//			if(!req.getParameter("orderId").trim().isEmpty() ) {
+//				int orderId =Integer.parseInt(req.getParameter("orderId"));
+//			}
+			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+			
+			pointHistory.setMbrId(mbrId);
+			pointHistory.setOrderId(1);//從訂單取
+			//異動時間1/訂單完成(+) 2/訂單確認(-)
+			pointHistory.setChangeDate(currentTime);			
+			pointHistory.setChangeValue(mbrPoint*-1);
+			
+			int pointHistoryPK = PHSvc.addPH(pointHistory);
+			
+			//會員表格點數同步扣點
+        	Members mem=memSvc.getByPrimaryKey(mbrId);
 
-//        for (String item : parts) {
-//        	Integer itemId = Integer.parseInt(item);
-//        	OrderDetails orderDetails = new OrderDetails();
-//        	OrderDetailsCompositeDetail orderDetailsCompositeDetail = new OrderDetailsCompositeDetail();
-//        	orderDetailsCompositeDetail.setItemId(itemId);
-//        	orderDetails.setCompositeKey(orderDetailsCompositeDetail);
-//        	Item tmp = gs.getByPrimaryKey(Item.class, Integer.parseInt(item));
-//        	//暫存 數量到了取出來更新
-//        	orderDetails.setPrice(tmp.getPrice());
-//        	itemList.add(tmp);
-//            System.out.println(tmp);
-//        }
-//        for (String item : parts) {
-//        	Integer tmp = Integer.parseInt(item);
-//        	quantityList.add(tmp);
-//            System.out.println(tmp);
-//        }
-//        for (String item : parts) {
-//        	Integer tmp = Integer.parseInt(item);
-//        	eachCountList.add(tmp);
-//            System.out.println(tmp);
-//        }
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
+    		Integer newPoint = mem.getMbrPoint()-mbrPoint;
+    		mem.setMbrPoint(newPoint);
+    		memSvc.updateMembers(mem);
+        	
+    	}
+    	
+    	Members mem=memSvc.getByPrimaryKey(mbrId);
+    	
+    	//買家若用虛擬錢包，扣錢包與新增異動//如果==2代表選擇虛擬錢包付款
+        //Integer payment = Integer.valueOf(req.getParameter("payment"));//付款方式  	//Stream發現該變數有可能異動 故註解掉 值一樣是從Parameter取 並無更改過 by jung
+        if(payment == 2) {
+        	Integer newBalance = mem.getBalance()-totalPay;
+        	mem.setBalance(newBalance);
+        	memSvc.updateMembers(mem);
+        	
+			//新增異動
+			BalanceHistory balanceHistory = new BalanceHistory();
+			
+			//取訂單編號
+//			if(!req.getParameter("orderId").trim().isEmpty() ) {
+//				int orderId =Integer.parseInt(req.getParameter("orderId"));
+//			}
+			Timestamp currentTime2 = new Timestamp(System.currentTimeMillis());
+			
+			balanceHistory.setMbrId(mbrId);
+			balanceHistory.setOrderId(1);//從訂單取
+			balanceHistory.setWrId(null);
+			//異動時間1/訂單完成(+) 2/訂單確認(-)
+			balanceHistory.setChangeDate(currentTime2);			
+			balanceHistory.setChangeValue(totalPay*-1);
+			
+			int balanceHistoryPK = BHSvc.addBH(balanceHistory);            	
+        }
+        
+        //使用後的優惠券改變狀態
+        String cpnIdStr = req.getParameter("cpnId");
+        cpnId = 0;				//Integer 宣告拿掉 避免重複宣告 by jung
+        if(cpnIdStr!=null) {
+        	cpnId = Integer.valueOf(cpnIdStr);
+        }
+		MembersCouponCompositeDetail memcoupon = new MembersCouponCompositeDetail();
+		if(memcoupon!=null) {
+			memcoupon.setCouponId(cpnId);
+			memcoupon.setMemberId(mbrId);
+			
+		}
+		
+		MembersCoupon membersCoupon = (MembersCoupon)couponDAO.getByPrimaryKey(memcoupon);
+		if(membersCoupon!=null) {
+			Timestamp currentTime3 = new Timestamp(System.currentTimeMillis());
+			membersCoupon.setCouponStatus(1);
+			membersCoupon.setUseDate(currentTime3);
+			boolean boo = couponDAO.update(membersCoupon);
+			
+		}
+		
+	    String responseData = "訂單成立！"; // 這裡是要回傳的訊息
 
-//	    // 獲取POST過來的JSON數據
-//	    BufferedReader reader = req.getReader();
-//	    StringBuilder jsonRequest = new StringBuilder();
-//	    String line;
-//	    while ((line = reader.readLine()) != null) {
-//	        jsonRequest.append(line);
-//	    }
-//
-//	    // 將JSON數據轉換為Java對象
-//	    Gson gson = new Gson();
-//	    JsonObject jsonObject = gson.fromJson(jsonRequest.toString(), JsonObject.class);
-//		
-//	    Map<Integer,List<OrderDetails>> orderdetails = new HashMap<>();
-//	    
-//	    OrderDetails od;
-//	    OrderDetailsCompositeDetail odc;
-//	    
-//	    // 印出JsonObject中的數據
-////	    System.out.println("Received JSON Data: " + jsonObject.toString());
-//
-//	    // 獲取JsonObject中的特定屬性
-//	    Integer buyerId = jsonObject.get("buyerId").getAsInt(); // 將"propertyName"替換為你想要獲取的屬性名稱
-////	    System.out.println("Value of specific property: " + buyerId);
-//	    JsonArray cartData = jsonObject.getAsJsonArray("cartData");
-////	    System.out.println("Value of specific property: " + cartData);
-//	    //這段之後由購物車處理  到時購物車會直接傳使用完優惠券以及點數折扣的商品明細相關資料過來   屆時我接收處理完的訂單明細 生成對應訂單及明細即可
-//	    //以下為測試資料生成
-//	    for (JsonElement detail : cartData) {
-//	    	List<OrderDetails> detailList = new ArrayList<>();
-//	        JsonObject cartItem = detail.getAsJsonObject();
-//	        Integer sellerId = cartItem.get("sellerId").getAsInt();
-//	        Integer itemId = cartItem.get("itemId").getAsInt();
-//	        Integer amount = cartItem.get("amount").getAsInt();
-//	        
-//	        //訂單明細設定
-//	        od = new OrderDetails();
-//	        odc = new OrderDetailsCompositeDetail();
-//	        od.setCompositeKey(odc);
-//	        od.getCompositeKey().setItemId(itemId);
-//	        Item it = gs.getByPrimaryKey(Item.class, itemId);
-//	        Integer itprice = it.getPrice();
-//	        od.setPrice(itprice);
-//	        od.setQuantity(amount);
-//	        od.setDiscountPrice(0);
-//	        od.setBuyingPrice(od.getPrice()*od.getQuantity()-od.getDiscountPrice());
-//	        
-//	        if(orderdetails.containsKey(sellerId)) {
-//	        	detailList = orderdetails.get(sellerId);
-//	        }
-//	        
-//	        detailList.add(od);
-//	        orderdetails.put(sellerId, detailList);
-//	        
-//	       
-//
-//	    }
-//	    //之後補上 +商品小計  +運費價 -點數折抵 -優惠券折抵
-//	    for (Map.Entry<Integer, List<OrderDetails>> entry : orderdetails.entrySet()) {
-//	        Integer sellerId = entry.getKey();
-//	        List<OrderDetails> orderDetailList = entry.getValue();
-//	        ItemOrder itOrder = new ItemOrder();
-////	        System.out.println("Seller ID: " + sellerId);
-//	        Integer oriPrice =  0;
-//	        Integer orderPrice =  0;
-//	        
-//	        for (OrderDetails orderDetail : orderDetailList) {
-//	        	oriPrice += (orderDetail.getPrice()*orderDetail.getQuantity());
-//	        	orderPrice += orderDetail.getBuyingPrice();
-//	        }
-//	        itOrder.setBuyMbrId(buyerId);
-//	        itOrder.setSellMbrId(sellerId);
-//	        itOrder.setAmount(oriPrice);
-//	        itOrder.setFinalAmount(orderPrice);
-//	        itOrder.setOrderStatus(0);
-//	        itOrder.setOrderDate(new Timestamp(System.currentTimeMillis()));
-//	        Integer PK = (Integer) gs.insert(itOrder);
-//	        for (OrderDetails orderDetail : orderDetailList) {
-//	        	orderDetail.getCompositeKey().setOrderId(PK);
-//	        	gs.insert(orderDetail);
-//	        }
-//	    }
-//	    
-//	    // 建立一個JSON物件，表示成功的回應
-//        JsonObject jsonResponse = new JsonObject();
-//        jsonResponse.addProperty("status", "success");
-//        jsonResponse.addProperty("message", "訂單新增成功");
-//        res.getWriter().write(jsonResponse.toString());
+	    PrintWriter out = res.getWriter();
+	    out.print(responseData);
+	    out.flush();
+        
+        
+       
 	}
 	
 	

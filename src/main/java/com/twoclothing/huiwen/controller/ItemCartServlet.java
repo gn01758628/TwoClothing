@@ -340,6 +340,7 @@ public class ItemCartServlet extends HttpServlet {
 			if(mbrIdStr!=null) {
 				mbrId = Integer.valueOf(mbrIdStr);
 			}
+			//===================================== comment1訂單生成階段 =====================================
             // 發送通知
             Notice notice = new Notice();
             notice.setType("訂單通知");
@@ -376,7 +377,11 @@ public class ItemCartServlet extends HttpServlet {
 					item.setItemStatus(1);
 				}
 				Integer success =itemService.updateItem(item);
+			}
+			//===================================== comment1訂單生成階段 =====================================
 				
+			//===================================== comment2訂單完成階段 =====================================
+			for (Integer Id : itemIdArr) {	
 				//賣家錢包++
 				Integer mbrIdBalanceAdd = itemService.getMbrIdByItemId(Id);
 				Integer itemPrice = itemService.getItemPriceByItemId(Id);
@@ -403,8 +408,10 @@ public class ItemCartServlet extends HttpServlet {
     			balanceHistory.setChangeValue(itemPrice);
     			
     			int balanceHistoryPK = BHSvc.addBH(balanceHistory);
-
 			}
+    		//===================================== comment2訂單完成階段 =====================================
+			
+			//===================================== comment1訂單生成階段 =====================================
             //清購物車
 			try {
 				for(Integer itemId:itemIdArr) {
@@ -447,7 +454,9 @@ public class ItemCartServlet extends HttpServlet {
             	
         		
         	}
+        	//===================================== comment1訂單生成階段 =====================================
         	
+        	//===================================== comment2訂單完成階段 =====================================
         	//買家購買回饋5%(會員點數++)
         	//折扣後金額*5%
         	Integer totalPay = Integer.valueOf(req.getParameter("totalPay"));
@@ -475,9 +484,9 @@ public class ItemCartServlet extends HttpServlet {
     		Integer newPoint = mem.getMbrPoint()+mbrPointAdd;
     		mem.setMbrPoint(newPoint);
     		memSvc.updateMembers(mem);
+    		//===================================== comment2訂單完成階段 =====================================
         	
-        	
-        	
+    		//===================================== comment1訂單生成階段 =====================================
         	//買家若用虛擬錢包，扣錢包與新增異動//如果==2代表選擇虛擬錢包付款
             Integer payment = Integer.valueOf(req.getParameter("payment"));//付款方式
             if(payment == 2) {
@@ -531,7 +540,7 @@ public class ItemCartServlet extends HttpServlet {
 		    PrintWriter out = res.getWriter();
 		    out.print(responseData);
 		    out.flush();
-            
+		  //===================================== comment1訂單生成階段 =====================================
         	
         	//測試結束=============================================================
         	//以下是取jsp資料，請忽略=================================================

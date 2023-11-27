@@ -41,7 +41,7 @@
     <nav class="sidebar-nav">
       <ul>
         <li>
-          <a class="drop-down-menu"><i class="icon ion-ios-color-filter-outline"></i> <span>員工管理</span></a>
+          <a class="drop-down-menu"><i class="icon ion-ios-color-filter-outline"></i><span>員工管理</span></a>
           
           <ul class="nav-flyout">
           
@@ -65,35 +65,15 @@
         </li>
         
         <li>
-          <a href="${pageContext.request.contextPath}/members/Members.do?action=getAll" ><i class="ion-ios-settings"></i> <span class="">會員管理</span></a>
+          <a href="${pageContext.request.contextPath}/members/Members.do?action=getAll" ><i class="ion-ios-settings"></i><span class="">會員管理</span></a>
         </li>
         
-        <li>
-          <a href="" class="drop-down-menu"><i class="ion-ios-briefcase-outline"></i> <span class="">最新消息管理</span></a>
-          
-          <ul class="nav-flyout">
-            <li>
-              <a href="${pageContext.request.contextPath}/back_end/latestnews/addLatestNews.html"><i class="ion-ios-flame-outline"></i>新增最新消息</a>
-            </li>
-            <li>
-              <a href=""><i class="ion-ios-lightbulb-outline"></i></a>
-            </li>
-            <li>
-              <a href=""><i class="ion-ios-location-outline"></i></a>
-            </li>
-            <li>
-              <a href=""><i class="ion-ios-locked-outline"></i></a>
-            </li>
-             <li>
-              <a href=""><i class="ion-ios-navigate-outline"></i></a>
-            </li>
-          </ul>
-          
-        </li>
+<!--         <li> -->
+<!--           <a href="" class="drop-down-menu"><i class="ion-ios-briefcase-outline"></i> <span class="">最新消息管理</span></a> -->
+<!--         </li> -->
         
         <li>
-          <a href="${pageContext.request.contextPath}/back_end/servlet/biditem/search"><i class="ion-ios-lightbulb-outline"></i><span class="">競標管理</span></a>
-        
+          <a href="${pageContext.request.contextPath}/back_end/servlet/biditem/search"><i class="ion-ios-lightbulb-outline"> </i><span class="">競標管理</span></a>
         </li>
         
         <li>
@@ -131,11 +111,11 @@
         </li>
         
         <li>
-          <a href="" class="drop-down-menu"><i class="ion-ios-medical-outline"></i> <span class="">一般商品訂單管理</span></a>
+          <a href="" ><i class="ion-ios-cloud-upload"></i> <span class="">一般商品訂單管理</span></a>
         </li>
         
         <li>
-          <a href="${pageContext.request.contextPath}/bidorder/BidOrder.do?action=getAll"><i class="ion-ios-medical-outline"></i> <span class="">競標商品訂單管理</span></a>
+          <a href="${pageContext.request.contextPath}/bidorder/BidOrder.do?action=getAll"><i class="ion-ios-briefcase-outline"></i> <span class="">競標商品訂單管理</span></a>
         </li>
         
         <li>
