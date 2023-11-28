@@ -270,7 +270,7 @@
 				    </div>
 				    
 				    
-				    <form id="editorForm" method="post" action="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check" style="margin-bottom: 0px;">
+				    <form id="editorForm" method="post" action="${pageContext.request.contextPath}/front_end/itemorder/ItemOrderServlet.check" style="margin-bottom: 0px;">
 						
 				    	
 					    <c:choose>
@@ -459,27 +459,59 @@
 	
 	    const content = editor.getData();
 	    formData.append('content', content);
-	 // 找到被選中的 radio 按鈕
+	    
+	    
+	    
+
+		let mbrid = ${user.mbrId};
+		let sellMbrId = ${itemOrder.sellMbrId};
+		let buyMbrId = ${itemOrder.buyMbrId};
+	 	// 找到被選中的 radio 按鈕
 	    const selectedSellerRating = document.querySelector('input[name="sellStar"]:checked');
 	    const selectedBuyerRating = document.querySelector('input[name="buyStar"]:checked');
 
-	    // 檢查是否有選中的按鈕
-	    if (selectedSellerRating) {
-	        let ratingValue = selectedSellerRating.value;
-	        formData.append('sellerRating', ratingValue);
-	    } 
+// 	    // 檢查是否有選中的按鈕
+// 	    if (selectedSellerRating) {
+// 	        let ratingValue = selectedSellerRating.value;
+// 	        formData.append('sellerRating', ratingValue);
+// 	    } 
 	
-	    if (selectedBuyerRating) {
+// 	    if (selectedBuyerRating) {
+// 	        let ratingValue = selectedBuyerRating.value;
+// 	        formData.append('buyerRating', ratingValue);
+// 	    } 
+	    
+	 // 檢查是否有選中的按鈕
+	    if (mbrid === buyMbrId && selectedBuyerRating) {
+	        // 使用者是買家，並且選中了買家評價
 	        let ratingValue = selectedBuyerRating.value;
 	        formData.append('buyerRating', ratingValue);
-	    } 
+	    } else if (mbrid === sellMbrId && selectedSellerRating) {
+	        // 使用者是賣家，並且選中了賣家評價
+	        let ratingValue = selectedSellerRating.value;
+	        formData.append('sellerRating', ratingValue);
+	    } else {
+	        // 如果都不符合，可能顯示錯誤或者其他處理
+	        alert('請選擇評價分數');
+	        return; // 防止繼續進行表單提交
+	    }
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 	    
 	    // 創建一個FormData對象，用於儲存表單數據
 	    
 	
 	    // 使用$.ajax()发送FormData到服务器的Servlet路径（假设是/upload-form-data）
 	    $.ajax({
-	        url: '/TwoClothing//front_end/itemorder/itemorder.check',
+	        url: '/TwoClothing//front_end/itemorder/ItemOrderServlet.check',
 	        type: 'POST',
 	        data: formData,
 	        processData: false,

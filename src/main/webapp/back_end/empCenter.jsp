@@ -119,7 +119,7 @@
         </c:if>
         <c:if test="${emp.empStatus eq 2 or emp.empMissions.charAt(4) eq 49}">
 	        <li>
-	          <a href="" ><i class="ion-ios-cloud-upload"></i> <span class="">一般商品訂單管理</span></a>
+	          <a href="${pageContext.request.contextPath}/back_end/ItemOrderServlet" ><i class="ion-ios-cloud-upload"></i> <span class="">一般商品訂單管理</span></a>
 	        </li>
         </c:if>
         <c:if test="${emp.empStatus eq 2 or emp.empMissions.charAt(5) eq 49}">

@@ -31,10 +31,10 @@ div[name="block"] {
 </head>
 <body>
 	<div>
-		<a href="itemorder.check?action=getMembersItems">獲取商場資料</a>
+		<a href="ItemOrderServlet.check?action=getMembersItems">獲取商場資料</a>
 	</div>
 
-	<form action="itemorder.check" method="Post">
+	<form action="ItemOrderServlet.check" method="Post">
 		<div>
 			<div name="block" style="width:30%;">
 				<div>
@@ -197,7 +197,7 @@ div[name="block"] {
 			    // 發送AJAX請求
 			    $.ajax({
 			        type: "POST",
-			        url: "itemorder.check?action=addOrder",  
+			        url: "ItemOrderServlet.check?action=addOrder",  
 			        data: JSON.stringify(requestData),
 			        contentType: "application/json; charset=utf-8",
 			        dataType: "json",

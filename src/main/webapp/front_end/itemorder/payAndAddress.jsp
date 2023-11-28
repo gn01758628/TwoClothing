@@ -77,7 +77,7 @@
 	<p class="rh_title">結帳</p>
     
 	<div style="color: red;" >付款金額：<span>${itemOrder.finalAmount}</span>元</div> <br>
-    <form action="<%=request.getContextPath()%>/front_end/itemorder/itemorder.check" id="form"method="post" >
+    <form action="<%=request.getContextPath()%>/front_end/itemorder/ItemOrderServlet.check" id="form"method="post" >
 
 
 		<div id="creditCardInfo">

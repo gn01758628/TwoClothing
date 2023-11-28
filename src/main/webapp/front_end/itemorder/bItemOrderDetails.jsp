@@ -149,7 +149,14 @@
 	    .rating > input{
 	        display:none;
 	    }
-    
+    	
+    	.content-frame {
+	      border: 1px solid #ccc;
+	      border-radius: 5px;
+	      max-width: 100%; /* 設置最大寬度，根據需要調整 */
+	      overflow: auto; /* 添加滾動條，根據需要調整 */
+	      word-wrap: break-word;
+	    }
     
     </style>
     
@@ -289,7 +296,7 @@
 				
 				        <div class=class="col-md-6 mb-3">
 	                        <label for="buyerRatingDesc">買家評價內容</label>
-	                        <textarea  class="texteditor buyerRatingDesc form-control" id="buyerRatingDesc"  rows="4" readonly>${itemOrder.buyerRatingDesc}</textarea>
+	                        <div class="content-frame" id="buyerContentFrame">${itemOrder.buyerRatingDesc}</div>
 	                    </div>
 	                    
 				    </div>
@@ -315,9 +322,9 @@
 				
 				        <div class=class="col-md-6 mb-3">
 	                        <label for="buyerRatingDesc">賣家評價內容</label>
-	                        <textarea class="texteditor sellerRatingDesc form-control" id="sellerRatingDesc"  rows="4" readonly></textarea>
+	                        <div class="content-frame" id="sellerContentFrame">${itemOrder.sellerRatingDesc}</div>
 	                    </div>
-	                    ${itemOrder.sellerRatingDesc}
+	                    
 				    </div>
                    
                     
@@ -370,9 +377,8 @@
         });
     });
     
-
-
 </script>
+
 
 <script>
     function goBack() {
@@ -471,7 +477,7 @@ var editorElements = document.querySelectorAll('.texteditor');
 	
 	    // 使用$.ajax()发送FormData到服务器的Servlet路径（假设是/upload-form-data）
 	    $.ajax({
-	        url: '/TwoClothing//front_end/itemorder/itemorder.check',
+	        url: '/TwoClothing//front_end/itemorder/ItemOrderServlet.check',
 	        type: 'POST',
 	        data: formData,
 	        processData: false,

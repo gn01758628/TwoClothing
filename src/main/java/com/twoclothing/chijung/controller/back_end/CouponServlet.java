@@ -261,7 +261,6 @@ public class CouponServlet extends HttpServlet {
     	Integer remainingQuantity = new Integer(totalQuantity);
 //    	
     	Coupon coupon = gs.getByPrimaryKey(Coupon.class, cpnId);
-    	HibernateUtil.getSessionFactory().getCurrentSession().evict(coupon);
     	AllotedCoupon allotedCoupon = new AllotedCoupon(coupon,allotDate.getTime(),totalQuantity,remainingQuantity);
     	allotedCouponDao.allot(allotedCoupon);
 //    	
@@ -285,7 +284,6 @@ public class CouponServlet extends HttpServlet {
     	Integer index = Integer.parseInt(req.getParameter("index"));
     	
     	Coupon coupon = gs.getByPrimaryKey(Coupon.class, cpnId);
-    	HibernateUtil.getSessionFactory().getCurrentSession().evict(coupon);
     	AllotedCoupon allotedCoupon = new AllotedCoupon();
     	allotedCoupon.setCpnId(cpnId);
     	allotedCoupon.setIndex(index);

@@ -117,7 +117,7 @@ public class MemberCouponServlet extends HttpServlet{
 		List<AllotedCoupon> allotedCouponList= allotedCouponDao.getAll();
 		List<MembersCoupon> membersCouponList = gs.getBy(MembersCoupon.class, "compositeKey.memberId", mdrId);
 		for( MembersCoupon mc : membersCouponList) {
-			HibernateUtil.getSessionFactory().getCurrentSession().evict(mc);
+//			HibernateUtil.getSessionFactory().getCurrentSession().evict(mc);
 		}
 		//留下狀態 未發放 發放中 已發放完畢 同張優惠券同時存在三種狀態 則留下狀態小的 未發放->發放中->已發放完畢
 		allotedCouponList = allotedCouponList.stream()
@@ -184,16 +184,16 @@ public class MemberCouponServlet extends HttpServlet{
 	}
 	
 	private void receiveCoupon(HttpServletRequest req, HttpServletResponse res,HttpSession session,Integer mdrId) throws ServletException, IOException {
-//		Integer recordResult = recordExecution(mdrId,session);
-//		if( recordResult != null ) {
-//			res.getWriter().write(String.valueOf(recordResult));
-//			res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//			return;
-//		}
+		Integer recordResult = recordExecution(mdrId,session);
+		if( recordResult != null ) {
+			res.getWriter().write(String.valueOf(recordResult));
+			res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
 		
 		List<MembersCoupon> membersCouponList = gs.getBy(MembersCoupon.class, "compositeKey.memberId", mdrId);
 		for( MembersCoupon mc : membersCouponList) {
-			HibernateUtil.getSessionFactory().getCurrentSession().evict(mc);
+//			HibernateUtil.getSessionFactory().getCurrentSession().evict(mc);
 		}
 		
 		Integer cpnId = Integer.parseInt(req.getParameter("cpnId"));
@@ -222,41 +222,41 @@ public class MemberCouponServlet extends HttpServlet{
 	
 //	
 //	// 1 同一瀏覽器1秒內  2不同瀏覽器5秒內
-//	public static Integer recordExecution(Integer mbrId, HttpSession currentSession) {
-//	    // 獲取現在的時間
-//	    long currentTime = System.currentTimeMillis();
-//
-//	    // 檢查是否存在這個 mbrId
-//	    if (sessionDataMap.containsKey(mbrId)) {
-//	        // 如果存在，取出上次執行的時間和對應的 Session
-//	        SessionData sessionData = sessionDataMap.get(mbrId);
-//	        long lastExecutionTime = sessionData.getLastExecutionTime();
-//	        HttpSession storedSession = sessionData.getSession();
-//
-//	        // 檢查當前 Session 是否和儲存的 Session 為同一個
-//	        if (currentSession.equals(storedSession)) {
-//	        	if (currentTime - lastExecutionTime < 1000) {
-//	        		sessionData.setLastExecutionTime(currentTime);
-//	    	        sessionDataMap.put(mbrId, sessionData);
-//	                return 2000;
-//	            }
-//	        }else {
-//	        	if (currentTime - lastExecutionTime < 5000) {
-//	        		sessionData.setLastExecutionTime(currentTime);
-//	    	        sessionDataMap.put(mbrId, sessionData);
-//	                return 5000;
-//	            }
-//	        }
-//	        sessionData.setLastExecutionTime(currentTime);
-//	        sessionDataMap.put(mbrId, sessionData);
-//	    }else {
-//	    	// 更新或新增 SessionData
-//	    	SessionData newSessionData = new SessionData( currentSession ,currentTime);
-//	    	sessionDataMap.put(mbrId, newSessionData);
-//	    }
-//	    
-//	    return null;
-//	}
+	public static Integer recordExecution(Integer mbrId, HttpSession currentSession) {
+	    // 獲取現在的時間
+	    long currentTime = System.currentTimeMillis();
+
+	    // 檢查是否存在這個 mbrId
+	    if (sessionDataMap.containsKey(mbrId)) {
+	        // 如果存在，取出上次執行的時間和對應的 Session
+	        SessionData sessionData = sessionDataMap.get(mbrId);
+	        long lastExecutionTime = sessionData.getLastExecutionTime();
+	        HttpSession storedSession = sessionData.getSession();
+
+	        // 檢查當前 Session 是否和儲存的 Session 為同一個
+	        if (currentSession.equals(storedSession)) {
+	        	if (currentTime - lastExecutionTime < 1000) {
+	        		sessionData.setLastExecutionTime(currentTime);
+	    	        sessionDataMap.put(mbrId, sessionData);
+	                return 2000;
+	            }
+	        }else {
+	        	if (currentTime - lastExecutionTime < 5000) {
+	        		sessionData.setLastExecutionTime(currentTime);
+	    	        sessionDataMap.put(mbrId, sessionData);
+	                return 5000;
+	            }
+	        }
+	        sessionData.setLastExecutionTime(currentTime);
+	        sessionDataMap.put(mbrId, sessionData);
+	    }else {
+	    	// 更新或新增 SessionData
+	    	SessionData newSessionData = new SessionData( currentSession ,currentTime);
+	    	sessionDataMap.put(mbrId, newSessionData);
+	    }
+	    
+	    return null;
+	}
 
 	
 }

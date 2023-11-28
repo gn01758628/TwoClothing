@@ -425,7 +425,7 @@
    			
 	   		let formDataUrlEncoded = new URLSearchParams(cartData);
 	   		
-            fetch("${pageContext.request.contextPath}/front_end/itemorder/itemorder.check", {
+            fetch("${pageContext.request.contextPath}/front_end/itemorder/ItemOrderServlet.check", {
                 method: "post",
                 body: formDataUrlEncoded
             })
@@ -453,7 +453,7 @@
             		  },
             		}).then((result) => {
              		  if (result.isConfirmed) {
-            		    window.location.href = "${pageContext.request.contextPath}/front_end/itemorder/itemorder.check?action=buyer";
+            		    window.location.href = "${pageContext.request.contextPath}/front_end/itemorder/ItemOrderServlet.check?action=buyer";
              		    }
             		});
             });

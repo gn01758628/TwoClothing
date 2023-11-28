@@ -62,7 +62,7 @@ import com.twoclothing.utils.generic.QueryCondition;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-@WebServlet("/front_end/itemorder/itemorder.check")
+@WebServlet("/front_end/itemorder/ItemOrderServlet.check")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class ItemOrderServlet extends HttpServlet{
 	
@@ -127,7 +127,7 @@ public class ItemOrderServlet extends HttpServlet{
 				break;
 			case "pay_And_Address":
 				payAndAddress(req,res);
-				forwardPath = "/front_end/itemorder/itemorder.check?action=buyer&status=1";
+				forwardPath = "/front_end/itemorder/ItemOrderServlet.check?action=buyer&status=1";
 				break;
 			case "turn_To_Details":
 				turnToDetails(req,res);
@@ -294,8 +294,8 @@ public class ItemOrderServlet extends HttpServlet{
         		toSellerNnotice.setHead("買家付款通知");
         		toBuyerNotice.setContent("感謝您的購買，已通知賣家出貨");
         		toSellerNnotice.setContent("買家已付款，請盡快出貨");
-        		toBuyerNotice.setLink("/front_end/itemorder/itemorder.check?action=buyer&status=1");
-        		toSellerNnotice.setLink("/front_end/itemorder/itemorder.check?action=seller&status=1");
+        		toBuyerNotice.setLink("/front_end/itemorder/ItemOrderServlet.check?action=buyer&status=1");
+        		toSellerNnotice.setLink("/front_end/itemorder/ItemOrderServlet.check?action=seller&status=1");
         		break;
 		//未出貨 對應動作 出貨
         	case 1:
@@ -303,8 +303,8 @@ public class ItemOrderServlet extends HttpServlet{
         		toSellerNnotice.setHead("出貨成功通知");
         		toBuyerNotice.setContent("感謝您的耐心等候，賣家已出貨");
         		toSellerNnotice.setContent("感謝您的協助，已通知買家出貨");
-        		toBuyerNotice.setLink("/front_end/itemorder/itemorder.check?action=buyer&status=2");
-        		toSellerNnotice.setLink("/front_end/itemorder/itemorder.check?action=seller&status=2");
+        		toBuyerNotice.setLink("/front_end/itemorder/ItemOrderServlet.check?action=buyer&status=2");
+        		toSellerNnotice.setLink("/front_end/itemorder/ItemOrderServlet.check?action=seller&status=2");
         		break;
 		//未收貨 對應動作 完成訂單
         	case 2:
@@ -312,18 +312,20 @@ public class ItemOrderServlet extends HttpServlet{
         		toSellerNnotice.setHead("訂單完成通知");
         		toBuyerNotice.setContent("本次交易結束，請評價訂單");
         		toSellerNnotice.setContent("本次交易結束，請評價訂單");
-        		toBuyerNotice.setLink("/front_end/itemorder/itemorder.check?action=buyer&status=3");
-        		toSellerNnotice.setLink("/front_end/itemorder/itemorder.check?action=seller&status=3");
+        		toBuyerNotice.setLink("/front_end/itemorder/ItemOrderServlet.check?action=buyer&status=3");
+        		toSellerNnotice.setLink("/front_end/itemorder/ItemOrderServlet.check?action=seller&status=3");
         		break;
         }
+        if( itemOrder.getOrderStatus() < 3 ) {
+        	toBuyerNotice.setType("訂單通知");
+    		toSellerNnotice.setType("訂單通知");
+    		toBuyerNotice.setImageLink("/images/cart/placeOrder.png");
+    		toSellerNnotice.setImageLink("/images/cart/placeOrder.png");
+    		
+    		noticeDAO.insert(toSellerNnotice, sellMbrId);
+    		noticeDAO.insert(toBuyerNotice, buyMbrId);
+        }
         
-        toBuyerNotice.setType("訂單通知");
-		toSellerNnotice.setType("訂單通知");
-		toBuyerNotice.setImageLink("/images/cart/placeOrder.png");
-		toSellerNnotice.setImageLink("/images/cart/placeOrder.png");
-		
-		noticeDAO.insert(toSellerNnotice, sellMbrId);
-		noticeDAO.insert(toBuyerNotice, buyMbrId);
 		
 		
 		if(itemOrder.getOrderStatus() < 3 ) {
@@ -332,9 +334,9 @@ public class ItemOrderServlet extends HttpServlet{
 		gs.update(itemOrder);
 		
 		if(mbrId.equals(sellMbrId)) {
-			return "/front_end/itemorder/itemorder.check?action=seller&status="+itemOrder.getOrderStatus();
+			return "/front_end/itemorder/ItemOrderServlet.check?action=seller&status="+itemOrder.getOrderStatus();
 		}else {
-			return "/front_end/itemorder/itemorder.check?action=buyer&status="+itemOrder.getOrderStatus();
+			return "/front_end/itemorder/ItemOrderServlet.check?action=buyer&status="+itemOrder.getOrderStatus();
 			
 		}
 	}
@@ -378,15 +380,17 @@ public class ItemOrderServlet extends HttpServlet{
 		toSellerNnotice.setHead("訂單已取消");
 		toBuyerNotice.setContent("訂單已取消");
 		toSellerNnotice.setContent("訂單已取消");
-		toBuyerNotice.setLink("/front_end/itemorder/itemorder.check?action=buyer&status=4");
-		toSellerNnotice.setLink("/front_end/itemorder/itemorder.check?action=seller&status=4");
+		toBuyerNotice.setLink("/front_end/itemorder/ItemOrderServlet.check?action=buyer&status=4");
+		toSellerNnotice.setLink("/front_end/itemorder/ItemOrderServlet.check?action=seller&status=4");
 		toBuyerNotice.setImageLink("/images/cart/placeOrder.png");
 		toSellerNnotice.setImageLink("/images/cart/placeOrder.png");
+		noticeDAO.insert(toSellerNnotice, sellMbrId);
+		noticeDAO.insert(toBuyerNotice, buyMbrId);
 		
 		if(mbrId.equals(sellMbrId)) {
-			return "/front_end/itemorder/itemorder.check?action=seller&status="+itemOrder.getOrderStatus();
+			return "/front_end/itemorder/ItemOrderServlet.check?action=seller&status="+itemOrder.getOrderStatus();
 		}else {
-			return "/front_end/itemorder/itemorder.check?action=buyer&status="+itemOrder.getOrderStatus();
+			return "/front_end/itemorder/ItemOrderServlet.check?action=buyer&status="+itemOrder.getOrderStatus();
 			
 		}
 		
@@ -478,7 +482,6 @@ public class ItemOrderServlet extends HttpServlet{
             itemOrder.setFinalAmount(totalPrice-totalDiscountPrice);
             
             Integer orderId = (Integer) gs.insert(itemOrder);
-            HibernateUtil.getSessionFactory().getCurrentSession().evict(itemOrder);
             itemOrderList.add(itemOrder);
             detailsList.forEach(orderDetail ->{
             	orderDetail.getCompositeKey().setOrderId(orderId);
@@ -504,7 +507,7 @@ public class ItemOrderServlet extends HttpServlet{
         notice.setHead("訂單成立通知");
         notice.setContent("感謝您的購買，付款後即通知賣家出貨");
 //    	連到訂單頁面的link
-        notice.setLink("/front_end/itemorder/itemorder.check?action=buyer");
+        notice.setLink("/front_end/itemorder/ItemOrderServlet.check?action=buyer");
         notice.setImageLink("/images/cart/placeOrder.png");
         itemService.addNotice(notice, buyerId);	//mbrId -> buyerId by jung
     	//購物車清空
@@ -708,15 +711,13 @@ public class ItemOrderServlet extends HttpServlet{
         itemOrder.setReceiveAddress(fullAddress);
         itemOrder.setRemarks(remarks);
 //        itemOrder.setOrderStatus(1);    呼叫
-        gs.update(itemOrder);//為了避免出事 雖然應該不會而且等下叫到的應該是同一個物件
-        HibernateUtil.getSessionFactory().getCurrentSession().evict(itemOrder);
+        gs.update(itemOrder);
         updateOrder(req,res);
         
-        
 	}
+	
 	private void turnToDetails(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		
-		// 從請求中獲取表單提交的 JSON 字串
 	    Integer orderId = Integer.parseInt(req.getParameter("orderId"));
 	    ItemOrder itemOrder = gs.getByPrimaryKey(ItemOrder.class,orderId );
 	    List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
@@ -728,7 +729,6 @@ public class ItemOrderServlet extends HttpServlet{
 	
 	private void turnToAssignRating(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		
-		// 從請求中獲取表單提交的 JSON 字串
 		Integer orderId = Integer.parseInt(req.getParameter("orderId"));
 		ItemOrder itemOrder = gs.getByPrimaryKey(ItemOrder.class,orderId );
 		List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
@@ -740,7 +740,6 @@ public class ItemOrderServlet extends HttpServlet{
 	
 	private void assignRatingn(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		
-		// 從請求中獲取表單提交的 JSON 字串
 		Integer orderId = Integer.parseInt(req.getParameter("orderId"));
 		ItemOrder itemOrder = gs.getByPrimaryKey(ItemOrder.class,orderId );
 		List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
@@ -748,6 +747,7 @@ public class ItemOrderServlet extends HttpServlet{
 		String content = req.getParameter("content");
 		String sellerRatingString = req.getParameter("sellerRating");
 		String buyerRatingString = req.getParameter("buyerRating");
+		System.out.println(content);
 		
 		Integer sellerRating = null;
 		Integer buyerRating = null;
@@ -756,29 +756,22 @@ public class ItemOrderServlet extends HttpServlet{
 		    sellerRating = Integer.parseInt(sellerRatingString);
 		    itemOrder.setSellStar(sellerRating);
 		    itemOrder.setSellerRatingDesc(content);
-		    System.out.println("AAAAAAAA");
+		    System.out.println(sellerRating);
 		}
 
 		if (buyerRatingString != null && !buyerRatingString.isEmpty()) {
 		    buyerRating = Integer.parseInt(buyerRatingString);
 		    itemOrder.setBuyStar(buyerRating);
 		    itemOrder.setBuyerRatingDesc(content);
-		    System.out.println("BBBBBBBB");
+		    System.out.println(buyerRating);
 		}
     	//新增
     	gs.update(itemOrder);
-    	HibernateUtil.getSessionFactory().getCurrentSession().evict(itemOrder);
-    	
-    	
     	
         // 處理新增操作的邏輯
     	res.setContentType("text/html; charset=UTF-8");
 	    PrintWriter out = res.getWriter();
 	    out.write("OK");
-		
-		req.setAttribute("itemOrder", itemOrder);
-		req.setAttribute("orderDetailsList", orderDetailsList);
-		req.setAttribute("OrderStatusMap", Mapping.OrderStatusMap);
 	}
 	
 	

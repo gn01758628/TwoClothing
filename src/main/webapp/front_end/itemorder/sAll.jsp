@@ -108,7 +108,7 @@
 	    <h5>訂單編號: ${itemOrder.orderId}</h5>
 	    <h5>訂單狀態:${OrderStatusMap[itemOrder.orderStatus]}</h5>
 <!-- 		為了不破壞排版  所以一起放在form裡面 -->
-	    <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check" style="margin-bottom: 0px;">
+	    <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/ItemOrderServlet.check" style="margin-bottom: 0px;">
             <input type="hidden" name="orderId" value="${itemOrder.orderId}">
             <input type="hidden" name="action" value="turn_To_Details" >
 		    <div class="d-flex flex-column justify-content-end mt-3">
@@ -152,35 +152,23 @@
 		    	
 		    	<c:choose>
 				    <c:when test="${itemOrder.orderStatus eq 1}">
-				        <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check" style="margin-bottom: 0px;">
+				        <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/ItemOrderServlet.check" style="margin-bottom: 0px;">
 			                <input type="hidden" name="orderId" value="${itemOrder.orderId}">
 			                <input type="hidden" name="action" value="updateOrder" >
 			                <button type="submit" class="btn btn-primary mx-2">出貨</button>
 						</form>
 				    </c:when>
-				    <c:when test="${itemOrder.orderStatus eq 3 }">
-				    	<c:choose>
-				    		<c:when test="${not empty buyStar and user.mbrId eq buyerMbrid}">
-							        <!-- 這裡放置第一個分支的內容 -->
-						    </c:when>
-						    <c:when test="${not empty sellStar and user.mbrId eq sellerMbrid}">
-						        <!-- 這裡放置第二個分支的內容 -->
-						    </c:when>
-						    <c:otherwise>
-						        <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check" style="margin-bottom: 0px;">
-					                <input type="hidden" name="orderId" value="${itemOrder.orderId}">
-					                <input type="hidden" name="action" value="turn_To_Assign_Rating" >
-					                <button type="submit" class="btn btn-primary mx-2">評價訂單</button>
-				                </form>
-						    </c:otherwise>
-				    	</c:choose>
-				        
-						
+				    <c:when test="${itemOrder.orderStatus eq 3 && empty itemOrder.sellStar }">
+				        <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/ItemOrderServlet.check" style="margin-bottom: 0px;">
+			                <input type="hidden" name="orderId" value="${itemOrder.orderId}">
+			                <input type="hidden" name="action" value="turn_To_Assign_Rating" >
+			                <button type="submit" class="btn btn-primary mx-2">評價訂單</button>
+		                </form>
 				    </c:when>
 				</c:choose>
 					
 				<c:if test="${itemOrder.orderStatus le 2}">
-					<form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check" style="margin-bottom: 0px;">
+					<form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/ItemOrderServlet.check" style="margin-bottom: 0px;">
 			                <input type="hidden" name="orderId" value="${itemOrder.orderId}">
 			                <input type="hidden" name="action" value="cancelOrder" >
 			                <button type="submit" class="btn btn-primary mx-2">取消訂單</button>
@@ -238,6 +226,12 @@
             }
         });
     });
+    
+    window.onpageshow = function(event) {
+    	  if (event.persisted) {
+    	    window.location.reload() 
+    	  }
+   	};
 </script>
 
 </body>

@@ -61,8 +61,8 @@
 <ul class="order-menu">
 <li class="lf_li1"><a href="${pageContext.request.contextPath}/itemtrackinglist.check?action=getAllByMbrId">我的收藏</a></li>
 <li class="lf_li1"><a href="${pageContext.request.contextPath}/itembrowsing.redis?action=getAllByMbrId">瀏覽紀錄</a></li>
-<li class="lf_li1"><a href="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check?action=buyer">買家訂單</a></li>
-<li class="lf_li1"><a href="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check?action=seller">賣家訂單</a></li>
+<li class="lf_li1"><a href="${pageContext.request.contextPath}/front_end/itemorder/ItemOrderServlet.check?action=buyer">買家訂單</a></li>
+<li class="lf_li1"><a href="${pageContext.request.contextPath}/front_end/itemorder/ItemOrderServlet.check?action=seller">賣家訂單</a></li>
 <li class="lf_li1"><a href="${pageContext.request.contextPath}/front/itemreport?action=getAllByMbrId">我的檢舉</a></li>
 </ul>
 

@@ -105,7 +105,7 @@
 	    <h5>訂單編號: ${itemOrder.orderId}</h5>
 	    <h5>訂單狀態:${OrderStatusMap[itemOrder.orderStatus]}</h5>
 <!-- 		為了不破壞排版  所以一起放在form裡面 -->
-	    <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check" style="margin-bottom: 0px;">
+	    <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/ItemOrderServlet.check" style="margin-bottom: 0px;">
             <input type="hidden" name="orderId" value="${itemOrder.orderId}">
             <input type="hidden" name="action" value="turn_To_Details" >
 		    <div class="d-flex flex-column justify-content-end mt-3">
@@ -151,30 +151,30 @@
 		    	
 		    	<c:choose>
 				    <c:when test="${itemOrder.orderStatus eq 0}">
-				        <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check" style="margin-bottom: 0px;">
+				        <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/ItemOrderServlet.check" style="margin-bottom: 0px;">
 			                <input type="hidden" name="orderId" value="${itemOrder.orderId}">
 			                <input type="hidden" name="action" value="turn_To_Pay" >
 			                <button type="submit" class="btn btn-primary mx-2">付款</button>
 						</form>
 				    </c:when>
 				    <c:when test="${itemOrder.orderStatus eq 2}">
-				        <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check" style="margin-bottom: 0px;">
+				        <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/ItemOrderServlet.check" style="margin-bottom: 0px;">
 			                <input type="hidden" name="orderId" value="${itemOrder.orderId}">
 			                <input type="hidden" name="action" value="updateOrder" >
 			                <button type="submit" class="btn btn-primary mx-2">收貨</button>
 						</form>
 				    </c:when>
-				    <c:when test="${itemOrder.orderStatus eq 3}">
-				        <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check" style="margin-bottom: 0px;">
+				    <c:when test="${itemOrder.orderStatus eq 3 && empty itemOrder.buyStar}">
+				        <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/ItemOrderServlet.check" style="margin-bottom: 0px;">
 			                <input type="hidden" name="orderId" value="${itemOrder.orderId}">
 			                <input type="hidden" name="action" value="turn_To_Assign_Rating" >
-			                <button type="submit" class="btn btn-primary mx-2">評價訂單</button>
+			                <button type="submit" class="btn btn-primary mx-2">評價訂單</button>${itemOrder.buyStar}
 						</form>
 				    </c:when>
 				</c:choose>
 					
 				<c:if test="${itemOrder.orderStatus le 2}">
-					<form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check" style="margin-bottom: 0px;">
+					<form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/ItemOrderServlet.check" style="margin-bottom: 0px;">
 			                <input type="hidden" name="orderId" value="${itemOrder.orderId}">
 			                <input type="hidden" name="action" value="cancelOrder" >
 			                <button type="submit" class="btn btn-primary mx-2">取消訂單</button>
@@ -231,6 +231,13 @@
             }
         });
     });
+    
+    window.onpageshow = function(event) {
+    	  if (event.persisted) {
+    	    window.location.reload() 
+    	  }
+   	};
+
 </script>
 
 </body>
