@@ -33,7 +33,8 @@ public class EmployeeAuthenticationFilter implements Filter {
         PrintWriter out = response.getWriter();
         
         HttpSession session = request.getSession();
-        Object empId = session.getAttribute("empId");
+        Integer empId = (Integer) session.getAttribute("empId");
+        
         
         String ErrorMsg="";
         
@@ -46,6 +47,7 @@ public class EmployeeAuthenticationFilter implements Filter {
         if(resignedEmployeeList.contains(empId)) {
         	ErrorMsg = "您已離職,已執行登出";
         }
+        
         
         if("".equals(ErrorMsg)) {
         	chain.doFilter(request, response);

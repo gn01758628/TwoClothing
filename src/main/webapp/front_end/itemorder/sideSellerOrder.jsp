@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="BIG5">
 <title>Insert title here</title>
     <style>
         /* 隱藏所有帳戶管理下的<ul> */
@@ -16,29 +16,30 @@
             display: none;
         }
 
-		
-				
-	
+
     </style>
 </head>
 <body>
 
-
-
 <br><br>
 <h2><a href="${pageContext.request.contextPath}/members/Members.do?action=memberProfile&mbrId=${user.mbrId}">會員中心</a></h2>
-			<h2>買家競標商品訂單</h2>
+
+
+
+			<h2>賣家一般商品訂單</h2>
 			<ul>
 				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder0&buyMbrId=${user.mbrId}">待付款</a></li>
+					href="<%=request.getContextPath()%>/front_end/itemorder/itemorder.check?action=seller">所有訂單</a></li>
 				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder1&buyMbrId=${user.mbrId}">未出貨</a></li>
+					href="<%=request.getContextPath()%>/front_end/itemorder/itemorder.check?action=seller&status=0">待付款</a></li>
 				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder2&buyMbrId=${user.mbrId}">待收貨</a></li>
+					href="<%=request.getContextPath()%>/front_end/itemorder/itemorder.check?action=seller&status=1">待出貨</a></li>
 				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder3&buyMbrId=${user.mbrId}">訂單完成</a></li>
+					href="<%=request.getContextPath()%>/front_end/itemorder/itemorder.check?action=seller&status=2">待收貨</a></li>
 				<li class="lf_li1"><a
-					href="<%=request.getContextPath()%>/bidorder/BidOrder.do?action=buyBidOrder4&buyMbrId=${user.mbrId}">訂單不成立</a></li>
+					href="<%=request.getContextPath()%>/front_end/itemorder/itemorder.check?action=seller&status=3">訂單完成</a></li>
+				<li class="lf_li1"><a
+					href="<%=request.getContextPath()%>/front_end/itemorder/itemorder.check?action=seller&status=4">訂單不成立</a></li>
 			</ul>
 
 
@@ -66,5 +67,6 @@ accountMenu.addEventListener("mouseout", function (event) {
     }
 });
 </script>
+
 </body>
 </html>

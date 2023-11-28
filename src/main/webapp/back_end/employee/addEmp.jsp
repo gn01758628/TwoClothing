@@ -77,12 +77,13 @@
 	<jsp:useBean id="DepartmentServiceImpl" scope="page" class="com.twoclothing.tonyhsieh.service.DepartmentServiceImpl" />
 	<tr>
 		<td>部門:<font color=red><b>*</b></font></td>
-		<td><select size="1" name="deptid">
-			<c:forEach var="department" items="${DepartmentServiceImpl.allDepartment}">
-				<option value="${department.deptId}"${(param.deptId==employee.deptId)? 'selected':'' } >${department.deptName}
-			
-			</c:forEach>
-		</select></td>
+		<td>
+			<select size="1" name="deptid">
+				<c:forEach var="department" items="${DepartmentServiceImpl.allDepartment}">
+					<option value="${department.deptId}"${(param.deptId==employee.deptId)? 'selected':'' } >${department.deptName}
+				</c:forEach>
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td>員工姓名:</td>

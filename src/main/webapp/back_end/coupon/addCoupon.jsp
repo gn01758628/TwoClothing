@@ -106,41 +106,72 @@
                 icon: 'success'
             });
 		}
-		
-		
-		document.getElementById("submit-button").addEventListener("click", function(event) {
-				setMinMaxDates();
-		});
 	});
 	
-		function setMinMaxDates() {
+	// 函數：格式化日期
+	function formatDate(date) {
+	    return (
+	        date.getFullYear() + '-' +
+	        ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+	        ('0' + date.getDate()).slice(-2) + 'T' +
+	        ('0' + date.getHours()).slice(-2) + ':' +
+	        ('0' + date.getMinutes()).slice(-2)
+	    );
+	}
 
-	        let now = new Date();
-	        let startDate = new Date();
-	        startDate.setMinutes(startDate.getMinutes() + 1);
-	        let endDate = new Date();
-	        endDate.setMinutes(endDate.getMinutes() + 2);
+	// 函數：計算下一分鐘
+	function getNextMinute(date) {
+	    let nextMinute = new Date(date);
+	    nextMinute.setMinutes(nextMinute.getMinutes() + 1);
+	    return nextMinute;
+	}
 
-	        function formatDate(date) {
-	            return (
-	                date.getFullYear() + '-' +
-	                ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
-	                ('0' + date.getDate()).slice(-2) + 'T' +
-	                ('0' + date.getHours()).slice(-2) + ':' +
-	                ('0' + date.getMinutes()).slice(-2)
-	            );
-	        }
+	// 函數：設置最小值
+	function setMinValue(inputId, minValue) {
+	    document.getElementById(inputId).min = formatDate(minValue);
+	}
 
-	        let formattedStartDate = formatDate(startDate);
+	// 函數：處理日期輸入
+	function handleDateInput(inputId, otherInputId) {
+	    let inputElement = document.getElementById(inputId);
+	    let otherInputElement = document.getElementById(otherInputId);
 
-	        let formattedEndDate = formatDate(endDate);
+	    let inputValue = inputElement.value;
+	    let otherInputValue = otherInputElement.value;
 
-	        document.getElementById("startDate").min = formattedStartDate;
-	        
-	        
+	    let inputDate = new Date(inputValue);
+	    let otherInputDate = new Date(otherInputValue);
 
-	        document.getElementById("endDate").min = formattedEndDate;
+	    // 檢查是否有效日期
+	    if (isNaN(inputDate)) {
+	        console.error("Invalid date input.");
+	        // 使用當前時間作為默認值
+	        inputDate = new Date();
 	    }
+
+	    // 設置最小值
+	    setMinValue(inputId, getNextMinute(new Date()));
+
+	    // 如果有其他日期，檢查是否小於當前開始時間
+	    if (otherInputDate.getTime() < inputDate.getTime()) {
+	        setMinValue(otherInputId, getNextMinute(inputDate));
+	    }
+	}
+
+	// 頁面最開始的設置
+	let startDate = getNextMinute(new Date());
+	let endDate = getNextMinute(startDate);
+
+	// 設置最小值
+	setMinValue("startDate", startDate);
+	setMinValue("endDate", endDate);
+
+
+	// 監聽開始時間輸入的變化
+	document.getElementById("startDate").addEventListener("input", function () {
+	    handleDateInput("startDate", "endDate");
+	});
+
 
         
 </script>

@@ -19,6 +19,7 @@ import javax.servlet.http.Part;
 import com.twoclothing.model.employee.Employee;
 import com.twoclothing.tonyhsieh.service.EmployeeServiceImpl;
 import com.twoclothing.utils.generic.GenericService;
+import com.twoclothing.utils.generic.QueryCondition;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
@@ -47,8 +48,10 @@ public class EmployeeServlet extends HttpServlet {
 		
 		
 		if ("get_On_Duty".equals(action)) {
-			
-			List<Employee> empList = gs.getBy(Employee.class, "empStatus", 0);
+			QueryCondition qc = new QueryCondition();
+			qc.toMap("or", "empStatus", "=", 0);
+			qc.toMap("or", "empStatus", "=", 2);
+			List<Employee> empList = gs.getByQueryConditions(Employee.class, qc.getConditionList());
 			
 			req.setAttribute("empList", empList); // 資料庫取出的empVO物件,存入req
 			String url = "/back_end/employee/listAllEmp.jsp";

@@ -2,9 +2,12 @@ package com.twoclothing.chijung.controller.front_end;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,11 +22,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.twoclothing.chijung.Mapping;
 import com.twoclothing.gordon.service.MembersService;
 import com.twoclothing.gordon.service.MembersServiceImpl;
 import com.twoclothing.huiwen.service.BalanceHistoryService;
@@ -32,6 +38,7 @@ import com.twoclothing.huiwen.service.ItemService;
 import com.twoclothing.huiwen.service.ItemServiceImpl;
 import com.twoclothing.huiwen.service.PointHistoryService;
 import com.twoclothing.huiwen.service.PointHistoryServiceImpl;
+import com.twoclothing.model.abid.bidorder.BidOrder;
 import com.twoclothing.model.aproduct.item.Item;
 import com.twoclothing.model.aproduct.itemorder.ItemOrder;
 import com.twoclothing.model.aproduct.orderdetails.OrderDetails;
@@ -41,7 +48,11 @@ import com.twoclothing.model.members.Members;
 import com.twoclothing.model.memberscoupon.MembersCoupon;
 import com.twoclothing.model.memberscoupon.MembersCoupon.MembersCouponCompositeDetail;
 import com.twoclothing.model.pointhistory.PointHistory;
+import com.twoclothing.model.shipsetting.ShipSetting;
 import com.twoclothing.redismodel.notice.Notice;
+import com.twoclothing.redismodel.notice.NoticeDAO;
+import com.twoclothing.redismodel.notice.NoticeJedisDAO;
+import com.twoclothing.utils.HibernateUtil;
 import com.twoclothing.utils.JedisPoolUtil;
 import com.twoclothing.utils.generic.DAOSelector;
 import com.twoclothing.utils.generic.GenericDAO;
@@ -67,6 +78,8 @@ public class ItemOrderServlet extends HttpServlet{
 	
 	private GenericDAO couponDAO;
 	
+	private NoticeDAO noticeDAO;
+	
 	
 	
 //	@Override
@@ -78,6 +91,7 @@ public class ItemOrderServlet extends HttpServlet{
 		memSvc = new MembersServiceImpl();
 		BHSvc = new BalanceHistoryServiceImpl();
 		couponDAO = DAOSelector.getDAO(MembersCoupon.class);
+		noticeDAO = new NoticeJedisDAO();
 	}
 	
 	@Override
@@ -89,64 +103,42 @@ public class ItemOrderServlet extends HttpServlet{
 		
 		switch (action) {
 			case "buyer":	
-				getBuyerOrderList(req, res);
+				buyer(req, res);
 				forwardPath ="bAll.jsp";
 				break;
-			case "buyer0":	
-				buyerStatus(req,res,0);
-				forwardPath ="bUnpaid.jsp";
-				break;
-			case "buyer1":	
-				buyerStatus(req,res,1);
-				forwardPath ="bUnshipped.jsp";
-				break;
-			case "buyer2":	
-				buyerStatus(req,res,2);
-				forwardPath ="bUnreceived.jsp";
-				break;
-			case "buyer3":	
-				buyerStatus(req,res,3);
-				forwardPath ="bFinished.jsp";
-				break;
-			case "buyer4":	
-				buyerStatus(req,res,4);
-				forwardPath ="bCancel.jsp";
-				break;
-				
 			case "seller":
-				sellerAll(req, res);
+				seller(req, res);
 				forwardPath ="sAll.jsp";
-				break;
-			case "seller0":
-				sellerStatus(req,res,0);
-				forwardPath ="sUnpaid.jsp";
-				break;
-			case "seller1":
-				sellerStatus(req,res,1);
-				forwardPath ="sUnshipped.jsp";
-				break;
-			case "seller2":
-				sellerStatus(req,res,2);
-				forwardPath ="sUnreceived.jsp";
-				break;
-			case "seller3":
-				sellerStatus(req,res,3);
-				forwardPath ="sFinished.jsp";
-				break;
-			case "seller4":
-				sellerStatus(req,res,4);
-				forwardPath ="sCancel.jsp";
 				break;
 				
 			case "updateOrder":
-				updateOrder(req,res);
+				forwardPath = updateOrder(req,res);
 				break;
 			case "cancelOrder":
-				cancelOrder(req,res);
+				forwardPath = cancelOrder(req,res);
 				break;
-				
+			//買家功能	
 			case "addOrder":
 				addOrder(req,res);
+				break;
+			case "turn_To_Pay":
+				turnToPayAndAddress(req,res);
+				forwardPath = "payAndAddress.jsp";
+				break;
+			case "pay_And_Address":
+				payAndAddress(req,res);
+				forwardPath = "/front_end/itemorder/itemorder.check?action=buyer&status=1";
+				break;
+			case "turn_To_Details":
+				turnToDetails(req,res);
+				forwardPath = "/front_end/itemorder/bItemOrderDetails.jsp";
+				break;
+			case "turn_To_Assign_Rating":
+				turnToAssignRating(req,res);
+				forwardPath = "/front_end/itemorder/assignRating.jsp";
+				break;
+			case "assign_Rating":
+				assignRatingn(req,res);
 				break;
 			default:
 				forwardPath = "index.jsp";
@@ -158,98 +150,246 @@ public class ItemOrderServlet extends HttpServlet{
 		}
 		
 		
+//			case "buyer0":	
+//				buyerStatus(req,res,0);
+//				forwardPath ="bUnpaid.jsp";
+//				break;
+//			case "buyer1":	
+//				buyerStatus(req,res,1);
+//				forwardPath ="bUnshipped.jsp";
+//				break;
+//			case "buyer2":	
+//				buyerStatus(req,res,2);
+//				forwardPath ="bUnreceived.jsp";
+//				break;
+//			case "buyer3":	
+//				buyerStatus(req,res,3);
+//				forwardPath ="bFinished.jsp";
+//				break;
+//			case "buyer4":	
+//				buyerStatus(req,res,4);
+//				forwardPath ="bCancel.jsp";
+//				break;
+//			case "seller0":
+//				sellerStatus(req,res,0);
+//				forwardPath ="sUnpaid.jsp";
+//				break;
+//			case "seller1":
+//				sellerStatus(req,res,1);
+//				forwardPath ="sUnshipped.jsp";
+//				break;
+//			case "seller2":
+//				sellerStatus(req,res,2);
+//				forwardPath ="sUnreceived.jsp";
+//				break;
+//			case "seller3":
+//				sellerStatus(req,res,3);
+//				forwardPath ="sFinished.jsp";
+//				break;
+//			case "seller4":
+//				sellerStatus(req,res,4);
+//				forwardPath ="sCancel.jsp";
+//				break;
+		
 	}
 	
 	
-	private void getBuyerOrderList(HttpServletRequest req, HttpServletResponse res) throws IOException{
+	private void buyer(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		HttpSession session = req.getSession();
 		Integer mbrId = (Integer)session.getAttribute("mbrId");
-		
-//		Integer status = Integer.parseInt(req.getParameter("status"));
-		
-		Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
-		
-		List<ItemOrder> itemOrderList = gs.getBy(ItemOrder.class, "buyMbrId", mbrId);				
-		for( ItemOrder itemOrder : itemOrderList) {
-			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
-			itemOrderMap.put(itemOrder, orderDetailsList);
-		}
-		req.setAttribute("itemOrderMap", itemOrderMap);
-	}
-	
-	private void buyerStatus(HttpServletRequest req, HttpServletResponse res,Integer status) throws IOException{
-		String buyerParam = req.getParameter("buyer");
-		Integer buyerId = Integer.parseInt(buyerParam);
+		Integer status = (req.getParameter("status") == null) ? null :Integer.parseInt(req.getParameter("status"));
 		
 		Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
+		Map<Integer,Item> itemMap = new LinkedHashMap<>();
+		
 		
 		QueryCondition qc = new QueryCondition();
-		qc.toMap("and", "buyMbrId", "=", buyerId);
-		qc.toMap("and", "orderStatus", "=", status);				
+		qc.toMap("and", "buyMbrId", "=", mbrId);
+		if( status != null ) {
+			qc.toMap("and", "orderStatus", "=", status);							
+		}
 		List<ItemOrder> itemOrderList = gs.getByQueryConditions(ItemOrder.class, qc.getConditionList());
+		
+		
+		itemOrderList = itemOrderList.stream()
+                .sorted(Comparator.comparingInt(ItemOrder::getOrderId).reversed())
+                .collect(Collectors.toList());	
 		
 		for( ItemOrder itemOrder : itemOrderList) {
 			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
+			Integer itemId;
+			for(OrderDetails orderDetails : orderDetailsList ) {
+				itemId = orderDetails.getCompositeKey().getItemId();
+				Item it =gs.getByPrimaryKey(Item.class, orderDetails.getCompositeKey().getItemId());
+				itemMap.put(itemId, it);
+			}
 			itemOrderMap.put(itemOrder, orderDetailsList);
 		}
 		
-		req.setAttribute("buyer",buyerId);
+		
 		req.setAttribute("itemOrderMap", itemOrderMap);
+		req.setAttribute("itemMap", itemMap);
+		req.setAttribute("OrderStatusMap", Mapping.OrderStatusMap);
 	}
 	
 	
-	
-	private void sellerAll(HttpServletRequest req, HttpServletResponse res) throws IOException{
-//		String sellerParam = req.getParameter("seller");
-//		Integer sellerId = Integer.parseInt(sellerParam);
-//		
-//		Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
-//		
-//		List<ItemOrder> itemOrderList = gs.getBy(ItemOrder.class, "sellMbrId", sellerId);				
-//		for( ItemOrder itemOrder : itemOrderList) {
-//			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
-//			itemOrderMap.put(itemOrder, orderDetailsList);
-//		}
-//		req.setAttribute("seller",sellerId);
-//		req.setAttribute("itemOrderMap", itemOrderMap);
-	}
-	
-	
-	private void sellerStatus(HttpServletRequest req, HttpServletResponse res,Integer status) throws IOException{
-		String seller = req.getParameter("seller");
-		Integer sellerId = Integer.parseInt(seller);
+	private void seller(HttpServletRequest req, HttpServletResponse res) throws IOException{
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer)session.getAttribute("mbrId");
+		Integer status = (req.getParameter("status") == null) ? null :Integer.parseInt(req.getParameter("status"));
 		
 		Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
+		Map<Integer,Item> itemMap = new LinkedHashMap<>();
+		
 		
 		QueryCondition qc = new QueryCondition();
-		qc.toMap("and", "sellMbrId", "=", sellerId);
-		qc.toMap("and", "orderStatus", "=", status);				
+		qc.toMap("and", "sellMbrId", "=", mbrId);
+		if( status != null ) {
+			qc.toMap("and", "orderStatus", "=", status);							
+		}
 		List<ItemOrder> itemOrderList = gs.getByQueryConditions(ItemOrder.class, qc.getConditionList());
+		
+		
+		itemOrderList = itemOrderList.stream()
+				.sorted(Comparator.comparingInt(ItemOrder::getOrderId).reversed())
+				.collect(Collectors.toList());	
 		
 		for( ItemOrder itemOrder : itemOrderList) {
 			List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
+			Integer itemId;
+			for(OrderDetails orderDetails : orderDetailsList ) {
+				itemId = orderDetails.getCompositeKey().getItemId();
+				Item it =gs.getByPrimaryKey(Item.class, orderDetails.getCompositeKey().getItemId());
+				itemMap.put(itemId, it);
+			}
 			itemOrderMap.put(itemOrder, orderDetailsList);
 		}
 		
-		req.setAttribute("seller",sellerId);
+		
 		req.setAttribute("itemOrderMap", itemOrderMap);
+		req.setAttribute("itemMap", itemMap);
+		req.setAttribute("OrderStatusMap", Mapping.OrderStatusMap);
 	}
 	
+
 	
-	private void updateOrder(HttpServletRequest req, HttpServletResponse res) throws IOException{
+	
+	private String updateOrder(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		Integer orderId = Integer.parseInt(req.getParameter("orderId"));
 		ItemOrder itemOrder = gs.getByPrimaryKey(ItemOrder.class,orderId );
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer) session.getAttribute("mbrId");
+
+		
+		Integer buyMbrId = itemOrder.getBuyMbrId();
+		Notice toBuyerNotice = new Notice();	
+		Integer sellMbrId = itemOrder.getSellMbrId();
+		Notice toSellerNnotice = new Notice();
+				
+        
+        switch(itemOrder.getOrderStatus()) {
+        //未付款 對應動作 付款
+        	case 0:
+        		toBuyerNotice.setHead("付款成功通知");
+        		toSellerNnotice.setHead("買家付款通知");
+        		toBuyerNotice.setContent("感謝您的購買，已通知賣家出貨");
+        		toSellerNnotice.setContent("買家已付款，請盡快出貨");
+        		toBuyerNotice.setLink("/front_end/itemorder/itemorder.check?action=buyer&status=1");
+        		toSellerNnotice.setLink("/front_end/itemorder/itemorder.check?action=seller&status=1");
+        		break;
+		//未出貨 對應動作 出貨
+        	case 1:
+        		toBuyerNotice.setHead("賣家出貨通知");
+        		toSellerNnotice.setHead("出貨成功通知");
+        		toBuyerNotice.setContent("感謝您的耐心等候，賣家已出貨");
+        		toSellerNnotice.setContent("感謝您的協助，已通知買家出貨");
+        		toBuyerNotice.setLink("/front_end/itemorder/itemorder.check?action=buyer&status=2");
+        		toSellerNnotice.setLink("/front_end/itemorder/itemorder.check?action=seller&status=2");
+        		break;
+		//未收貨 對應動作 完成訂單
+        	case 2:
+        		toBuyerNotice.setHead("訂單完成通知");
+        		toSellerNnotice.setHead("訂單完成通知");
+        		toBuyerNotice.setContent("本次交易結束，請評價訂單");
+        		toSellerNnotice.setContent("本次交易結束，請評價訂單");
+        		toBuyerNotice.setLink("/front_end/itemorder/itemorder.check?action=buyer&status=3");
+        		toSellerNnotice.setLink("/front_end/itemorder/itemorder.check?action=seller&status=3");
+        		break;
+        }
+        
+        toBuyerNotice.setType("訂單通知");
+		toSellerNnotice.setType("訂單通知");
+		toBuyerNotice.setImageLink("/images/cart/placeOrder.png");
+		toSellerNnotice.setImageLink("/images/cart/placeOrder.png");
+		
+		noticeDAO.insert(toSellerNnotice, sellMbrId);
+		noticeDAO.insert(toBuyerNotice, buyMbrId);
+		
+		
 		if(itemOrder.getOrderStatus() < 3 ) {
 			itemOrder.setOrderStatus(itemOrder.getOrderStatus()+1);
 		}
 		gs.update(itemOrder);
+		
+		if(mbrId.equals(sellMbrId)) {
+			return "/front_end/itemorder/itemorder.check?action=seller&status="+itemOrder.getOrderStatus();
+		}else {
+			return "/front_end/itemorder/itemorder.check?action=buyer&status="+itemOrder.getOrderStatus();
+			
+		}
 	}
 	
-	private void cancelOrder(HttpServletRequest req, HttpServletResponse res) throws IOException{
+	private String cancelOrder(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		Integer orderId = Integer.parseInt(req.getParameter("orderId"));
-		ItemOrder itemorder = gs.getByPrimaryKey(ItemOrder.class,orderId );
-		itemorder.setOrderStatus(4);
-		gs.update(itemorder);
+		ItemOrder itemOrder = gs.getByPrimaryKey(ItemOrder.class,orderId );
+		
+		HttpSession session = req.getSession();
+		Integer mbrId = (Integer) session.getAttribute("mbrId");
+		
+		if( itemOrder.getPayType().equals(2)){
+			
+			Timestamp currentTime2 = new Timestamp(System.currentTimeMillis());
+			BalanceHistory balanceHistory = new BalanceHistory();
+			balanceHistory.setMbrId(itemOrder.getBuyMbrId());
+			balanceHistory.setOrderId(itemOrder.getOrderId());//從訂單取
+			balanceHistory.setWrId(null);
+			//異動時間1/訂單完成(+) 2/訂單確認(-)
+			balanceHistory.setChangeDate(currentTime2);			
+			balanceHistory.setChangeValue(itemOrder.getFinalAmount()*1);
+			BHSvc.addBH(balanceHistory);   
+			
+			Members mem=memSvc.getByPrimaryKey(itemOrder.getBuyMbrId());
+
+			Integer newPoint = mem.getMbrPoint()+itemOrder.getFinalAmount();
+			mem.setMbrPoint(newPoint);
+			memSvc.updateMembers(mem);
+		}
+		
+		itemOrder.setOrderStatus(4);
+		gs.update(itemOrder);
+		
+		Integer buyMbrId = itemOrder.getBuyMbrId();
+		Notice toBuyerNotice = new Notice();	
+		Integer sellMbrId = itemOrder.getSellMbrId();
+		Notice toSellerNnotice = new Notice();
+		toBuyerNotice.setType("訂單通知");
+		toSellerNnotice.setType("訂單通知");
+		toBuyerNotice.setHead("訂單已取消");
+		toSellerNnotice.setHead("訂單已取消");
+		toBuyerNotice.setContent("訂單已取消");
+		toSellerNnotice.setContent("訂單已取消");
+		toBuyerNotice.setLink("/front_end/itemorder/itemorder.check?action=buyer&status=4");
+		toSellerNnotice.setLink("/front_end/itemorder/itemorder.check?action=seller&status=4");
+		toBuyerNotice.setImageLink("/images/cart/placeOrder.png");
+		toSellerNnotice.setImageLink("/images/cart/placeOrder.png");
+		
+		if(mbrId.equals(sellMbrId)) {
+			return "/front_end/itemorder/itemorder.check?action=seller&status="+itemOrder.getOrderStatus();
+		}else {
+			return "/front_end/itemorder/itemorder.check?action=buyer&status="+itemOrder.getOrderStatus();
+			
+		}
+		
 	}
 	
 	
@@ -315,7 +455,7 @@ public class ItemOrderServlet extends HttpServlet{
                     return item.getMbrId();
                 }));
         
-        groupedByMbrId.forEach((mbrId, detailsList) -> {
+        groupedByMbrId.forEach(( mbrId, detailsList) -> {
         	ItemOrder itemOrder = new ItemOrder();
         	itemOrder.setBuyMbrId(buyerId);
         	itemOrder.setSellMbrId(mbrId);
@@ -337,9 +477,11 @@ public class ItemOrderServlet extends HttpServlet{
             itemOrder.setDiscount(totalDiscountPrice);
             itemOrder.setFinalAmount(totalPrice-totalDiscountPrice);
             
-            Integer itemOrderId = (Integer) gs.insert(itemOrder);
+            Integer orderId = (Integer) gs.insert(itemOrder);
+            HibernateUtil.getSessionFactory().getCurrentSession().evict(itemOrder);
+            itemOrderList.add(itemOrder);
             detailsList.forEach(orderDetail ->{
-            	orderDetail.getCompositeKey().setOrderId(itemOrderId);
+            	orderDetail.getCompositeKey().setOrderId(orderId);
             	gs.insert(orderDetail);
             });
             
@@ -361,8 +503,8 @@ public class ItemOrderServlet extends HttpServlet{
         notice.setType("訂單通知");
         notice.setHead("訂單成立通知");
         notice.setContent("感謝您的購買，付款後即通知賣家出貨");
-    	//連到訂單頁面的link
-        notice.setLink("#");
+//    	連到訂單頁面的link
+        notice.setLink("/front_end/itemorder/itemorder.check?action=buyer");
         notice.setImageLink("/images/cart/placeOrder.png");
         itemService.addNotice(notice, buyerId);	//mbrId -> buyerId by jung
     	//購物車清空
@@ -411,21 +553,41 @@ public class ItemOrderServlet extends HttpServlet{
     	if(!(mbrPointStr.trim().equals("0") && mbrPointStr!=null)) {
 			mbrPoint = Integer.valueOf(mbrPointStr);
 			//新增異動
-			PointHistory pointHistory = new PointHistory();
+//			PointHistory pointHistory = new PointHistory();
 			
 			//取訂單編號
 //			if(!req.getParameter("orderId").trim().isEmpty() ) {
 //				int orderId =Integer.parseInt(req.getParameter("orderId"));
 //			}
-			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+//			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+			//==============================整合======================================
+			System.out.println("===========pointHistorytmp===========");
+			for( ItemOrder ito : itemOrderList) {
+				int finalAmount = ito.getFinalAmount();
+	        	double total = (double) totalPay;
+	        	int result = (int) Math.round((double) mbrPoint * finalAmount / total);
+	        	PointHistory pointHistorytmp = new PointHistory();
+	        	pointHistorytmp.setMbrId(ito.getBuyMbrId());
+	        	pointHistorytmp.setOrderId(ito.getOrderId());
+	        	pointHistorytmp.setChangeDate(ito.getOrderDate());			
+	        	pointHistorytmp.setChangeValue(result);
+	        	PHSvc.addPH(pointHistorytmp);
+	        	System.out.println(pointHistorytmp);
+			}
+			System.out.println("===========pointHistorytmp===========");
 			
-			pointHistory.setMbrId(mbrId);
-			pointHistory.setOrderId(1);//從訂單取
+			
+			
+			//==============================整合======================================
+			
+			
+//			pointHistory.setMbrId(mbrId);
+//			pointHistory.setOrderId(1);//從訂單取
 			//異動時間1/訂單完成(+) 2/訂單確認(-)
-			pointHistory.setChangeDate(currentTime);			
-			pointHistory.setChangeValue(mbrPoint*-1);
+//			pointHistory.setChangeDate(currentTime);			
+//			pointHistory.setChangeValue(mbrPoint*-1);
 			
-			int pointHistoryPK = PHSvc.addPH(pointHistory);
+//			int pointHistoryPK = PHSvc.addPH(pointHistory);
 			
 			//會員表格點數同步扣點
         	Members mem=memSvc.getByPrimaryKey(mbrId);
@@ -446,22 +608,36 @@ public class ItemOrderServlet extends HttpServlet{
         	memSvc.updateMembers(mem);
         	
 			//新增異動
-			BalanceHistory balanceHistory = new BalanceHistory();
+//			BalanceHistory balanceHistory = new BalanceHistory();
 			
 			//取訂單編號
 //			if(!req.getParameter("orderId").trim().isEmpty() ) {
 //				int orderId =Integer.parseInt(req.getParameter("orderId"));
 //			}
-			Timestamp currentTime2 = new Timestamp(System.currentTimeMillis());
 			
-			balanceHistory.setMbrId(mbrId);
-			balanceHistory.setOrderId(1);//從訂單取
-			balanceHistory.setWrId(null);
+//			Timestamp currentTime2 = new Timestamp(System.currentTimeMillis());
+			
+			for( ItemOrder ito : itemOrderList) {
+				BalanceHistory balanceHistory = new BalanceHistory();
+				balanceHistory.setMbrId(ito.getBuyMbrId());
+				balanceHistory.setOrderId(ito.getOrderId());//從訂單取
+				balanceHistory.setWrId(null);
+				//異動時間1/訂單完成(+) 2/訂單確認(-)
+				balanceHistory.setChangeDate(ito.getOrderDate());			
+				balanceHistory.setChangeValue(ito.getFinalAmount()*-1);
+				BHSvc.addBH(balanceHistory);    
+			}
+			
+			 
+			
+//			balanceHistory.setMbrId(mbrId);
+//			balanceHistory.setOrderId(1);//從訂單取
+//			balanceHistory.setWrId(null);
 			//異動時間1/訂單完成(+) 2/訂單確認(-)
-			balanceHistory.setChangeDate(currentTime2);			
-			balanceHistory.setChangeValue(totalPay*-1);
+//			balanceHistory.setChangeDate(currentTime2);			
+//			balanceHistory.setChangeValue(totalPay*-1);
 			
-			int balanceHistoryPK = BHSvc.addBH(balanceHistory);            	
+//			int balanceHistoryPK = BHSvc.addBH(balanceHistory);            	
         }
         
         //使用後的優惠券改變狀態
@@ -491,12 +667,119 @@ public class ItemOrderServlet extends HttpServlet{
 	    PrintWriter out = res.getWriter();
 	    out.print(responseData);
 	    out.flush();
-        
-        
        
 	}
 	
+	private void turnToPayAndAddress(HttpServletRequest req, HttpServletResponse res) throws IOException{
+		HttpSession session = req.getSession();
+		Integer orderId = Integer.valueOf(req.getParameter("orderId"));
+		req.setAttribute("itemOrder", gs.getByPrimaryKey(ItemOrder.class, orderId));
+		req.setAttribute("orderdetailsList", gs.getBy( OrderDetails.class, "compositeKey.orderId", orderId ));
+		List<ShipSetting> shipSettingList = gs.getBy(ShipSetting.class,"mbrId",(Integer)session.getAttribute("mbrId"));
+		req.setAttribute("shipSettingList", shipSettingList);
+	}
 	
+	private void payAndAddress(HttpServletRequest req, HttpServletResponse res) throws IOException{
+		HttpSession session = req.getSession();
+		Integer orderId = Integer.valueOf(req.getParameter("orderId"));
+		
+//		String cardPart1 = req.getParameter("cardPart1");
+//      String cardPart2 = req.getParameter("cardPart2");
+//      String cardPart3 = req.getParameter("cardPart3");
+//      String cardPart4 = req.getParameter("cardPart4");
+//      String expirationDate = req.getParameter("expirationDate");
+//      String cvv = req.getParameter("cvv");
+        String receiveName = req.getParameter("receiveName");
+        String receivePhone = req.getParameter("receivePhone");
+        
+        String county = req.getParameter("county");
+        String district = req.getParameter("district");
+        String address = req.getParameter("address");
+        String zipcode = req.getParameter("zipcode");
+        String fullAddress = zipcode + county + district + address;
+        
+        String remarks = req.getParameter("remarks");
+        //通知賣家
+        String sellMbrId = req.getParameter("sellMbrId");
+        
+        ItemOrder itemOrder = gs.getByPrimaryKey(ItemOrder.class,orderId );
+        itemOrder.setReceiveName(receiveName);
+        itemOrder.setReceivePhone(receivePhone);
+        itemOrder.setReceiveAddress(fullAddress);
+        itemOrder.setRemarks(remarks);
+//        itemOrder.setOrderStatus(1);    呼叫
+        gs.update(itemOrder);//為了避免出事 雖然應該不會而且等下叫到的應該是同一個物件
+        HibernateUtil.getSessionFactory().getCurrentSession().evict(itemOrder);
+        updateOrder(req,res);
+        
+        
+	}
+	private void turnToDetails(HttpServletRequest req, HttpServletResponse res) throws IOException{
+		
+		// 從請求中獲取表單提交的 JSON 字串
+	    Integer orderId = Integer.parseInt(req.getParameter("orderId"));
+	    ItemOrder itemOrder = gs.getByPrimaryKey(ItemOrder.class,orderId );
+	    List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
+	    
+		req.setAttribute("itemOrder", itemOrder);
+		req.setAttribute("orderDetailsList", orderDetailsList);
+		req.setAttribute("OrderStatusMap", Mapping.OrderStatusMap);
+	}
+	
+	private void turnToAssignRating(HttpServletRequest req, HttpServletResponse res) throws IOException{
+		
+		// 從請求中獲取表單提交的 JSON 字串
+		Integer orderId = Integer.parseInt(req.getParameter("orderId"));
+		ItemOrder itemOrder = gs.getByPrimaryKey(ItemOrder.class,orderId );
+		List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
+		
+		req.setAttribute("itemOrder", itemOrder);
+		req.setAttribute("orderDetailsList", orderDetailsList);
+		req.setAttribute("OrderStatusMap", Mapping.OrderStatusMap);
+	}
+	
+	private void assignRatingn(HttpServletRequest req, HttpServletResponse res) throws IOException{
+		
+		// 從請求中獲取表單提交的 JSON 字串
+		Integer orderId = Integer.parseInt(req.getParameter("orderId"));
+		ItemOrder itemOrder = gs.getByPrimaryKey(ItemOrder.class,orderId );
+		List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
+		
+		String content = req.getParameter("content");
+		String sellerRatingString = req.getParameter("sellerRating");
+		String buyerRatingString = req.getParameter("buyerRating");
+		
+		Integer sellerRating = null;
+		Integer buyerRating = null;
+
+		if (sellerRatingString != null && !sellerRatingString.isEmpty()) {
+		    sellerRating = Integer.parseInt(sellerRatingString);
+		    itemOrder.setSellStar(sellerRating);
+		    itemOrder.setSellerRatingDesc(content);
+		    System.out.println("AAAAAAAA");
+		}
+
+		if (buyerRatingString != null && !buyerRatingString.isEmpty()) {
+		    buyerRating = Integer.parseInt(buyerRatingString);
+		    itemOrder.setBuyStar(buyerRating);
+		    itemOrder.setBuyerRatingDesc(content);
+		    System.out.println("BBBBBBBB");
+		}
+    	//新增
+    	gs.update(itemOrder);
+    	HibernateUtil.getSessionFactory().getCurrentSession().evict(itemOrder);
+    	
+    	
+    	
+        // 處理新增操作的邏輯
+    	res.setContentType("text/html; charset=UTF-8");
+	    PrintWriter out = res.getWriter();
+	    out.write("OK");
+		
+		req.setAttribute("itemOrder", itemOrder);
+		req.setAttribute("orderDetailsList", orderDetailsList);
+		req.setAttribute("OrderStatusMap", Mapping.OrderStatusMap);
+	}
 	
 	
 	
@@ -504,4 +787,62 @@ public class ItemOrderServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
 	}
+	
+	
+//	private void buyerStatus(HttpServletRequest req, HttpServletResponse res,Integer status) throws IOException{
+//	String buyerParam = req.getParameter("buyer");
+//	Integer buyerId = Integer.parseInt(buyerParam);
+//	
+//	Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
+//	
+//	QueryCondition qc = new QueryCondition();
+//	qc.toMap("and", "buyMbrId", "=", buyerId);
+//	qc.toMap("and", "orderStatus", "=", status);				
+//	List<ItemOrder> itemOrderList = gs.getByQueryConditions(ItemOrder.class, qc.getConditionList());
+//	
+//	for( ItemOrder itemOrder : itemOrderList) {
+//		List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
+//		itemOrderMap.put(itemOrder, orderDetailsList);
+//	}
+//	
+//	req.setAttribute("buyer",buyerId);
+//	req.setAttribute("itemOrderMap", itemOrderMap);
+//}
+//
+//
+//private void seller(HttpServletRequest req, HttpServletResponse res) throws IOException{
+//	String sellerParam = req.getParameter("seller");
+//	Integer sellerId = Integer.parseInt(sellerParam);
+//	
+//	Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
+//	
+//	List<ItemOrder> itemOrderList = gs.getBy(ItemOrder.class, "sellMbrId", sellerId);				
+//	for( ItemOrder itemOrder : itemOrderList) {
+//		List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
+//		itemOrderMap.put(itemOrder, orderDetailsList);
+//	}
+//	req.setAttribute("seller",sellerId);
+//	req.setAttribute("itemOrderMap", itemOrderMap);
+//}
+//
+//
+//private void sellerStatus(HttpServletRequest req, HttpServletResponse res,Integer status) throws IOException{
+//	String seller = req.getParameter("seller");
+//	Integer sellerId = Integer.parseInt(seller);
+//	
+//	Map<ItemOrder,List<OrderDetails>> itemOrderMap = new LinkedHashMap<>();
+//	
+//	QueryCondition qc = new QueryCondition();
+//	qc.toMap("and", "sellMbrId", "=", sellerId);
+//	qc.toMap("and", "orderStatus", "=", status);				
+//	List<ItemOrder> itemOrderList = gs.getByQueryConditions(ItemOrder.class, qc.getConditionList());
+//	
+//	for( ItemOrder itemOrder : itemOrderList) {
+//		List<OrderDetails> orderDetailsList = gs.getBy(OrderDetails.class, "compositeKey.orderId", itemOrder.getOrderId());
+//		itemOrderMap.put(itemOrder, orderDetailsList);
+//	}
+//	
+//	req.setAttribute("seller",sellerId);
+//	req.setAttribute("itemOrderMap", itemOrderMap);
+//}
 }

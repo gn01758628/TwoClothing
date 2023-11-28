@@ -59,7 +59,6 @@ body {
 			<th>員工狀態</th>
 			<th>員工圖片</th>
 			<th>修改</th>
-			
 		</tr>
 	</thead>
 	<c:forEach var="employee" items="${empList}">
@@ -72,9 +71,10 @@ body {
 			<td>${employee.phone}</td>
 			<td>${employee.deptId}-[${employee.department.deptName}]</td>
 			<td>
+			
 				 <c:choose>
-       			 <c:when test="${employee.empStatus == 0}">在職中</c:when>
-       			 <c:when test="${employee.empStatus == 1}">已離職</c:when>
+	       			 <c:when test="${employee.empStatus == 0 || employee.empStatus == 2 }">在職中</c:when>
+	       			 <c:when test="${employee.empStatus == 1}">已離職</c:when>
        			 </c:choose>
 			</td>
 			<td>
@@ -99,7 +99,7 @@ body {
 <!-- 		     </FORM> -->
 		     <FORM METHOD="post" ACTION="<%= servletPath %>" style="margin-bottom: 0px;right:0;display:fixed;">
 			     <c:choose>
-	       			 <c:when test="${employee.empStatus == 0}"><input type="submit" value="離職"></c:when>
+	       			 <c:when test="${employee.empStatus == 0 || employee.empStatus == 2 }"><input type="submit" value="離職"></c:when>
 	       			 <c:when test="${employee.empStatus == 1}"><input type="submit" value="復職"></c:when>
        			 </c:choose>
 			     <input type="hidden" name="empId"  value="${employee.empId}">

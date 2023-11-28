@@ -207,13 +207,13 @@ public class ItemCartServlet extends HttpServlet {
 			//取得該優惠券的物件(條件:日期未失效)
 			List<Coupon> couponList = new ArrayList<>();
 			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-			for(MembersCoupon membersCoupon : membersCouponList) {
-				Integer CouponId = membersCoupon.getCompositeKey().getCouponId();
-				Coupon coupon = itemService.getCouponByPK(CouponId);
-				if((coupon.getExpireDate()) == null || (coupon.getExpireDate()).compareTo(currentTime) > 0 ) {
-					couponList.add(coupon);
-				}
-			}
+//			for(MembersCoupon membersCoupon : membersCouponList) {
+//				Integer CouponId = membersCoupon.getCompositeKey().getCouponId();
+//				Coupon coupon = itemService.getCouponByPK(CouponId);
+//				if((coupon.getExpireDate()) == null || (coupon.getExpireDate()).compareTo(currentTime) > 0 ) {
+//					couponList.add(coupon);
+//				}
+//			}
 
 			req.setAttribute("itemList", itemList);
 			req.setAttribute("quantities", quantities);

@@ -453,7 +453,7 @@
             		  },
             		}).then((result) => {
              		  if (result.isConfirmed) {
-            		    window.location.href = "YOUR_ORDER_PAGE_URL";
+            		    window.location.href = "${pageContext.request.contextPath}/front_end/itemorder/itemorder.check?action=buyer";
              		    }
             		});
             });

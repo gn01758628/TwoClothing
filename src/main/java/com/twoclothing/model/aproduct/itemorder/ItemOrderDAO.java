@@ -5,7 +5,7 @@ import java.util.List;
 public interface ItemOrderDAO {
 	void insert(ItemOrder itemOrder);
 
-	ItemOrder getByPrimaryKey(Integer itemOrderId);
+	ItemOrder getByPrimaryKey(Integer orderId);
 	
 	List<ItemOrder> getAll();
 	

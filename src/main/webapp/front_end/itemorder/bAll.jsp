@@ -64,7 +64,8 @@
 }
 
 .itemOrderContainer p.ms-auto {
-    margin-left: auto;
+    right: 0px;
+    width:auto;
 }
 
     </style>
@@ -99,34 +100,91 @@
 <c:forEach var="entry" items="${itemOrderMap}">
     <c:set var="itemOrder" value="${entry.key}" />
     <c:set var="orderDetailsList" value="${entry.value}" />
-
-	<div class="itemOrderContainer border border-3 p-3">
-    <pre>賣家編號: ${itemOrder.sellMbrId} 訂單編號: ${itemOrder.orderId}</pre>
-    <a href="your_destination_url"><!-- 添加這一行 -->
-        <div class="orderDetailDiv">
-            <div class="orderDetailItem">
-                <img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${orderDetail.compositeKey.itemId}&position=1" alt="商品的第一張圖片" class="mx-auto" loading="lazy" >
-                <div class="orderDetailText">
-                    <pre class="productName">商品名稱 : ${orderDetail.compositeKey.itemId}</pre>
-                    <pre>數量 : ${orderDetail.quantity}</pre>
-                    <pre>總價 : ${orderDetail.buyingPrice}</pre>
-                </div>
-            </div>
-            <!-- 其他 orderDetailItem 的內容... -->
-        </div>
-    </a><!-- 添加這一行 -->
-    <p class="ms-auto">訂單金額: ${itemOrder.finalAmount}</p>
-     <!-- 新增的按鈕 -->
-    <div class="d-flex justify-content-end mt-3">
-        <button type="button" class="btn btn-primary mx-2">按鈕1</button>
-        <button type="button" class="btn btn-primary mx-2">按鈕2</button>
-        <button type="button" class="btn btn-primary mx-2">按鈕3</button>
-    </div>
-    
-</div>
-
-
-
+	
+	<div class="status${itemOrder.orderStatus} itemOrderContainer border border-3 p-3">
+	    <h5>訂單編號: ${itemOrder.orderId}</h5>
+	    <h5>訂單狀態:${OrderStatusMap[itemOrder.orderStatus]}</h5>
+<!-- 		為了不破壞排版  所以一起放在form裡面 -->
+	    <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check" style="margin-bottom: 0px;">
+            <input type="hidden" name="orderId" value="${itemOrder.orderId}">
+            <input type="hidden" name="action" value="turn_To_Details" >
+		    <div class="d-flex flex-column justify-content-end mt-3">
+			    <a href="/TwoClothing/SellerHome/home?mbrId=${itemOrder.sellMbrId}" class="mb-2"><button type="button" class="btn btn-primary">查看賣家賣場</button></a>
+			    <button type="submit" class="btn btn-primary" style="margin-bottom:10px;">查看訂單詳情</button>
+			</div>
+		</form>
+		    
+		    
+		    
+		<c:forEach var="orderDetails" items="${orderDetailsList}">
+		
+		    <a href="${pageContext.request.contextPath}/Itemfront/itemlist?goto=${orderDetails.compositeKey.itemId}"><!-- 添加這一行 -->
+		        <div class="orderDetailDiv">
+		            <div class="orderDetailItem">
+		                <img src="${pageContext.request.contextPath}/ReadItemIMG/item?id=${orderDetails.compositeKey.itemId}&position=1" alt="商品的第一張圖片" class="mx-auto" loading="lazy" >
+		                <div class="orderDetailText">
+		                    <pre class="productName">商品名稱 : ${itemMap[orderDetails.compositeKey.itemId].itemName}</pre>
+		                    <pre>數量 : ${orderDetails.quantity}</pre>
+		                   
+							<c:choose>
+							    <c:when test="${orderDetails.discountPrice eq 0}">
+				                    <pre>總價 : ${orderDetails.price}</pre>
+							    </c:when>
+							    <c:otherwise>
+				                    <pre style="text-decoration: line-through;">總價 : ${orderDetails.price * orderDetails.quantity}</pre>
+				                    <pre>折扣價 : ${orderDetails.buyingPrice}</pre>
+							    </c:otherwise>
+							</c:choose>
+														
+		                </div>
+		            </div>
+		        </div>
+		    </a>
+		    
+		</c:forEach>
+		     <!-- 新增的按鈕 -->
+		    <p class="ms-auto">訂單金額: ${itemOrder.finalAmount} 元</p>
+		    
+		    <div class="d-flex justify-content-end mt-3">
+		    
+			    
+		    	
+		    	<c:choose>
+				    <c:when test="${itemOrder.orderStatus eq 0}">
+				        <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check" style="margin-bottom: 0px;">
+			                <input type="hidden" name="orderId" value="${itemOrder.orderId}">
+			                <input type="hidden" name="action" value="turn_To_Pay" >
+			                <button type="submit" class="btn btn-primary mx-2">付款</button>
+						</form>
+				    </c:when>
+				    <c:when test="${itemOrder.orderStatus eq 2}">
+				        <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check" style="margin-bottom: 0px;">
+			                <input type="hidden" name="orderId" value="${itemOrder.orderId}">
+			                <input type="hidden" name="action" value="updateOrder" >
+			                <button type="submit" class="btn btn-primary mx-2">收貨</button>
+						</form>
+				    </c:when>
+				    <c:when test="${itemOrder.orderStatus eq 3}">
+				        <form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check" style="margin-bottom: 0px;">
+			                <input type="hidden" name="orderId" value="${itemOrder.orderId}">
+			                <input type="hidden" name="action" value="turn_To_Assign_Rating" >
+			                <button type="submit" class="btn btn-primary mx-2">評價訂單</button>
+						</form>
+				    </c:when>
+				</c:choose>
+					
+				<c:if test="${itemOrder.orderStatus le 2}">
+					<form method="post" action="${pageContext.request.contextPath}/front_end/itemorder/itemorder.check" style="margin-bottom: 0px;">
+			                <input type="hidden" name="orderId" value="${itemOrder.orderId}">
+			                <input type="hidden" name="action" value="cancelOrder" >
+			                <button type="submit" class="btn btn-primary mx-2">取消訂單</button>
+					</form>
+				</c:if>
+		    	
+		    </div>
+	
+	</div>
+	
 </c:forEach>
 
 
@@ -163,7 +221,7 @@
     $(document).ready(function () {
         // 使用 AJAX 請求加載其他內容
         $.ajax({
-            url: "${pageContext.request.contextPath}/front_end/members/sideMembers.jsp",
+            url: "${pageContext.request.contextPath}/front_end/itemorder/sideBuyerOrder.jsp",
             method: "GET",
             success: function (data) {
                 $("#con_lf").html(data);
@@ -173,9 +231,7 @@
             }
         });
     });
-    
-
-
 </script>
+
 </body>
 </html>
