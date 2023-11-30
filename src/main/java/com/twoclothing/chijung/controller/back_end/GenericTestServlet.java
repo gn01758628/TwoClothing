@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.twoclothing.model.memberscoupon.MembersCoupon;
-import com.twoclothing.model.memberscoupon.MembersCoupon.MembersCouponCompositeDetail;
+import com.twoclothing.model.categorytags.CategoryTags;
+import com.twoclothing.model.categorytags.CategoryTagsDAO;
+import com.twoclothing.model.categorytags.CategoryTagsHibernateDAO;
+import com.twoclothing.utils.HibernateUtil;
 import com.twoclothing.utils.generic.GenericService;
 
 // @MultipartConfig
@@ -23,7 +25,7 @@ import com.twoclothing.utils.generic.GenericService;
 @WebServlet("/servlet/front/generic/*")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class GenericTestServlet extends HttpServlet {
-
+	private final CategoryTagsDAO categoryTagsDAO = new CategoryTagsHibernateDAO(HibernateUtil.getSessionFactory());
 	GenericService gs = GenericService.getInstance();
 	
 	@Override
@@ -32,9 +34,31 @@ public class GenericTestServlet extends HttpServlet {
 		
 		// 二版測試
 		// insert
-//		System.out.println("========== inesrt ==========");
+		System.out.println("========== inesrt ==========");
+		
+		
+		//測試 執行後只生成一筆  因為關連到的是同一個持久化物件
 //		Permissions pm = new Permissions("AAA", "AAA");
 //		gs.insert(pm);
+//		gs.insert(pm);
+//		gs.insert(pm);
+//		gs.insert(pm);
+//		gs.insert(pm);
+//		gs.insert(pm);
+//		gs.insert(pm);
+		
+		//evict後 原先的持久化物件更新並不會執行  但save能會有效
+//		Permissions pm = gs.getByPrimaryKey(Permissions.class, 13);
+//		pm.setDescriptions("BBBBBBBBBB");
+//		gs.update(pm);
+//		HibernateUtil.getSessionFactory().getCurrentSession().evict(pm);
+		
+		
+//		CategoryTags ct = new CategoryTags();
+//		ct=categoryTagsDAO.getByPrimaryKey(2);
+//		ct.setCategoryName("ASDASDASGFEAGAEG");
+//		categoryTagsDAO.update(ct);
+//		HibernateUtil.getSessionFactory().getCurrentSession().evict(ct);
 
 		// update
 //		System.out.println("========== update ==========");
