@@ -59,11 +59,6 @@ public class GenericTestServlet extends HttpServlet {
 		pm = gs.getByPrimaryKey(Permissions.class, 2);
 		System.out.println(pm);
 		
-//		CategoryTags ct = new CategoryTags();
-//		ct=categoryTagsDAO.getByPrimaryKey(2);
-//		ct.setCategoryName("ASDASDASGFEAGAEG");
-//		categoryTagsDAO.update(ct);
-//		HibernateUtil.getSessionFactory().getCurrentSession().evict(ct);
 
 		// update
 //		System.out.println("========== update ==========");
